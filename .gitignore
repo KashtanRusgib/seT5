@@ -76,3 +76,9 @@ bench_unroll
 task.lock
 __pycache__/
 *.pyc
+set5_native
+tbe
+test_tbe
+test_integration
+test_sel4_ternary
+bench_unroll

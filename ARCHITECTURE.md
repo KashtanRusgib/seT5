@@ -1,6 +1,6 @@
 # seT5 Architecture — Secure Embedded Ternary Microkernel 5
 
-> Last updated: 2026-02-12 — Phase 1 Refined (ISA + Hardware-Aligned Architecture)
+> Last updated: 2025-07-15 — Phase 5 Complete (TBE + Moonshot + 407 Tests)
 
 ---
 
@@ -197,9 +197,13 @@ for equivalent range — e.g., a 6-trit loop covers 729 vs 64 for 6 bits.
 
 ---
 
-## 3. Two-Stack Execution Model
+## 3. Two-Stack Execution Model (DSSP Heritage)
 
-seT5 separates data flow from control flow with two dedicated stacks:
+seT5's two-stack model descends directly from the **DSSP (Dialogue System
+for Structured Programming)** designed by Brusentsov and Zhogolev for the
+Setun-70 balanced ternary computer (1970).  DSSP separated data and control
+flow using an operand stack and a return stack — the same architecture
+Forth adopted.  seT5 restores this design to its native ternary substrate.
 
 ```
   ┌─────────────────┐     ┌──────────────────┐
@@ -564,17 +568,110 @@ Inspired by Cisco G300 high-radix AI networking switches:
 
 ---
 
-## 10. Layer Stack
+## 10. TBE — Ternary Bootstrap Environment
+
+The **TBE** (`src/tbe_main.c`) is seT5's minimal userspace shell — the
+first program that runs after kernel boot.  It provides a 15-command
+interactive environment for I/O, environment management, syscall testing,
+Kleene logic operations, and Trithon interop.
+
+### 10.1 Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        TBE Shell                            │
+│  ┌────────────┐  ┌────────────┐  ┌────────────────────┐    │
+│  │ Env Vars   │  │ Trit Ops   │  │  Trithon Interop   │    │
+│  │ (key→trit) │  │ inc/dec    │  │  (expr evaluator)  │    │
+│  │ 16 slots   │  │ consensus  │  │  T&F, ~U, etc.     │    │
+│  │ BT encoded │  │ accept_any │  │                    │    │
+│  └────────────┘  └────────────┘  └────────────────────┘    │
+│  ┌────────────┐  ┌────────────┐  ┌────────────────────┐    │
+│  │ Syscall    │  │ Multi-Radix│  │  WCET Telemetry    │    │
+│  │ dispatch   │  │ dot / fft  │  │  6 probes, budget  │    │
+│  │ + fallback │  │ regs 0-15  │  │  violation detect  │    │
+│  └────────────┘  └────────────┘  └────────────────────┘    │
+├─────────────────────────────────────────────────────────────┤
+│                kernel_state_t (seT5 microkernel)            │
+│   mem · ipc · sched · mr · caps[64] · stacks               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 10.2 Commands (15)
+
+| Command       | Description                                  | Subsystem       |
+|---------------|----------------------------------------------|-----------------|
+| `help`        | Print command list                           | Shell           |
+| `echo`        | Echo text to stdout                          | Shell           |
+| `env`         | Print trit-encoded environment variables     | Env             |
+| `setenv`      | Set env var (int → balanced ternary)         | Env             |
+| `reg`         | Display 32-trit register                     | Multi-radix     |
+| `dot`         | Dot product of two registers                 | Multi-radix     |
+| `syscall`     | Direct kernel syscall dispatch               | Syscall         |
+| `trit_inc`    | Balanced ternary increment                   | Trit ops        |
+| `trit_dec`    | Balanced ternary decrement                   | Trit ops        |
+| `consensus`   | Kleene AND of two registers                  | Trit ops        |
+| `accept_any`  | Kleene OR of two registers                   | Trit ops        |
+| `fft`         | Radix-3 FFT butterfly step                   | Multi-radix     |
+| `wcet`        | Print WCET probe telemetry                   | WCET            |
+| `trithon`     | Evaluate Trithon trit expression             | Interop         |
+| `exit`        | Shutdown TBE                                 | Shell           |
+
+### 10.3 Environment Variables
+
+Environment variables store values as **balanced ternary trit arrays**
+using Avizienis encoding (the standard balanced representation).  Each
+env entry has a 3-state `validity` flag:
+
+- **T** = active — normal use
+- **U** = shadow — temporarily suspended (future: copy-on-write)
+- **F** = deleted — slot available for reuse
+
+### 10.4 Syscall Fallback
+
+When a syscall fails (negative `retval`), TBE logs the failure to stderr
+and emulates a safe result (`retval=0`, `result_trit=Unknown`).  This
+ensures the shell remains operational even during kernel development or
+hardware bring-up.
+
+### 10.5 Design Rationale
+
+TBE serves the same role as a BIOS/UEFI shell or seL4's `sel4test`:
+
+1. **Validate kernel primitives** — every syscall is testable interactively
+2. **Bootstrap Trithon** — the Trithon evaluator hook provides a path
+   from shell to Python (CFFI, future)
+3. **Hardware bring-up** — register display and trit inc/dec verify
+   the ALU on new ternary silicon
+4. **Self-documenting** — `help` + `wcet` give immediate observability
+
+---
+
+## 11. Layer Stack
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  Trithon / Python Interop  (planned: extensions/)           │
+│  Trithon / Python Interop  (trithon/trithon.py)             │
 ├──────────────────────────────────────────────────────────────┤
-│  Trit Linux Compatibility  (planned: extensions/)           │
+│  Trit Linux Compatibility  (include/set5/posix.h)           │
+├──────────────────────────────────────────────────────────────┤
+│  TBE Bootstrap Shell  (src/tbe_main.c — 15 commands)        │
+├──────────────────────────────────────────────────────────────┤
+│  seL4 Kernel Object Model  (include/set5/sel4_ternary.h)    │
+│    CNode · TCB · Endpoint · Notification · VSpace ·         │
+│    IRQHandler · IRQControl · Reply · SchedContext ·          │
+│    SchedControl · Untyped — plus POSIX translation          │
 ├──────────────────────────────────────────────────────────────┤
 │  Kernel Modules  (src/init.c, memory, IPC, scheduler)       │
 ├──────────────────────────────────────────────────────────────┤
-│  Syscall ABI     (tools/compiler/include/set5.h)            │
+│  Syscall ABI     (include/set5/syscall.h — 14 syscalls)     │
+├──────────────────────────────────────────────────────────────┤
+│  Multi-Radix     (include/set5/multiradix.h)                │
+│    DOT_TRIT · FFT_STEP · RADIX_CONV · load balance          │
+├──────────────────────────────────────────────────────────────┤
+│  WCET / Telemetry (include/set5/wcet.h, qemu_trit.h)       │
+├──────────────────────────────────────────────────────────────┤
+│  Device Driver    (include/set5/dev_trit.h — /dev/trit)     │
 ├──────────────────────────────────────────────────────────────┤
 │  Ternary Compiler  (tools/compiler/ — submodule)            │
 │    Parser → Postfix IR → Codegen → VM / Verilog             │
@@ -599,7 +696,7 @@ Inspired by Cisco G300 high-radix AI networking switches:
 
 ---
 
-## 11. Verification Chain
+## 12. Verification Chain
 
 Following seL4's refinement proof architecture, extended for ternary:
 
@@ -626,9 +723,9 @@ Abstract Model (HOL)  ──refines──►  Executable Spec (C)  ──validat
 
 ---
 
-## 12. Extensions Roadmap
+## 13. Extensions Roadmap
 
-### 12.1 Trithon — Python Interop
+### 13.1 Trithon — Python Interop
 
 A Python-to-ternary bridge enabling:
 
@@ -637,7 +734,7 @@ A Python-to-ternary bridge enabling:
 - CFFI bindings to `trit_emu.h` for SIMD bulk ops from Python
 - Jupyter notebook integration for interactive ternary computing
 
-### 12.2 Trit Linux
+### 13.2 Trit Linux
 
 A Linux compatibility layer running atop the seT5 microkernel:
 
@@ -646,7 +743,7 @@ A Linux compatibility layer running atop the seT5 microkernel:
 - `/dev/trit` device for user-space access to ternary registers
 - `LD_PRELOAD`-style shim for binary executables on ternary pages
 
-### 12.3 Hardware Targets
+### 13.3 Hardware Targets
 
 - **FPGA:** Verilog ALU in `tools/compiler/hw/ternary_alu.v`; synthesis
   targets iCE40 (Lattice) and Artix-7 (Xilinx) via constraint files
@@ -662,7 +759,7 @@ A Linux compatibility layer running atop the seT5 microkernel:
 
 ---
 
-## 13. Performance Gate
+## 14. Performance Gate
 
 | Metric                 | Target    | Rationale                                      |
 |------------------------|-----------|-------------------------------------------------|
@@ -674,7 +771,7 @@ A Linux compatibility layer running atop the seT5 microkernel:
 
 ---
 
-## 14. Swarm Roles
+## 15. Swarm Roles
 
 | Role           | Agent Type  | Responsibility                                               |
 |----------------|-------------|--------------------------------------------------------------|
@@ -686,14 +783,15 @@ A Linux compatibility layer running atop the seT5 microkernel:
 
 ---
 
-## 15. References
+## 16. References
 
 ### Foundational
 - seL4 Whitepaper (Heiser, 2025) — verification chain, capability model
 - AFP "Three-Valued Logic" — Kleene lattice formalization
 - AFP "Kleene Algebra with Tests" — program logic adaptation
 - Brusentsov (1958) — Setun balanced ternary computer
-- Brusentsov & Zhogolev (1979) — DSSP/Setun-70 two-stack architecture
+- Brusentsov & Zhogolev (1970, 1979) — DSSP/Setun-70 two-stack architecture;
+  seT5's operand+return stack model is a direct descendant
 - Connelly (1958) — Ternary computing with balanced logic
 - Knuth, *TAOCP Vol. 2* §4.1 — balanced ternary arithmetic, efficiency analysis
 

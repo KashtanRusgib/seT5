@@ -55,6 +55,15 @@ test_sel4_ternary: $(TEST_SEL4_SRCS)
 clang_trit_demo: demo/clang_trit_demo.c src/multiradix.c
 	$(CC) $(CFLAGS) -o demo/clang_trit_demo $^
 
+# ---- TBE bootstrap shell ----
+KERNEL_SRCS = src/syscall.c src/memory.c src/ipc.c src/scheduler.c src/multiradix.c
+tbe: src/tbe_main.c $(KERNEL_SRCS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+# ---- TBE test suite ----
+test_tbe: tests/test_tbe.c $(KERNEL_SRCS)
+	$(CC) $(CFLAGS) -o $@ $^
+
 # ---- Benchmark ----
 bench_unroll: tests/bench_unroll.c src/multiradix.c
 	$(CC) -O2 $(CFLAGS) -o $@ $^
@@ -76,6 +85,9 @@ test: build-compiler
 	@echo "=== seL4 Ternary Moonshot test ==="
 	$(MAKE) test_sel4_ternary
 	./test_sel4_ternary
+	@echo "=== TBE tests ==="
+	$(MAKE) test_tbe
+	./test_tbe
 	@echo "=== All tests complete ==="
 
 # ---- Clean ----
@@ -84,7 +96,7 @@ clean:
 	$(MAKE) -C tools/compiler clean
 	rm -f set5_native set5.bytecode
 	rm -f demo/trit_demo demo/trit_type_demo demo/trit_emu_bench demo/clang_trit_demo
-	rm -f test_integration test_sel4_ternary bench_unroll
+	rm -f test_integration test_sel4_ternary test_tbe tbe bench_unroll
 
 .PHONY: all
 all: build-set5
