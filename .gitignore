@@ -53,3 +53,26 @@ dkms.conf
 
 # debug information files
 *.dwo
+# seT5 compiled demo binaries
+demo/trit_demo
+demo/trit_type_demo
+demo/trit_emu_bench
+
+# Sphinx build output
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Doxygen output
+doxygen/
+
+# IDE
+.vscode/
+*.swp
+*~set5_native
+test_integration
+test_sel4_ternary
+bench_unroll
+task.lock
+__pycache__/
+*.pyc

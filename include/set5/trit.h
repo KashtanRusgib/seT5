@@ -1,7 +1,22 @@
-/*
- * seT5 Ternary Type — Balanced Ternary with Kleene Logic
- * Values: -1 (false), 0 (unknown), +1 (true)
- * Encoding: 2 bits per trit — 0b10 = -1, 0b00 = 0, 0b01 = +1, 0b11 = fault
+/**
+ * @file trit.h
+ * @brief seT5 Ternary Type — Balanced Ternary with Kleene Logic
+ *
+ * Core trit type using scalar int8_t representation with values
+ * {-1 (False), 0 (Unknown), +1 (True)}.
+ *
+ * Provides:
+ *   - Kleene AND (meet), OR (join), NOT (involution)
+ *   - IMPLIES, EQUIV derived operations
+ *   - Predicates: trit_is_definite(), trit_to_bool_safe()
+ *   - 2-bit pack/unpack for SIMD (T=11 encoding)
+ *   - 32-trit packed AND/OR on uint64_t
+ *
+ * Encoding (2-bit packed):
+ *   00 = False (-1), 01 = Unknown (0), 11 = True (+1), 10 = Fault
+ *
+ * @see trit_emu.h for full SIMD emulation layer
+ * @see TritKleene.thy for formal proofs of these operations
  *
  * SPDX-License-Identifier: GPL-2.0
  */

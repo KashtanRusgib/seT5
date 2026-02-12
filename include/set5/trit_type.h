@@ -1,8 +1,16 @@
-/*
- * seT5 Ternary First-Class Type Support
+/**
+ * @file trit_type.h
+ * @brief seT5 Ternary First-Class Type Support
  *
- * When compiled with a seT5-patched Clang, 'trit' is a builtin.
- * On stock compilers, fall back to the int8_t typedef from trit.h.
+ * Provides compile-time detection of seT5 Clang (__SET5_TERNARY__)
+ * and a range-checked constructor trit_checked() with fault flag.
+ *
+ * On stock compilers, falls back to the int8_t typedef from trit.h.
+ * On seT5 Clang, `trit` is a builtin keyword and `__unknown` is
+ * a builtin constant.
+ *
+ * @see trit.h for the core type definition
+ * @see AFP "Three-Valued Logic" — domain restriction
  *
  * SPDX-License-Identifier: GPL-2.0
  */
