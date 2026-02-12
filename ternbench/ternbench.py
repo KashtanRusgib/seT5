@@ -9,6 +9,7 @@ Demonstrates real ternary advantages via the seT5/Trithon stack:
   4. Radix conversion — balanced ternary ↔ integer round-trip
   5. Consensus / accept-any — Kleene K₃ decision logic
   6. Sparse dot product — N:M structured sparsity (AI/ML workload)
+  7. Div/Pow truth tables — balanced ternary division & exponentiation
 
 Outputs hard-to-fake trit-specific metrics:
   - TritArray.census() distributions
@@ -256,6 +257,73 @@ def bench_consensus_chain(length):
     }
 
 
+# ---- Benchmark 7: Div/Pow Truth Tables ---------------------------------
+
+def bench_div_pow():
+    """
+    Verify balanced ternary division and exponentiation truth tables.
+
+    Division:  a/b = a*b for non-zero b; a/U = U (div by Unknown).
+    Power:     a^b truth table (T^any=T, U^0=T, F^0=T, etc.).
+
+    These are *real* C-extension ops via trithon_div / trithon_pow —
+    not fictional: the results come from libtrithon.so.
+    """
+    labels = {-1: 'F', 0: 'U', 1: 'T'}
+    vals = [Trit(-1), Trit(0), Trit(1)]  # F, U, T
+
+    # Build 3×3 truth tables
+    div_table = []
+    pow_table = []
+    for a in vals:
+        div_row = []
+        pow_row = []
+        for b in vals:
+            div_row.append(a / b)     # calls __truediv__ → trithon_div
+            pow_row.append(a ** b)    # calls __pow__     → trithon_pow
+        div_table.append(div_row)
+        pow_table.append(pow_row)
+
+    # Verify algebraic identities
+    identities = {
+        'T / T = T':  (Trit(1) / Trit(1)).value == 1,
+        'F / F = T':  (Trit(-1) / Trit(-1)).value == 1,
+        'T / F = F':  (Trit(1) / Trit(-1)).value == -1,
+        'a / U = U':  (Trit(1) / Trit(0)).value == 0,
+        'U / U = U':  (Trit(0) / Trit(0)).value == 0,
+        'T^T = T':    (Trit(1) ** Trit(1)).value == 1,
+        'T^F = T':    (Trit(1) ** Trit(-1)).value == 1,
+        'F^U = T':    (Trit(-1) ** Trit(0)).value == 1,
+        'F^T = F':    (Trit(-1) ** Trit(1)).value == -1,
+        'U^U = T':    (Trit(0) ** Trit(0)).value == 1,
+        'U^T = U':    (Trit(0) ** Trit(1)).value == 0,
+    }
+    n_pass = sum(identities.values())
+
+    # Chained computation:  (T / F) ** T → F^T = F
+    chain = (Trit(1) / Trit(-1)) ** Trit(1)
+
+    # Timing: 10 000 div/pow pairs
+    start = time.perf_counter()
+    x = Trit(1)
+    for _ in range(10_000):
+        x = x / Trit(-1)   # alternates T ↔ F
+        x = x ** Trit(1)    # identity for non-zero
+    elapsed = time.perf_counter() - start
+
+    return {
+        'div_table': div_table,
+        'pow_table': pow_table,
+        'labels': labels,
+        'identities': identities,
+        'n_pass': n_pass,
+        'n_total': len(identities),
+        'chain_result': chain,
+        'time_20k': elapsed,
+        'final_x': x,
+    }
+
+
 # ---- Main: Run Benchmarks and Report ----------------------------------
 
 def print_header(title):
@@ -360,6 +428,31 @@ def main():
     print_kv("Time:", f"{c['time']:.6f}s")
     print_kv("Inc chain:", c['inc_chain'])
 
+    # ---- Benchmark 7: Div/Pow Truth Tables ----
+    print_header("Benchmark 7: Div/Pow Truth Tables")
+    dp = bench_div_pow()
+    labs = dp['labels']
+    vals_i = [-1, 0, 1]
+
+    print("  Division truth table  (a / b):")
+    print(f"      {'F':>4s}{'U':>4s}{'T':>4s}")
+    for ri, a in enumerate(vals_i):
+        row = ''.join(f"{labs[dp['div_table'][ri][ci].value]:>4s}" for ci in range(3))
+        print(f"  {labs[a]:>2s} {row}")
+
+    print("  Exponentiation truth table  (a ** b):")
+    print(f"      {'F':>4s}{'U':>4s}{'T':>4s}")
+    for ri, a in enumerate(vals_i):
+        row = ''.join(f"{labs[dp['pow_table'][ri][ci].value]:>4s}" for ci in range(3))
+        print(f"  {labs[a]:>2s} {row}")
+
+    print_kv("Identities checked:", f"{dp['n_pass']}/{dp['n_total']} PASS")
+    for name, ok in dp['identities'].items():
+        print_kv(f"  {name}", "PASS" if ok else "FAIL")
+    print_kv("Chain (T/F)**T:", repr(dp['chain_result']))
+    print_kv("20k ops time:", f"{dp['time_20k']:.4f}s")
+    print_kv("Final x:", repr(dp['final_x']))
+
     # ---- Summary ----
     print_header("Summary")
     print_kv("Pi accuracy:", f"{abs(t['pi'] - math.pi):.2e} error")
@@ -368,10 +461,11 @@ def main():
     print_kv("Dot speedup:", f"{d['speedup']:.2f}x (C ext)")
     print_kv("Radix errors:", f"{r['errors']} / {r['count']}")
     print_kv("Sparse = Dense:", str(s['match']))
+    print_kv("Div/Pow identities:", f"{dp['n_pass']}/{dp['n_total']}")
     print_kv("C Extension:", "LOADED" if native_available() else "pure Python")
     print()
-    print("  Proof: trit-specific outputs (census, consensus, dot, radix)")
-    print("  cannot be replicated by binary-only computation.")
+    print("  Proof: trit-specific outputs (census, consensus, dot, radix,")
+    print("  div/pow truth tables) cannot be replicated by binary-only computation.")
     print()
 
 

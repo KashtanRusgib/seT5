@@ -86,6 +86,33 @@ int8_t trithon_mul(int8_t a, int8_t b) {
     return (int8_t)r;
 }
 
+/**
+ * Balanced ternary division: a / b.
+ * For trits {-1,0,+1}, division is a*b when b≠0 (since 1/1=1, 1/(-1)=-1).
+ * Division by Unknown (0) returns Unknown (safe default).
+ */
+int8_t trithon_div(int8_t a, int8_t b) {
+    if (b == 0) return 0;           /* div by Unknown → Unknown */
+    return (int8_t)((int)a * (int)b); /* a / {±1} = a * {±1} */
+}
+
+/**
+ * Balanced ternary exponentiation: base ^ exp.
+ * Truth table for trits:
+ *   T^T=T  T^U=T  T^F=T   (1 to any power is 1)
+ *   U^T=U  U^U=T  U^F=U   (0^0=1 by convention, 0^neg=undef→U)
+ *   F^T=F  F^U=T  F^F=F   ((-1)^1=-1, (-1)^0=1, (-1)^(-1)=-1)
+ */
+int8_t trithon_pow(int8_t base, int8_t exp) {
+    if (exp == 0) return 1;           /* anything^0 = T (by convention) */
+    if (base == 0) return 0;          /* U^{pos or neg} = U */
+    if (base == 1) return 1;          /* T^anything = T */
+    /* base == -1 */
+    if (exp == 1) return -1;          /* F^T = F */
+    /* exp == -1: F^F = (-1)^(-1) = 1/(-1) = -1 = F */
+    return -1;
+}
+
 /** Safe collapse to boolean: Unknown → 0 (false) */
 int trithon_to_bool(int8_t t) {
     return trit_to_bool_safe((trit)t);

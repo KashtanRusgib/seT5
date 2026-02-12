@@ -50,7 +50,7 @@ def _load_native():
                     'trithon_implies', 'trithon_equiv',
                     'trithon_inc', 'trithon_dec',
                     'trithon_consensus', 'trithon_accept_any',
-                    'trithon_mul'):
+                    'trithon_mul', 'trithon_div', 'trithon_pow'):
             getattr(lib, fn).argtypes = [ctypes.c_int8] * (2 if fn != 'trithon_not' and fn != 'trithon_inc' and fn != 'trithon_dec' else 1)
             getattr(lib, fn).restype = ctypes.c_int8
         # Array ops
@@ -134,6 +134,29 @@ class Trit(IntEnum):
         if _lib:
             return Trit(_lib.trithon_mul(self.value, Trit(other).value))
         return Trit(self.value * Trit(other).value)
+
+    # Balanced ternary division: a / b = a * b for non-zero b
+    def __truediv__(self, other: 'Trit') -> 'Trit':
+        o = Trit(other)
+        if _lib:
+            return Trit(_lib.trithon_div(self.value, o.value))
+        if o.value == 0:
+            return Trit(0)  # div by Unknown → Unknown
+        return Trit(self.value * o.value)
+
+    # Balanced ternary exponentiation
+    def __pow__(self, other: 'Trit') -> 'Trit':
+        o = Trit(other)
+        if _lib:
+            return Trit(_lib.trithon_pow(self.value, o.value))
+        if o.value == 0:
+            return Trit(1)   # anything^0 = T
+        if self.value == 0:
+            return Trit(0)   # U^anything = U
+        if self.value == 1:
+            return Trit(1)   # T^anything = T
+        # self.value == -1
+        return Trit(-1)      # F^{T or F} = F
 
     def __repr__(self) -> str:
         names = {-1: 'F', 0: 'U', 1: 'T'}
@@ -530,6 +553,21 @@ def _self_test():
         if noise.read(1) != 1:
             flipped += 1
     assert flipped > 0
+
+    # Division
+    assert Trit(1) / Trit(1) == Trit.TRUE      # T/T = T
+    assert Trit(1) / Trit(-1) == Trit.FALSE    # T/F = F
+    assert Trit(-1) / Trit(-1) == Trit.TRUE    # F/F = T
+    assert Trit(0) / Trit(1) == Trit.UNKNOWN   # U/T = U
+    assert Trit(1) / Trit(0) == Trit.UNKNOWN   # T/U = U (div by zero)
+
+    # Exponentiation
+    assert Trit(1) ** Trit(1) == Trit.TRUE     # T^T = T
+    assert Trit(1) ** Trit(0) == Trit.TRUE     # T^U = T
+    assert Trit(-1) ** Trit(1) == Trit.FALSE   # F^T = F
+    assert Trit(-1) ** Trit(0) == Trit.TRUE    # F^U = T
+    assert Trit(0) ** Trit(1) == Trit.UNKNOWN  # U^T = U
+    assert Trit(0) ** Trit(0) == Trit.TRUE     # U^U = T (0^0=1)
 
     # C extension specific tests (only if loaded)
     if native_available():
