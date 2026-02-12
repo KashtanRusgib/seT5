@@ -344,7 +344,7 @@ def main():
     print(f"  Trithon C Extension: {'LOADED' if native_available() else 'pure Python'}")
     print("=" * 64)
 
-    terms = 5000
+    terms = 6500
     dot_size = 32
     conv_count = 1000
     consensus_len = 100
