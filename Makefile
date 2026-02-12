@@ -75,6 +75,24 @@ trithon/libtrithon.so: trithon/trithon_ext.c src/multiradix.c
 test-trithon: build-trithon-ext
 	python3 trithon/trithon.py
 
+# ---- Trit Linux arch port ----
+TRIT_LINUX_ARCH = trit_linux/arch/ternary
+TRIT_LINUX_SRCS = $(TRIT_LINUX_ARCH)/boot/init.c \
+                  $(TRIT_LINUX_ARCH)/kernel/setup.c \
+                  $(TRIT_LINUX_ARCH)/mm/trit_mm.c \
+                  $(TRIT_LINUX_ARCH)/net/multiradix_net.c
+TRIT_LINUX_INC  = -I$(TRIT_LINUX_ARCH)/include
+
+.PHONY: build-trit-linux
+build-trit-linux: test_trit_linux
+
+test_trit_linux: tests/test_trit_linux.c $(TRIT_LINUX_SRCS) $(KERNEL_SRCS)
+	$(CC) $(CFLAGS) $(TRIT_LINUX_INC) -o $@ $^
+
+.PHONY: test-trit-linux
+test-trit-linux: test_trit_linux
+	./test_trit_linux
+
 # ---- Benchmark ----
 bench_unroll: tests/bench_unroll.c src/multiradix.c
 	$(CC) -O2 $(CFLAGS) -o $@ $^
@@ -101,6 +119,8 @@ test: build-compiler
 	./test_tbe
 	@echo "=== Trithon self-test ==="
 	$(MAKE) test-trithon
+	@echo "=== Trit Linux arch tests ==="
+	$(MAKE) test-trit-linux
 	@echo "=== All tests complete ==="
 
 # ---- Clean ----
@@ -110,6 +130,7 @@ clean:
 	rm -f set5_native set5.bytecode
 	rm -f demo/trit_demo demo/trit_type_demo demo/trit_emu_bench demo/clang_trit_demo
 	rm -f test_integration test_sel4_ternary test_tbe tbe bench_unroll
+	rm -f test_trit_linux
 	rm -f trithon/libtrithon.so
 
 .PHONY: all

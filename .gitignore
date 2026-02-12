@@ -83,3 +83,4 @@ test_integration
 test_sel4_ternary
 bench_unroll
 trithon/libtrithon.so
+test_trit_linux

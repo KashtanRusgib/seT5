@@ -1,0 +1,32 @@
+# Trit Linux — Minimal Default Configuration
+#
+# No GUI, no filesystems beyond initramfs.
+# Focus: kernel + basic userland + ternary hardware.
+#
+# SPDX-License-Identifier: GPL-2.0
+
+# Architecture
+CONFIG_TERNARY=y
+CONFIG_TRYTE_PAGES=y
+CONFIG_TRIT_PAGE_TABLE=y
+CONFIG_TRIT_SCHEDULER=y
+CONFIG_TRIT_IPC=y
+CONFIG_TRIT_SIMD=y
+CONFIG_TRIT_CAPABILITIES=y
+CONFIG_TRIT_EMU_FALLBACK=y
+CONFIG_MULTI_RADIX_NET=y
+
+# Disable binary architectures
+# CONFIG_X86 is not set
+# CONFIG_ARM is not set
+
+# Memory
+CONFIG_PAGE_SIZE_729=y
+CONFIG_MAX_PAGES=256
+
+# Scheduler
+CONFIG_TRIT_PRIO_LEVELS=3
+
+# Debug
+CONFIG_TRIT_SELFTEST=y
+CONFIG_TRIT_BOOT_LOG=y
