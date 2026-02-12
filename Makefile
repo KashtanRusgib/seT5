@@ -64,6 +64,17 @@ tbe: src/tbe_main.c $(KERNEL_SRCS)
 test_tbe: tests/test_tbe.c $(KERNEL_SRCS)
 	$(CC) $(CFLAGS) -o $@ $^
 
+# ---- Trithon C extension (shared library for Python ctypes) ----
+.PHONY: build-trithon-ext
+build-trithon-ext: trithon/libtrithon.so
+
+trithon/libtrithon.so: trithon/trithon_ext.c src/multiradix.c
+	$(CC) -shared -fPIC -O2 $(CFLAGS) -o $@ $^
+
+.PHONY: test-trithon
+test-trithon: build-trithon-ext
+	python3 trithon/trithon.py
+
 # ---- Benchmark ----
 bench_unroll: tests/bench_unroll.c src/multiradix.c
 	$(CC) -O2 $(CFLAGS) -o $@ $^
@@ -88,6 +99,8 @@ test: build-compiler
 	@echo "=== TBE tests ==="
 	$(MAKE) test_tbe
 	./test_tbe
+	@echo "=== Trithon self-test ==="
+	$(MAKE) test-trithon
 	@echo "=== All tests complete ==="
 
 # ---- Clean ----
@@ -97,6 +110,7 @@ clean:
 	rm -f set5_native set5.bytecode
 	rm -f demo/trit_demo demo/trit_type_demo demo/trit_emu_bench demo/clang_trit_demo
 	rm -f test_integration test_sel4_ternary test_tbe tbe bench_unroll
+	rm -f trithon/libtrithon.so
 
 .PHONY: all
 all: build-set5

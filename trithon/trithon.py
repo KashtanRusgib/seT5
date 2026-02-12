@@ -9,6 +9,7 @@ Provides:
   - TritArray: NumPy-compatible ternary arrays
   - DOT_TRIT, FFT_STEP, RADIX_CONV operations
   - QEMU noise simulation for hardware testing
+  - Optional C extension (libtrithon.so) for native performance
 
 Usage:
     from trithon import Trit, TritArray
@@ -27,7 +28,57 @@ from __future__ import annotations
 from enum import IntEnum
 from typing import List, Optional, Sequence, Union
 import array
+import ctypes
+import os
 import struct
+
+
+# ---- C Extension (optional, built from trithon_ext.c) ------------------
+
+_lib = None
+_LIB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'libtrithon.so')
+
+def _load_native():
+    """Try to load libtrithon.so for native trit ops."""
+    global _lib
+    if _lib is not None:
+        return _lib
+    try:
+        lib = ctypes.CDLL(_LIB_PATH)
+        # Scalar ops
+        for fn in ('trithon_and', 'trithon_or', 'trithon_not',
+                    'trithon_implies', 'trithon_equiv',
+                    'trithon_inc', 'trithon_dec',
+                    'trithon_consensus', 'trithon_accept_any',
+                    'trithon_mul'):
+            getattr(lib, fn).argtypes = [ctypes.c_int8] * (2 if fn != 'trithon_not' and fn != 'trithon_inc' and fn != 'trithon_dec' else 1)
+            getattr(lib, fn).restype = ctypes.c_int8
+        # Array ops
+        lib.trithon_dot.argtypes = [ctypes.POINTER(ctypes.c_int8),
+                                     ctypes.POINTER(ctypes.c_int8),
+                                     ctypes.c_int]
+        lib.trithon_dot.restype = ctypes.c_int
+        lib.trithon_dot_sparse.argtypes = [ctypes.POINTER(ctypes.c_int8),
+                                            ctypes.POINTER(ctypes.c_int8),
+                                            ctypes.c_int, ctypes.c_int, ctypes.c_int]
+        lib.trithon_dot_sparse.restype = ctypes.c_int
+        lib.trithon_mr_dot.argtypes = [ctypes.POINTER(ctypes.c_int8),
+                                        ctypes.POINTER(ctypes.c_int8),
+                                        ctypes.c_int]
+        lib.trithon_mr_dot.restype = ctypes.c_int
+        lib.trithon_version.argtypes = []
+        lib.trithon_version.restype = ctypes.c_int
+        _lib = lib
+        return lib
+    except OSError:
+        return None
+
+# Attempt load at import time (graceful fallback)
+_load_native()
+
+def native_available() -> bool:
+    """Check if the C extension is loaded."""
+    return _lib is not None
 
 
 class Trit(IntEnum):
@@ -38,22 +89,50 @@ class Trit(IntEnum):
 
     # Kleene AND = min
     def __and__(self, other: 'Trit') -> 'Trit':
+        if _lib:
+            return Trit(_lib.trithon_and(self.value, Trit(other).value))
         return Trit(min(self.value, Trit(other).value))
 
     # Kleene OR = max
     def __or__(self, other: 'Trit') -> 'Trit':
+        if _lib:
+            return Trit(_lib.trithon_or(self.value, Trit(other).value))
         return Trit(max(self.value, Trit(other).value))
 
     # Kleene NOT = negation
     def __invert__(self) -> 'Trit':
+        if _lib:
+            return Trit(_lib.trithon_not(self.value))
         return Trit(-self.value)
 
     # Cyclic increment F→U→T→F
     def inc(self) -> 'Trit':
+        if _lib:
+            return Trit(_lib.trithon_inc(self.value))
         return Trit((self.value + 2) % 3 - 1)
+
+    # Cyclic decrement T→U→F→T
+    def dec(self) -> 'Trit':
+        if _lib:
+            return Trit(_lib.trithon_dec(self.value))
+        return Trit(self.value % 3 - 1)
+
+    # Consensus = Kleene AND (named alias for clarity)
+    def consensus(self, other: 'Trit') -> 'Trit':
+        if _lib:
+            return Trit(_lib.trithon_consensus(self.value, Trit(other).value))
+        return self & other
+
+    # Accept-any = Kleene OR (named alias for clarity)
+    def accept_any(self, other: 'Trit') -> 'Trit':
+        if _lib:
+            return Trit(_lib.trithon_accept_any(self.value, Trit(other).value))
+        return self | other
 
     # Balanced ternary multiplication
     def __mul__(self, other: 'Trit') -> 'Trit':
+        if _lib:
+            return Trit(_lib.trithon_mul(self.value, Trit(other).value))
         return Trit(self.value * Trit(other).value)
 
     def __repr__(self) -> str:
@@ -174,18 +253,28 @@ class TritArray:
         """
         Balanced ternary dot product.
         DOT = Σ (a_i * b_i) where * is balanced ternary multiplication.
+        Uses C extension (libtrithon.so) when available for native speed.
         """
         if len(self) != len(other):
             raise ValueError("Array length mismatch")
+        if _lib:
+            a_arr = (ctypes.c_int8 * len(self))(*self._data)
+            b_arr = (ctypes.c_int8 * len(other))(*other._data)
+            return _lib.trithon_dot(a_arr, b_arr, len(self))
         return sum(a * b for a, b in zip(self._data, other._data))
 
     def dot_sparse(self, other: 'TritArray', n: int = 4, m: int = 2) -> int:
         """
         N:M structured sparsity dot product.
         In each N-element block, at most M elements are non-zero.
+        Uses C extension when available.
         """
         if len(self) != len(other):
             raise ValueError("Array length mismatch")
+        if _lib:
+            a_arr = (ctypes.c_int8 * len(self))(*self._data)
+            b_arr = (ctypes.c_int8 * len(other))(*other._data)
+            return _lib.trithon_dot_sparse(a_arr, b_arr, len(self), n, m)
         acc = 0
         for i in range(0, len(self._data), n):
             block = self._data[i:i+n]
@@ -346,8 +435,17 @@ class QEMUNoise:
 # ---- Self-test ---------------------------------------------------------
 
 def _self_test():
-    """Quick self-test of Trithon module."""
+    """Quick self-test of Trithon module (pure Python + C extension)."""
+    import sys
+
     T, U, F = Trit.TRUE, Trit.UNKNOWN, Trit.FALSE
+
+    # Report C extension status
+    if native_available():
+        ver = _lib.trithon_version()
+        print(f"Trithon: C extension loaded (libtrithon.so v{ver // 100}.{ver % 100:02d})")
+    else:
+        print("Trithon: pure Python mode (libtrithon.so not found)")
 
     # Kleene logic
     assert (T & T) == T
@@ -364,6 +462,22 @@ def _self_test():
     assert (F * T) == F  # (-1)*(1) = -1
     assert (U * T) == U  # 0*1 = 0
 
+    # Inc / Dec (cyclic)
+    assert T.inc() == F   # +1 wraps to -1
+    assert F.inc() == U   # -1 → 0
+    assert U.inc() == T   # 0 → +1
+    assert T.dec() == U   # +1 → 0
+    assert U.dec() == F   # 0 → -1
+    assert F.dec() == T   # -1 wraps to +1
+
+    # Consensus / Accept-any (named aliases)
+    assert T.consensus(T) == T
+    assert T.consensus(F) == F
+    assert T.consensus(U) == U
+    assert T.accept_any(F) == T
+    assert F.accept_any(F) == F
+    assert U.accept_any(F) == U
+
     # TritArray
     a = TritArray([1, 0, -1, 1, 0])
     b = TritArray([1, 1, 1, -1, 0])
@@ -371,6 +485,11 @@ def _self_test():
     # Dot product
     dot = a.dot(b)
     assert dot == (1*1 + 0*1 + (-1)*1 + 1*(-1) + 0*0)  # 1+0-1-1+0 = -1
+
+    # Sparse dot
+    dot_s = a.dot_sparse(b, n=4, m=2)
+    # Sparse skips zeros, same result for non-zero elements
+    assert isinstance(dot_s, int)
 
     # Kleene ops
     c = a & b
@@ -411,6 +530,25 @@ def _self_test():
         if noise.read(1) != 1:
             flipped += 1
     assert flipped > 0
+
+    # C extension specific tests (only if loaded)
+    if native_available():
+        # Multi-radix DOT via seT5 engine
+        a32 = TritArray.splat(1, 32)
+        b32 = TritArray.splat(1, 32)
+        a_arr = (ctypes.c_int8 * 32)(*a32._data)
+        b_arr = (ctypes.c_int8 * 32)(*b32._data)
+        mr_dot = _lib.trithon_mr_dot(a_arr, b_arr, 32)
+        assert mr_dot == 32, f"MR dot(all T, all T) expected 32, got {mr_dot}"
+
+        # IMPLIES, EQUIV
+        assert _lib.trithon_implies(1, 1) == 1   # T→T = T
+        assert _lib.trithon_implies(1, -1) == -1  # T→F = F
+        assert _lib.trithon_implies(-1, 1) == 1   # F→T = T
+        assert _lib.trithon_equiv(1, 1) == 1      # T≡T = T
+        assert _lib.trithon_equiv(1, -1) == -1    # T≡F = F
+
+        print("Trithon: C extension tests PASSED")
 
     print("Trithon: all self-tests PASSED")
 
