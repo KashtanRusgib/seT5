@@ -97,6 +97,11 @@ test-trit-linux: test_trit_linux
 bench_unroll: tests/bench_unroll.c src/multiradix.c
 	$(CC) -O2 $(CFLAGS) -o $@ $^
 
+# ---- TernBench demo ----
+.PHONY: ternbench
+ternbench: build-trithon-ext
+	python3 ternbench/ternbench.py
+
 # ---- Test ----
 .PHONY: test
 test: build-compiler
