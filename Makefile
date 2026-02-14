@@ -163,10 +163,28 @@ ternbench: build-trithon-ext
 
 # ---- Test ----
 
-# Internal target: runs every test suite in order (called by 'test' wrapper).
-# Output is captured by the 'test' target for grand summary generation.
+# ── All seT5 test binaries (used for force-clean before rebuild) ──
+SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
+                 test_memory_safety test_scheduler_concurrency test_tbe \
+                 test_huawei_cn119652311a test_samsung_us11170290b2 \
+                 test_samsung_cn105745888a test_functional_utility \
+                 test_friday_updates test_trit_linux test_trit_enhancements \
+                 trithon/libtrithon.so
+
+# Internal target: force-rebuilds and runs EVERY test binary from source.
+# No stale binary ever executes — each is deleted and recompiled before running.
+# Each suite's real-time output streams to stdout and is captured for summary.
 .PHONY: _run-test-suites
 _run-test-suites:
+	@echo "╔══════════════════════════════════════════════════════════════╗"
+	@echo "║  seT5 MASTER TEST RUN — LIVE EXECUTION                     ║"
+	@echo "║  Timestamp: $$(date -u '+%Y-%m-%d %H:%M:%S UTC')                       ║"
+	@echo "║  All binaries force-rebuilt from source before execution.   ║"
+	@echo "╚══════════════════════════════════════════════════════════════╝"
+	@echo ""
+	@echo "── Cleaning all test binaries ──"
+	rm -f $(SET5_TEST_BINS)
+	@echo ""
 	@echo "=== Compiler tests ==="
 	$(MAKE) -C tools/compiler $(addprefix run-,test_trit test_parser test_codegen test_vm test_typechecker test_linker test_selfhost test_arrays) 2>/dev/null || \
 	  (cd tools/compiler && for t in test_trit test_parser test_codegen test_vm test_typechecker test_linker test_selfhost test_arrays test_hardware test_basic; do \
@@ -212,16 +230,29 @@ _run-test-suites:
 	@echo "=== Trit Linux Enhancement tests (6 suites) ==="
 	$(MAKE) test-trit-enhancements
 
-# Master test target: builds, runs all suites, captures output, prints grand summary.
-# All individual suite output streams in real-time via tee.  After completion,
-# tools/test_grand_summary.sh parses the captured log and prints an aggregate
-# index of every suite's pass/fail counts plus the grand total.
+# ──────────────────────────────────────────────────────────────────────
+# Master test target: the ONE command that runs ALL tests.
+#
+#   make test
+#
+# Guarantees:
+#   1. Every test binary is DELETED then RECOMPILED from source — no
+#      stale cached binary ever executes.
+#   2. Every test binary RUNS live and its output streams in real-time.
+#   3. The full output is captured to a temp log for post-run parsing.
+#   4. tools/test_grand_summary.sh parses the log and prints a formatted
+#      index of EVERY suite with pass/fail counts, then a GRAND TOTAL.
+#   5. If any suite is absent from the log, the summary flags it.
+#   6. Exit code is non-zero if ANY test fails.
+# ──────────────────────────────────────────────────────────────────────
 .PHONY: test
 test: build-compiler
 	@LOGF=$$(mktemp /tmp/set5_test_XXXXXX.log); \
-	$(MAKE) --no-print-directory _run-test-suites 2>&1 | tee "$$LOGF"; \
+	RC=0; \
+	$(MAKE) --no-print-directory _run-test-suites 2>&1 | tee "$$LOGF" || RC=$$?; \
 	bash tools/test_grand_summary.sh "$$LOGF"; \
-	rm -f "$$LOGF"
+	rm -f "$$LOGF"; \
+	exit $$RC
 
 # ---- Clean ----
 .PHONY: clean
