@@ -1523,11 +1523,11 @@ int main(void) {
     test_security_auditing();
 
     /* ================================================================== */
-    /*  Master Summary Index                                               */
+    /*  Enhancement Suite Summary (6 sub-suites)                           */
     /* ================================================================== */
 
     printf("\n================================================================\n");
-    printf("  MASTER TEST SUITE SUMMARY\n");
+    printf("  TRIT LINUX ENHANCEMENT SUITE SUMMARY\n");
     printf("================================================================\n");
     printf("  Total assertions:  %d\n", tests_passed + tests_failed);
     printf("  Passed:            %d\n", tests_passed);

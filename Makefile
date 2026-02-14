@@ -162,8 +162,11 @@ ternbench: build-trithon-ext
 	python3 ternbench/ternbench.py
 
 # ---- Test ----
-.PHONY: test
-test: build-compiler
+
+# Internal target: runs every test suite in order (called by 'test' wrapper).
+# Output is captured by the 'test' target for grand summary generation.
+.PHONY: _run-test-suites
+_run-test-suites:
 	@echo "=== Compiler tests ==="
 	$(MAKE) -C tools/compiler $(addprefix run-,test_trit test_parser test_codegen test_vm test_typechecker test_linker test_selfhost test_arrays) 2>/dev/null || \
 	  (cd tools/compiler && for t in test_trit test_parser test_codegen test_vm test_typechecker test_linker test_selfhost test_arrays test_hardware test_basic; do \
@@ -208,7 +211,17 @@ test: build-compiler
 	$(MAKE) test-trit-linux
 	@echo "=== Trit Linux Enhancement tests (6 suites) ==="
 	$(MAKE) test-trit-enhancements
-	@echo "=== All tests complete ==="
+
+# Master test target: builds, runs all suites, captures output, prints grand summary.
+# All individual suite output streams in real-time via tee.  After completion,
+# tools/test_grand_summary.sh parses the captured log and prints an aggregate
+# index of every suite's pass/fail counts plus the grand total.
+.PHONY: test
+test: build-compiler
+	@LOGF=$$(mktemp /tmp/set5_test_XXXXXX.log); \
+	$(MAKE) --no-print-directory _run-test-suites 2>&1 | tee "$$LOGF"; \
+	bash tools/test_grand_summary.sh "$$LOGF"; \
+	rm -f "$$LOGF"
 
 # ---- Clean ----
 .PHONY: clean
