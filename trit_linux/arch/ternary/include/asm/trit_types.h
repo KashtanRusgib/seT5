@@ -125,10 +125,32 @@ typedef trit trit_prio_t;
 #define TRIT_FEAT_RADIXCONV (1 << 4)   /**< Binary ↔ ternary conversion */
 #define TRIT_FEAT_MEMRISTIVE (1 << 5)  /**< Memristive memory backing */
 
+/* ---- Functional utility module features (INCREASE_FUNCTIONAL_UTILITY) - */
+#define TRIT_FEAT_TWQ       (1 << 6)   /**< Ternary Weight Quantizer */
+#define TRIT_FEAT_DLFET     (1 << 7)   /**< DLFET-RM gate simulator */
+#define TRIT_FEAT_SRBC      (1 << 8)   /**< Self-Referential Bias Calibration */
+#define TRIT_FEAT_TCRYPTO   (1 << 9)   /**< Ternary cryptographic hardening */
+#define TRIT_FEAT_PDELAY    (1 << 10)  /**< Propagation delay model */
+#define TRIT_FEAT_TTL       (1 << 11)  /**< Ternary Temporal Logic */
+#define TRIT_FEAT_PAM3      (1 << 12)  /**< PAM-3/4 interconnect */
+#define TRIT_FEAT_TFA       (1 << 13)  /**< Ternary Full Adder (HW) */
+#define TRIT_FEAT_WALLACE   (1 << 14)  /**< Wallace Tree Multiplier (HW) */
+
+/* ---- Friday Updates (STT-MRAM, T-IPC, TFS) --------------------------- */
+#define TRIT_FEAT_MRAM      (1 << 15)  /**< STT-MRAM Biaxial MTJ memory */
+#define TRIT_FEAT_TIPC      (1 << 16)  /**< Ternary-Native IPC (Huffman) */
+#define TRIT_FEAT_TFS       (1 << 17)  /**< Ternary-Native File System */
+
 /** All features available in emulation */
 #define TRIT_FEAT_ALL       (TRIT_FEAT_SIMD | TRIT_FEAT_FFT | \
                              TRIT_FEAT_DOTPROD | TRIT_FEAT_SPARSE | \
-                             TRIT_FEAT_RADIXCONV)
+                             TRIT_FEAT_RADIXCONV | TRIT_FEAT_TWQ | \
+                             TRIT_FEAT_DLFET | TRIT_FEAT_SRBC | \
+                             TRIT_FEAT_TCRYPTO | TRIT_FEAT_PDELAY | \
+                             TRIT_FEAT_TTL | TRIT_FEAT_PAM3 | \
+                             TRIT_FEAT_TFA | TRIT_FEAT_WALLACE | \
+                             TRIT_FEAT_MRAM | TRIT_FEAT_TIPC | \
+                             TRIT_FEAT_TFS)
 
 #ifdef __cplusplus
 }

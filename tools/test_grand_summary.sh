@@ -194,6 +194,19 @@ else
 fi
 
 # ══════════════════════════════════════════════════════════════════════
+# 10b. TSMC TMD / INTEL PAM-3 / HYNIX TCAM  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(sed -n '/=== TSMC TMD.*Intel PAM-3.*Hynix TCAM/,$p' "$LOG" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "TSMC TMD/Intel PAM3/Hynix TCAM" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - TSMC TMD/Intel PAM3/Hynix TCAM\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
 # 11. FUNCTIONAL UTILITY  (Format F)
 #     Pattern:   Passed: N  /  Failed: N  (multi-line)
 # ══════════════════════════════════════════════════════════════════════

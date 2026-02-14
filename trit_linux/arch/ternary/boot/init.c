@@ -23,6 +23,12 @@
 #include <stdio.h>
 #include <string.h>
 
+/* ---- Forward declarations from kernel/trit_drivers.c ------------------ */
+extern void trit_drivers_init(void);
+extern int  trit_drivers_load_all(void);
+extern void trit_drivers_report(void);
+extern int  trit_drivers_count(void);
+
 /* ---- Boot state ------------------------------------------------------- */
 
 /** Global kernel state — initialized at boot */
@@ -145,6 +151,14 @@ int trit_boot(int num_pages) {
     boot_pages_ok = (trit_pages_boot(num_pages) == 0);
     printf("  [%s] Page manager: tryte-aligned (%d-trit pages)\n",
            boot_pages_ok ? "OK" : "FAIL", TRYTE_PAGE_SIZE);
+
+    /* Step 7: Functional utility module drivers */
+    trit_drivers_init();
+    int drv_loaded = trit_drivers_load_all();
+    printf("  [%s] Module drivers: %d/%d loaded\n",
+           (drv_loaded == trit_drivers_count()) ? "OK" : "WARN",
+           drv_loaded, trit_drivers_count());
+    trit_drivers_report();
 
     /* Report */
     int ok = boot_mem_ok && boot_sched_ok && boot_mr_ok &&

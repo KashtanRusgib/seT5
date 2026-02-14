@@ -94,6 +94,14 @@ SAMSUNG_TSEQ_SRCS = src/samsung_tseq.c src/samsung_tseq_modem.c
 test_samsung_cn105745888a: tests/test_samsung_cn105745888a.c $(SAMSUNG_TSEQ_SRCS)
 	$(CC) $(CFLAGS) -o $@ $^ -lm
 
+# ---- TSMC TMD / Intel PAM-3 / Hynix TCAM patent test suite ----
+TSMC_TMD_SRCS       = src/tsmc_tmd.c
+INTEL_PAM3D_SRCS    = src/intel_pam3_decoder.c
+HYNIX_TCAM_SRCS     = src/hynix_tcam.c
+NEW_PATENT_SRCS     = $(TSMC_TMD_SRCS) $(INTEL_PAM3D_SRCS) $(HYNIX_TCAM_SRCS)
+test_tsmc_tmd_intel_pam3_hynix_tcam: tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c $(NEW_PATENT_SRCS)
+	$(CC) $(CFLAGS) -o $@ $^
+
 # ---- Functional utility test suite (INCREASE_FUNCTIONAL_UTILITY.md) ----
 test_functional_utility: tests/test_functional_utility.c $(FUNC_UTIL_SRCS)
 	$(CC) $(CFLAGS) -o $@ $^
@@ -169,6 +177,7 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_huawei_cn119652311a test_samsung_us11170290b2 \
                  test_samsung_cn105745888a test_functional_utility \
                  test_friday_updates test_trit_linux test_trit_enhancements \
+                 test_tsmc_tmd_intel_pam3_hynix_tcam \
                  trithon/libtrithon.so
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
@@ -229,6 +238,9 @@ _run-test-suites:
 	$(MAKE) test-trit-linux
 	@echo "=== Trit Linux Enhancement tests (6 suites) ==="
 	$(MAKE) test-trit-enhancements
+	@echo "=== TSMC TMD / Intel PAM-3 / Hynix TCAM patent tests ==="
+	$(MAKE) test_tsmc_tmd_intel_pam3_hynix_tcam
+	./test_tsmc_tmd_intel_pam3_hynix_tcam
 
 # ──────────────────────────────────────────────────────────────────────
 # Master test target: the ONE command that runs ALL tests.
@@ -267,6 +279,7 @@ clean:
 	rm -f test_functional_utility
 	rm -f test_friday_updates
 	rm -f test_trit_enhancements
+	rm -f test_tsmc_tmd_intel_pam3_hynix_tcam
 	rm -f trithon/libtrithon.so
 
 .PHONY: all

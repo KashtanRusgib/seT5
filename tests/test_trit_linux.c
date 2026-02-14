@@ -849,7 +849,9 @@ int main(void) {
         ipc_msg_build(&msg, w, 1, tid, tid);
         ipc_send(&ks->ipc, ep, &msg, tid);
         ipc_msg_t recv;
-        ipc_recv(&ks->ipc, ep, &recv, tid);
+        int r = ipc_recv(&ks->ipc, ep, &recv, tid);
+        ASSERT(r == 0, "ipc_recv succeeds");
+        ASSERT(recv.words[0] == TRIT_TRUE, "received msg[0] = TRUE");
         ASSERT(tid >= 0, "sched+ipc roundtrip");
     }
 

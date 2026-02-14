@@ -524,13 +524,18 @@ static void test_wcet_violation(void) {
 
 /* -- Section 7: FFT Step -- */
 
-static void test_fft_step_does_not_crash(void) {
-    TEST(fft_step_does_not_crash);
+static void test_fft_step_output_verified(void) {
+    TEST(fft_step_output_verified);
     multiradix_state_t mr;
     multiradix_init(&mr);
     for (int i = 0; i < 32; i++)
         trit2_reg32_set(&mr.regs[0], i, TRIT2_TRUE);
-    fft_step(&mr, 0, 1, 1);
+    int groups = fft_step(&mr, 0, 1, 1);
+    ASSERT_EQ(groups, 10, "fft_step returns 10 butterfly groups");
+    /* Verify output register was written (not all-Unknown) */
+    int first = trit2_decode(trit2_reg32_get(&mr.regs[1], 0));
+    /* Butterfly on (T,T,T): o0 = T+T+T mod3 = 0, so first output = 0 */
+    ASSERT_EQ(first, 0, "butterfly(T,T,T) slot 0 = 0");
     PASS();
 }
 
@@ -619,7 +624,7 @@ int main(void) {
     test_wcet_violation();
 
     printf("\nSection 7: FFT\n");
-    test_fft_step_does_not_crash();
+    test_fft_step_output_verified();
 
     printf("\nSection 8: DOT Product\n");
     test_dot_all_T();

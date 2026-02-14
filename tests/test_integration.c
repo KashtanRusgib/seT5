@@ -152,7 +152,7 @@ static void test_producer_consumer(void) {
 
     int dp = dot_trit(&mr_state, 0, 1);
     /* T*T + U*T + F*T + T*T = +1 + 0 + (-1) + 1 = +1 */
-    CHECK("DOT_TRIT on received data computes", dp != 0 || dp == 0);
+    CHECK("DOT_TRIT on received data = +1", dp == 1);
 
     /* RADIX_CONV: encode the dot product result */
     int nz = radix_conv_to_ternary(&mr_state, 2, dp);
@@ -193,7 +193,7 @@ static void test_producer_consumer(void) {
     printf("\n--- Phase 8: Clean State Verification ---\n");
     int total, free_pg, alloc;
     mem_stats(&ks.mem, &total, &free_pg, &alloc);
-    CHECK("all pages free after teardown", free_pg == total - alloc);
+    CHECK("all pages freed after teardown", alloc == 0);
 
     int total_t, ready_t, blocked_t, ctx;
     sched_stats(&ks.sched, &total_t, &ready_t, &blocked_t, &ctx);

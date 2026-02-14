@@ -21,6 +21,17 @@
 #include "set5/trit_emu.h"
 #include "set5/trit_cast.h"
 #include "set5/multiradix.h"
+#include "set5/ternary_weight_quantizer.h"
+#include "set5/dlfet_sim.h"
+#include "set5/radix_transcode.h"
+#include "set5/srbc.h"
+#include "set5/trit_crypto.h"
+#include "set5/prop_delay.h"
+#include "set5/ternary_temporal.h"
+#include "set5/pam3_transcode.h"
+#include "set5/stt_mram.h"
+#include "set5/tipc.h"
+#include "set5/tfs.h"
 
 /* ===================================================================== */
 /*  1.  Scalar Trit Operations                                           */
@@ -396,4 +407,308 @@ int trithon_version(void) {
 /** Return number of trits per SIMD word */
 int trithon_simd_width(void) {
     return 32;  /* 64 bits / 2 bits per trit */
+}
+
+/* ===================================================================== */
+/*  6.  Functional Utility Module Wrappers                               */
+/* ===================================================================== */
+
+/* ---- TWQ (Ternary Weight Quantizer) ---- */
+
+/**
+ * Quantize integer weights (×1000) to ternary {-1,0,+1}.
+ * @param out      Output trit array.
+ * @param weights  Input weights (×1000 fixed-point).
+ * @param count    Number of weights.
+ * @return         0 on success.
+ */
+int trithon_twq_quantize(int8_t *out, const int32_t *weights, int count) {
+    if (count <= 0 || count > TWQ_MAX_WEIGHTS) return -1;
+    twq_config_t cfg;
+    twq_config_init(&cfg);
+    twq_layer_t layer;
+    int rc = twq_quantize(&layer, weights, count, &cfg);
+    if (rc != 0) return rc;
+    for (int i = 0; i < count; i++) {
+        out[i] = (int8_t)layer.weights[i];
+    }
+    return 0;
+}
+
+/** Ternary dot product */
+int trithon_twq_dot(const int8_t *a, const int8_t *b, int len) {
+    return twq_ternary_dot((const trit *)a, (const trit *)b, len);
+}
+
+/** Energy ratio estimate (×1000 vs FP16) */
+int trithon_twq_energy_ratio(const int8_t *weights, int count) {
+    twq_config_t cfg;
+    twq_config_init(&cfg);
+    twq_layer_t layer;
+    if (twq_quantize(&layer, NULL, 0, &cfg) != 0) {
+        /* Build layer manually from pre-quantized trits */
+        layer.count = count > TWQ_MAX_WEIGHTS ? TWQ_MAX_WEIGHTS : count;
+        for (int i = 0; i < layer.count; i++)
+            layer.weights[i] = (trit)weights[i];
+        layer.stats.zero_count = 0;
+        layer.stats.total_weights = layer.count;
+        for (int i = 0; i < layer.count; i++)
+            if (layer.weights[i] == 0) layer.stats.zero_count++;
+        layer.stats.sparsity_permille = (layer.stats.zero_count * 1000) / layer.count;
+    }
+    return twq_energy_ratio(&layer);
+}
+
+/* ---- DLFET-RM Simulator ---- */
+
+/** DLFET TNOT gate */
+int trithon_dlfet_tnot(int a) {
+    dlfet_sim_state_t st;
+    dlfet_sim_init(&st);
+    return (int)dlfet_tnot(&st, (uint8_t)a);
+}
+
+/** DLFET TNAND gate */
+int trithon_dlfet_tnand(int a, int b) {
+    dlfet_sim_state_t st;
+    dlfet_sim_init(&st);
+    return (int)dlfet_tnand(&st, (uint8_t)a, (uint8_t)b);
+}
+
+/** DLFET Full Adder: returns sum in low byte, carry in high byte */
+int trithon_dlfet_full_adder(int a, int b, int cin) {
+    dlfet_sim_state_t st;
+    dlfet_sim_init(&st);
+    uint8_t sum, cout;
+    dlfet_ternary_full_adder(&st, (uint8_t)a, (uint8_t)b, (uint8_t)cin,
+                              &sum, &cout);
+    return (int)sum | ((int)cout << 8);
+}
+
+/* ---- Radix Transcode ---- */
+
+/** Integer → balanced ternary */
+int trithon_rtc_to_ternary(int8_t *out, int value, int width) {
+    return rtc_int_to_ternary((trit *)out, value, width, NULL);
+}
+
+/** Balanced ternary → integer */
+int trithon_rtc_to_int(const int8_t *trits, int width) {
+    return rtc_ternary_to_int((const trit *)trits, width, NULL);
+}
+
+/* ---- SRBC ---- */
+
+/** Run SRBC for N ticks, return stability percentage */
+int trithon_srbc_stability(int ticks, int thermal_delta_mc) {
+    srbc_state_t st;
+    srbc_init(&st);
+    if (thermal_delta_mc != 0)
+        srbc_apply_thermal(&st, thermal_delta_mc);
+    for (int i = 0; i < ticks; i++)
+        srbc_tick(&st);
+    return srbc_get_stability(&st);
+}
+
+/* ---- Crypto ---- */
+
+/** One-shot hash of trit array */
+void trithon_crypto_hash(int8_t *digest, const int8_t *msg, int len) {
+    tcrypto_hash((trit *)digest, (const trit *)msg, len);
+}
+
+/** Encrypt/decrypt roundtrip test: returns 1 if roundtrip OK */
+int trithon_crypto_roundtrip(int8_t *data, int len, uint32_t seed) {
+    int8_t original[TCRYPTO_MAX_MSG];
+    if (len > TCRYPTO_MAX_MSG) len = TCRYPTO_MAX_MSG;
+    memcpy(original, data, len);
+
+    tcrypto_key_t key;
+    tcrypto_keygen(&key, seed);
+    trit iv[TCRYPTO_MAC_TRITS];
+    memset(iv, 0, sizeof(iv));
+
+    tcrypto_cipher_t c;
+    tcrypto_cipher_init(&c, &key, iv, 4);
+    tcrypto_encrypt(&c, (trit *)data, len);
+
+    tcrypto_cipher_init(&c, &key, iv, 4);
+    tcrypto_decrypt(&c, (trit *)data, len);
+
+    return (memcmp(data, original, len) == 0) ? 1 : 0;
+}
+
+/* ---- Propagation Delay ---- */
+
+/** Get nominal delay in picoseconds */
+int trithon_pdelay_nominal(int from, int to) {
+    return pdelay_get_nominal(from, to);
+}
+
+/* ---- TTL ---- */
+
+/** Evaluate ALWAYS over a trit trace, return trit result */
+int8_t trithon_ttl_always(const int8_t *trace, int len) {
+    ttl_state_t st;
+    ttl_init(&st);
+    int p = ttl_register_prop(&st, "py_trace");
+    for (int i = 0; i < len; i++) {
+        ttl_observe(&st, p, (trit)trace[i]);
+        ttl_advance(&st);
+    }
+    return (int8_t)ttl_always(&st, p);
+}
+
+/** Evaluate EVENTUALLY over a trit trace */
+int8_t trithon_ttl_eventually(const int8_t *trace, int len) {
+    ttl_state_t st;
+    ttl_init(&st);
+    int p = ttl_register_prop(&st, "py_trace");
+    for (int i = 0; i < len; i++) {
+        ttl_observe(&st, p, (trit)trace[i]);
+        ttl_advance(&st);
+    }
+    return (int8_t)ttl_eventually(&st, p);
+}
+
+/* ---- PAM-3 ---- */
+
+/** PAM-3 encode+decode roundtrip: returns 1 if lossless */
+int trithon_pam3_roundtrip(const int8_t *trits, int count) {
+    pam3_frame_t frame;
+    pam3_encode(&frame, (const trit *)trits, count, NULL);
+    int8_t out[PAM3_MAX_TRITS];
+    pam3_decode((trit *)out, &frame, NULL);
+    for (int i = 0; i < count; i++) {
+        if (out[i] != trits[i]) return 0;
+    }
+    return 1;
+}
+
+/** PAM-3 bandwidth gain ×10 */
+int trithon_pam3_bandwidth_gain(int trit_count) {
+    return pam3_bandwidth_gain(trit_count);
+}
+
+/* ===================================================================== */
+/*  7.  STT-MRAM Module Wrappers                                        */
+/* ===================================================================== */
+
+/** MRAM pack 5 trits → byte */
+int trithon_mram_pack(const int8_t *trits) {
+    return (int)mram_pack_trits((const trit *)trits);
+}
+
+/** MRAM unpack byte → 5 trits */
+void trithon_mram_unpack(int byte_val, int8_t *trits) {
+    mram_unpack_trits((uint8_t)byte_val, (trit *)trits);
+}
+
+/** MRAM pack/unpack roundtrip: returns 1 if lossless */
+int trithon_mram_roundtrip(const int8_t *trits) {
+    uint8_t pk = mram_pack_trits((const trit *)trits);
+    trit out[5];
+    mram_unpack_trits(pk, out);
+    for (int i = 0; i < 5; i++) {
+        if (out[i] != (trit)trits[i]) return 0;
+    }
+    return 1;
+}
+
+/** MRAM write/read roundtrip on a small array */
+int trithon_mram_write_read(int8_t val) {
+    mram_array_t arr;
+    mram_init(&arr, 2, 2);
+    mram_write_trit(&arr, 0, 0, (trit)val);
+    return (int8_t)mram_read_trit(&arr, 0, 0);
+}
+
+/** MRAM nominal resistance for MTJ state */
+int trithon_mram_nominal_r(int state) {
+    return mram_nominal_resistance((mtj_state_t)state);
+}
+
+/* ===================================================================== */
+/*  8.  T-IPC Module Wrappers                                           */
+/* ===================================================================== */
+
+/** T-IPC compress/decompress roundtrip: returns 1 if lossless */
+int trithon_tipc_roundtrip(const int8_t *trits, int count) {
+    tipc_compressed_t comp;
+    if (tipc_compress(&comp, (const trit *)trits, count) < 0) return 0;
+    int8_t out[512];
+    int dc = tipc_decompress((trit *)out, 512, &comp);
+    if (dc != count) return 0;
+    for (int i = 0; i < count; i++) {
+        if (out[i] != trits[i]) return 0;
+    }
+    return 1;
+}
+
+/** T-IPC guardian compute */
+int8_t trithon_tipc_guardian(const int8_t *trits, int count) {
+    return (int8_t)tipc_guardian_compute((const trit *)trits, count);
+}
+
+/** T-IPC compression ratio ×1000 */
+int trithon_tipc_compression_ratio(const int8_t *trits, int count) {
+    tipc_compressed_t comp;
+    if (tipc_compress(&comp, (const trit *)trits, count) < 0) return 0;
+    return tipc_compression_ratio(&comp);
+}
+
+/** T-IPC radix guard: returns number of violations */
+int trithon_tipc_radix_guard(const uint8_t *data, int len) {
+    return tipc_radix_guard(data, len);
+}
+
+/* ===================================================================== */
+/*  9.  TFS Module Wrappers                                             */
+/* ===================================================================== */
+
+/** TFS Huffman encode/decode roundtrip: returns 1 if lossless */
+int trithon_tfs_roundtrip(const int8_t *trits, int count) {
+    tfs_compressed_block_t comp;
+    if (tfs_huffman_encode(&comp, (const trit *)trits, count) < 0) return 0;
+    int8_t out[256];
+    int dc = tfs_huffman_decode((trit *)out, 256, &comp);
+    if (dc != count) return 0;
+    for (int i = 0; i < count; i++) {
+        if (out[i] != trits[i]) return 0;
+    }
+    return 1;
+}
+
+/** TFS guardian compute */
+int8_t trithon_tfs_guardian(const int8_t *trits, int count) {
+    return (int8_t)tfs_guardian_compute((const trit *)trits, count);
+}
+
+/** TFS density gain ×100 */
+int trithon_tfs_density_gain(void) {
+    return tfs_density_gain_x100();
+}
+
+/** TFS area reduction ×100 */
+int trithon_tfs_area_reduction(void) {
+    return tfs_area_reduction_x100();
+}
+
+/** TFS file write/read roundtrip */
+int trithon_tfs_file_roundtrip(const int8_t *trits, int count) {
+    tfs_state_t fs;
+    tfs_init(&fs);
+    tfs_fd_t fd;
+    if (tfs_open(&fs, "py_test.t", TFS_MODE_WRITE, &fd) != 0) return 0;
+    if (tfs_write(&fs, &fd, (const trit *)trits, count) < 0) return 0;
+    tfs_close(&fs, &fd);
+    if (tfs_open(&fs, "py_test.t", TFS_MODE_READ, &fd) != 0) return 0;
+    int8_t out[512];
+    int rlen = tfs_read(&fs, &fd, (trit *)out, 512);
+    tfs_close(&fs, &fd);
+    if (rlen != count) return 0;
+    for (int i = 0; i < count; i++) {
+        if (out[i] != trits[i]) return 0;
+    }
+    return 1;
 }
