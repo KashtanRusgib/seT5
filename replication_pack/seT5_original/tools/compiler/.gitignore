@@ -1,0 +1,81 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+
+# Project binaries
+ternary_compiler
+vm_test
+test_basic
+test_trit
+test_lexer
+test_parser
+test_codegen
+test_vm
+test_logger
+test_ir
+test_sel4
+test_integration
+test_memory
+test_set5
+test_bootstrap
+test_sel4_verify
+
+# Logs (keep .gitkeep)
+logs/*.log
+Mkfile.old
+dkms.conf
+
+# debug information files
+*.dwo
+
+# gcov coverage files
+*.gcov
+*.gcda
+*.gcno

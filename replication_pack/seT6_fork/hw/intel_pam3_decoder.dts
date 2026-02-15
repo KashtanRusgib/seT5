@@ -1,0 +1,69 @@
+/*
+ * Device Tree Source for Intel/Prodigy US11405248B2 PAM-3 Decoder
+ *
+ * Describes the FPGA-based PAM-3 signal decoder pipeline IP block
+ * as specified in patent US11405248B2 for integration with the seT6
+ * microkernel's platform discovery and driver binding.
+ *
+ * This DTS fragment is included in the board-level device tree for
+ * any FPGA/SoC that integrates the PAM-3 decoder IP.
+ *
+ * SPDX-License-Identifier: GPL-2.0
+ */
+
+/ {
+    compatible = "intel,us11405248b2-soc";
+    model = "Intel PAM-3 FPGA Decoder SoC (US11405248B2)";
+
+    /* ---- PAM-3 Decoder Pipeline ---- */
+    pam3_decoder@40300000 {
+        compatible = "intel,us11405248b2-pam3-decoder";
+        reg = <0x40300000 0x4000>;   /* 16 KB MMIO aperture */
+        interrupts = <0 64 4>;       /* SPI #64, level-high */
+
+        /* ADC / sampling configuration */
+        intel,oversample-ratio = <12>;
+        intel,max-raw-samples = <4096>;
+        intel,adc-bits = <8>;
+
+        /* DC correction parameters */
+        intel,dc-block-len = <128>;
+
+        /* Level detection thresholds (8-bit ADC scale) */
+        intel,thresh-plus    = <140>;
+        intel,thresh-minus   = <95>;
+        intel,thresh-zero-p  = <160>;
+        intel,thresh-zero-m  = <80>;
+
+        /* Edge detection configuration */
+        intel,must-transition-window = <12>;
+        intel,min-edge-distance = <9>;
+        intel,edge-lookahead = <4>;
+
+        /* Pipeline stage count */
+        intel,pipeline-stages = <11>;
+
+        /* Signal encoding */
+        intel,signal-type = "pam3-balanced";
+        intel,trit-encoding = "balanced-ternary";
+
+        /* FPGA resource usage */
+        intel,lut-count = <2048>;
+        intel,ff-count  = <1024>;
+        intel,bram-18k  = <4>;
+
+        /* Clock */
+        clocks = <&pam3_clk>;
+        clock-names = "pam3_clk";
+
+        status = "okay";
+    };
+
+    /* ---- Clock Source ---- */
+    pam3_clk: pam3-clock {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <250000000>;   /* 250 MHz sampling clock */
+        clock-output-names = "pam3_clk";
+    };
+};

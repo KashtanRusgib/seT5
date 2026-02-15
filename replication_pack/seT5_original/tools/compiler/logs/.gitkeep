@@ -1,0 +1,3 @@
+# This directory contains agent and CI logs.
+# Log format follows docs/LOGGING.md schema.
+# Files: agent_<commit>.log, summary.log

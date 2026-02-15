@@ -715,29 +715,3 @@ stack, with every file renamed and every internal reference updated from "seT5" 
 - **Radix Integrity Guard**: Rejects binary creep, enforces ternary purity
 
 See `seT6/README.md` for full details.
-
----
-
-## Replication Pack
-
-A self-contained ZIP archive is available at the repo root:
-
-```
-seT5_seT6_replication_pack.zip
-```
-
-Download, unzip, and replicate both the seT5 perfected baseline and the seT6
-development fork:
-
-```bash
-unzip seT5_seT6_replication_pack.zip
-cd replication_pack
-chmod +x build_repl.sh verify_repl.sh
-./build_repl.sh        # Clean build + full test for both seT5 and seT6 (expect 0 errors)
-./verify_repl.sh       # Structural diff, binary-creep lint, radix guard, Sigma 9 compliance
-```
-
-**Expected results:**
-- **seT5**: ~1147 tests, 100% pass rate (frozen baseline)
-- **seT6**: 3272+ tests across 38 suites, 100% pass rate (Sigma 9 compliant)
-- **verify_repl.sh**: 0 binary creep, ternary purity confirmed, all checks passed

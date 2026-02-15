@@ -1,0 +1,18 @@
+// seT6 Ternary Extension — Token/Keyword Stubs for Clang
+//
+// In a full Clang fork these entries would be merged into the real
+// TokenKinds.def.  This file documents the additions needed.
+//
+// SPDX-License-Identifier: GPL-2.0
+
+// ---- New keywords (append to KEYALL section) ----
+// KEYWORD(trit                        , KEYALL)
+// KEYWORD(__unknown                   , KEYALL)
+
+// ---- New punctuator for unknown literal ----
+// PUNCTUATOR(question, "?")  // already exists in Clang; reused for trit unknown
+
+// ---- Notes ----
+// 'trit' is a first-class type keyword mapping to BuiltinType::Trit (int8_t).
+// '__unknown' is a constant expression evaluating to (trit)0.
+// The parser recognises '#pragma ternary' to enable the extension per-TU.

@@ -1,0 +1,98 @@
+# Trit Linux — Ternary Architecture Kconfig
+#
+# This defines the kernel configuration options for the balanced
+# ternary architecture port.  It would be merged into a Linux kernel
+# source tree under arch/ternary/Kconfig.
+#
+# SPDX-License-Identifier: GPL-2.0
+
+config TERNARY
+    bool "Ternary architecture"
+    depends on !X86 && !ARM
+    select BALANCED_TRIT
+    help
+        Enable balanced ternary (-1/0/+1) architecture support.
+        This selects the seT6 microkernel as the underlying execution
+        engine, with balanced ternary arithmetic, Kleene K₃ logic,
+        and 2-bit packed SIMD emulation.
+
+        This architecture targets both software emulation on binary
+        hosts and future native ternary hardware (memristive logic,
+        Josephson junction ternary gates).
+
+config TRYTE_PAGES
+    bool "Tryte-aligned memory pages"
+    depends on TERNARY
+    default y
+    help
+        Use 6-trit trytes for page size (3^6 = 729 trits per page).
+        This is the natural alignment unit for balanced ternary
+        addressing, analogous to 4KB binary pages.
+
+        All pages are Unknown-initialized on allocation and scrubbed
+        on free, preventing information leakage by construction.
+
+config TRIT_PAGE_TABLE
+    bool "Ternary page tables"
+    depends on TRYTE_PAGES
+    default y
+    help
+        Two-level ternary page tables with 27 entries per level
+        (3^3 = 27). Provides virtual-to-physical translation for
+        up to 729 pages (3^6 = 531,441 trit address space).
+
+config MULTI_RADIX_NET
+    bool "Multi-radix networking (G300-inspired)"
+    depends on TERNARY
+    default y
+    help
+        Radix-4 FFT-based network driver for efficient AI/ML tensor
+        transfer and general networking. Uses balanced ternary packet
+        encoding with 3-trit CRC checksums.
+
+        Inspired by Groq G300's deterministic radix-4 topology.
+
+config TRIT_SCHEDULER
+    bool "Ternary priority scheduler"
+    depends on TERNARY
+    default y
+    help
+        3-level O(1) scheduler with balanced ternary priorities:
+          +1 (True)    = high priority (real-time, kernel)
+           0 (Unknown) = normal priority (user-space default)
+          -1 (False)   = low priority (background, idle)
+
+config TRIT_IPC
+    bool "Ternary IPC (seL4-style)"
+    depends on TERNARY
+    default y
+    help
+        Synchronous IPC endpoints and asynchronous notifications
+        with ternary payload words.  Unknown values propagate
+        correctly through the IPC path.
+
+config TRIT_SIMD
+    bool "32-trit packed SIMD"
+    depends on TERNARY
+    default y
+    help
+        Enable 32-trit packed SIMD operations using 2-bit encoding
+        in 64-bit host registers.  Provides bulk AND/OR/NOT with
+        4x loop unrolling.
+
+config TRIT_CAPABILITIES
+    bool "seL4-style capability system"
+    depends on TERNARY
+    default y
+    help
+        Object-capability security model with ternary validity
+        tracking (T=valid, U=pending, F=revoked).
+
+config TRIT_EMU_FALLBACK
+    bool "Binary emulation fallback"
+    depends on TERNARY
+    default y
+    help
+        When running on binary hardware, automatically fall back
+        to 2-bit packed emulation for all ternary operations.
+        This is mandatory until native ternary hardware exists.

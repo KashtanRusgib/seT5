@@ -1,0 +1,136 @@
+/*
+ * Samsung US11170290B2 NAND Neural Inference Engine — Device Tree Source
+ *
+ * Describes the Samsung in-memory computing chip for neural network
+ * inference with ternary inputs and binary weights in NAND arrays.
+ *
+ * Patent: US11170290B2
+ * Assignee: Samsung Electronics Co., Ltd.
+ * Classification: G06F7/5443 (Sum of products)
+ *
+ * This device tree fragment enables platform discovery of the Samsung
+ * NAND inference engine by the seT5 HAL (samsung_hal.c).
+ *
+ * SPDX-License-Identifier: GPL-2.0
+ */
+
+/ {
+    samsung_nand_inference: samsung-nand-inference@40200000 {
+        compatible = "samsung,us11170290b2-nand-inference",
+                     "samsung,nand-tbn-engine";
+        reg = <0x40200000 0x1000>;       /* 4 KB MMIO aperture */
+        interrupts = <0 48 4>;           /* SPI #48, level-triggered */
+        interrupt-parent = <&gic>;
+
+        /* Patent reference */
+        patent-id = "US11170290B2";
+        patent-class = "G06F7/5443";
+        patent-assignee = "Samsung Electronics Co., Ltd.";
+
+        /* ----------------------------------------------------------- */
+        /* NAND Array Topology                                         */
+        /* ----------------------------------------------------------- */
+
+        /* Memory die configuration */
+        samsung,num-planes        = <2>;    /* Planes per die */
+        samsung,blocks-per-plane  = <4>;    /* Blocks per plane */
+        samsung,strings-per-block = <64>;   /* Bit lines per block */
+        samsung,wl-pairs-per-string = <64>; /* Unit synapses per string */
+
+        /* ----------------------------------------------------------- */
+        /* Inference Modes                                             */
+        /* ----------------------------------------------------------- */
+
+        /* Supported neural network modes */
+        samsung,bnn-support;                /* Binary Neural Network */
+        samsung,tbn-support;                /* Ternary-Binary Network */
+        samsung,zid-support;                /* Zero Input Detection */
+
+        /* ----------------------------------------------------------- */
+        /* Parallelism Configuration                                   */
+        /* ----------------------------------------------------------- */
+
+        /* Sense amplifier */
+        samsung,sa-bits = <4>;              /* Multi-bit SA width */
+
+        /* Parallelism levels */
+        samsung,multi-block;                /* Multi-block parallel sensing */
+        samsung,max-concurrent-blocks = <4>;
+        samsung,multi-plane;                /* Multi-plane parallelism */
+        samsung,plane-pipelining;           /* Multi-layer DNN pipelining */
+
+        /* ----------------------------------------------------------- */
+        /* Counter / Accumulator                                       */
+        /* ----------------------------------------------------------- */
+
+        samsung,counter-bits = <16>;        /* Summation counter width */
+        samsung,max-vector-size = <64>;     /* Max input dimension S */
+
+        /* ----------------------------------------------------------- */
+        /* Voltage Configuration                                       */
+        /* ----------------------------------------------------------- */
+
+        /*
+         * Vread: low voltage that distinguishes erased ("1") from
+         *        programmed ("0") cells. Only erased cells conduct.
+         * Vpass: high voltage at which any cell conducts regardless
+         *        of threshold state.
+         */
+        samsung,vread-mv = <500>;           /* Vread = 0.5 V */
+        samsung,vpass-mv = <7000>;          /* Vpass = 7.0 V */
+
+        /* ----------------------------------------------------------- */
+        /* Unit Synapse Configuration                                  */
+        /* ----------------------------------------------------------- */
+
+        /*
+         * Each unit synapse = pair of series-connected SLC NAND cells.
+         * Weight encoding:
+         *   +1: FG1=erased, FG2=programmed
+         *   -1: FG1=programmed, FG2=erased
+         *
+         * Input encoding (voltage pattern on WL pair):
+         *   -1: V1=Vpass,  V2=Vread
+         *   +1: V1=Vread,  V2=Vpass
+         *    0: V1=Vread,  V2=Vread  (detected by ZID)
+         */
+        samsung,synapse-type = "slc-pair";
+        samsung,cell-technology = "3d-nand";
+
+        /* ----------------------------------------------------------- */
+        /* Dot-Product Correction Formulas                             */
+        /* ----------------------------------------------------------- */
+
+        /*
+         * BNN (Eq. 1): P = 2 * CNT_out - S
+         * TBN (Eq. 2): P = 2 * CNT_out - (S - Z)
+         *
+         * Where:
+         *   CNT_out = count of conducting NAND strings
+         *   S       = input vector dimension
+         *   Z       = number of zero inputs (from ZID)
+         */
+
+        /* ----------------------------------------------------------- */
+        /* Controller Architecture                                     */
+        /* ----------------------------------------------------------- */
+
+        /*
+         * Controller with:
+         *   - Front End Processor (FEP): host interface, FTL/MML
+         *   - Back End Processor (BEP): memory ops, ECC, Toggle Mode
+         */
+        samsung,controller-type = "fep-bep";
+
+        /* ----------------------------------------------------------- */
+        /* Clock and Power                                             */
+        /* ----------------------------------------------------------- */
+
+        clocks = <&clk_nand_inference>;
+        clock-names = "inference_clk";
+        clock-frequency = <200000000>;      /* 200 MHz inference clock */
+
+        power-domains = <&pd_nand>;
+        status = "okay";
+    };
+};

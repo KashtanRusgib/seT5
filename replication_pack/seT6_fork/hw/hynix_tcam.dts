@@ -1,0 +1,115 @@
+/*
+ * Device Tree Source for Macronix/Hynix US20230162024A1 TCAM Crossbar
+ *
+ * Describes the TCAM-based GNN training accelerator as specified in
+ * patent US20230162024A1 for integration with the seT6 microkernel's
+ * platform discovery and driver binding.
+ *
+ * This DTS fragment is included in the board-level device tree for
+ * any SoC that integrates the TCAM crossbar GNN accelerator IP.
+ *
+ * SPDX-License-Identifier: GPL-2.0
+ */
+
+/ {
+    compatible = "hynix,us20230162024a1-soc";
+    model = "Hynix TCAM GNN Accelerator SoC (US20230162024A1)";
+
+    /* ---- TCAM Crossbar — Adjacency Lookup ---- */
+    tcam_crossbar@40400000 {
+        compatible = "hynix,us20230162024a1-tcam-crossbar";
+        reg = <0x40400000 0x4000>;   /* 16 KB MMIO aperture */
+        interrupts = <0 80 4>;       /* SPI #80, level-high */
+
+        /* TCAM configuration */
+        hynix,tcam-rows = <64>;
+        hynix,tcam-cols = <32>;
+        hynix,node-bits = <8>;
+        hynix,max-nodes = <128>;
+        hynix,max-edges = <256>;
+
+        /* Hit vector configuration */
+        hynix,hit-vector-width = <64>;
+
+        /* Search modes */
+        hynix,has-dst-search;              /* Search by destination node */
+        hynix,has-vtx-layer-search;        /* Search by vertex + layer  */
+        hynix,has-dont-care;               /* Don't-care match support  */
+
+        status = "okay";
+    };
+
+    /* ---- MAC Crossbar — Feature Accumulation ---- */
+    mac_crossbar@40404000 {
+        compatible = "hynix,us20230162024a1-mac-crossbar";
+        reg = <0x40404000 0x4000>;   /* 16 KB MMIO aperture */
+        interrupts = <0 81 4>;       /* SPI #81, level-high */
+
+        /* Feature configuration */
+        hynix,feature-dim = <16>;
+        hynix,feature-bits = <16>;
+        hynix,max-rows = <64>;
+
+        /* MAC operation mode */
+        hynix,accumulation-mode = "parallel";
+
+        status = "okay";
+    };
+
+    /* ---- DFP MAC Unit — Dynamic Fixed-Point ---- */
+    dfp_mac@40408000 {
+        compatible = "hynix,us20230162024a1-dfp-mac";
+        reg = <0x40408000 0x1000>;   /* 4 KB MMIO aperture */
+        interrupts = <0 82 4>;       /* SPI #82, level-high */
+
+        /* DFP configuration per patent Table I */
+        hynix,dfp-groups = <2>;
+        hynix,dfp-group0-range = "2^0 to 2^-3";
+        hynix,dfp-group1-range = "2^-4 to 2^-7";
+        hynix,mantissa-bits = <8>;
+
+        /* Cycle reduction */
+        hynix,mac-cycles-naive = <7>;
+        hynix,mac-cycles-dfp = <2>;
+
+        status = "okay";
+    };
+
+    /* ---- GNN Pipeline Controller ---- */
+    gnn_pipeline@4040C000 {
+        compatible = "hynix,us20230162024a1-gnn-pipeline";
+        reg = <0x4040C000 0x1000>;   /* 4 KB MMIO aperture */
+        interrupts = <0 83 4>;       /* SPI #83, level-high */
+
+        /* GNN configuration */
+        hynix,max-batch-size = <32>;
+        hynix,max-features = <16>;
+        hynix,max-nodes = <128>;
+
+        /* Sampling strategy per patent FIG. 16-18 */
+        hynix,sampling-method = "non-uniform-bootstrap";
+        hynix,adaptive-data-reuse;
+
+        /* Pipeline stages */
+        hynix,stages = "sample", "aggregate", "update";
+
+        /* Sub-component references */
+        hynix,tcam-crossbar = <&tcam_crossbar>;
+        hynix,mac-crossbar  = <&mac_crossbar>;
+        hynix,dfp-mac       = <&dfp_mac>;
+
+        /* Clock */
+        clocks = <&tcam_clk>;
+        clock-names = "gnn_clk";
+
+        status = "okay";
+    };
+
+    /* ---- Clock Source ---- */
+    tcam_clk: tcam-clock {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <400000000>;   /* 400 MHz crossbar clock */
+        clock-output-names = "tcam_clk";
+    };
+};

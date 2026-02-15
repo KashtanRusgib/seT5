@@ -1,4 +1,4 @@
-# seT5 — Secure Embedded Ternary Microkernel 5
+# seT6 — Secure Embedded Ternary Microkernel 6
 
 A ground-up rewrite of the [seL4](https://sel4.systems/) verified microkernel
 in **balanced ternary logic** (Kleene K₃).  Every value — capabilities,
@@ -9,26 +9,8 @@ Uninitialized data is `Unknown`, not a silent binary zero.  This eliminates
 an entire class of initialization and capability-confusion vulnerabilities
 *by construction*.
 
-> **Status:** Phase 7 — Friday Updates (STT-MRAM, T-IPC, TFS) — 1147+ tests passing across 36 suites
+> **Status:** Phase 9 — MEGA Patent Alignment & Sigma 9 Validation — 1841 tests passing across 30 suites
 > **License:** GPL-2.0 (see [LICENSE](LICENSE))
-
----
-
-> ### ⚠️ PRESERVATION NOTICE — seT5 is FROZEN
->
-> **As of 2026-02-14**, seT5 has achieved **0 errors** across all test suites and is
-> considered a **perfected, zero-modification microkernel**. This codebase is now
-> **frozen** and preserved exactly as-is. **No further modifications will be made
-> to seT5 source, headers, tests, proofs, or hardware descriptions.**
->
-> All current and future development continues in **[seT6](seT6/)** — a complete
-> fork of seT5's entire stack (kernel, Trit Linux, Trithon, compiler, proofs,
-> hardware, tests, and documentation). seT6 inherits seT5's zero-error baseline
-> and extends it with Arch Linux–inspired modularity, hardened inter-module
-> communication, time synchronization protocols, and attack-surface reduction.
->
-> **To develop or contribute:** work exclusively in the `seT6/` directory.
-> The seT5 files outside `seT6/` are historical artifacts and must not be edited.
 
 ---
 
@@ -69,8 +51,8 @@ an entire class of initialization and capability-confusion vulnerabilities
 
 ```bash
 # Clone the repository
-git clone git@github.com:KashtanRusgib/seT5.git
-cd seT5
+git clone git@github.com:KashtanRusgib/seT6.git
+cd seT6
 
 # Initialize the compiler submodule (Ternary-C-compiler)
 git submodule update --init --recursive
@@ -88,19 +70,19 @@ cat .gitmodules                 # Should show tools/compiler entry
 # 1. Build the ternary compiler (submodule)
 make build-compiler
 
-# 2. Build and run seT5 kernel init (native / host testing)
-make set5_native
-./set5_native
+# 2. Build and run seT6 kernel init (native / host testing)
+make set6_native
+./set6_native
 
 # Expected output:
-# seT5: initialising...
+# seT6: initialising...
 #   page0: 729 trits allocated (Unknown)
 #   operand stack seeded (sp=1)
 #   syscall: LOAD_BALANCE  priority=1  affinity=-1
 #   trit loop: +0 +1 → wrap (2 steps)
 #   Kleene AND(T, U)  = +0  (expect 0/Unknown)
 #   Kleene OR (T, U)  = +1  (expect +1/True)
-#   seT5: booted.
+#   seT6: booted.
 
 # 3. Build demos
 make demos
@@ -117,8 +99,8 @@ make demos
 | Target                 | Description                                        |
 |------------------------|----------------------------------------------------|
 | `make build-compiler`  | Build the ternary compiler from `tools/compiler/` submodule |
-| `make set5_native`     | Compile kernel modules natively (gcc, host testing) — 178 tests |
-| `make build-set5`      | Full build: compiler + ternary bytecode output     |
+| `make set6_native`     | Compile kernel modules natively (gcc, host testing) — 178 tests |
+| `make build-set6`      | Full build: compiler + ternary bytecode output     |
 | `make tbe`             | Build TBE bootstrap shell (`src/tbe_main.c`)       |
 | `make test_integration`| Build integration test suite — 56 tests            |
 | `make test_sel4_ternary`| Build seL4 moonshot test suite — 142 tests        |
@@ -129,9 +111,9 @@ make demos
 | `make run-native`      | Build and run the native kernel init               |
 | `make test_functional_utility` | Build functional utility test suite — 202 tests |
 | `make test_friday_updates` | Build Friday Updates test suite — 135 tests        |
-| `make test`            | Full CI pipeline — all 1147+ tests                 |
-| `make clean`           | Clean all build artifacts (compiler + seT5)        |
-| `make all`             | Alias for `build-set5`                             |
+| `make test`            | Full CI pipeline — all 1841 tests                  |
+| `make clean`           | Clean all build artifacts (compiler + seT6)        |
+| `make all`             | Alias for `build-set6`                             |
 
 ### Compiler Submodule
 
@@ -155,7 +137,7 @@ cd tools/compiler && make test_trit test_parser test_vm
 
 ### Include Paths
 
-seT5 headers are in `include/set5/` and the compiler's headers are in
+seT6 headers are in `include/set6/` and the compiler's headers are in
 `tools/compiler/include/`.  The top-level Makefile sets both:
 
 ```
@@ -166,30 +148,30 @@ Key headers:
 
 | Header                   | Purpose                                      |
 |--------------------------|----------------------------------------------|
-| `set5/trit.h`            | Core trit type, Kleene AND/OR/NOT, SIMD      |
-| `set5/trit_type.h`       | Range-checked construction, fault flags      |
-| `set5/trit_cast.h`       | Bool↔trit embed/project, int narrowing       |
-| `set5/trit_emu.h`        | 2-bit packed encoding, bulk ops, registers   |
-| `set5/memory.h`          | Tryte-aligned page allocator                 |
-| `set5/ipc.h`             | Synchronous endpoints, async notifications   |
-| `set5/scheduler.h`       | Trit-priority scheduling                     |
-| `set5/syscall.h`         | Syscall dispatch ABI (14 syscalls)           |
-| `set5/multiradix.h`      | DOT_TRIT, FFT_STEP, RADIX_CONV, load bal.   |
-| `set5/wcet.h`            | WCET probe telemetry                         |
-| `set5/qemu_trit.h`       | QEMU noise injection for testing             |
-| `set5/sel4_ternary.h`    | Full seL4 kernel object model (THE MOONSHOT) |
-| `set5/posix.h`           | POSIX compatibility / translation layer      |
-| `set5/dev_trit.h`        | `/dev/trit` device driver ioctls             |
-| `set5/tbe_shell.h`       | TBE shell command definitions                |
-| `set5/ternary_weight_quantizer.h` | BitNet b1.58 weight quantization    |
-| `set5/dlfet_sim.h`       | Samsung DLFET-RM gate simulator               |
-| `set5/radix_transcode.h` | Binary↔ternary radix conversion               |
-| `set5/srbc.h`            | Self-referential bias calibration              |
-| `set5/trit_crypto.h`     | Quantum-resistant ternary cryptography         |
-| `set5/prop_delay.h`      | Asymmetric propagation delay modeling          |
-| `set5/ternary_temporal.h`| 3-valued temporal logic (LTL₃)                 |
-| `set5/pam3_transcode.h`  | PAM-3/4 chip-to-chip interconnect              |
-| `set5.h` (compiler)      | Legacy syscall ABI, capability structs       |
+| `set6/trit.h`            | Core trit type, Kleene AND/OR/NOT, SIMD      |
+| `set6/trit_type.h`       | Range-checked construction, fault flags      |
+| `set6/trit_cast.h`       | Bool↔trit embed/project, int narrowing       |
+| `set6/trit_emu.h`        | 2-bit packed encoding, bulk ops, registers   |
+| `set6/memory.h`          | Tryte-aligned page allocator                 |
+| `set6/ipc.h`             | Synchronous endpoints, async notifications   |
+| `set6/scheduler.h`       | Trit-priority scheduling                     |
+| `set6/syscall.h`         | Syscall dispatch ABI (14 syscalls)           |
+| `set6/multiradix.h`      | DOT_TRIT, FFT_STEP, RADIX_CONV, load bal.   |
+| `set6/wcet.h`            | WCET probe telemetry                         |
+| `set6/qemu_trit.h`       | QEMU noise injection for testing             |
+| `set6/sel4_ternary.h`    | Full seL4 kernel object model (THE MOONSHOT) |
+| `set6/posix.h`           | POSIX compatibility / translation layer      |
+| `set6/dev_trit.h`        | `/dev/trit` device driver ioctls             |
+| `set6/tbe_shell.h`       | TBE shell command definitions                |
+| `set6/ternary_weight_quantizer.h` | BitNet b1.58 weight quantization    |
+| `set6/dlfet_sim.h`       | Samsung DLFET-RM gate simulator               |
+| `set6/radix_transcode.h` | Binary↔ternary radix conversion               |
+| `set6/srbc.h`            | Self-referential bias calibration              |
+| `set6/trit_crypto.h`     | Quantum-resistant ternary cryptography         |
+| `set6/prop_delay.h`      | Asymmetric propagation delay modeling          |
+| `set6/ternary_temporal.h`| 3-valued temporal logic (LTL₃)                 |
+| `set6/pam3_transcode.h`  | PAM-3/4 chip-to-chip interconnect              |
+| `set6.h` (compiler)      | Legacy syscall ABI, capability structs       |
 
 ---
 
@@ -226,7 +208,7 @@ scheduler.
 
 - [x] `TritKleene.thy` — Kleene lattice laws proven
 - [x] `TritOps.thy` — Distributivity, propagation active
-- [x] Unit tests for all kernel modules — **178 tests PASS** (`make set5_native`)
+- [x] Unit tests for all kernel modules — **178 tests PASS** (`make set6_native`)
 - [x] Integration tests (56 tests PASS): memory → IPC → cap → sched → multiradix → WCET
 - [x] seL4 moonshot validation (142 tests PASS): all 11 kernel object types
 - [ ] `CapSafety.thy` — capability monotonicity proof (future)
@@ -259,7 +241,7 @@ scheduler.
 
 ### Phase 6: Functional Utility Extension — DONE
 
-**Goal:** Extend seT5 with 8 capability layers anticipating Samsung DLFET-RM,
+**Goal:** Extend seT6 with 8 capability layers anticipating Samsung DLFET-RM,
 quantum-resistant crypto, PAM-3/4 physical-layer interconnect, and
 real-time verification — all without modifying the microkernel core.
 
@@ -281,7 +263,7 @@ real-time verification — all without modifying the microkernel core.
 
 **Goal:** Add three ternary-native subsystem modules — STT-MRAM memory interface,
 T-IPC compressed IPC protocol, and TFS file system — all out-of-band, without
-modifying the seT5 microkernel core.
+modifying the seT6 microkernel core.
 
 - [x] **STT-MRAM Memory Interface** — Biaxial MTJ ternary storage (3 resistance states), LiM command set, 5-trit→byte packing, ECS drift detection/recalibration
 - [x] **Ternary-Native IPC (T-IPC)** — Balanced Ternary Huffman compression (0→1bit, ±1→2bits), Guardian Trit integrity checksum, Radix Integrity Guard, XOR differential updates
@@ -291,6 +273,24 @@ modifying the seT5 microkernel core.
 - [x] **Trithon bindings** — C extension wrappers + Python classes for MRAM, T-IPC, TFS
 - [x] **135 Friday Update tests** — 5 scenarios: STT-MRAM, T-IPC, TFS, cross-module integration, spec compliance
 - [x] **1147+ total tests passing** across 36 suites
+
+### Phase 8 — Arch-Inspired Enhancements (seT6-exclusive)
+
+- [x] **LEGO-Like Modularity** (`trit_linux/modular/`) — Module registration, dependency DAG, drop-in key=value configs, Radix Integrity Guard (binary creep detection), load/unload lifecycle — 49 tests
+- [x] **Secure Inter-Module Communication** (`trit_linux/ipc/`) — Ternary socket activation (on-demand like systemd), namespace isolation (user/net/ipc), capability-gated send/recv, injection attack detection (all-True / out-of-range payloads), Unknown-state pause tracking — 40 tests
+- [x] **Time Synchronization Protocols** (`trit_linux/time/`) — NTP-like source management with stratum/quality, authenticated sync, skew detection with circular history, MRAM persistent timestamps, trit-priority event queue, replay attack detection — 42 tests
+- [x] **Attack Surface Reduction & Hardening** (`trit_linux/hardening/`) — Kernel parameter emulation (kptr_restrict, dmesg_restrict, ASLR, stack protection), restrictive mount options (noexec/nodev/nosuid/readonly), ternary firewall (nftables-like rules with ACCEPT/LOG/DROP), SUID audit scanning, hardening score computation — 55 tests
+- [x] **1645 total tests passing** across 29 suites — 100% pass rate
+
+### Phase 9 — MEGA Patent Alignment & Sigma 9 Validation
+
+- [x] **PVT Stability Engine** (`trit_linux/hw/trit_stabilize.h/.c`) — 27-point PVT corner sweep (3×3×3), thermal/flicker/shot noise injection, cosmic-ray SEU simulation, meta-stability detection, SRBC recovery integration, stability PPM and worst-SNM tracking
+- [x] **TMVM Accelerator** (`trit_linux/ai/trit_tmvm.h/.c`) — Ternary Matrix-Vector Multiply with (3;2) balanced compressor, sparsity-aware dot product (zero-skip), 256×256 support, energy model (5 aJ ternary vs 42 aJ binary), 88% PDP gain
+- [x] **ECS Digital Gauge-Block** (`trit_linux/hw/trit_ecs_gauge.h/.c`) — Self-calibrating runtime with 16 monitor channels, T-Audit fault logging (128-entry circular buffer), IRQ emergency recalibration, hesitation counter (Unknown-state persistence), health trit
+- [x] **TCAM Network Search** (`trit_linux/net/trit_tcam_net.h/.c`) — Priority-ordered CAM matching (128 entries), exact + wildcard search via Unknown positions, trit Hamming distance, similarity search, sub-ns latency emulation (800ps), energy tracking (50 fJ/search)
+- [x] **Sigma 9 Validation Suite** (`tests/test_sigma9.c`) — 197 tests across 8 sections: PVT stability, TMVM accelerator, ECS gauge-block, TCAM net search, radix integrity guard, side-channel resistance, epistemic K3 logic, Guardian Trit meta-test
+- [x] **Bug fixes**: trit_pack(-1) sign-extension fix, TCAM exact-match classification, Radix Guard MIXED enforcement
+- [x] **1841 total tests passing** across 30 suites — 100% pass rate
 
 ---
 
@@ -308,7 +308,7 @@ end-to-end, non-interactively, and logs the results with a timestamp:
 This will:
 
 1. Build the Ternary-C-compiler and run all 25 compiler test suites
-2. Build and run all 7 seT5 kernel test suites
+2. Build and run all 7 seT6 kernel test suites
 3. Run the Trithon Python self-test
 4. Run the TernBench benchmark
 5. Print a pass/fail summary
@@ -320,8 +320,8 @@ suites pass, `1` if any fail.
 ### Running Individual Test Suites
 
 ```bash
-# ---- seT5 Kernel Tests ----
-make set5_native && ./set5_native              # 178 kernel boot/module tests
+# ---- seT6 Kernel Tests ----
+make set6_native && ./set6_native              # 178 kernel boot/module tests
 make test_integration && ./test_integration    # 56 cross-module integration tests
 make test_sel4_ternary && ./test_sel4_ternary  # 142 seL4 moonshot tests
 make test_memory_safety && ./test_memory_safety        # 28 memory safety tests
@@ -339,6 +339,12 @@ make test_functional_utility && ./test_functional_utility  # 202 tests (8 module
 
 # ---- Friday Updates Tests ----
 make test_friday_updates && ./test_friday_updates  # 135 tests (STT-MRAM, T-IPC, TFS)
+
+# ---- Arch-Inspired Enhancement Tests (seT6-exclusive) ----
+make test_modular && ./test_modular              # 49 LEGO-like modularity tests
+make test_ipc_secure && ./test_ipc_secure        # 40 secure inter-module comms tests
+make test_time && ./test_time                    # 42 time sync protocol tests
+make test_hardening && ./test_hardening          # 55 hardening & firewall tests
 
 # ---- Compiler Tests (submodule) ----
 cd tools/compiler && make clean && make test   # All 25 compiler test suites
@@ -364,7 +370,7 @@ post-mortem analysis, CI archival, and regression tracking.
 
 | Suite                       | Tests | What It Covers                                      |
 |-----------------------------|-------|-----------------------------------------------------|
-| `set5_native`               | 178   | Kernel boot, memory, IPC, scheduler, caps, multiradix, WCET, noise |
+| `set6_native`               | 178   | Kernel boot, memory, IPC, scheduler, caps, multiradix, WCET, noise |
 | `test_integration`          | 56    | Cross-module: mem→IPC→cap→sched→multiradix→WCET     |
 | `test_sel4_ternary`         | 142   | seL4 moonshot: all 11 kernel objects + POSIX layer   |
 | `test_memory_safety`        | 28    | OOB, double-free, scrub-on-free, OOM, stats          |
@@ -379,7 +385,11 @@ post-mortem analysis, CI archival, and regression tracking.
 | Compiler (25 suites)        | 250+  | Parser, codegen, VM, IR, linker, selfhost, hardware  |
 | Trithon                     | —     | Python trit type, Kleene ops, C extension, 11 modules|
 | TernBench                   | —     | Pi, dot product, radix, census, power benchmarks     |
-| **Total**                   |**1147+**| **All suites passing — 0 failures**                |
+| `test_modular`              | 49    | LEGO-like modularity, deps, configs, radix guard     |
+| `test_ipc_secure`           | 40    | Ternary sockets, caps, namespaces, injection detect  |
+| `test_time`                 | 42    | Time sources, sync, skew, MRAM, events, replay       |
+| `test_hardening`            | 55    | Kernel params, mounts, firewall, SUID audit, score   |
+| **Total**                   |**1645**| **All suites passing — 0 failures**                |
 
 ### Expected Master Test Output
 
@@ -399,7 +409,7 @@ $ ./run_all_tests.sh
 
 ### Test Integrity Philosophy
 
-seT5 follows the same verification philosophy as seL4: **every test must
+seT6 follows the same verification philosophy as seL4: **every test must
 prove something true about the system — never merely that code executes
 without crashing.**
 
@@ -423,7 +433,7 @@ without crashing.**
 
 ## TBE — Ternary Bootstrap Environment
 
-The TBE is seT5's minimal userspace shell — the first program that
+The TBE is seT6's minimal userspace shell — the first program that
 runs after kernel boot.  Build and run interactively:
 
 ```bash
@@ -442,8 +452,8 @@ tbe> help
 ### Example Session
 
 ```
-tbe> echo Hello from seT5
-Hello from seT5
+tbe> echo Hello from seT6
+Hello from seT6
 tbe> setenv FOO 42
 Set FOO = 42 (balanced ternary)
 tbe> env
@@ -461,7 +471,7 @@ tbe> wcet
 WCET probes (6 registered):
   [0] cmd_dispatch   budget=50     max=0 ...
 tbe> exit
-TBE: Shutting down seT5 kernel...
+TBE: Shutting down seT6 kernel...
 ```
 
 ---
@@ -478,7 +488,7 @@ make clean && make all
 make test
 
 # 3. Verify native kernel boots correctly
-make set5_native && ./set5_native
+make set6_native && ./set6_native
 
 # 4. Check for regressions (if tests fail)
 git bisect start
@@ -487,7 +497,7 @@ git bisect good <last-known-good-commit>
 # Git bisect will binary-search for the breaking commit
 
 # 5. Isabelle proofs (Phase 3+)
-isabelle build -d proof/ -b seT5_Proofs
+isabelle build -d proof/ -b seT6_Proofs
 ```
 
 ### Gate Criteria
@@ -505,7 +515,7 @@ isabelle build -d proof/ -b seT5_Proofs
 ## Project Structure
 
 ```
-seT5/
+seT6/
 ├── ARCHITECTURE.md          # Full microkernel architecture (16 sections)
 ├── Makefile                 # Top-level build (14+ targets)
 ├── run_all_tests.sh         # Master test runner (34 suites)
@@ -515,7 +525,7 @@ seT5/
 ├── TODOLIST.md              # Development roadmap (all phases complete)
 ├── log.md                   # Development log
 │
-├── include/set5/            # seT5 core headers (24 headers)
+├── include/set6/            # seT6 core headers (24 headers)
 │   ├── trit.h               #   Balanced trit type, Kleene ops, SIMD
 │   ├── trit_type.h          #   Range-checked construction
 │   ├── trit_cast.h          #   Bool↔trit casting
@@ -605,7 +615,7 @@ seT5/
 │
 └── tools/compiler/          # Git submodule: Ternary-C-compiler
     ├── src/                 #   Compiler source (parser, codegen, etc.)
-    ├── include/             #   Compiler headers (set5.h syscall ABI)
+    ├── include/             #   Compiler headers (set6.h syscall ABI)
     ├── vm/                  #   Ternary VM emulator
     ├── hw/                  #   Verilog ALU + FPGA targets
     ├── tests/               #   Compiler test suite
@@ -633,11 +643,11 @@ make clean && make all 2>&1 | tee build.log
 ### Missing headers
 
 ```bash
-# Verify seT5 headers exist
-ls include/set5/trit*.h
+# Verify seT6 headers exist
+ls include/set6/trit*.h
 
 # Verify compiler headers exist
-ls tools/compiler/include/set5.h
+ls tools/compiler/include/set6.h
 
 # Check include flags in Makefile
 grep -- "-I" Makefile
@@ -647,7 +657,7 @@ grep -- "-I" Makefile
 
 ```bash
 # Manual compile with verbose output
-gcc -Wall -Wextra -Iinclude -Itools/compiler/include -o set5_native src/init.c -v
+gcc -Wall -Wextra -Iinclude -Itools/compiler/include -o set6_native src/init.c -v
 ```
 
 ### Regressions after changes
@@ -658,7 +668,7 @@ git bisect start
 git bisect bad HEAD
 git bisect good <last-good-sha>
 # Build + test at each step:
-make clean && make set5_native && ./set5_native
+make clean && make set6_native && ./set6_native
 git bisect good  # or: git bisect bad
 ```
 
@@ -668,7 +678,7 @@ git bisect good  # or: git bisect bad
 
 ### License
 
-seT5 is licensed under the **GNU General Public License v2.0** (GPL-2.0).
+seT6 is licensed under the **GNU General Public License v2.0** (GPL-2.0).
 See [LICENSE](LICENSE) for the full text.
 
 ### Future Plans
@@ -690,54 +700,3 @@ pass the full test suite before merge.
 ---
 
 *Built with balanced ternary logic — because two states were never enough.*
-
----
-
-## seT6 — The Active Development Fork
-
-The `seT6/` directory contains a **complete, independent copy** of the entire seT5
-stack, with every file renamed and every internal reference updated from "seT5" to
-"seT6". seT6 is where **all current and future development** takes place.
-
-### What seT6 inherits from seT5
-- Zero-error microkernel (kernel, IPC, scheduler, memory, syscall)
-- Full Trit Linux user-space (arch, AI, GUI, networking, POSIX, security, packaging)
-- Trithon Python interop layer
-- Ternary-C compiler toolchain
-- All Isabelle/HOL proofs and Verilog hardware descriptions
-- Complete test suites (1147+ assertions)
-
-### What seT6 adds (Arch Linux–inspired enhancements)
-- **LEGO-like modularity**: Standalone, rebuildable modules with drop-in configs
-- **Secure inter-module communication**: Ternary socket activation, namespace isolation, capabilities
-- **Time synchronization protocols**: NTP-like daemon with STT-MRAM timestamps, skew detection
-- **Attack-surface hardening**: Minimal base, kernel param emulation, restrictive mounts, audit/firewall
-- **Radix Integrity Guard**: Rejects binary creep, enforces ternary purity
-
-See `seT6/README.md` for full details.
-
----
-
-## Replication Pack
-
-A self-contained ZIP archive is available at the repo root:
-
-```
-seT5_seT6_replication_pack.zip
-```
-
-Download, unzip, and replicate both the seT5 perfected baseline and the seT6
-development fork:
-
-```bash
-unzip seT5_seT6_replication_pack.zip
-cd replication_pack
-chmod +x build_repl.sh verify_repl.sh
-./build_repl.sh        # Clean build + full test for both seT5 and seT6 (expect 0 errors)
-./verify_repl.sh       # Structural diff, binary-creep lint, radix guard, Sigma 9 compliance
-```
-
-**Expected results:**
-- **seT5**: ~1147 tests, 100% pass rate (frozen baseline)
-- **seT6**: 3272+ tests across 38 suites, 100% pass rate (Sigma 9 compliant)
-- **verify_repl.sh**: 0 binary creep, ternary purity confirmed, all checks passed

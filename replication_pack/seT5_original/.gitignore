@@ -1,0 +1,86 @@
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# debug information files
+*.dwo
+# seT5 compiled demo binaries
+demo/trit_demo
+demo/trit_type_demo
+demo/trit_emu_bench
+
+# Sphinx build output
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# Doxygen output
+doxygen/
+
+# IDE
+.vscode/
+*.swp
+*~set5_native
+test_integration
+test_sel4_ternary
+bench_unroll
+task.lock
+__pycache__/
+*.pyc
+set5_native
+tbe
+test_tbe
+test_integration
+test_sel4_ternary
+bench_unroll
+trithon/libtrithon.so
+test_trit_linux

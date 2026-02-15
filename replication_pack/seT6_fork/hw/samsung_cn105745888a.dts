@@ -1,0 +1,121 @@
+/*
+ * samsung_cn105745888a.dts — Device Tree Source for Samsung CN105745888A
+ * Ternary Sequence Modem (cyclic-shift modulation for coherent and
+ * non-coherent receivers).
+ *
+ * Patent: CN105745888A (KR102349122B1)
+ * Filed: 2013-10-29 (IN4875/CHE/2013)
+ * Granted: 2019-11-26
+ * Assignee: Samsung Electronics Co., Ltd.
+ *
+ * SPDX-License-Identifier: GPL-2.0
+ */
+
+/dts-v1/;
+
+/ {
+    compatible = "samsung,cn105745888a-tseq-modem";
+    model = "Samsung Ternary Sequence Modem (CN105745888A)";
+    #address-cells = <1>;
+    #size-cells = <1>;
+
+    /* ------------------------------------------------------------------ */
+    /* Ternary Sequence Modem IP Core                                     */
+    /* ------------------------------------------------------------------ */
+    tseq_modem@40300000 {
+        compatible = "samsung,tseq-modem-v1";
+        reg = <0x40300000 0x1000>;   /* 4 KB MMIO aperture */
+        interrupts = <0 48 4>;       /* SPI #48, level-high */
+
+        /* Patent reference */
+        samsung,patent-id     = "CN105745888A";
+        samsung,patent-family = "KR102349122B1";
+        samsung,classification = "H04L25/4923";
+
+        /* ---- Supported OOK Families (Table 4) ---- */
+        samsung,ook-families = <3 4 5>;  /* k values */
+        samsung,max-seq-len  = <64>;
+
+        /* ---- Default configuration ---- */
+        samsung,default-family = <0>;    /* 3/8-OOK */
+        samsung,default-mapping = "decimal";
+
+        /* ---- TX subsystem ---- */
+        tx {
+            compatible = "samsung,tseq-tx";
+            samsung,max-frame-symbols = <256>;
+            samsung,pulse-shaping     = "rectangular";
+            samsung,chip-duration-ns  = <100>;
+        };
+
+        /* ---- RX subsystem ---- */
+        rx {
+            compatible = "samsung,tseq-rx";
+            samsung,correlator-pipeline-depth = <4>;
+            samsung,max-correlators           = <64>;
+
+            /* Receiver modes */
+            samsung,rx-types = "coherent", "non-coherent";
+
+            /* Coherent: correlate with ternary shifts {-1,0,+1} */
+            coherent {
+                samsung,alphabet  = "ternary";
+                samsung,ref-set   = "cyclic-shifts-base";
+                samsung,phase-info = "required";
+            };
+
+            /* Non-coherent: correlate with |base| shifts {0,1} */
+            non_coherent {
+                samsung,alphabet  = "binary";
+                samsung,ref-set   = "cyclic-shifts-abs-base";
+                samsung,phase-info = "none";
+                samsung,detection  = "envelope";
+            };
+        };
+
+        /* ---- Sequence generator ---- */
+        seq_gen {
+            compatible = "samsung,tseq-seqgen";
+
+            /* LFSR for m-sequence generation */
+            samsung,lfsr-max-degree = <6>;
+            samsung,lfsr-poly-3     = <0x0B>;
+            samsung,lfsr-poly-4     = <0x13>;
+            samsung,lfsr-poly-5     = <0x25>;
+            samsung,lfsr-poly-6     = <0x43>;
+
+            /* Sequence quality */
+            samsung,supports-perfect      = <1>;
+            samsung,supports-near-perfect = <1>;
+            samsung,msac-compute          = "hardware";
+        };
+
+        /* ---- Correlator engine ---- */
+        correlator {
+            compatible = "samsung,tseq-correlator";
+            samsung,parallel-correlations = <8>;
+            samsung,correlation-width-bits = <16>;
+            samsung,argmax-hardware        = <1>;
+        };
+    };
+
+    /* ------------------------------------------------------------------ */
+    /* seT6 trit-native bus attachment                                     */
+    /* ------------------------------------------------------------------ */
+    set6_bus {
+        compatible = "set6,ternary-bus";
+
+        tseq_port {
+            compatible = "set6,tseq-port";
+            samsung,modem = <&tseq_modem>;
+
+            /* seT6 trit type mapping:
+             *   TRIT_FALSE  (-1)  = CN105745888A "-1"
+             *   TRIT_UNKNOWN ( 0) = CN105745888A "0"
+             *   TRIT_TRUE   (+1)  = CN105745888A "+1"
+             * No translation needed. */
+            set6,trit-mapping = "direct";
+            set6,balanced     = <1>;
+        };
+    };
+};

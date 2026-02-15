@@ -1,0 +1,83 @@
+/*
+ * Device Tree Source for TSMC US20230307234A1 TMD Heterostack Chip
+ *
+ * Describes the 2D-material (TMD) field-effect transistor and
+ * heterostack IP block as specified in patent US20230307234A1
+ * for integration with the seT6 microkernel's platform discovery
+ * and driver binding.
+ *
+ * This DTS fragment is included in the board-level device tree for
+ * any SoC that integrates the TSMC TMD heterostack IP.
+ *
+ * SPDX-License-Identifier: GPL-2.0
+ */
+
+/ {
+    compatible = "tsmc,us20230307234a1-soc";
+    model = "TSMC TMD Heterostack SoC (US20230307234A1)";
+
+    /* ---- TMD Heterostack Controller ---- */
+    tmd_heterostack@40200000 {
+        compatible = "tsmc,us20230307234a1-tmd-heterostack";
+        reg = <0x40200000 0x2000>;   /* 8 KB MMIO aperture */
+        interrupts = <0 48 4>;       /* SPI #48, level-high */
+
+        /* TMD material configuration */
+        tsmc,max-layers = <8>;           /* Max stack depth         */
+        tsmc,supported-materials = "hbn", "mos2", "ws2",
+                                   "mose2", "wse2", "mote2",
+                                   "graphene";
+
+        /* Van der Waals bonding parameters */
+        tsmc,vdw-bond-min-N-per-in2 = <60>;
+        tsmc,vdw-bond-max-N-per-in2 = <1600>;
+        tsmc,vacuum-min-utorr = <1>;
+        tsmc,vacuum-max-utorr = <1000>;
+
+        /* FET configuration */
+        tsmc,v-supply-mv = <900>;        /* Supply voltage = 0.9 V  */
+        tsmc,gate-width-nm = <20>;       /* Minimum gate width      */
+        tsmc,ternary-thresholds;         /* Enable V/3, 2V/3 levels */
+
+        /* 3D integration parameters */
+        tsmc,feol-tiers = <2>;
+        tsmc,beol-tiers = <4>;
+        tsmc,tmd-tiers  = <8>;
+        tsmc,die-area-mm2 = <100>;
+
+        /* Quality scoring */
+        tsmc,quality-base = <100>;
+        tsmc,quality-vacuum-penalty = <5>;
+        tsmc,quality-force-penalty  = <3>;
+
+        /* Clock (process-dependent) */
+        clocks = <&tmd_clk>;
+        clock-names = "tmd_clk";
+
+        status = "okay";
+    };
+
+    /* ---- TMD FET Array ---- */
+    tmd_fet_array@40202000 {
+        compatible = "tsmc,us20230307234a1-tmd-fet";
+        reg = <0x40202000 0x1000>;   /* 4 KB MMIO aperture */
+
+        /* Channel defaults */
+        tsmc,channel-material = "mos2";
+        tsmc,channel-thickness-pm = <650>;
+        tsmc,on-current-ua-per-um = <250>;
+
+        /* Ternary logic configuration */
+        tsmc,logic-type = "balanced";    /* seT6 compatible */
+
+        status = "okay";
+    };
+
+    /* ---- Clock Source ---- */
+    tmd_clk: tmd-clock {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <500000000>;   /* 500 MHz nominal */
+        clock-output-names = "tmd_clk";
+    };
+};

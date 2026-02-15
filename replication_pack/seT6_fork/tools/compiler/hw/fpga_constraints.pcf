@@ -1,0 +1,25 @@
+# fpga_constraints.pcf - Lattice iCE40 HX8K Pin Constraints
+#
+# Pin assignments for the iCE40-HX8K Breakout Board.
+# Adjust pin numbers for your specific FPGA board.
+
+# Clock input (on-board 12 MHz oscillator)
+set_io clk_in  J3
+
+# Reset button (active low)
+set_io rst_n   B4
+
+# Program load interface
+set_io prog_clk   A1
+set_io prog_data  A2
+set_io prog_load  A3
+
+# LEDs (active high on most iCE40 boards)
+set_io led[0]  C3
+set_io led[1]  B3
+set_io led[2]  A4
+set_io led[3]  B5
+set_io led[4]  A5
+
+# UART TX (directly or via FTDI chip)
+set_io uart_tx B12

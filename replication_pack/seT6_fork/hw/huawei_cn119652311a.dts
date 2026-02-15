@@ -1,0 +1,65 @@
+/*
+ * Device Tree Source for Huawei CN119652311A Ternary Computing Chip
+ *
+ * Describes the ternary logic gate / computing circuit / chip as
+ * specified in patent CN119652311A for integration with the seT6
+ * microkernel's platform discovery and driver binding.
+ *
+ * This DTS fragment is included in the board-level device tree for
+ * any SoC that integrates the Huawei ternary ALU IP.
+ *
+ * SPDX-License-Identifier: GPL-2.0
+ */
+
+/ {
+    compatible = "huawei,cn119652311a-soc";
+    model = "Huawei Ternary Computing SoC (CN119652311A)";
+
+    /* ---- Ternary ALU IP Block ---- */
+    ternary_alu@40100000 {
+        compatible = "huawei,cn119652311a-ternary-alu";
+        reg = <0x40100000 0x1000>;   /* 4 KB MMIO aperture */
+        interrupts = <0 32 4>;       /* SPI #32, level-high */
+
+        /* Voltage configuration */
+        huawei,vdd-mv = <1000>;      /* VDD = 1.0 V */
+        huawei,vth-lvt-mv = <250>;   /* Low  threshold = 0.25 V */
+        huawei,vth-mvt-mv = <400>;   /* Mid  threshold = 0.40 V */
+        huawei,vth-hvt-mv = <650>;   /* High threshold = 0.65 V */
+
+        /* Feature enable flags */
+        huawei,has-inc-gate;
+        huawei,has-dec-gate;
+        huawei,has-nti;
+        huawei,has-pti;
+        huawei,has-half-adder;
+        huawei,has-full-adder;
+        huawei,has-multiplier;
+        huawei,has-approx-mul;
+        huawei,has-compensation;
+
+        /* Multiplier configuration */
+        huawei,mul-width = <6>;       /* Native 6trit×6trit */
+        huawei,max-trit-width = <32>; /* Max word width */
+        huawei,num-alu-units = <1>;   /* Single ALU pipeline */
+
+        /* Transistor technology */
+        huawei,transistor-type = "CNTFET";
+        huawei,transistor-count-inc = <9>;  /* 7 core + 2 NTI */
+        huawei,transistor-count-dec = <9>;  /* 7 core + 2 PTI */
+
+        /* Clock (nominal; patent does not specify frequency) */
+        clocks = <&ternary_clk>;
+        clock-names = "alu_clk";
+
+        status = "okay";
+    };
+
+    /* ---- Clock Source ---- */
+    ternary_clk: ternary-clock {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <100000000>;  /* 100 MHz (placeholder) */
+        clock-output-names = "ternary_alu_clk";
+    };
+};

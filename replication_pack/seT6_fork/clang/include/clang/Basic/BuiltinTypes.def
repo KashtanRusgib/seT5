@@ -1,0 +1,29 @@
+// seT6 Ternary Extension — BuiltinType stubs
+//
+// In a full Clang fork, append this to BuiltinTypes.def after the
+// existing integer types.
+//
+// SPDX-License-Identifier: GPL-2.0
+
+// ---- New builtin type (append after SIGNED_TYPE(Int128, Int128Ty)) ----
+// SIGNED_TYPE(Trit, TritTy)
+//
+// Properties:
+//   - Width: 8 bits (matches int8_t storage)
+//   - Alignment: 8 bits
+//   - Range: -1, 0, +1 (enforced by Sema, not bit-width)
+//   - Rank: below 'short' in integer conversion rank
+//   - Signedness: signed
+//
+// The type is integer-like for arithmetic promotion purposes,
+// but Sema applies Kleene-logic constraints on operators (see
+// SemaChecking additions).
+//
+// ---- Corresponding QualType accessor in ASTContext ----
+// QualType ASTContext::TritTy;  // initialized in InitBuiltinTypes()
+//
+// ---- sizeof / alignof ----
+// case BuiltinType::Trit: Width = 8; Align = 8; break;
+//
+// ---- Mangling (ItaniumMangle) ----
+// case BuiltinType::Trit: Out << "u4trit"; break;
