@@ -1,0 +1,11 @@
+session seT6_Proofs = HOL +
+  description "seT6 Ternary Microkernel — Formal Verification Proofs"
+  theories
+    TritKleene
+    TritOps
+    CapSafety
+    MemIsolation
+    IPCCorrect
+    SecurityCIA
+    TranslationValidation
+    TJSON_Validation
