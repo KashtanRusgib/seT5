@@ -102,6 +102,10 @@ NEW_PATENT_SRCS     = $(TSMC_TMD_SRCS) $(INTEL_PAM3D_SRCS) $(HYNIX_TCAM_SRCS)
 test_tsmc_tmd_intel_pam3_hynix_tcam: tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c $(NEW_PATENT_SRCS)
 	$(CC) $(CFLAGS) -o $@ $^
 
+# ---- Ternary Database and Storage Layer test suite ----
+test_ternary_database: tests/test_ternary_database.c src/ternary_database.c
+	$(CC) $(CFLAGS) -o $@ $^
+
 # ---- Functional utility test suite (INCREASE_FUNCTIONAL_UTILITY.md) ----
 test_functional_utility: tests/test_functional_utility.c $(FUNC_UTIL_SRCS)
 	$(CC) $(CFLAGS) -o $@ $^
@@ -177,7 +181,7 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_huawei_cn119652311a test_samsung_us11170290b2 \
                  test_samsung_cn105745888a test_functional_utility \
                  test_friday_updates test_trit_linux test_trit_enhancements \
-                 test_tsmc_tmd_intel_pam3_hynix_tcam \
+                 test_tsmc_tmd_intel_pam3_hynix_tcam test_ternary_database \
                  trithon/libtrithon.so
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
@@ -265,6 +269,19 @@ test: build-compiler
 	bash tools/test_grand_summary.sh "$$LOGF"; \
 	rm -f "$$LOGF"; \
 	exit $$RC
+
+# ──────────────────────────────────────────────────────────────────────
+# seT6 test target: runs the FULL seT6 test suite (all seT5 base tests
+# plus seT6-only additions) from the seT6/ subdirectory.
+#
+#   make test6
+#
+# Delegates to seT6/Makefile's `test` target which force-rebuilds every
+# binary and runs tools/test_grand_summary.sh for the final report.
+# ──────────────────────────────────────────────────────────────────────
+.PHONY: test6
+test6:
+	$(MAKE) -C seT6 test
 
 # ---- Clean ----
 .PHONY: clean

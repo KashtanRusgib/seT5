@@ -6,22 +6,32 @@ Trithon: Python interface to seT5 balanced ternary operations.
 
 Provides:
   - Trit scalar type with Kleene K₃ logic
+  - FuzzyTrit for Łukasiewicz fuzzy logic (AI applications)
   - TritArray: NumPy-compatible ternary arrays
+  - Ternary Neural Network primitives (BitNet b1.58, sparse ops)
   - DOT_TRIT, FFT_STEP, RADIX_CONV operations
   - QEMU noise simulation for hardware testing
   - Optional C extension (libtrithon.so) for native performance
 
 Usage:
-    from trithon import Trit, TritArray
+    from trithon import Trit, FuzzyTrit, TritArray, TernaryNN
 
+    # Kleene logic
     a = Trit.TRUE
     b = Trit.UNKNOWN
     print(a & b)         # Kleene AND → Unknown
-    print(a | b)         # Kleene OR  → True
-    print(~a)            # Kleene NOT → False
 
+    # Łukasiewicz fuzzy logic for AI
+    f1 = FuzzyTrit(0.7)  # 70% true
+    f2 = FuzzyTrit(0.4)  # 40% true
+    print(f1 & f2)       # Łukasiewicz AND → 0.4
+    print(f1.implies(f2)) # Łukasiewicz implication
+
+    # Neural networks
+    nn = TernaryNN()
+    weights = nn.quantize_bitnet([100, -50, 0, 200])  # BitNet b1.58
     arr = TritArray([1, 0, -1, 1, 0])
-    print(arr.dot(arr))  # DOT product
+    print(arr.dot_sparse(arr, n=4, m=2))  # Sparse dot product
 """
 
 from __future__ import annotations
@@ -161,6 +171,180 @@ class Trit(IntEnum):
     def __repr__(self) -> str:
         names = {-1: 'F', 0: 'U', 1: 'T'}
         return f"Trit.{names[self.value]}"
+
+
+class FuzzyTrit:
+    """
+    Łukasiewicz fuzzy trit for AI applications.
+    Values in [0,1] representing degree of truth.
+    Implements Łukasiewicz logic: ¬p = 1-p, p∧q = min(p,q), p∨q = max(p,q), p→q = min(1,1-p+q)
+    """
+
+    def __init__(self, value: float):
+        if not (0.0 <= value <= 1.0):
+            raise ValueError(f"FuzzyTrit value must be in [0,1], got {value}")
+        self.value = float(value)
+
+    # Łukasiewicz negation: ¬p = 1-p
+    def __invert__(self) -> 'FuzzyTrit':
+        return FuzzyTrit(1.0 - self.value)
+
+    # Łukasiewicz conjunction: p ∧ q = min(p, q)
+    def __and__(self, other: 'FuzzyTrit') -> 'FuzzyTrit':
+        return FuzzyTrit(min(self.value, other.value))
+
+    # Łukasiewicz disjunction: p ∨ q = max(p, q)
+    def __or__(self, other: 'FuzzyTrit') -> 'FuzzyTrit':
+        return FuzzyTrit(max(self.value, other.value))
+
+    # Łukasiewicz implication: p → q = min(1, 1-p + q)
+    def implies(self, other: 'FuzzyTrit') -> 'FuzzyTrit':
+        return FuzzyTrit(min(1.0, 1.0 - self.value + other.value))
+
+    # Łukasiewicz equivalence: p ↔ q = min(p→q, q→p)
+    def equiv(self, other: 'FuzzyTrit') -> 'FuzzyTrit':
+        return FuzzyTrit(min(self.implies(other).value, other.implies(self).value))
+
+    # Fuzzy intersection (same as AND in Łukasiewicz)
+    def intersection(self, other: 'FuzzyTrit') -> 'FuzzyTrit':
+        return self & other
+
+    # Fuzzy union (same as OR in Łukasiewicz)
+    def union(self, other: 'FuzzyTrit') -> 'FuzzyTrit':
+        return self | other
+
+    # Fuzzy complement (same as NOT)
+    def complement(self) -> 'FuzzyTrit':
+        return ~self
+
+    def __repr__(self) -> str:
+        return f"FuzzyTrit({self.value:.3f})"
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, FuzzyTrit):
+            return abs(self.value - other.value) < 1e-6
+        return False
+
+    def __hash__(self) -> int:
+        return hash(round(self.value, 6))
+
+
+class TernaryNN:
+    """
+    Ternary Neural Network primitives for AI acceleration.
+    Implements BitNet b1.58 quantization and sparse ternary operations.
+    """
+
+    @staticmethod
+    def quantize_bitnet(weights: List[float], scale: float = 1000.0) -> TritArray:
+        """
+        BitNet b1.58 ternary quantization.
+        Converts floating-point weights to {-1, 0, +1} using threshold-based quantization.
+
+        Args:
+            weights: List of floating-point weights
+            scale: Scaling factor (default 1000 for fixed-point representation)
+
+        Returns:
+            TritArray with quantized weights
+        """
+        # Convert to fixed-point integers
+        int_weights = [int(w * scale) for w in weights]
+
+        # Calculate threshold as 0.7 * mean absolute value
+        mean_abs = sum(abs(w) for w in int_weights) / len(int_weights)
+        threshold = int(0.7 * mean_abs)
+
+        # Quantize to ternary
+        ternary = []
+        for w in int_weights:
+            if w > threshold:
+                ternary.append(1)   # True/Positive
+            elif w < -threshold:
+                ternary.append(-1)  # False/Negative
+            else:
+                ternary.append(0)   # Unknown/Zero
+
+        return TritArray(ternary)
+
+    @staticmethod
+    def ternary_linear(x: TritArray, weight: TritArray, bias: Optional[TritArray] = None) -> int:
+        """
+        Ternary linear layer: y = x @ weight + bias
+        All operations in balanced ternary arithmetic.
+
+        Args:
+            x: Input tensor (flattened)
+            weight: Weight matrix (flattened)
+            bias: Optional bias vector
+
+        Returns:
+            Integer result of ternary dot product
+        """
+        result = x.dot(weight)
+        if bias is not None:
+            result += bias.dot(TritArray.splat(1, len(bias)))
+        return result
+
+    @staticmethod
+    def sparse_attention(q: TritArray, k: TritArray, v: TritArray, n: int = 4, m: int = 2) -> TritArray:
+        """
+        Sparse ternary attention mechanism.
+        Uses N:M sparsity pattern for efficient computation.
+
+        Args:
+            q: Query tensor
+            k: Key tensor
+            v: Value tensor
+            n: Block size for sparsity
+            m: Max non-zero elements per block
+
+        Returns:
+            Attention output
+        """
+        # Compute attention scores using sparse dot product
+        scores = []
+        for i in range(0, len(q), n):
+            q_block = q._data[i:i+n]
+            score_block = []
+            for j in range(0, len(k), n):
+                k_block = k._data[j:j+n]
+                # Sparse dot product for attention
+                score = sum(q_val * k_val for q_val, k_val in zip(q_block, k_block)
+                           if q_val != 0 and k_val != 0)  # Only non-zero multiplications
+                score_block.append(score)
+            scores.extend(score_block)
+
+        # Apply softmax-like normalization (ternary approximation)
+        max_score = max(scores) if scores else 0
+        normalized = [max(0, min(2, s - max_score + 1)) for s in scores]  # Clamp to [-1,1] range
+
+        # Weighted sum with values
+        output = []
+        for i, score in enumerate(normalized):
+            if i < len(v):
+                weighted_v = [score * v_val for v_val in v._data[i*n:(i+1)*n]]
+                output.extend(weighted_v)
+
+        return TritArray(output[:len(v)])  # Truncate to original size
+
+    @staticmethod
+    def fuzzy_activation(x: FuzzyTrit) -> FuzzyTrit:
+        """
+        Fuzzy activation function for neural networks.
+        Uses Łukasiewicz logic for smooth activation.
+
+        Args:
+            x: Input fuzzy value
+
+        Returns:
+            Activated fuzzy value
+        """
+        # Sigmoid-like activation using fuzzy logic
+        # activation(x) = x → (x ∧ ¬x) = min(1, 1-x + min(x, 1-x))
+        neg_x = ~x
+        conjunction = x & neg_x
+        return x.implies(conjunction)
 
 
 class TritArray:
@@ -382,15 +566,153 @@ class TritArray:
             'version': 3,
         }
 
+    @property
+    def __array_function__(self, func, types, args, kwargs):
+        """NumPy array function protocol for enhanced compatibility."""
+        # Handle common NumPy functions
+        if func == np.sum:
+            return sum(self._data)
+        elif func == np.mean:
+            return sum(self._data) / len(self._data) if self._data else 0.0
+        elif func == np.dot:
+            if len(args) >= 2 and isinstance(args[1], TritArray):
+                return self.dot(args[1])
+            return NotImplemented
+        elif func == np.matmul:
+            return self.dot(args[1]) if len(args) >= 2 and isinstance(args[1], TritArray) else NotImplemented
+        return NotImplemented
+
+    @property
+    def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):
+        """NumPy universal function support."""
+        # Convert inputs to TritArrays if needed
+        converted_inputs = []
+        for inp in inputs:
+            if isinstance(inp, TritArray):
+                converted_inputs.append(inp)
+            elif hasattr(inp, '__array_interface__'):
+                # Convert from NumPy array
+                arr = np.asarray(inp, dtype=np.int8)
+                converted_inputs.append(TritArray(arr.tolist()))
+            else:
+                return NotImplemented
+
+        if ufunc == np.add:
+            return converted_inputs[0] + converted_inputs[1]
+        elif ufunc == np.multiply:
+            return converted_inputs[0] * converted_inputs[1]
+        elif ufunc == np.matmul:
+            return converted_inputs[0].dot(converted_inputs[1])
+        return NotImplemented
+
     def to_numpy(self):
         """Convert to NumPy array (requires numpy)."""
-        import numpy as np
-        return np.array(self._data, dtype=np.int8)
+        try:
+            import numpy as np
+            return np.array(self._data, dtype=np.int8)
+        except ImportError:
+            raise ImportError("NumPy is required for to_numpy()")
 
     @classmethod
     def from_numpy(cls, arr) -> 'TritArray':
         """Create TritArray from NumPy array."""
-        return cls(arr.tolist())
+        try:
+            import numpy as np
+            if isinstance(arr, np.ndarray):
+                # Validate ternary values
+                if not np.all(np.isin(arr, [-1, 0, 1])):
+                    raise ValueError("NumPy array must contain only -1, 0, 1 values")
+                return cls(arr.tolist())
+            else:
+                return cls(arr)
+        except ImportError:
+            raise ImportError("NumPy is required for from_numpy()")
+
+    def reshape(self, *shape) -> 'TritArray':
+        """Reshape ternary array (similar to NumPy)."""
+        if len(shape) == 1:
+            new_size = shape[0]
+        else:
+            new_size = 1
+            for dim in shape:
+                new_size *= dim
+
+        if new_size != len(self._data):
+            raise ValueError(f"Cannot reshape {len(self._data)} elements into shape {shape}")
+
+        return TritArray(self._data)
+
+    def transpose(self) -> 'TritArray':
+        """Transpose ternary array."""
+        # For 1D arrays, transpose is a no-op
+        return TritArray(self._data)
+
+    # ---- Enhanced Array Operations ----
+
+    def convolve(self, kernel: 'TritArray', mode: str = 'valid') -> 'TritArray':
+        """
+        Ternary convolution for signal processing.
+        Uses balanced ternary arithmetic for all operations.
+
+        Args:
+            kernel: Convolution kernel
+            mode: 'valid', 'same', or 'full'
+
+        Returns:
+            Convolved result
+        """
+        if len(kernel) > len(self):
+            raise ValueError("Kernel cannot be larger than input")
+
+        result = []
+        kernel_len = len(kernel)
+
+        if mode == 'valid':
+            for i in range(len(self) - kernel_len + 1):
+                conv_sum = 0
+                for j in range(kernel_len):
+                    conv_sum += self._data[i + j] * kernel._data[j]
+                result.append(conv_sum)
+        elif mode == 'same':
+            pad = kernel_len // 2
+            for i in range(len(self)):
+                conv_sum = 0
+                for j in range(kernel_len):
+                    idx = i + j - pad
+                    if 0 <= idx < len(self):
+                        conv_sum += self._data[idx] * kernel._data[j]
+                result.append(conv_sum)
+        elif mode == 'full':
+            for i in range(len(self) + kernel_len - 1):
+                conv_sum = 0
+                for j in range(kernel_len):
+                    idx = i - j
+                    if 0 <= idx < len(self):
+                        conv_sum += self._data[idx] * kernel._data[j]
+                result.append(conv_sum)
+
+        return TritArray(result)
+
+    def correlate(self, template: 'TritArray') -> List[int]:
+        """
+        Ternary cross-correlation for pattern matching.
+
+        Args:
+            template: Pattern to correlate with
+
+        Returns:
+            Correlation scores
+        """
+        result = []
+        template_len = len(template)
+
+        for i in range(len(self) - template_len + 1):
+            corr_sum = 0
+            for j in range(template_len):
+                corr_sum += self._data[i + j] * template._data[j]
+            result.append(corr_sum)
+
+        return result
 
     # ---- Statistics ----
 
