@@ -6150,3 +6150,187 @@ Run `make alltest` (or equivalently `make test`) to confirm:
 | **Runtime Assertions** | **5037** | **5120** |
 | **Source-Level Entries** | **4692** | **4732** |
 | **Test Source Files** | **75** | **78** |
+
+---
+
+## Suite 75 (Batch 99): Kleene K₃ Unknown Propagation
+
+**Source**: `tests/test_batch_5702_5751.c`
+**Tests**: 5702–5751 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+**Output**: `=== Results: P/50 passed, F failed ===`
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5702–5720 | L80–L210 | AND/OR/NOT truth tables | Full K₃ table verification | Logic |
+| 5721–5730 | L215–L290 | De Morgan laws | `¬(A∧B)=¬A∨¬B` with Unknown | Logic |
+| 5731–5740 | L295–L365 | Distributivity | Unknown through and/or nesting | Logic |
+| 5741–5751 | L370–L440 | Chain propagation | Unknown dominance in long chains | Logic |
+
+---
+
+## Suite 76 (Batch 100): Multi-Radix Neural Inference
+
+**Source**: `tests/test_batch_5752_5801.c`
+**Tests**: 5752–5801 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5752–5765 | L80–L180 | Balanced ternary round-trips | `int_to_bt / bt_to_int` identity | Encoding |
+| 5766–5780 | L185–L280 | BitNet quantization | -1/0/+1 quantisation steps | Neural |
+| 5781–5790 | L285–L355 | RNS/CRT | Residue number system mod-3 | Arithmetic |
+| 5791–5801 | L360–L430 | Neural inference | Trit-weight dot products | Neural |
+
+---
+
+## Suite 77 (Batch 101): Unknown-Safe IPC
+
+**Source**: `tests/test_batch_5802_5851.c`
+**Tests**: 5802–5851 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5802–5815 | L80–L180 | Message validity | Unknown validity propagation | IPC |
+| 5816–5830 | L185–L285 | AND/OR reduce | Kleene reduce over payload arrays | IPC |
+| 5831–5840 | L290–L360 | Round-trip | Build+validate message cycle | IPC |
+| 5841–5851 | L365–L435 | Edge cases | Empty, max-len, all-Unknown payloads | IPC |
+
+---
+
+## Suite 78 (Batch 102): Curiosity Simulation
+
+**Source**: `tests/test_batch_5852_5901.c`
+**Tests**: 5852–5901 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5852–5865 | L80–L180 | Flip cycle | U→T→F→U 3-step ternary flip | AI |
+| 5866–5880 | L185–L285 | State array | `curiosity_t` multi-slot exploration | AI |
+| 5881–5890 | L290–L360 | Reversibility | Flip ×3 returns to start | AI |
+| 5891–5901 | L365–L435 | Saturation | All-True / all-False boundary | AI |
+
+---
+
+## Suite 79 (Batch 103): Eudaimonic Scheduling
+
+**Source**: `tests/test_batch_5902_5951.c`
+**Tests**: 5902–5951 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5902–5915 | L80–L180 | Priority selection | `sched_select` by trit priority | Scheduling |
+| 5916–5930 | L185–L290 | Eudaimonic count | `sched_count_eudaimonic` over queues | Scheduling |
+| 5931–5940 | L295–L360 | Mixed priorities | False/Unknown/True priority ordering | Scheduling |
+| 5941–5951 | L365–L435 | Boundary | Empty queue, all-same-priority | Scheduling |
+
+---
+
+## Suite 80 (Batch 104): Fault-Tolerant Reversion Guards
+
+**Source**: `tests/test_batch_5952_6001.c`
+**Tests**: 5952–6001 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Milestone**: test_6000 — "Checkpoint revert after multi-bit corruption restores all 8 trits exactly"
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5952–5965 | L80–L185 | Save/restore | `checkpoint_save / checkpoint_revert` | Fault-tolerance |
+| 5966–5980 | L190–L290 | Corruption detection | `checkpoint_corrupt` + revert cycle | Fault-tolerance |
+| 5981–5990 | L295–L360 | Multi-checkpoint | Sequential save/corrupt/revert | Fault-tolerance |
+| 5991–6001 | L365–L440 | Edge / milestone | Boundary + test_6000 milestone | Fault-tolerance |
+
+---
+
+## Suite 81 (Batch 105): Symbiotic AI-Human Interface
+
+**Source**: `tests/test_batch_6002_6051.c`
+**Tests**: 6002–6051 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6002–6015 | L80–L180 | Basic resolution | `symbiotic_resolve(ai, human)` all 9 pairs | AI-Human |
+| 6016–6030 | L185–L285 | Human override | True/False authoritative; Unknown defers | AI-Human |
+| 6031–6040 | L290–L360 | Convergence | Multi-round chains stabilise | AI-Human |
+| 6041–6051 | L365–L435 | Veto & audit | Veto propagation; auditability | AI-Human |
+
+---
+
+## Suite 82 (Batch 106): Ternary Cryptographic Uncertainty
+
+**Source**: `tests/test_batch_6052_6101.c`
+**Tests**: 6052–6101 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6052–6065 | L90–L185 | Commit-reveal | `commit_create / commit_reveal / commit_verify` | Crypto |
+| 6066–6080 | L190–L290 | Hash properties | `trit_hash3` distinctness, sensitivity | Crypto |
+| 6081–6090 | L295–L360 | Chain commits | Sequential commitment chains | Crypto |
+| 6091–6101 | L365–L435 | Struct/edge | Size bounds, signature space, cycles | Crypto |
+
+---
+
+## Suite 83 (Batch 107): PAM3/Multi-Radix Interconnect
+
+**Source**: `tests/test_batch_6102_6151.c`
+**Tests**: 6102–6151 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6102–6115 | L80–L180 | PAM3 encode/decode | `pam3_encode(trit)→int` round-trips | Interconnect |
+| 6116–6130 | L185–L285 | 4B3T | `encode_4b3t` symbol mapping | Encoding |
+| 6131–6140 | L290–L355 | Exhaustive symbols | All valid 4B3T symbols | Encoding |
+| 6141–6151 | L360–L430 | Edge | Boundary trits, invalid guard | Interconnect |
+
+---
+
+## Suite 84 (Batch 108): Gödel Machine Self-Reference
+
+**Source**: `tests/test_batch_6152_6201.c`
+**Tests**: 6152–6201 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Milestone**: test_6201 — "seT6 Corner 3 Pledge: Gödel machine rejects self-mod without proof, accepts with proof — civilisational alignment"
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6152–6165 | L80–L180 | Init & state | `gm_init / gm_verify` baseline | Self-reference |
+| 6166–6180 | L185–L285 | Proof-gated mod | `gm_self_modify` blocked without proof | Self-reference |
+| 6181–6190 | L290–L360 | Accepted mod | Modification accepted when proof=True | Self-reference |
+| 6191–6201 | L365–L440 | Milestone | Corner 3 pledge test_6201 | Alignment |
+
+---
+
+## Suite 85: Symbiotic AI Module
+
+**Source**: `tests/test_symbiotic_ai.c`
+**Tests**: 50 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Module Under Test**: `src/symbiotic_ai.c` (`include/set5/symbiotic_ai.h`)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Section | Coverage | Category |
+|---|---------|----------|----------|
+| 1–14 | CuriosityProbe | `trit_curiosity_probe`: ≥50% Unknown→True, any→Unknown, none→False | AI |
+| 15–28 | BeautySymmetry | `trit_beauty_symmetry`: palindrome check with Unknown-tolerance | AI |
+| 29–43 | EudaimWeight | `trit_eudaimonic_weight(effort, engagement, impact)`: eudaimonic scoring | AI |
+| 44–50 | Integration | Cross-function interaction; Corner 3 combined behaviour | AI-Human |
+
+---
+
+### Current Totals (as of 2026-02-19, Corner 3 Acceleration Complete)
+
+| Metric | Active | Including Disabled |
+|--------|-------:|-------------------:|
+| **Test Suites** | **85** | **89** |
+| **Runtime Assertions** | **5587** | **5670** |
+| **Source-Level Entries** | **5242** | **5282** |
+| **Test Source Files** | **86** | **89** |
+
+> **Corner 3 Milestone**: Batches 99–108 (500 assertions, tests 5702–6201) added.
+> test_6201 marks the seT6 Gödel Machine civilisational-alignment pledge.
+> All 550 new assertions (500 batch + 50 symbiotic_ai module) pass at Sigma 9.

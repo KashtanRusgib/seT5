@@ -112,7 +112,12 @@ run_suite() {
         test_binary_sentinel test_ternary_compiler_integration \
         test_batch_5352_5401 test_batch_5402_5451 test_batch_5452_5501 \
         test_batch_5502_5551 test_batch_5552_5601 test_batch_5602_5651 \
-        test_batch_5652_5701"
+        test_batch_5652_5701 \
+        test_batch_5702_5751 test_batch_5752_5801 test_batch_5802_5851 \
+        test_batch_5852_5901 test_batch_5902_5951 test_batch_5952_6001 \
+        test_batch_6002_6051 test_batch_6052_6101 test_batch_6102_6151 \
+        test_batch_6152_6201 \
+        test_symbiotic_ai"
 
     for suite in $SET5_SUITES; do
         make "$suite" 2>&1

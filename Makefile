@@ -117,6 +117,50 @@ test_batch_5602_5651: tests/test_batch_5602_5651.c src/tipc.c
 test_batch_5652_5701: tests/test_batch_5652_5701.c src/tipc.c
 	$(CC) $(CFLAGS) -o $@ $^
 
+# ---- Batch 5702-5751: Kleene K3 Unknown Propagation ----
+test_batch_5702_5751: tests/test_batch_5702_5751.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 5752-5801: Multi-Radix Neural Inference ----
+test_batch_5752_5801: tests/test_batch_5752_5801.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 5802-5851: Unknown-Safe IPC ----
+test_batch_5802_5851: tests/test_batch_5802_5851.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 5852-5901: Curiosity Simulation / Exploratory Trit-Flips ----
+test_batch_5852_5901: tests/test_batch_5852_5901.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 5902-5951: Eudaimonic Scheduling ----
+test_batch_5902_5951: tests/test_batch_5902_5951.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 5952-6001: Fault-Tolerant Reversion Guards ----
+test_batch_5952_6001: tests/test_batch_5952_6001.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 6002-6051: Symbiotic AI-Human Interface ----
+test_batch_6002_6051: tests/test_batch_6002_6051.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 6052-6101: Ternary Cryptographic Uncertainty ----
+test_batch_6052_6101: tests/test_batch_6052_6101.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 6102-6151: PAM3 / Multi-Radix Interconnect ----
+test_batch_6102_6151: tests/test_batch_6102_6151.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 6152-6201: Godel Machine Self-Reference ----
+test_batch_6152_6201: tests/test_batch_6152_6201.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Symbiotic AI Module ----
+test_symbiotic_ai: tests/test_symbiotic_ai.c src/symbiotic_ai.c
+	$(CC) $(CFLAGS) -o $@ $^
+
 # ---- Scheduler concurrency test ----
 test_scheduler_concurrency: tests/test_scheduler_concurrency.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -373,6 +417,11 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_ternary_compiler_integration test_batch_5352_5401 \
                  test_batch_5402_5451 test_batch_5452_5501 test_batch_5502_5551 \
                  test_batch_5552_5601 test_batch_5602_5651 test_batch_5652_5701 \
+                 test_batch_5702_5751 test_batch_5752_5801 test_batch_5802_5851 \
+                 test_batch_5852_5901 test_batch_5902_5951 test_batch_5952_6001 \
+                 test_batch_6002_6051 test_batch_6052_6101 test_batch_6102_6151 \
+                 test_batch_6152_6201 \
+                 test_symbiotic_ai \
                  trithon/libtrithon.so
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
@@ -499,6 +548,28 @@ _run-test-suites:
 	-$(MAKE) test_binary_sentinel && ./test_binary_sentinel
 	@echo "##BEGIN##=== Ternary Compiler Integration tests ==="
 	-$(MAKE) test_ternary_compiler_integration && ./test_ternary_compiler_integration
+	@echo "##BEGIN##=== Batch 5702-5751: Kleene K3 Unknown Propagation ==="
+	-$(MAKE) test_batch_5702_5751 && ./test_batch_5702_5751
+	@echo "##BEGIN##=== Batch 5752-5801: Multi-Radix Neural Inference ==="
+	-$(MAKE) test_batch_5752_5801 && ./test_batch_5752_5801
+	@echo "##BEGIN##=== Batch 5802-5851: Unknown-Safe IPC ==="
+	-$(MAKE) test_batch_5802_5851 && ./test_batch_5802_5851
+	@echo "##BEGIN##=== Batch 5852-5901: Curiosity Simulation ==="
+	-$(MAKE) test_batch_5852_5901 && ./test_batch_5852_5901
+	@echo "##BEGIN##=== Batch 5902-5951: Eudaimonic Scheduling ==="
+	-$(MAKE) test_batch_5902_5951 && ./test_batch_5902_5951
+	@echo "##BEGIN##=== Batch 5952-6001: Fault-Tolerant Reversion Guards ==="
+	-$(MAKE) test_batch_5952_6001 && ./test_batch_5952_6001
+	@echo "##BEGIN##=== Batch 6002-6051: Symbiotic AI-Human Interface ==="
+	-$(MAKE) test_batch_6002_6051 && ./test_batch_6002_6051
+	@echo "##BEGIN##=== Batch 6052-6101: Ternary Cryptographic Uncertainty ==="
+	-$(MAKE) test_batch_6052_6101 && ./test_batch_6052_6101
+	@echo "##BEGIN##=== Batch 6102-6151: PAM3 Multi-Radix Interconnect ==="
+	-$(MAKE) test_batch_6102_6151 && ./test_batch_6102_6151
+	@echo "##BEGIN##=== Batch 6152-6201: Godel Machine Self-Reference ==="
+	-$(MAKE) test_batch_6152_6201 && ./test_batch_6152_6201
+	@echo "##BEGIN##=== Symbiotic AI Module ==="
+	-$(MAKE) test_symbiotic_ai && ./test_symbiotic_ai
 
 # ──────────────────────────────────────────────────────────────────────
 # Master test target: the ONE command that runs ALL tests.
