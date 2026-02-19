@@ -6537,22 +6537,50 @@ Run `make alltest` (or equivalently `make test`) to confirm:
 
 ---
 
-### Current Totals (as of 2026-02-21, Red-Team Batch Complete)
+## Suite 97: Red-Team Packed64 Fault-Hardening Verification
+
+**Source**: `tests/test_red_team_packed_hardened.c`
+**Tests**: 6602–6651 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Purpose**: Directly verify the T-SEC fault-hardening mitigations added to `include/set5/trit.h` in response to the Suite 91 attack finding: packed64 fault-encoding `0b11 OR FALSE = TRUE`.
+**Proof**: `proof/PackedFaultSemantics.thy` — machine-checked Isabelle proofs of attack theorem and hardening correctness.
+**New API under test**: `has_fault_packed64`, `trit_sanitize_packed64`, `trit_or_packed64_hardened`, `trit_and_packed64_hardened`, `trit_not_packed64_hardened`, `TRIT_PACKED_VALID`
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| Section | Coverage | Key Assertions | Category |
+|---------|----------|----------------|----------|
+| A: Fault Detection | `has_fault_packed64` and `TRIT_PACKED_VALID` | All-fault/valid/single-slot detection; macro correctness | Security |
+| B: Sanitization | `trit_sanitize_packed64` | fault→UNKNOWN; valid preserved; idempotent; range invariant | Security |
+| C: Hardened OR | `trit_or_packed64_hardened` | Attack blocked: fault+FALSE=UNKNOWN not TRUE; 4×4 range; valid==plain | Security |
+| D: Hardened AND | `trit_and_packed64_hardened` | No fault output; De Morgan; valid==plain; 4×4 range | Security |
+| E: Hardened NOT + Integration | `trit_not_packed64_hardened` + combined | Double-NOT identity; De Morgan; sanitize+plain==hardened; Sigma 9 summary | Security |
+
+**Attack blocked** (test_6622 control assertion + main assertion):
+```
+trit_or_packed64(0xFFFF…, 0xAAAA…)           = 0x5555… = all-TRUE  ← attack
+trit_or_packed64_hardened(0xFFFF…, 0xAAAA…)  = 0x0000… = all-UNKNOWN  ← blocked
+```
+
+---
+
+### Current Totals (as of 2026-02-19, Fault-Hardening Complete)
 
 | Metric | Active | Including Disabled |
 |--------|-------:|-------------------:|
-| **Test Suites** | **96** | **100** |
-| **Runtime Assertions** | **6183** | **6266** |
-| **Source-Level Entries** | **5838** | **5878** |
-| **Test Source Files** | **97** | **100** |
+| **Test Suites** | **97** | **101** |
+| **Runtime Assertions** | **6233** | **6316** |
+| **Source-Level Entries** | **5888** | **5928** |
+| **Test Source Files** | **98** | **101** |
 
 > **Corner 3 Milestone**: Batches 99–108 (500 assertions, tests 5702–6201) added.
 > test_6201 marks the seT6 Gödel Machine civilisational-alignment pledge.
-> All 550 new assertions (500 batch + 50 symbiotic_ai module) pass at Sigma 9.
 >
-> **Red-Team Batch (Suites 86–96, 596 assertions)**: 11 new adversarial suites targeting
-> trit range integrity, binary reversion, SIMD packed64 fault injection, GF(3) LFSR crypto,
-> symbiotic AI adversarial corners, Gödel machine proof-gate attacks, type confusion,
-> integer safety, and deep chain stress. All pass at Sigma 9 with zero failures.
-> Attack finding: packed64 fault-encoding `0b11` OR FALSE = TRUE (lo-bit survives OR formula)
-> documented as a real security finding in Suite 91.
+> **Red-Team Batch (Suites 86–96, 596 assertions)**: 11 adversarial suites — trit range,
+> binary reversion, SIMD packed64 fault injection, GF(3) LFSR crypto, symbiotic AI,
+> Gödel proof-gate, type confusion, integer safety, deep chain stress. All Sigma 9.
+>
+> **Fault-Hardening (Suite 97, 50 assertions)**: T-SEC mitigations verified — `has_fault_packed64`,
+> `trit_sanitize_packed64`, and three hardened SIMD ops. Attack vector (Suite 91 / test_6304)
+> confirmed in control assertion and blocked in hardened path. `proof/PackedFaultSemantics.thy`
+> contains machine-checkable Isabelle proofs of every key property.
+> Attack finding: packed64 fault `0b11` OR FALSE `0b10` = TRUE `0b01` (lo-bit survives OR formula).
+> Mitigation: sanitize fault→UNKNOWN before any OR — provably blocks masquerade.

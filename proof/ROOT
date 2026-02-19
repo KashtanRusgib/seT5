@@ -9,3 +9,4 @@ session seT6_Proofs = HOL +
     SecurityCIA
     TranslationValidation
     TJSON_Validation
+    PackedFaultSemantics

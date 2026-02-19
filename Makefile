@@ -205,6 +205,10 @@ test_red_team_type: tests/test_red_team_type.c
 test_red_team_deep: tests/test_red_team_deep.c
 	$(CC) $(CFLAGS) -o $@ $< -lm
 
+# ---- Red-Team Suite 97: Packed64 Fault-Hardening Verification ----
+test_red_team_packed_hardened: tests/test_red_team_packed_hardened.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
 # ---- Scheduler concurrency test ----
 test_scheduler_concurrency: tests/test_scheduler_concurrency.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -471,6 +475,7 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_red_team_simd test_red_team_crypto \
                  test_red_team_symbiotic test_red_team_godel \
                  test_red_team_type test_red_team_deep \
+                 test_red_team_packed_hardened \
                  trithon/libtrithon.so
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
@@ -641,6 +646,8 @@ _run-test-suites:
 	-$(MAKE) test_red_team_type && ./test_red_team_type
 	@echo "##BEGIN##=== Suite 96: Red-Team Deep Chain Stress ==="
 	-$(MAKE) test_red_team_deep && ./test_red_team_deep
+	@echo "##BEGIN##=== Suite 97: Red-Team Packed64 Fault-Hardening ==="
+	-$(MAKE) test_red_team_packed_hardened && ./test_red_team_packed_hardened
 # ──────────────────────────────────────────────────────────────────────
 # Master test target: the ONE command that runs ALL tests.
 #
