@@ -173,6 +173,38 @@ test_symbiotic_beauty: tests/test_symbiotic_beauty.c src/symbiotic_ai.c
 test_symbiotic_eudaimonia: tests/test_symbiotic_eudaimonia.c src/symbiotic_ai.c
 	$(CC) $(CFLAGS) -o $@ $^
 
+# ---- Red-Team Suite 89: Trit Range Integrity ----
+test_red_team_trit_range: tests/test_red_team_trit_range.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Red-Team Suite 90: Binary Reversion Attack ----
+test_red_team_binary_reversion: tests/test_red_team_binary_reversion.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Red-Team Suite 91: SIMD Packed64 Adversarial ----
+test_red_team_simd: tests/test_red_team_simd.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Red-Team Suite 92: Cryptographic Hardening ----
+test_red_team_crypto: tests/test_red_team_crypto.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Red-Team Suite 93: Symbiotic AI Adversarial ----
+test_red_team_symbiotic: tests/test_red_team_symbiotic.c src/symbiotic_ai.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+# ---- Red-Team Suite 94: Gödel Machine Invariants ----
+test_red_team_godel: tests/test_red_team_godel.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Red-Team Suite 95: Type Confusion & Integer Safety ----
+test_red_team_type: tests/test_red_team_type.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Red-Team Suite 96: Deep Chain Stress ----
+test_red_team_deep: tests/test_red_team_deep.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
 # ---- Scheduler concurrency test ----
 test_scheduler_concurrency: tests/test_scheduler_concurrency.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -435,6 +467,10 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_batch_6152_6201 \
                  test_symbiotic_ai \
                  test_symbiotic_curiosity test_symbiotic_beauty test_symbiotic_eudaimonia \
+                 test_red_team_trit_range test_red_team_binary_reversion \
+                 test_red_team_simd test_red_team_crypto \
+                 test_red_team_symbiotic test_red_team_godel \
+                 test_red_team_type test_red_team_deep \
                  trithon/libtrithon.so
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
@@ -589,7 +625,22 @@ _run-test-suites:
 	-$(MAKE) test_symbiotic_beauty && ./test_symbiotic_beauty
 	@echo "##BEGIN##=== Suite 88: Symbiotic Eudaimonic Optimizer ==="
 	-$(MAKE) test_symbiotic_eudaimonia && ./test_symbiotic_eudaimonia
-
+	@echo "##BEGIN##=== Suite 89: Red-Team Trit Range Integrity ==="
+	-$(MAKE) test_red_team_trit_range && ./test_red_team_trit_range
+	@echo "##BEGIN##=== Suite 90: Red-Team Binary Reversion Attack ==="
+	-$(MAKE) test_red_team_binary_reversion && ./test_red_team_binary_reversion
+	@echo "##BEGIN##=== Suite 91: Red-Team SIMD Packed64 Adversarial ==="
+	-$(MAKE) test_red_team_simd && ./test_red_team_simd
+	@echo "##BEGIN##=== Suite 92: Red-Team Cryptographic Hardening ==="
+	-$(MAKE) test_red_team_crypto && ./test_red_team_crypto
+	@echo "##BEGIN##=== Suite 93: Red-Team Symbiotic AI Adversarial ==="
+	-$(MAKE) test_red_team_symbiotic && ./test_red_team_symbiotic
+	@echo "##BEGIN##=== Suite 94: Red-Team Godel Machine Invariants ==="
+	-$(MAKE) test_red_team_godel && ./test_red_team_godel
+	@echo "##BEGIN##=== Suite 95: Red-Team Type Confusion & Integer Safety ==="
+	-$(MAKE) test_red_team_type && ./test_red_team_type
+	@echo "##BEGIN##=== Suite 96: Red-Team Deep Chain Stress ==="
+	-$(MAKE) test_red_team_deep && ./test_red_team_deep
 # ──────────────────────────────────────────────────────────────────────
 # Master test target: the ONE command that runs ALL tests.
 #
