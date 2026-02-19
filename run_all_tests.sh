@@ -87,24 +87,48 @@ run_suite() {
     echo "#  seT5 KERNEL TEST SUITES             #"
     echo "########################################"
 
-    # Build all seT5 test binaries
-    make set5_native           2>&1
-    make test_integration      2>&1
-    make test_sel4_ternary     2>&1
-    make test_memory_safety    2>&1
-    make test_scheduler_concurrency 2>&1
-    make test_tbe              2>&1
-    make test_trit_linux       2>&1
+    # Complete list of ALL seT5/seT6 kernel & module test suites.
+    # ╔══════════════════════════════════════════════════════════════════╗
+    # ║  IMPORTANT: When adding a new test suite, add its make target  ║
+    # ║  here AND in the Makefile (_run-test-suites + SET5_TEST_BINS)  ║
+    # ║  AND in seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md.                  ║
+    # ╚══════════════════════════════════════════════════════════════════╝
+    SET5_SUITES="set5_native test_integration test_sel4_ternary \
+        test_memory_safety test_scheduler_concurrency test_tbe \
+        test_huawei_cn119652311a test_samsung_us11170290b2 \
+        test_samsung_cn105745888a test_functional_utility \
+        test_friday_updates test_trit_linux test_trit_enhancements \
+        test_tsmc_tmd_intel_pam3_hynix_tcam test_ternary_database \
+        test_ingole_wo2016199157a1 test_multi_radix_unit \
+        test_ternary_wallace_tree test_ternary_sense_amp \
+        test_tipc_compressor test_samsung_cn105745888a_correlator \
+        test_ai_acceleration \
+        test_fault_tolerant_network test_adversarial \
+        test_ternary_reversion_guard test_modular test_ipc_secure \
+        test_time test_hardening test_sigma9 test_rns test_papers \
+        test_papers2 test_dlt_cntfet test_art9 test_ternary_pdfs \
+        test_peirce_semiotic test_trilang test_sigma9_mcp test_hybrid_ai \
+        test_stress test_godel_machine test_trit_simd_regression \
+        test_binary_sentinel test_ternary_compiler_integration"
 
-    run_suite "seT5/set5_native"                ./set5_native
-    run_suite "seT5/test_integration"           ./test_integration
-    run_suite "seT5/test_sel4_ternary"          ./test_sel4_ternary
-    run_suite "seT5/test_memory_safety"         ./test_memory_safety
-    run_suite "seT5/test_scheduler_concurrency" ./test_scheduler_concurrency
-    run_suite "seT5/test_tbe"                   ./test_tbe
-    run_suite "seT5/test_trit_linux"            ./test_trit_linux
+    for suite in $SET5_SUITES; do
+        make "$suite" 2>&1
+        if [ -x "./$suite" ]; then
+            run_suite "seT5/$suite" "./$suite"
+        else
+            echo "  [SKIP] $suite (binary not found)"
+        fi
+    done
 
-    # ── 3. Trithon (Python) self-test ──────────────────────────────────
+    # ── 3. Python test suites ──────────────────────────────────────────
+    echo ""
+    echo "########################################"
+    echo "#  PYTHON TEST SUITES                  #"
+    echo "########################################"
+    run_suite "seT5/test_tjson" python3 tests/test_tjson.py
+    run_suite "seT5/test_ternumpy" python3 tests/test_ternumpy.py
+
+    # ── 4. Trithon (Python) self-test ──────────────────────────────────
     echo ""
     echo "########################################"
     echo "#  TRITHON SELF-TEST                   #"
@@ -112,7 +136,7 @@ run_suite() {
     make build-trithon-ext 2>&1
     run_suite "trithon/self-test" python3 trithon/trithon.py
 
-    # ── 4. TernBench ───────────────────────────────────────────────────
+    # ── 5. TernBench ───────────────────────────────────────────────────
     echo ""
     echo "########################################"
     echo "#  TERNBENCH                           #"

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "trithon"
+version = "0.1.0"
+description = "Python bindings for seT6 balanced ternary operations"
+readme = "trithon/README.md"
+license = {text = "GPL-2.0"}
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+dev = ["pytest", "mypy", "ruff"]
+
+[tool.setuptools]
+packages = ["trithon"]
+
+[tool.setuptools.package-data]
+trithon = ["*.so", "*.pyd"]

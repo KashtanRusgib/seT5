@@ -187,3 +187,85 @@ int twq_dequantize(int32_t *out, const twq_layer_t *layer) {
     }
     return layer->count;
 }
+
+/* ===================================================================== */
+/* T-030: Spectra 1.1 Alignment — Per-Tensor Symmetric Quantization      */
+/* ===================================================================== */
+
+/**
+ * @brief Compute per-tensor symmetric scale factor (Spectra 1.1 style).
+ *
+ * scale = max(|w|) / max_quantized_value
+ * For ternary: max_quantized_value = 1, so scale = max(|w|).
+ *
+ * This provides a single scale factor per tensor, matching the
+ * symmetric quantization scheme in Qualcomm's Spectra.
+ */
+int twq_spectra_symmetric_scale(const int32_t *weights, int count,
+                                 int32_t *scale_out) {
+    if (!weights || count <= 0 || !scale_out) return -1;
+
+    int32_t max_abs = 0;
+    for (int i = 0; i < count; i++) {
+        int32_t abs_w = i32_abs(weights[i]);
+        if (abs_w > max_abs) max_abs = abs_w;
+    }
+
+    *scale_out = (max_abs > 0) ? max_abs : 1;
+    return 0;
+}
+
+/**
+ * @brief Quantize with per-tensor symmetric Spectra 1.1 thresholding.
+ *
+ * Two thresholds derived from a single scale factor:
+ *   th_positive = scale * 0.5  (above → +1)
+ *   th_negative = -scale * 0.5 (below → -1)
+ *   between → 0
+ */
+int twq_quantize_spectra(twq_layer_t *layer, const int32_t *weights,
+                          int count) {
+    if (!layer || !weights || count <= 0 || count > TWQ_MAX_WEIGHTS)
+        return -1;
+
+    memset(layer, 0, sizeof(*layer));
+    layer->count = count;
+
+    int32_t scale;
+    twq_spectra_symmetric_scale(weights, count, &scale);
+
+    /* Threshold at 50% of scale (symmetric about zero) */
+    int32_t threshold = scale / 2;
+    if (threshold <= 0) threshold = 1;
+
+    int pos = 0, neg = 0, zero = 0;
+    for (int i = 0; i < count; i++) {
+        trit q;
+        if (weights[i] > threshold)        q = TRIT_TRUE;
+        else if (weights[i] < -threshold)  q = TRIT_FALSE;
+        else                               q = TRIT_UNKNOWN;
+
+        layer->weights[i] = q;
+        if (q == TRIT_TRUE) pos++;
+        else if (q == TRIT_FALSE) neg++;
+        else zero++;
+    }
+
+    layer->stats.total_weights = count;
+    layer->stats.positive_count = pos;
+    layer->stats.zero_count = zero;
+    layer->stats.negative_count = neg;
+    layer->stats.sparsity_permille = (zero * 1000) / count;
+    layer->stats.mean_abs_x1000 = (int)scale;
+    layer->stats.threshold_x1000 = (int)threshold;
+    layer->stats.mac_savings_pct = (zero * 100) / count;
+
+    /* Record config */
+    layer->config.mode = TWQ_MODE_SYMMETRIC;
+    layer->config.delta_num = 1;
+    layer->config.delta_den = 2;
+    layer->config.wp_scale = (uint32_t)scale;
+    layer->config.wn_scale = (uint32_t)scale;
+
+    return 0;
+}

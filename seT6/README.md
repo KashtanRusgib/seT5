@@ -1,3 +1,9 @@
+> **seT6 Purpose and Goal:** In seT6 we have implemented various schema(s) to build the ternary first full stack for the inevitable global shift to a fully ternary/multi radix world. The ongoing development of seT6 and Trit Linux & Trithon and all other features and modules and codeblocks that comprise the seT6 ternary first & ternary all the way down fullstack is to contiually determine the greatest imminent and emerging needs of the ternary/multi radix future that requires a complete rebuild and rethink of the flawed and faulty and error prone old world of binary based computing. This ongoing development seeks in all instances possible to conceive as fully as possible of the implications and needs of the entire computer hardware and software world and industires as the ternary/multi radix future emerges and to search for and find and research and understand all relevant hardware and software and protocol improvements and upgrades and components of this ternary/multi radix first world. From any and all available patents and papers and documentation the human & AI agents working on this development develop an empirical understanding of the hardware and software being developed and scheduled for market and industrial and governmental and medical and aerospace and AGI applications to futher the capbabilities and funcitonality and utility and value recieved by all users of seT6 by anticipating all needs current and future and thus developing seT6 to accomodate these new and improved ternary/multi radix archtectures and designs such that when the hardware arrives and when the protocols are instantiated the full ternary stack that is seT6 will already be available and tested and verified and at all times and in all decisions and choices made and code updates and commits this will be done and will only be done while maintaining the Sigma 9 level of rigorously tested and verifiable build quality resulting in 0 errors.
+>
+> *See also: [../SET6_PURPOSE_AND_GOAL.md](../SET6_PURPOSE_AND_GOAL.md)*
+
+---
+
 # seT6 — Secure Embedded Ternary Microkernel 6
 
 A ground-up rewrite of the [seL4](https://sel4.systems/) verified microkernel
@@ -41,7 +47,7 @@ an entire class of initialization and capability-confusion vulnerabilities
 
 | Tool                  | Phase | Purpose                                   |
 |-----------------------|-------|-------------------------------------------|
-| Isabelle/HOL 2024     | 3+    | Formal verification of ternary proofs     |
+| Isabelle/HOL 2025-2   | 3+    | Formal verification of ternary proofs (see [TESTS_AND_PROOFS_INSTRUCTIONS.md](../TESTS_AND_PROOFS_INSTRUCTIONS.md)) |
 | Icarus Verilog / Yosys| 4+    | Verilog simulation and FPGA synthesis     |
 | Python 3.10+          | 5     | Trithon interop layer                    |
 | QEMU (patched)        | 3+    | Ternary noise simulation / emulation     |
@@ -496,8 +502,10 @@ git bisect bad HEAD
 git bisect good <last-known-good-commit>
 # Git bisect will binary-search for the breaking commit
 
-# 5. Isabelle proofs (Phase 3+)
-isabelle build -d proof/ -b seT6_Proofs
+# 5. Isabelle proofs (Phase 3+) — requires Isabelle2025-2
+# Use the repo wrapper (hardcoded path, ignores system Isabelle):
+tools/isabelle build -d proof/ -b seT6_Proofs
+# See ../TESTS_AND_PROOFS_INSTRUCTIONS.md for full proof development workflow
 ```
 
 ### Gate Criteria

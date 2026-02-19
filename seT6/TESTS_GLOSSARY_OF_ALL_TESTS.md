@@ -2,10 +2,11 @@
 
 ## seT6 Comprehensive Test Glossary
 
-**Total Runtime Assertions**: 5957  
-**Total Source-Level Test Entries**: 4470  
-**Test Suites**: 42  
-**Overall Pass Rate**: 100% (0 failures)  
+**Total Runtime Assertions**: 5027 (+ 83 from 3 disabled suites = 5110 total)  
+**Total Source-Level Test Entries**: 4687 (+ 40 from 3 disabled suites = 4727 total)  
+**Test Suites**: 73 (69 actively running; 3 disabled compiler suites; 1 "Trit Enhancements" needs `tcore_env_t` rebuild; 1 seT5 Integration compat)  
+**Overall Pass Rate**: 100% (0 failures across all active suites)  
+**Last Updated**: 2026-02-19 — Added Suites 70-73 for untested hw/ files: ternary_wallace_tree.v, ternary_sense_amp.v, tipc_compressor.v, samsung_cn105745888a_correlator.v  
 **Generated**: Auto-extracted from source code
 
 ---
@@ -46,51 +47,87 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite Index
 
-| # | Suite | Source | Runtime | Source Entries |
-|---|-------|--------|---------|---------------|
-| 1 | Compiler: Trit Operations | `tools/compiler/tests/test_trit.c` | 22 | 22 |
-| 2 | Compiler: Parser | `tools/compiler/tests/test_parser.c` | 14 | 14 |
-| 3 | Compiler: Code Generator | `tools/compiler/tests/test_codegen.c` | 7 | 7 |
-| 4 | Compiler: VM Execution | `tools/compiler/tests/test_vm.c` | 31 | 31 |
-| 5 | Compiler: TypeChecker | `tools/compiler/tests/test_typechecker.c` | 15 | 15 |
-| 6 | Compiler: Linker | `tools/compiler/tests/test_linker.c` | 13 | 13 |
-| 7 | Compiler: Self-Hosting | `tools/compiler/tests/test_selfhost.c` | 13 | 13 |
-| 8 | Compiler: Arrays | `tools/compiler/tests/test_arrays.c` | 12 | 12 |
-| 9 | Compiler: Ternary Hardware | `tools/compiler/tests/test_hardware.c` | 22 | 22 |
-| 10 | seT6 Boot (Native) | `src/init.c` | 178 | 174 |
-| 11 | Integration | `tests/test_integration.c` | 56 | 48 |
-| 12 | seL4 Ternary Extensions | `tests/test_sel4_ternary.c` | 142 | 137 |
-| 13 | Memory Safety | `tests/test_memory_safety.c` | 28 | 28 |
-| 14 | Scheduler Concurrency | `tests/test_scheduler_concurrency.c` | 27 | 18 |
-| 15 | TBE Bootstrap Engine | `tests/test_tbe.c` | 31 | 31 |
-| 16 | Huawei CN119652311A ALU | `tests/test_huawei_cn119652311a.c` | 47 | 47 |
-| 17 | Samsung US11170290B2 ZID | `tests/test_samsung_us11170290b2.c` | 60 | 60 |
-| 18 | Samsung CN105745888A Correlator | `tests/test_samsung_cn105745888a.c` | 61 | 61 |
-| 19 | TSMC TMD / Intel PAM3 / Hynix TCAM | `tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c` | 80 | 80 |
-| 20 | Functional Utility | `tests/test_functional_utility.c` | 202 | 233 |
-| 21 | Friday Updates | `tests/test_friday_updates.c` | 135 | 138 |
-| 22 | Trit Linux Architecture | `tests/test_trit_linux.c` | 98 | 96 |
-| 23 | Trit Enhancements | `tests/test_trit_enhancements.c` | 252 | 214 |
-| 24 | LEGO Modular Architecture | `tests/test_modular.c` | 49 | 47 |
-| 25 | Secure IPC | `tests/test_ipc_secure.c` | 40 | 38 |
-| 26 | Time Synchronization | `tests/test_time.c` | 42 | 50 |
-| 27 | System Hardening | `tests/test_hardening.c` | 55 | 38 |
-| 28 | Sigma 9 Validation | `tests/test_sigma9.c` | 337 | 358 |
-| 29 | RNS Standalone | `tests/test_rns.c` | 278 | 216 |
-| 30 | Paper-Derived Modules | `tests/test_papers.c` | 200 | 220 |
-| 31 | Paper2-Derived Modules | `tests/test_papers2.c` | 200 | 216 |
-| 32 | DLT + CNTFET | `tests/test_dlt_cntfet.c` | 107 | 100 |
-| 33 | ART-9 RISC Pipeline | `tests/test_art9.c` | 122 | 40 |
-| 34 | Ternary PDF-Derived | `tests/test_ternary_pdfs.c` | 478 | 360 |
-| 35 | Peirce Semiotic Engine | `tests/test_peirce_semiotic.c` | 200 | 100 |
-| 36 | TriLang | `tests/test_trilang.c` | 100 | 92 |
-| 37 | Sigma 9 MCP | `tests/test_sigma9_mcp.c` | 259 | 309 |
-| 38 | Hybrid AI Integration | `tests/test_hybrid_ai.c` | 280 | 292 |
-| 39 | Red-Team Stress & Performance | `tests/test_stress.c` | 979 | 144 |
-| 40 | Trithon Self-Test | `trithon/trithon.py` | 99 | 86 |
-| 41 | TJSON (Python) | `tests/test_tjson.py` | 346 | 76 |
-| 42 | TerNumPy (Python) | `tests/test_ternumpy.py` | 240 | 174 |
-| | **TOTAL** | | **5957** | **4470** |
+| # | Suite | Source | Runtime | Source Entries | Status |
+|---|-------|--------|---------|---------------|--------|
+| 1 | Compiler: Trit Operations | `tools/compiler/tests/test_trit.c` | 22 | 22 | ✅ |
+| 2 | Compiler: Parser | `tools/compiler/tests/test_parser.c` | 14 | 14 | ✅ |
+| 3 | Compiler: Code Generator | `tools/compiler/tests/test_codegen.c` | 9 | 9 | ✅ |
+| 4 | Compiler: VM Execution | `tools/compiler/tests/test_vm.c` | 37 | 37 | ✅ |
+| 5 | Compiler: TypeChecker | `tools/compiler/tests/test_typechecker.c` | 15 | 15 | ✅ |
+| 6 | Compiler: Linker | `tools/compiler/tests/test_linker.c` | 13 | 13 | ✅ |
+| 7 | Compiler: Self-Hosting | `tools/compiler/tests/test_selfhost.c` | 13 | 13 | ✅ |
+| 8 | Compiler: Arrays | `tools/compiler/tests/test_arrays.c` | 12 | 12 | ✅ |
+| 9 | Compiler: Ternary Hardware | `tools/compiler/tests/test_hardware.c` | 22 | 22 | ✅ |
+| 10 | seT6 Boot (Native) | `src/init.c` | 178 | 174 | ✅ |
+| 11 | Integration | `tests/test_integration.c` | 56 | 48 | ✅ |
+| 12 | seL4 Ternary Extensions | `tests/test_sel4_ternary.c` | 142 | 137 | ✅ |
+| 13 | Memory Safety | `tests/test_memory_safety.c` | 28 | 28 | ✅ |
+| 14 | Scheduler Concurrency | `tests/test_scheduler_concurrency.c` | 27 | 18 | ✅ |
+| 15 | TBE Bootstrap Engine | `tests/test_tbe.c` | 31 | 31 | ✅ |
+| 16 | Huawei CN119652311A ALU | `tests/test_huawei_cn119652311a.c` | 47 | 47 | ✅ |
+| 17 | Samsung US11170290B2 ZID | `tests/test_samsung_us11170290b2.c` | 60 | 60 | ✅ |
+| 18 | Samsung CN105745888A Correlator | `tests/test_samsung_cn105745888a.c` | 61 | 61 | ✅ |
+| 19 | TSMC TMD / Intel PAM3 / Hynix TCAM | `tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c` | 80 | 80 | ✅ |
+| 20 | Ternary Database & Storage ⭐NEW | `tests/test_ternary_database.c` | 32 | 32 | ✅ |
+| 21 | Ingole WO2016199157A1 TALU ⭐NEW | `tests/test_ingole_wo2016199157a1.c` | 32 | 32 | ✅ |
+| 22 | AI Acceleration Framework ⭐NEW | `tests/test_ai_acceleration.c` | 24 | 24 | ✅ |
+| 23 | Fault-Tolerant Networking ⭐NEW | `tests/test_fault_tolerant_network.c` | 25 | 25 | ✅ |
+| 24 | Adversarial / Negative-Path ⭐NEW | `tests/test_adversarial.c` | 34 | 34 | ✅ |
+| 25 | Crown Jewel Reversion Guard ⭐NEW | `tests/test_ternary_reversion_guard.c` | 37 | 37 | ✅ |
+| 26 | LEGO Modular Architecture | `tests/test_modular.c` | 49 | 47 | ✅ |
+| 27 | Secure IPC | `tests/test_ipc_secure.c` | 40 | 38 | ✅ |
+| 28 | Time Synchronization | `tests/test_time.c` | 42 | 50 | ✅ |
+| 29 | System Hardening | `tests/test_hardening.c` | 55 | 38 | ✅ |
+| 30 | Sigma 9 Validation | `tests/test_sigma9.c` | 337 | 358 | ✅ |
+| 31 | RNS Standalone | `tests/test_rns.c` | 278 | 216 | ✅ |
+| 32 | Paper-Derived Modules | `tests/test_papers.c` | 200 | 220 | ✅ |
+| 33 | Paper2-Derived Modules | `tests/test_papers2.c` | 200 | 216 | ✅ |
+| 34 | DLT + CNTFET | `tests/test_dlt_cntfet.c` | 60 | 60 | ✅ |
+| 35 | ART-9 RISC Pipeline | `tests/test_art9.c` | 60 | 60 | ✅ |
+| 36 | Ternary PDF-Derived | `tests/test_ternary_pdfs.c` | 192 | 192 | ✅ |
+| 37 | Peirce Semiotic Engine | `tests/test_peirce_semiotic.c` | 200 | 100 | ✅ |
+| 38 | TriLang | `tests/test_trilang.c` | 100 | 92 | ✅ |
+| 39 | Sigma 9 MCP | `tests/test_sigma9_mcp.c` | 197 | 197 | ✅ |
+| 40 | Hybrid AI Integration | `tests/test_hybrid_ai.c` | 282 | 282 | ✅ |
+| 41 | Red-Team Stress & Performance | `tests/test_stress.c` | 512 | 144 | ✅ |
+| 42 | Trithon Self-Test | `trithon/trithon.py` | 99 | 86 | ✅ |
+| 43 | TJSON (Python) | `tests/test_tjson.py` | 346 | 76 | ✅ |
+| 44 | TerNumPy (Python) | `tests/test_ternumpy.py` | 42 | 42 | ✅ |
+| 45 | Functional Utility | `tests/test_functional_utility.c` | 202 | 233 | ✅ |
+| 46 | Friday Updates | `tests/test_friday_updates.c` | 135 | 138 | ✅ |
+| 47 | Trit Linux Architecture | `tests/test_trit_linux.c` | 98 | 96 | ✅ |
+| 48 | Gödel Machine ⭐NEW | `tests/test_godel_machine.c` | 21 | 21 | ✅ |
+| 49 | SIMD Regression ⭐NEW | `tests/test_trit_simd_regression.c` | 10 | 10 | ✅ |
+| 50 | Binary Sentinel ⭐NEW | `tests/test_binary_sentinel.c` | 12 | 12 | ✅ |
+| 51 | Ternary Compiler Integration ⭐NEW | `tests/test_ternary_compiler_integration.c` | 19 | 19 | ✅ |
+| 52 | Compiler: Basic Integration ⭐NEW | `tools/compiler/tests/test_basic.c` | 26 | 4 | ✅ |
+| 53 | Compiler: Bootstrap Self-Host ⭐NEW | `tools/compiler/tests/test_bootstrap.c` | 33 | 21 | ✅ |
+| 54 | Compiler: Hardware Simulation ⭐NEW | `tools/compiler/tests/test_hardware_simulation.c` | 10 | 7 | ✅ |
+| 55 | Compiler: IR / Constant Folding ⭐NEW | `tools/compiler/tests/test_ir.c` | 49 | 20 | ✅ |
+| 56 | Compiler: Lexer / Tokenizer ⭐NEW | `tools/compiler/tests/test_lexer.c` | 87 | 20 | ✅ |
+| 57 | Compiler: Logger ⭐NEW | `tools/compiler/tests/test_logger.c` | 33 | 14 | ✅ |
+| 58 | Compiler: Memory Model ⭐NEW | `tools/compiler/tests/test_memory.c` | 46 | 19 | ✅ |
+| 59 | Compiler: Parser Fuzz ⭐NEW | `tools/compiler/tests/test_parser_fuzz.c` | 0 | 5 | ✅ crash-absence |
+| 60 | Compiler: Performance ⭐NEW | `tools/compiler/tests/test_performance.c` | 4 | 4 | ✅ |
+| 61 | Compiler: seL4 Stubs ⭐NEW | `tools/compiler/tests/test_sel4.c` | 15 | 4 | ✅ |
+| 62 | Compiler: seL4 Verify ⭐NEW | `tools/compiler/tests/test_sel4_verify.c` | 51 | 18 | ✅ |
+| 63 | Compiler: seT5 Syscalls ⭐NEW | `tools/compiler/tests/test_set5.c` | 23 | 13 | ✅ |
+| 64 | Compiler: Ternary Arithmetic Comprehensive ⭐NEW | `tools/compiler/tests/test_ternary_arithmetic_comprehensive.c` | 32 | 5 | ✅ |
+| 65 | Compiler: Ternary Edge Cases ⭐NEW | `tools/compiler/tests/test_ternary_edge_cases.c` | 19 | 5 | ✅ |
+| 66 | Compiler: Trit Edge Cases ⭐NEW | `tools/compiler/tests/test_trit_edge_cases.c` | 13 | 10 | ✅ |
+| 67 | Compiler: Integration Tests | `tools/compiler/tests/test_integration.c` | 24 | 16 | ✅ |
+| 68 | Compiler: Test Runner Script | `tools/compiler/tests/test_all.sh` | — | — | ⚙️ script |
+| 69 | Multi-Radix Unit ⭐NEW | `tests/test_multi_radix_unit.c` | 3 | 3 | ✅ |
+| 70 | Ternary Wallace Tree ⭐NEW | `tests/test_ternary_wallace_tree.c` | 2 | 2 | ✅ |
+| 71 | Ternary Sense Amp ⭐NEW | `tests/test_ternary_sense_amp.c` | 3 | 3 | ✅ |
+| 72 | T-IPC Compressor ⭐NEW | `tests/test_tipc_compressor.c` | 2 | 2 | ✅ |
+| 73 | Samsung Correlator ⭐NEW | `tests/test_samsung_cn105745888a_correlator.c` | 2 | 2 | ✅ |
+| — | Trit Enhancements *(not building)* | `tests/test_trit_enhancements.c` | — | 214 | ⚠️ needs `tcore_env_t` rebuild |
+| — | Compiler: Codegen Bugs *(disabled)* | `tools/compiler/tests/test_compiler_code_generation_bugs.c` | 39 | 19 | ⚠️ commented out in compiler Makefile |
+| — | Compiler: Error Recovery *(disabled)* | `tools/compiler/tests/test_error_recovery.c` | 26 | 11 | ⚠️ commented out in compiler Makefile |
+| — | Compiler: Parser/Lexer Fuzz *(disabled)* | `tools/compiler/tests/test_parser_lexer_fuzz.c` | 18 | 10 | ⚠️ commented out in compiler Makefile |
+| | **TOTAL (active, running)** | | **5027** | **4687** | |
+| | **TOTAL (incl. disabled)** | | **5110** | **4727** | |
 
 ---
 
@@ -5148,11 +5185,808 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ---
 
+---
+
+## Suite 20: Ternary Database & Storage ⭐NEW
+
+**Source**: `tests/test_ternary_database.c`  
+**Runtime Assertions**: 32  
+**Source-Level Entries**: 32  
+**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function — same structure as suites 16-19  
+**Output Reading**: `test_name  [PASS]` per test; final `=== Results: N passed, 0 failed ===`  
+**What it tests**: Three-valued SQL-style NULL logic (STRICT/PROPAGATE/LENIENT modes), ternary CAM (content-addressable memory), run-length and Huffman compression, and a ternary relational DB layer.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L38 | null_and_strict_mode | 1. Null AND Semantics | `ternary_null_and(F,T,STRICT)==F; ternary_null_and(NULL,T,STRICT)==NULL` | Logic |
+| 2 | L64 | null_or_strict_mode | 1. Null OR Semantics | `ternary_null_or(F,F,STRICT)==F; ternary_null_or(NULL,F,STRICT)==NULL` | Logic |
+| 3 | L49 | null_and_propagate_mode | 1. Null AND Semantics | `ternary_null_and(NULL,T,PROPAGATE)==NULL` | Logic |
+| 4 | L74 | null_or_propagate_mode | 1. Null OR Semantics | `ternary_null_or(NULL,F,PROPAGATE)==NULL` | Logic |
+| 5 | L57 | null_and_lenient_mode | 1. Null AND Semantics | `ternary_null_and(T,T,LENIENT)==T` | Logic |
+| 6 | L81 | null_or_lenient_mode | 1. Null OR Semantics | `ternary_null_or(T,F,LENIENT)==T` | Logic |
+| 7 | L88 | null_equals_all_combos | 2. Null Equality | `ternary_null_equals(T,T)==T; ternary_null_equals(NULL,T)==NULL` | Logic |
+| 8 | L99 | null_count_aggregation | 2. Aggregation | `count(3 non-null)==T; count(0 non-null)==U` | Functional |
+| 9 | L113 | null_sum_aggregation | 2. Aggregation | `sum(+1,-1,skip,+1)==T; sum(+1,-1)==U` | Arithmetic |
+| 10 | L127 | null_and_commutativity | 3. Algebraic Laws | `AND(a,b)==AND(b,a) for all 9 pairs` | Logic |
+| 11 | L140 | null_or_commutativity | 3. Algebraic Laws | `OR(a,b)==OR(b,a) for all 9 pairs` | Logic |
+| 12 | L157 | cam_init | 4. CAM Operations | `cam.num_entries==0 after init` | Initialization |
+| 13 | L165 | cam_add_and_search | 4. CAM Operations | `cam_add(key1,data1,mask1)==0; search hits==1` | Functional |
+| 14 | L192 | cam_delete_and_verify | 4. CAM Operations | `cam_delete(key1)==0; search hits==0` | Functional |
+| 15 | L211 | cam_delete_nonexistent | 4. CAM Operations | `cam_delete(missing)==-1` | Negative/error |
+| 16 | L221 | cam_multiple_matches | 4. CAM Operations | `search with don't-care mask hits>=3` | Functional |
+| 17 | L245 | cam_search_empty_table | 4. CAM Operations | `search on empty table==0 hits` | Boundary |
+| 18 | L257 | cam_null_mask_defaults_to_all_care | 4. CAM Operations | `NULL mask → exact match only` | Functional |
+| 19 | L283 | rle_basic_compress_decompress | 5. RLE Compression | `compress then decompress recovers original` | Encoding |
+| 20 | L308 | rle_single_element | 5. RLE Compression | `single-elem RLE roundtrip` | Boundary |
+| 21 | L325 | rle_alternating_pattern | 5. RLE Compression | `alternating T/F/U RLE roundtrip` | Encoding |
+| 22 | L343 | rle_uniform_data | 5. RLE Compression | `all-T run encodes compactly` | Encoding |
+| 23 | L361 | huffman_basic_compress | 6. Huffman Compression | `Huffman compress non-empty result` | Encoding |
+| 24 | L382 | huffman_all_same_value | 6. Huffman Compression | `all-T input compresses` | Boundary |
+| 25 | L398 | huffman_three_distinct_values | 6. Huffman Compression | `T/F/U freq distribution compresses` | Encoding |
+| 26 | L418 | db_init | 7. Ternary DB | `db initialises with 0 rows` | Initialization |
+| 27 | L428 | db_insert_and_select | 7. Ternary DB | `insert(row) then select finds it` | Functional |
+| 28 | L453 | db_insert_no_null_indicators | 7. Ternary DB | `row with no NULLs selects correctly` | Functional |
+| 29 | L467 | db_empty_select | 7. Ternary DB | `select from empty table returns 0` | Boundary |
+| 30 | L478 | db_multiple_rows_select | 7. Ternary DB | `3 rows inserted; select finds all` | Functional |
+| 31 | L501 | db_null_mode_propagate | 7. Ternary DB | `NULL propagation mode affects WHERE result` | Functional |
+| 32 | L517 | db_select_false_value | 7. Ternary DB | `row with FALSE trit value selects correctly` | Functional |
+
+---
+
+## Suite 21: Ingole WO2016199157A1 TALU ⭐NEW
+
+**Source**: `tests/test_ingole_wo2016199157a1.c`  
+**Runtime Assertions**: 32  
+**Source-Level Entries**: 32  
+**Harness**: `ASSERT_EQ(actual, expected, msg)` + `PASS()` — same pattern as patent HAL suites  
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 32 passed, 0 failed ===`  
+**What it tests**: Full coverage of the Ingole WO2016199157A1 Ternary ALU patent — unbalanced/balanced encoding conversions, all unary/binary ternary opcodes (TNOT, CWC, CCWC, TAND, TNAND, TOR, TNOR, XTOR, comparator), half-adder, full-adder, multi-trit arithmetic, status flags, and HAL lifecycle.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L59 | ig_from_balanced_all_values | 1. Encoding | `ig_from_balanced(-1)==0; (0)==1; (+1)==2` | Encoding |
+| 2 | L68 | ig_to_balanced_all_values | 1. Encoding | `ig_to_balanced(0)==-1; (1)==0; (2)==+1` | Encoding |
+| 3 | L77 | roundtrip_balanced_unbalanced | 1. Encoding | `ig_to_balanced(ig_from_balanced(v))==v for all 3` | Transformation |
+| 4 | L92 | tnot_truth_table | 2. Unary Ops | `TNOT(-1)=+1; TNOT(0)=0; TNOT(+1)=-1` | Logic |
+| 5 | L102 | cwc_truth_table | 2. Unary Ops | `CWC(-1)=-1; CWC(0)=+1; CWC(+1)=0` | Logic |
+| 6 | L112 | ccwc_truth_table | 2. Unary Ops | `CCWC(-1)=0; CCWC(0)=-1; CCWC(+1)=+1` | Logic |
+| 7 | L122 | add1carry_truth_table | 2. Arithmetic | `A1C(-1).sum=0,carry=-1; A1C(0).sum=+1,carry=-1; A1C(+1).sum=-1,carry=0` | Arithmetic |
+| 8 | L150 | tand_full_truth_table | 3. Binary Ops | `TAND(a,b)==min(a,b) for all 9 pairs` | Logic |
+| 9 | L164 | tnand_full_truth_table | 3. Binary Ops | `TNAND(a,b)==NOT(AND(a,b)) for all 9 pairs` | Logic |
+| 10 | L177 | tor_full_truth_table | 3. Binary Ops | `TOR(a,b)==max(a,b) for all 9 pairs` | Logic |
+| 11 | L190 | tnor_full_truth_table | 3. Binary Ops | `TNOR(a,b)==NOT(OR(a,b)) for all 9 pairs` | Logic |
+| 12 | L203 | xtor_full_truth_table | 3. Binary Ops | `XTOR(a,b) verified for all 9 pairs (mod-3 sum)` | Logic |
+| 13 | L229 | comparator_full_truth_table | 3. Binary Ops | `comparator(a,b) returns {-1,0,+1} sign` | Logic |
+| 14 | L249 | half_adder_all_9_pairs | 4. Adders | `half_adder(a,b).sum and .carry for all 9 input pairs` | Arithmetic |
+| 15 | L288 | full_adder_all_27_triples | 4. Adders | `full_adder(a,b,cin) for all 27 input triples` | Arithmetic |
+| 16 | L326 | talu_add_2trit | 5. TALU Opcodes | `TALU ADD: 2-trit addition result and carry` | Hardware/ALU |
+| 17 | L348 | talu_add_zero_word | 5. TALU Opcodes | `TALU ADD zero word returns zero` | Hardware/ALU |
+| 18 | L681 | talu_add_4trit_chain | 5. TALU Opcodes | `TALU ADD 4-trit chain with carry propagation` | Arithmetic |
+| 19 | L390 | talu_sub_ab_identity | 5. TALU Opcodes | `TALU SUB a-a==0 identity` | Arithmetic |
+| 20 | L415 | talu_sub_ba_simple | 5. TALU Opcodes | `TALU SUB b-a with known result` | Arithmetic |
+| 21 | L452 | talu_opcode_tand_tnand | 5. TALU Opcodes | `TALU TAND and TNAND opcodes produce correct output` | Hardware/ALU |
+| 22 | L467 | talu_opcode_tor_tnor | 5. TALU Opcodes | `TALU TOR and TNOR opcodes produce correct output` | Hardware/ALU |
+| 23 | L482 | talu_opcode_xtor_comparator | 5. TALU Opcodes | `TALU XTOR and COMPARATOR opcodes` | Hardware/ALU |
+| 24 | L498 | talu_opcode_nop | 5. TALU Opcodes | `TALU NOP leaves result unchanged` | Hardware/ALU |
+| 25 | L519 | talu_all_inclusive_tor_tnor | 5. TALU Opcodes | `TALU AI-TOR (all-inclusive OR/NOR)` | Hardware/ALU |
+| 26 | L540 | parity_flag_computation | 6. Status Flags | `parity flag correct for mixed/uniform trit word` | Hardware/ALU |
+| 27 | L562 | all_zero_flag | 6. Status Flags | `all-zero flag set iff every trit is 0` | Hardware/ALU |
+| 28 | L579 | overflow_flag | 6. Status Flags | `overflow flag set on carry-out` | Hardware/ALU |
+| 29 | L647 | cwc_ccwc_are_involutions | 7. Involution Laws | `CWC(CWC(v))==v and CCWC(CCWC(v))==v for all v` | Logic |
+| 30 | L666 | tnot_involution | 7. Involution Laws | `TNOT(TNOT(v))==v for all v` | Logic |
+| 31 | L604 | hal_init_caps_shutdown | 8. HAL Lifecycle | `hal_init(), capability setup, hal_shutdown()` | Initialization |
+| 32 | L707 | patent_id_and_constants | 8. HAL Lifecycle | `patent ID string and constant values match spec` | Functional |
+
+---
+
+## Suite 22: AI Acceleration Framework ⭐NEW
+
+**Source**: `tests/test_ai_acceleration.c`  
+**Runtime Assertions**: 24  
+**Source-Level Entries**: 24  
+**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function  
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 24 passed, 0 failed ===`  
+**What it tests**: BitNet-style ternary weight quantisation, DLFET (dual-level FET) logic gates and full-adder, sparse ternary matrix operations, ternary linear layers, and activation functions.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L90 | bitnet_quantize_basic | 1. BitNet Quantisation | `0.9→+1, -0.8→-1, scale>0` | Functional |
+| 2 | L109 | bitnet_quantize_all_zero | 1. BitNet Quantisation | `all zero weights → all UNKNOWN` | Boundary |
+| 3 | L124 | bitnet_quantize_uniform_positive | 1. BitNet Quantisation | `uniform positive → all TRUE` | Functional |
+| 4 | L139 | bitnet_quantize_scale_factor | 1. BitNet Quantisation | `large-magnitude inputs produce correct scale>0` | Functional |
+| 5 | L422 | bitnet_quantize_single_weight | 1. BitNet Quantisation | `single positive weight quantises to +1` | Boundary |
+| 6 | L159 | bitnet_forward_identity_2x2 | 2. BitNet Forward | `identity-like 2×2 matrix forward pass` | Functional |
+| 7 | L174 | bitnet_forward_negation | 2. BitNet Forward | `negation weight matrix forward pass` | Functional |
+| 8 | L188 | bitnet_forward_with_scale | 2. BitNet Forward | `scaled forward output ≈ expected float` | Functional |
+| 9 | L205 | dlfet_not_truth_table | 3. DLFET Gates | `DLFET NOT: NOT(+1)=-1, NOT(-1)=+1, NOT(0)=0` | Logic |
+| 10 | L214 | dlfet_not_involution | 3. DLFET Gates | `NOT(NOT(v))==v for all 3 trit values` | Logic |
+| 11 | L223 | dlfet_nand_truth_table | 3. DLFET Gates | `DLFET NAND gate truth table verified` | Logic |
+| 12 | L242 | dlfet_full_adder_zero_carry | 3. DLFET Adder | `0+0+0 sum=0, carry=0` | Arithmetic |
+| 13 | L258 | dlfet_full_adder_carry_generation | 3. DLFET Adder | `+1+1+0 carry=+1, sum=-1` | Arithmetic |
+| 14 | L275 | dlfet_full_adder_all_positive | 3. DLFET Adder | `+1+1+1 carry=+1, sum=0` | Arithmetic |
+| 15 | L460 | dlfet_full_adder_all_27_combinations | 3. DLFET Adder | `all 27 input triples produce valid trit output` | Arithmetic |
+| 16 | L290 | sparse_matrix_create_and_free | 4. Sparse Matrix | `allocate 4×4 matrix: rows=4, nnz=0` | Memory |
+| 17 | L301 | dense_to_sparse_conversion | 4. Sparse Matrix | `dense→sparse: nnz in [1,4]` | Transformation |
+| 18 | L317 | sparse_mvm_identity_like | 4. Sparse MVM | `identity-like sparse MVM: result[0]=+1 result[1]=-1` | Functional |
+| 19 | L336 | sparse_mvm_zero_matrix | 4. Sparse MVM | `zero matrix MVM → all UNKNOWN output` | Boundary |
+| 20 | L432 | sparse_large_matrix_8x8 | 4. Sparse Matrix | `8×8 sparse matrix alloc and MVM completes` | Functional |
+| 21 | L358 | ternary_linear_layer_create | 5. Linear Layer | `ternary_linear_create: layer not NULL` | Initialization |
+| 22 | L373 | ternary_linear_forward_pass | 5. Linear Layer | `forward pass through 2-input, 2-output layer` | Functional |
+| 23 | L397 | ternary_activation_relu | 5. Activations | `ternary ReLU: -1→0, 0→0, +1→+1` | Functional |
+| 24 | L406 | ternary_activation_idempotent | 5. Activations | `activation applied twice == once (idempotent)` | Functional |
+
+---
+
+## Suite 23: Fault-Tolerant Networking ⭐NEW
+
+**Source**: `tests/test_fault_tolerant_network.c`  
+**Runtime Assertions**: 25  
+**Source-Level Entries**: 25  
+**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function  
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 25 passed, 0 failed ===`  
+**What it tests**: Ternary Hamming ECC (encode/decode/correct), multi-radix routing table, ternary Byzantine-fault-tolerant consensus (unanimous/majority/no-majority), ternary network packet encode/tamper-detect/decode, and FTNIC NIC driver send/receive/fault tracking.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L95 | hamming_encode_basic | 1. Hamming ECC | `encode 4-trit data → codeword[0..3] correct` | Encoding |
+| 2 | L115 | hamming_encode_decode_roundtrip | 1. Hamming ECC | `encode then decode with no error: decoded==original` | Encoding |
+| 3 | L131 | hamming_single_error_correction | 1. Hamming ECC | `introduce 1-trit error → decode corrects it` | Functional |
+| 4 | L153 | hamming_all_zero_data | 1. Hamming ECC | `all-UNKNOWN data roundtrips cleanly` | Boundary |
+| 5 | L169 | hamming_all_positive_data | 1. Hamming ECC | `all-TRUE data roundtrips cleanly` | Boundary |
+| 6 | L185 | hamming_all_negative_data | 1. Hamming ECC | `all-FALSE data roundtrips cleanly` | Boundary |
+| 7 | L201 | hamming_error_at_every_position | 1. Hamming ECC | `single error injected at each position is corrected` | Functional |
+| 8 | L230 | hamming_all_81_data_patterns | 1. Hamming ECC | `all 81 (3^4) data patterns encode/correct correctly` | Stress |
+| 9 | L261 | multi_radix_route_basic | 2. Routing | `routing table lookup returns correct next_hop and cost` | Functional |
+| 10 | L278 | multi_radix_route_empty_table | 2. Routing | `empty routing table returns no-hop sentinel` | Boundary |
+| 11 | L293 | multi_radix_route_selects_lowest_cost | 2. Routing | `lowest-cost route selected among multiple entries` | Functional |
+| 12 | L320 | consensus_unanimous_agreement | 3. BFT Consensus | `all 3 nodes vote TRUE → decided=TRUE` | Consensus |
+| 13 | L335 | consensus_2_of_3_majority | 3. BFT Consensus | `2/3 TRUE votes → decided=TRUE` | Consensus |
+| 14 | L351 | consensus_no_majority_ongoing | 3. BFT Consensus | `no majority → state remains ONGOING (UNKNOWN)` | Consensus |
+| 15 | L366 | consensus_false_majority_decides | 3. BFT Consensus | `2/3 FALSE votes → decided=FALSE` | Consensus |
+| 16 | L382 | consensus_unknown_supermajority | 3. BFT Consensus | `UNKNOWN supermajority → decided=UNKNOWN` | Consensus |
+| 17 | L403 | packet_encode_decode_roundtrip | 4. Packet ECC | `packet encode then decode with no error` | Encoding |
+| 18 | L422 | packet_checksum_tamper_detection | 4. Packet ECC | `corrupt one trit → decode returns -1 (tamper)` | Negative/error |
+| 19 | L441 | packet_zero_payload | 4. Packet ECC | `zero-trit payload encodes and decodes cleanly` | Boundary |
+| 20 | L456 | packet_full_payload | 4. Packet ECC | `full-size payload encodes and decodes cleanly` | Boundary |
+| 21 | L475 | packet_header_preserved_through_ecc | 4. Packet ECC | `version, src, dst, type preserved through ECC` | Functional |
+| 22 | L499 | ftnic_send_packet | 5. FTNIC Driver | `FTNIC send: returns 0, updates tx_count` | IPC |
+| 23 | L518 | ftnic_receive_valid | 5. FTNIC Driver | `FTNIC receive valid packet: returns 0` | IPC |
+| 24 | L536 | ftnic_receive_corrupted_packet | 5. FTNIC Driver | `FTNIC receive corrupted packet: returns -1, faults++` | Negative/error |
+| 25 | L554 | ftnic_fault_status_tracking | 5. FTNIC Driver | `fault status trit reflects pending fault` | Functional |
+
+---
+
+## Suite 24: Adversarial / Negative-Path ⭐NEW
+
+**Source**: `tests/test_adversarial.c`  
+**Runtime Assertions**: 34  
+**Source-Level Entries**: 34  
+**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function  
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 34 passed, 0 failed ===`  
+**What it tests**: Exhaustive negative-path coverage — every API in memory, IPC, capabilities, syscall, scheduler, and trit encoding is attacked with out-of-range inputs, double-free/destroy, exhaustion, use-after-free, readonly violations, and invalid opcodes. All must be rejected cleanly.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L43 | mem_read_write_out_of_range_page | 1. Memory Safety | `mem_read(page=-1)==UNKNOWN; mem_write(page=999)==-1` | Negative/error |
+| 2 | L58 | mem_read_write_out_of_range_offset | 1. Memory Safety | `mem_read(offset=-1)==UNKNOWN; offset=MAX==-1` | Negative/error |
+| 3 | L72 | mem_double_free_rejected | 1. Memory Safety | `mem_free(p)==0 first; mem_free(p)==-1 second` | Negative/error |
+| 4 | L82 | mem_use_after_free_returns_unknown | 1. Memory Safety | `mem_read after free==UNKNOWN; mem_write==-1` | Negative/error |
+| 5 | L100 | mem_oom_exhaustion | 1. Memory Safety | `alloc until OOM: final alloc returns -1` | Negative/error |
+| 6 | L115 | mem_write_to_readonly_page | 1. Memory Safety | `mem_write to readonly page returns -1` | Access control |
+| 7 | L128 | mem_reserve_already_allocated_page | 1. Memory Safety | `mem_reserve on allocated page returns -1` | Negative/error |
+| 8 | L139 | mem_free_reserved_page | 1. Memory Safety | `mem_free on reserved page returns -1` | Negative/error |
+| 9 | L150 | mem_init_clamps_page_count | 1. Memory Safety | `negative/huge page counts clamped to valid range` | Boundary |
+| 10 | L167 | ipc_send_on_destroyed_endpoint | 2. IPC Hardening | `send on destroyed endpoint returns -1` | Negative/error |
+| 11 | L181 | ipc_recv_on_destroyed_endpoint | 2. IPC Hardening | `recv on destroyed endpoint returns -1` | Negative/error |
+| 12 | L195 | ipc_double_destroy_endpoint | 2. IPC Hardening | `destroy twice: second returns -1` | Negative/error |
+| 13 | L205 | ipc_endpoint_exhaustion | 2. IPC Hardening | `create until full: final create returns -1` | Negative/error |
+| 14 | L218 | ipc_send_recv_out_of_range | 2. IPC Hardening | `send/recv ep=-1 and ep=999 return -1` | Negative/error |
+| 15 | L233 | ipc_msg_build_length_clamped | 2. IPC Hardening | `msg.length clamped to IPC_MSG_MAX_WORDS` | Boundary |
+| 16 | L244 | ipc_notification_exhaustion | 2. IPC Hardening | `notification slots exhausted: final create returns -1` | Negative/error |
+| 17 | L255 | ipc_signal_wait_out_of_range | 2. IPC Hardening | `signal/wait idx=-1 and idx=999 return -1` | Negative/error |
+| 18 | L270 | cap_grant_without_GRANT_right | 3. Capability Hardening | `grant without G-right returns -1` | Access control |
+| 19 | L284 | cap_grant_from_revoked_cap | 3. Capability Hardening | `grant from revoked cap returns -1` | Access control |
+| 20 | L298 | cap_grant_rights_monotonically_narrow | 3. Capability Hardening | `granted rights ⊆ parent rights (monotone narrowing)` | Access control |
+| 21 | L312 | cap_table_exhaustion | 3. Capability Hardening | `cap table exhausted: final create returns -1` | Negative/error |
+| 22 | L323 | cap_double_revoke | 3. Capability Hardening | `second revoke returns -1` | Negative/error |
+| 23 | L334 | cap_check_invalid_index_denied | 3. Capability Hardening | `cap_check(idx=-1) and (idx=999) denied` | Negative/error |
+| 24 | L345 | syscall_dispatch_invalid_sysno | 4. Syscall | `syscall dispatch with unknown sysno returns error` | Negative/error |
+| 25 | L357 | operand_stack_overflow_and_underflow | 4. VM Stack | `push beyond capacity → overflow; pop empty → underflow` | Negative/error |
+| 26 | L370 | sched_thread_exhaustion | 5. Scheduler | `create threads until MAX_THREADS: final returns -1` | Negative/error |
+| 27 | L384 | sched_double_destroy_thread | 5. Scheduler | `destroy same thread twice: second returns -1` | Negative/error |
+| 28 | L395 | sched_ops_invalid_tid | 5. Scheduler | `block/unblock/set-priority with tid=-1 return -1` | Negative/error |
+| 29 | L408 | sched_unblock_non_blocked_rejected | 5. Scheduler | `unblock thread not in BLOCKED state returns -1` | Negative/error |
+| 30 | L418 | sched_set_invalid_priority | 5. Scheduler | `set_priority with out-of-range value returns -1` | Negative/error |
+| 31 | L428 | sched_yield_no_threads | 5. Scheduler | `yield with no threads returns gracefully` | Negative/error |
+| 32 | L436 | sched_pick_next_all_dead | 5. Scheduler | `pick_next when all threads dead returns NULL` | Boundary |
+| 33 | L445 | trit_pack_unpack_roundtrip | 6. Trit Encoding | `pack then unpack all 3 values: F→0x02, U→0x00, T→0x01` | Encoding |
+| 34 | L457 | trit_unpack_fault_code_returns_unknown | 6. Trit Encoding | `unpack invalid code (0xFF) returns UNKNOWN` | Negative/error |
+
+---
+
+## Suite 25: Crown Jewel Reversion Guard ⭐NEW
+
+**Source**: `tests/test_ternary_reversion_guard.c`  
+**Runtime Assertions**: 37  
+**Source-Level Entries**: 37  
+**Harness**: `ASSERT_EQ(actual, expected, msg)` + `PASS()` per function  
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 37 passed, 0 failed ===`  
+**What it tests**: The "Crown Jewel" regression guard — exhaustive Kleene logic laws, SIMD packed-64 operations vs scalar equivalence, trit XOR/crypto primitives, FFT butterfly correctness, Avizienis balanced-ternary, Ingole patent cross-checks, Hamming ECC, trit conversion APIs, and NULL-logic propagation. Failure here indicates binary reversion of core ternary invariants.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L89 | kleene_and_complete_truth_table | 1. Kleene Laws | `trit_and(a,b) for all 9 pairs matches Kleene AND` | Logic |
+| 2 | L106 | kleene_or_complete_truth_table | 1. Kleene Laws | `trit_or(a,b) for all 9 pairs matches Kleene OR` | Logic |
+| 3 | L120 | kleene_not_involution | 1. Kleene Laws | `trit_not: 3 values correct + NOT(NOT(v))==v` | Logic |
+| 4 | L132 | kleene_implies_complete_truth_table | 1. Kleene Laws | `trit_implies for all 9 pairs (Kleene implication)` | Logic |
+| 5 | L147 | kleene_equiv_complete_truth_table | 1. Kleene Laws | `trit_equiv for all 6 distinct pairs` | Logic |
+| 6 | L162 | kleene_de_morgan_laws | 1. Kleene Laws | `NOT(AND(a,b))==OR(NOT(a),NOT(b)) for all 9 pairs` | Logic |
+| 7 | L183 | kleene_commutativity_associativity_absorption | 1. Kleene Laws | `commutativity, idempotence, AND-OR absorption for all pairs` | Logic |
+| 8 | L215 | packed64_and_matches_scalar | 2. SIMD Guard | `packed64 AND == scalar AND for all trit pair combinations` | Logic |
+| 9 | L224 | packed64_or_matches_scalar | 2. SIMD Guard | `packed64 OR == scalar OR for all trit pair combinations` | Logic |
+| 10 | L237 | packed64_not_involution | 2. SIMD Guard | `packed64 NOT(NOT(x))==x` | Logic |
+| 11 | L248 | packed64_per_position_matches_scalar_ops | 2. SIMD Guard | `each of 32 positions in packed64 matches scalar result` | Logic |
+| 12 | L262 | pack_unpack_all_values_roundtrip | 3. Encoding Guard | `trit_pack then trit_unpack roundtrip for F/U/T` | Encoding |
+| 13 | L283 | trit_xor_balanced_mod3_addition | 3. Crypto Guard | `trit_xor == mod-3 addition for all 9 pairs` | Encoding |
+| 14 | L298 | trit_xor_inv_balanced_mod3_subtraction | 3. Crypto Guard | `trit_xor_inv == mod-3 subtraction for all 9 pairs` | Encoding |
+| 15 | L313 | trit_xor_xor_inv_is_identity | 3. Crypto Guard | `XOR then XOR_INV with same key == identity` | Encoding |
+| 16 | L328 | encrypt_then_decrypt_recovers_plaintext | 3. Crypto Guard | `encrypt then decrypt returns original trit sequence` | Encoding |
+| 17 | L347 | keygen_same_seed_same_key | 3. Crypto Guard | `same seed produces identical key stream` | Functional |
+| 18 | L361 | hash_deterministic_and_full_range | 3. Crypto Guard | `hash is deterministic and outputs all 3 trit values` | Encoding |
+| 19 | L379 | mac_sign_verify_roundtrip | 3. Crypto Guard | `MAC sign then verify returns TRIT_TRUE` | Encoding |
+| 20 | L397 | fft_step_radix3_butterfly | 4. Transform Guard | `radix-3 FFT butterfly produces expected output values` | Functional |
+| 21 | L415 | avizienis_ternary_binary_roundtrip | 4. Transform Guard | `Avizienis binary→ternary roundtrip recovers original` | Transformation |
+| 22 | L430 | avizienis_output_includes_minus_one | 4. Transform Guard | `Avizienis output set includes -1 (full ternary range)` | Functional |
+| 23 | L447 | ingole_tnot_matches_kleene | 5. Patent Cross-Check | `Ingole TNOT matches Kleene NOT for all 3 values` | Logic |
+| 24 | L460 | ingole_cwc_ccwc_cyclic_rotations | 5. Patent Cross-Check | `CWC and CCWC are cyclic-rotation inverses` | Logic |
+| 25 | L474 | ingole_tand_tor_via_patent | 5. Patent Cross-Check | `Ingole TAND/TOR match Kleene min/max` | Logic |
+| 26 | L490 | ingole_xtor_mod3_addition | 5. Patent Cross-Check | `Ingole XTOR matches mod-3 addition` | Logic |
+| 27 | L505 | ingole_half_adder_all_pairs | 5. Patent Cross-Check | `Ingole half-adder all 9 pairs match expected` | Arithmetic |
+| 28 | L520 | ingole_full_adder_all_triples | 5. Patent Cross-Check | `Ingole full-adder all 27 triples match expected` | Arithmetic |
+| 29 | L539 | hamming_encode_decode_no_error | 6. Hamming Guard | `Hamming encode then decode with no error` | Encoding |
+| 30 | L555 | hamming_corrects_single_trit_error | 6. Hamming Guard | `Hamming corrects single-trit error` | Functional |
+| 31 | L575 | trit_from_bool_mapping | 7. Conversion Guard | `trit_from_bool(false)==FALSE, (true)==TRUE` | Transformation |
+| 32 | L588 | trit_to_bool_strict_definite_only | 7. Conversion Guard | `trit_to_bool only defined for TRUE/FALSE, not UNKNOWN` | Negative/error |
+| 33 | L601 | trit_from_int_range_and_clamping | 7. Conversion Guard | `trit_from_int(-1)==FALSE, (0)==UNKNOWN, (+1)==TRUE; clamps` | Boundary |
+| 34 | L616 | trit_to_trit2_and_back_roundtrip | 7. Conversion Guard | `trit↔trit2 roundtrip for all 3 values` | Transformation |
+| 35 | L631 | kleene_null_and_propagation | 8. NULL Propagation | `NULL AND T==NULL, NULL AND F==NULL (strict mode)` | Logic |
+| 36 | L645 | kleene_null_or_propagation | 8. NULL Propagation | `NULL OR F==NULL, NULL OR T==T (strict mode)` | Logic |
+| 37 | L660 | kleene_null_equals_three_valued | 8. NULL Propagation | `NULL==T==NULL, NULL==NULL==NULL (three-value equality)` | Logic |
+
+---
+
+## Suite 48: Gödel Machine ⭐NEW
+
+**Source**: `tests/test_godel_machine.c`  
+**Runtime Assertions**: 21  
+**Source-Level Entries**: 21  
+**Harness**: `if (condition) PASS(); else FAIL(msg)` — function-level, ternary utility metric  
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 21 passed, 0 failed ===`  
+**What it tests**: seT6 Gödel Machine — self-modifying system that applies inference rules (modus ponens, conjunction, trit-eval) to theorems, tracks utility with binary-reversion penalty, and only accepts switch-programs that increase the utility score.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L111 | godel_init_succeeds | 1. Init | `godel_init(&gm)==0; gm.initialized==TRUE; gm.n_axioms==6` | Initialization |
+| 2 | L119 | godel_init_null_returns_error | 1. Init | `godel_init(NULL)==-1` | Negative/error |
+| 3 | L127 | get_axiom_returns_valid_axiom | 2. Axioms | `get_axiom(0): verified==TRUE, active==TRUE, name non-empty` | Functional |
+| 4 | L136 | get_axiom_oob_returns_null | 2. Axioms | `get_axiom(999)==NULL` | Negative/error |
+| 5 | L144 | axioms_cover_all_5_types | 2. Axioms | `6 axioms cover all 5 GODEL_AXIOM_* type constants` | Functional |
+| 6 | L160 | apply_rule_modus_ponens | 3. Inference Rules | `apply MODUS_PONENS → theorem id>=0, active==T, verified==T` | Functional |
+| 7 | L169 | apply_rule_conjunction | 3. Inference Rules | `apply CONJUNCTION → theorem id>=0, active==T` | Functional |
+| 8 | L178 | apply_rule_trit_eval | 3. Inference Rules | `apply TRIT_EVAL → theorem id>=0, verified==T` | Functional |
+| 9 | L190 | delete_theorem_deactivates | 4. Theorem Lifecycle | `delete_theorem(id)==0; theorem.active==FALSE` | Functional |
+| 10 | L200 | delete_theorem_oob_returns_error | 4. Theorem Lifecycle | `delete_theorem(999)==-1` | Negative/error |
+| 11 | L211 | set_switchprog_stores_diff | 5. Self-Modification | `set_switchprog: id>=0, n_switchprogs==1, applied==UNKNOWN` | Functional |
+| 12 | L224 | check_returns_0_when_no_delta | 6. Utility Check | `godel_check with no pending delta returns 0` | Functional |
+| 13 | L232 | check_returns_1_when_delta_positive | 6. Utility Check | `godel_check after utility-increasing switch returns 1` | Functional |
+| 14 | L248 | state2theorem_encodes_runtime_state | 7. State Encoding | `state2theorem creates theorem with type==GODEL_AXIOM_STATE` | Functional |
+| 15 | L263 | utility_perfect_score_equals_1 | 8. Utility Metric | `utility==1.0 when all tests pass, no reversions` | Functional |
+| 16 | L273 | utility_zero_when_no_tests | 8. Utility Metric | `utility==0.0 when total_tests==0` | Boundary |
+| 17 | L283 | utility_decreases_with_reversions | 8. Utility Metric | `utility(dirty) < utility(clean) when reversions > 0` | Functional |
+| 18 | L295 | delta_utility_tracked_correctly | 8. Utility Metric | `delta_utility == new_u − old_u within 1e-10` | Functional |
+| 19 | L313 | no_accept_when_utility_decreases | 6. Utility Check | `godel_check rejects switch-prog that decreases utility` | Negative/error |
+| 20 | L329 | multiple_derivations_chain_correctly | 3. Inference Rules | `t2.derived_from[0]==t1 (chained inference)` | Functional |
+| 21 | L343 | biops_search_fraction_default | 5. Self-Modification | `search_fraction in (0, 1]` | Functional |
+
+---
+
+## Suite 49: SIMD Regression ⭐NEW
+
+**Source**: `tests/test_trit_simd_regression.c`  
+**Runtime Assertions**: 10  
+**Source-Level Entries**: 10  
+**Harness**: `if (ok) PASS(); else FAIL(msg)` — exhaustive loop over all trit encodings  
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 10 passed, 0 failed ===`  
+**What it tests**: Regression guard for the `trit_and_packed64` / `trit_or_packed64` / `trit_not_packed64` SIMD operations — each is verified against scalar Kleene operations over all possible 2-bit trit encodings, positions, and algebraic law checks.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L59 | simd_and_all_9_pairs | 1. AND Correctness | `packed64_and matches scalar for all 9 trit-pair combos` | Logic |
+| 2 | L80 | simd_or_all_9_pairs | 1. OR Correctness | `packed64_or matches scalar for all 9 trit-pair combos` | Logic |
+| 3 | L101 | simd_not_all_32_positions | 2. NOT Correctness | `packed64_not correct at each of 32 positions` | Logic |
+| 4 | L121 | simd_not_involution_all_encodings | 2. NOT Correctness | `NOT(NOT(x))==x for all valid 2-bit encodings` | Logic |
+| 5 | L141 | simd_and_all_true_identity | 3. Algebraic Laws | `AND(x, all-TRUE)==x for all x (identity)` | Logic |
+| 6 | L159 | simd_or_all_false_identity | 3. Algebraic Laws | `OR(x, all-FALSE)==x for all x (identity)` | Logic |
+| 7 | L177 | simd_demorgan_law_100_patterns | 3. Algebraic Laws | `NOT(AND(a,b))==OR(NOT(a),NOT(b)) for 100 random packed patterns` | Logic |
+| 8 | L199 | simd_outputs_contain_full_trit_range | 4. Range Guard | `AND/OR outputs include all 3 trit values (no binary flattening)` | Functional |
+| 9 | L227 | simd_and_or_commutativity | 3. Algebraic Laws | `AND(a,b)==AND(b,a) and OR(a,b)==OR(b,a)` | Logic |
+| 10 | L247 | simd_absorption_laws | 3. Algebraic Laws | `AND(a,OR(a,b))==a and OR(a,AND(a,b))==a` | Logic |
+
+---
+
+## Suite 50: Binary Sentinel ⭐NEW
+
+**Source**: `tests/test_binary_sentinel.c`  
+**Runtime Assertions**: 12  
+**Source-Level Entries**: 12  
+**Harness**: `if (ok) PASS(); else FAIL(msg)` — range-exhaustive sentinel checks  
+**Output Reading**: `sentinel_* [PASS]`; final `=== Results: 12 passed, 0 failed ===`  
+**What it tests**: Binary-reversion detection — every major subsystem (Kleene logic, SIMD, crypto XOR, hash, encryption, trit-cast, pack/unpack, FFT, Avizienis, implication/equivalence) must produce all 3 trit values. A failure means the subsystem has collapsed to binary and the core ternary invariant is broken.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L60 | sentinel_kleene_ops_produce_all_3_values | 1. Kleene | `AND/OR/NOT outputs contain F, U, and T` | Functional |
+| 2 | L86 | sentinel_simd_packed64_full_trit_range | 2. SIMD | `packed64 AND/OR outputs contain all 3 trit values` | Functional |
+| 3 | L130 | sentinel_crypto_xor_produces_all_trits | 3. Crypto | `trit_xor over varied keys/plaintext yields F, U, T` | Encoding |
+| 4 | L148 | sentinel_hash_output_full_trit_range | 3. Crypto | `tcrypto_hash over varied inputs yields F, U, T` | Encoding |
+| 5 | L167 | sentinel_encrypt_decrypt_preserves_trit_range | 3. Crypto | `encrypt then decrypt returns original; ciphertext has all 3 values` | Encoding |
+| 6 | L203 | sentinel_trit_cast_bool_roundtrip | 4. Encoding | `trit_cast(false)==FALSE and trit_cast(true)==TRUE; range intact` | Transformation |
+| 7 | L225 | sentinel_pack_unpack_roundtrip_all_3_values | 4. Encoding | `trit_pack/unpack roundtrip and all 3 pack codes seen` | Encoding |
+| 8 | L242 | sentinel_fft_butterfly_ternary_output | 5. Transforms | `radix-3 FFT butterfly outputs contain F, U, T` | Functional |
+| 9 | L270 | sentinel_avizienis_balanced_ternary_full_range | 5. Transforms | `Avizienis conversion output includes -1, 0, +1` | Functional |
+| 10 | L297 | sentinel_no_implicit_bool_to_trit_flattening | 6. Type Guard | `bool-valued comparison does not flatten to {0,1}; -1 present` | Negative/error |
+| 11 | L318 | sentinel_ternary_mac_not_boolean | 6. Type Guard | `ternary MAC accumulates to -2 (not clamped to binary range)` | Functional |
+| 12 | L335 | sentinel_implies_equiv_full_range | 1. Kleene | `trit_implies / trit_equiv outputs contain all 3 values` | Logic |
+
+---
+
+## Suite 51: Ternary Compiler Integration ⭐NEW
+
+**Source**: `tests/test_ternary_compiler_integration.c`  
+**Runtime Assertions**: 19  
+**Source-Level Entries**: 19 (+ 1 `[DIAG]` note — not a failure)  
+**Harness**: `if (len>0) PASS()` for compile-roundtrip tests; `if (result==expected) PASS()` for VM execution tests  
+**Output Reading**: `test_name  [PASS]` or `  [DIAG] message`; final `=== Results: 19 passed, 0 failed ===`  
+**What it tests**: End-to-end seT6 ternary-first compiler — parsing and compiling Kleene logic, trit variable/array declarations, trit negation, capability init, 3-level scheduler priority, IPC endpoints, Gödel utility metric, Gödel axiom check, search fraction, Huffman encoding, SIMD concept, radix-3 conversion, multi-function programs, Verilog emission, consensus and accept-any VM opcodes.
+
+| # | Line | Test Name | Section | Assertion / Expression | Category |
+|---|------|-----------|---------|----------------------|----------|
+| 1 | L81 | kleene_and_true_true | 1. Kleene Execution | `compile "trit x=T AND T" → VM result==TRUE` | Functional |
+| 2 | L94 | kleene_and_true_unknown | 1. Kleene Execution | `compile "trit x=T AND U" → VM result==UNKNOWN` | Functional |
+| 3 | L104 | kleene_or_false_true | 1. Kleene Execution | `compile "trit x=F OR T" → VM result==TRUE` | Functional |
+| 4 | L119 | trit_var_decl_compiles | 2. Declaration | `"trit x" compiles to non-empty bytecode` | Parsing |
+| 5 | L127 | trit_array_decl_compiles | 2. Declaration | `"trit arr[4]" compiles to non-empty bytecode` | Parsing |
+| 6 | L140 | trit_negation_minus_one | 2. Operators | `compile trit negation "-(+1)" → VM result==-1` | Functional |
+| 7 | L154 | cap_init_function_compiles | 3. System Patterns | `cap_init(…) pattern compiles cleanly` | Parsing |
+| 8 | L164 | scheduler_3level_priority | 3. System Patterns | `3-level priority schedule pattern compiles and runs` | Functional |
+| 9 | L180 | ipc_endpoint_send_recv | 3. System Patterns | `IPC send/recv pattern compiles cleanly` | Parsing |
+| 10 | L198 | godel_utility_sigma9_metric | 4. Gödel Integration | `Gödel utility computation compiles and returns value` | Functional |
+| 11 | L215 | godel_axiom_consistency_check | 4. Gödel Integration | `Gödel axiom consistency check compiles` | Parsing |
+| 12 | L235 | godel_biops_search_fraction | 4. Gödel Integration | `Gödel BIOPS search fraction pattern compiles` | Parsing |
+| 13 | L255 | ternary_huffman_encoding | 5. Algorithms | `Huffman encoding pattern compiles and emits bytecode` | Parsing |
+| 14 | L273 | packed_simd_32_trits_concept | 5. Algorithms | `SIMD 32-trit packed concept compiles; [DIAG] VM lacks native SIMD ops` | Hardware/ALU |
+| 15 | L296 | radix3_conversion_concept | 5. Algorithms | `radix-3 conversion pattern compiles` | Parsing |
+| 16 | L314 | multi_function_program | 6. Program Structure | `multi-function program (3 functions) compiles and runs` | Functional |
+| 17 | L340 | verilog_emit_kleene_and | 6. Program Structure | `Verilog emission of Kleene AND compiles cleanly` | Functional |
+| 18 | L356 | vm_consensus_opcode_exists | 7. VM Opcodes | `CONSENSUS opcode accepted by VM dispatch` | Hardware/ALU |
+| 19 | L370 | vm_accept_any_opcode_exists | 7. VM Opcodes | `ACCEPT_ANY opcode accepted by VM dispatch` | Hardware/ALU |
+
+---
+
+## Suite 52: Compiler: Basic Integration ⭐NEW
+
+**Source**: `tools/compiler/tests/test_basic.c`  
+**Runtime Assertions**: 26  
+**Source-Level Entries**: 4  
+**Harness**: `void test_name(void) { assert(...); }` — function-level, abort on fail via libc `assert()`  
+**Output Reading**: Manual printf per function. Final: `=== All tests passed! ===`
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L9 | test_trit_operations | Trit ops | `assert(trit_mul(P,P)==P); assert(trit_mul(P,N)==N); assert(trit_mul(N,N)==P); assert(trit_mul(Z,P)==Z); assert(trit_add(P,P,&c)==N); assert(carry==P); assert(trit_add(P,Z,&c)==P); assert(carry==Z); assert(trit_min(N,P)==N); assert(trit_max(N,P)==P)` | Arithmetic |
+| 2 | L34 | test_tokenizer | Tokenizer | `assert(tokens[0].type==TOK_INT && tokens[0].value==1); assert(tokens[1].type==TOK_PLUS); assert(tokens[2].type==TOK_INT && tokens[2].value==2); assert(tokens[3].type==TOK_MUL); assert(tokens[4].type==TOK_INT && tokens[4].value==3); assert(tokens[5].type==TOK_EOF)` | Parsing |
+| 3 | L48 | test_codegen | Codegen | `assert(bytecode[0]==OP_PUSH); assert(bytecode[1]==1); ... assert(bytecode[8]==OP_HALT); assert(bc_idx==9)` | Functional |
+| 4 | L70 | test_vm_execution | VM exec | `vm_run(bytecode, bc_idx)` (implicit — expects "Result: 7") | Integration |
+
+---
+
+## Suite 53: Compiler: Bootstrap Self-Host (TASK-018) ⭐NEW
+
+**Source**: `tools/compiler/tests/test_bootstrap.c`  
+**Runtime Assertions**: 33  
+**Source-Level Entries**: 21  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L15 | test_symtab_init | Symbol table | `ASSERT_EQ(tab.count, 0); ASSERT_EQ(tab.next_offset, 0)` | Initialization |
+| 2 | L22 | test_symtab_add | Symbol table | `ASSERT_EQ(off, 0); ASSERT_EQ(tab.count, 1); ASSERT_EQ(off2, 1); ASSERT_EQ(tab.count, 2)` | Functional |
+| 3 | L33 | test_symtab_lookup | Symbol table | `ASSERT_EQ(symtab_lookup(&tab,"alpha"), 0); ASSERT_EQ(…,"beta"), 1); ASSERT_EQ(…,"gamma"), -1)` | Functional |
+| 4 | L43 | test_symtab_full | Symbol table | `ASSERT_TRUE(symtab_add(&tab, name, 0) >= 0); ASSERT_EQ(symtab_add(&tab,"overflow",0), -1)` | Boundary |
+| 5 | L58 | test_bootstrap_simple_const | Compilation | `ASSERT_TRUE(len > 0); ASSERT_TRUE(len >= 3)` | Bootstrap |
+| 6 | L66 | test_bootstrap_addition | Compilation | `ASSERT_TRUE(len > 0); ASSERT_TRUE(len >= 3)` | Bootstrap |
+| 7 | L75 | test_bootstrap_var_decl | Compilation | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 8 | L81 | test_bootstrap_multi_var | Compilation | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 9 | L90 | test_bootstrap_self_test | Self-test | `ASSERT_EQ(result, 0)` | Bootstrap |
+| 10 | L95 | test_bootstrap_subtraction | Compilation | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 11 | L102 | test_bootstrap_nested_expr | Compilation | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 12 | L111 | test_bootstrap_pointer_syntax | Compilation | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 13 | L121 | test_bootstrap_roundtrip | Compilation | `ASSERT_TRUE(len1 > 0); ASSERT_EQ(len1, len2); ASSERT_EQ(code1[i], code2[i])` | Bootstrap |
+| 14 | L134 | test_bootstrap_error_handling | Compilation | `ASSERT_TRUE(len == -1 \|\| len > 0)` | Error handling |
+| 15 | L144 | test_bootstrap_if_simple | Control flow | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 16 | L154 | test_bootstrap_if_else | Control flow | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 17 | L162 | test_bootstrap_while_loop | Control flow | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 18 | L170 | test_bootstrap_for_loop | Control flow | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 19 | L178 | test_bootstrap_comparison_eq | Control flow | `ASSERT_TRUE(len > 0)` | Bootstrap |
+| 20 | L187 | test_bootstrap_comparison_ops | Control flow | `ASSERT_TRUE(len > 0)` ×2 | Bootstrap |
+| 21 | L198 | test_bootstrap_nested_if | Control flow | `ASSERT_TRUE(len > 0)` | Bootstrap |
+
+---
+
+## Suite 54: Compiler: Hardware Simulation ⭐NEW
+
+**Source**: `tools/compiler/tests/test_hardware_simulation.c`  
+**Runtime Assertions**: 10  
+**Source-Level Entries**: 7  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NEQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L14 | test_alu_add_accuracy | ALU ops | `ASSERT_EQ(software_result, a + b)` (loop) | Hardware/ALU |
+| 2 | L31 | test_alu_mul_accuracy | ALU ops | `ASSERT_EQ(software_result, a * b)` (loop) | Hardware/ALU |
+| 3 | L47 | test_alu_overflow_handling | ALU ops | `ASSERT_NEQ(result, max_val+1); ASSERT_TRUE(result >= -max_val && result <= max_val)` | Boundary |
+| 4 | L70 | test_register_behavior | Registers | `ASSERT_EQ(trit_word_to_int(reg[i]), 42)` (loop) | Hardware/ALU |
+| 5 | L87 | test_alu_timing_consistency | Timing | `ASSERT_EQ(trit_word_to_int(res), va + vb)` (100 random) | Hardware/ALU |
+| 6 | L100 | test_verilog_emission | Verilog | `ASSERT_EQ(trit_word_to_int(circuit[i]), i * 13)` (loop) | Hardware/ALU |
+| 7 | L114 | test_pipeline_hazards | Pipeline | `ASSERT_EQ(result1, result2); ASSERT_EQ(result1, 150)` | Hardware/ALU |
+
+---
+
+## Suite 55: Compiler: IR / Constant Folding ⭐NEW
+
+**Source**: `tools/compiler/tests/test_ir.c`  
+**Runtime Assertions**: 49  
+**Source-Level Entries**: 20  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_NULL/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L14 | test_fold_add | Const folding | `ASSERT_EQ(e->type, NODE_CONST); ASSERT_EQ(e->val, 3)` | IR/Optimization |
+| 2 | L25 | test_fold_mul | Const folding | `ASSERT_EQ(e->type, NODE_CONST); ASSERT_EQ(e->val, 12)` | IR/Optimization |
+| 3 | L36 | test_no_fold_vars | Const folding | `ASSERT_EQ(e->type, NODE_BINOP) … ASSERT_EQ(e->right->val, 2)` | IR/Optimization |
+| 4 | L49 | test_fold_nested | Const folding | `ASSERT_EQ(e->type, NODE_CONST); ASSERT_EQ(e->val, 21)` | IR/Optimization |
+| 5 | L62 | test_fold_partial | Const folding | `ASSERT_EQ(e->left->val, 3); ASSERT_EQ(e->right->type, NODE_VAR)` | IR/Optimization |
+| 6 | L76 | test_single_const | Const folding | `ASSERT_EQ(e->type, NODE_CONST); ASSERT_EQ(e->val, 42)` | IR/Optimization |
+| 7 | L86 | test_single_var | Const folding | `ASSERT_EQ(e->type, NODE_VAR)` | IR/Optimization |
+| 8 | L95 | test_fold_add_zero | Const folding | `ASSERT_EQ(e->type, NODE_CONST); ASSERT_EQ(e->val, 5)` | Boundary |
+| 9 | L104 | test_fold_mul_zero | Const folding | `ASSERT_EQ(e->type, NODE_CONST); ASSERT_EQ(e->val, 0)` | Boundary |
+| 10 | L115 | test_fold_deep_chain | Const folding | `ASSERT_EQ(e->type, NODE_CONST); ASSERT_EQ(e->val, 27)` | IR/Optimization |
+| 11 | L129 | test_optimize_null | NULL safety | `ASSERT_TRUE(1)` (no crash) | Boundary |
+| 12 | L137 | test_fold_cmp_eq_true | Cmp folding | `ASSERT_EQ(e->val, 1)` | IR/Optimization |
+| 13 | L146 | test_fold_cmp_eq_false | Cmp folding | `ASSERT_EQ(e->val, 0)` | IR/Optimization |
+| 14 | L155 | test_fold_cmp_lt | Cmp folding | `ASSERT_EQ(e->val, 1)` | IR/Optimization |
+| 15 | L164 | test_fold_cmp_gt | Cmp folding | `ASSERT_EQ(e->val, 1)` | IR/Optimization |
+| 16 | L175 | test_create_if | Control flow nodes | `ASSERT_EQ(e->type, NODE_IF); ASSERT_NOT_NULL(e->condition)` | IR/Optimization |
+| 17 | L186 | test_create_if_else | Control flow nodes | `ASSERT_EQ(e->type, NODE_IF); ASSERT_NOT_NULL(e->else_body)` | IR/Optimization |
+| 18 | L196 | test_create_while | Control flow nodes | `ASSERT_EQ(e->type, NODE_WHILE)` | IR/Optimization |
+| 19 | L207 | test_create_for | Control flow nodes | `ASSERT_EQ(e->type, NODE_FOR)` | IR/Optimization |
+| 20 | L222 | test_create_block | Control flow nodes | `ASSERT_EQ(block->type, NODE_BLOCK)` | IR/Optimization |
+
+---
+
+## Suite 56: Compiler: Lexer / Tokenizer ⭐NEW
+
+**Source**: `tools/compiler/tests/test_lexer.c`  
+**Runtime Assertions**: 87  
+**Source-Level Entries**: 20  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_STR_EQ; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L14 | test_single_integer | Basic tokenization | `ASSERT_EQ(tokens[0].type, TOK_INT); ASSERT_EQ(tokens[0].value, 42)` | Parsing |
+| 2 | L21 | test_simple_addition | Basic tokenization | `ASSERT_EQ(tokens[0..3].type/value)` | Parsing |
+| 3 | L31 | test_simple_multiplication | Basic tokenization | `ASSERT_EQ(tokens[0..3].type/value)` | Parsing |
+| 4 | L41 | test_mixed_operators | Basic tokenization | `ASSERT_EQ(tokens[0..5].type/value)` | Parsing |
+| 5 | L56 | test_no_spaces | Whitespace | `ASSERT_EQ(tokens[0..3].type/value)` | Parsing |
+| 6 | L66 | test_extra_spaces | Whitespace | `ASSERT_EQ(tokens[0..3].type/value)` | Parsing |
+| 7 | L76 | test_tabs_and_newlines | Whitespace | `ASSERT_EQ(tokens[0..3].type/value)` | Parsing |
+| 8 | L88 | test_multi_digit | Multi-digit ints | `ASSERT_EQ(tokens[0].value, 123)` | Parsing |
+| 9 | L98 | test_zero | Multi-digit ints | `ASSERT_EQ(tokens[0].value, 0)` | Boundary |
+| 10 | L107 | test_long_expression | Complex exprs | `ASSERT_EQ(tokens[0..7].type/value)` | Parsing |
+| 11 | L123 | test_chained_multiplication | Complex exprs | `ASSERT_EQ(tokens[0..5].type/value)` | Parsing |
+| 12 | L138 | test_empty_string | Edge cases | `ASSERT_EQ(tokens[0].type, TOK_EOF)` | Boundary |
+| 13 | L143 | test_whitespace_only | Edge cases | `ASSERT_EQ(tokens[0].type, TOK_EOF)` | Boundary |
+| 14 | L150 | test_for_keyword | Keywords | `ASSERT_EQ(tokens[0].type, TOK_FOR)` | Parsing |
+| 15 | L156 | test_while_keyword | Keywords | `ASSERT_EQ(tokens[0].type, TOK_WHILE)` | Parsing |
+| 16 | L162 | test_for_loop_structure | Keywords | `ASSERT_EQ(tokens[0..16].type/value)` (17 assertions) | Parsing |
+| 17 | L185 | test_invalid_loop_keyword | Keywords | `ASSERT_EQ(tokens[0].type, TOK_IDENT)` | Negative/error |
+| 18 | L193 | test_return_keyword | Keywords | `ASSERT_EQ(tokens[0].type, TOK_RETURN)` | Parsing |
+| 19 | L199 | test_comma_token | Keywords | `ASSERT_EQ(tokens[0..6].type/value)` | Parsing |
+| 20 | L212 | test_ident_name_storage | Identifiers | `ASSERT_STR_EQ(token_names[0], "myVar")` | Parsing |
+
+---
+
+## Suite 57: Compiler: Logger ⭐NEW
+
+**Source**: `tools/compiler/tests/test_logger.c`  
+**Runtime Assertions**: 33  
+**Source-Level Entries**: 14  
+**Harness**: `TEST(name) { ASSERT_STR_EQ/ASSERT_EQ/ASSERT_TRUE/ASSERT_NOT_NULL; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L33 | test_level_str_debug | log_level_str | `ASSERT_STR_EQ(log_level_str(LOG_DEBUG), "DEBUG")` | Functional |
+| 2 | L37 | test_level_str_info | log_level_str | `ASSERT_STR_EQ(log_level_str(LOG_INFO), "INFO")` | Functional |
+| 3 | L41 | test_level_str_warn | log_level_str | `ASSERT_STR_EQ(log_level_str(LOG_WARN), "WARN")` | Functional |
+| 4 | L45 | test_level_str_error | log_level_str | `ASSERT_STR_EQ(log_level_str(LOG_ERROR), "ERROR")` | Functional |
+| 5 | L51 | test_init_null | Init/close | `ASSERT_EQ(result, 0)` | Initialization |
+| 6 | L58 | test_init_file | Init/close | `ASSERT_EQ(result, 0); ASSERT_NOT_NULL(fp)` | Initialization |
+| 7 | L76 | test_log_entry_format | Output format | `ASSERT_TRUE(strstr(…,"[INFO]")!=NULL)` | Infrastructure |
+| 8 | L100 | test_log_level_filter | Level filtering | `ASSERT_TRUE(strstr(…,"debug msg")==NULL); ASSERT_TRUE(…,"warn msg")!=NULL)` | Functional |
+| 9 | L128 | test_log_multiple_entries | Multiple entries | `ASSERT_TRUE(strstr(…,"first")!=NULL); ASSERT_EQ(lines, 3)` | Functional |
+| 10 | L160 | test_log_null_params | NULL defaults | `ASSERT_TRUE(strstr(…,"[System]")!=NULL)` | Boundary |
+| 11 | L183 | test_log_in_lexer | Src integration | `ASSERT_TRUE(strstr(…,"[Lexer]")!=NULL)` | Integration |
+| 12 | L202 | test_log_in_codegen | Src integration | `ASSERT_TRUE(strstr(…,"[Codegen]")!=NULL)` | Integration |
+| 13 | L223 | test_log_in_vm | Src integration | `ASSERT_TRUE(strstr(…,"[VM]")!=NULL)` | Integration |
+| 14 | L255 | test_log_in_parser | Src integration | `ASSERT_TRUE(strstr(…,"[Parser]")!=NULL)` | Integration |
+
+---
+
+## Suite 58: Compiler: Memory Model (TASK-015) ⭐NEW
+
+**Source**: `tools/compiler/tests/test_memory.c`  
+**Runtime Assertions**: 46  
+**Source-Level Entries**: 19  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_STR_EQ; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L17 | test_addr_zero | Ternary address | `ASSERT_EQ(idx, MEMORY_SIZE / 2)` | Encoding |
+| 2 | L24 | test_addr_positive | Ternary address | `ASSERT_EQ(idx, MEMORY_SIZE / 2 + 1)` | Encoding |
+| 3 | L31 | test_addr_negative | Ternary address | `ASSERT_EQ(idx, MEMORY_SIZE / 2 - 1)` | Encoding |
+| 4 | L38 | test_addr_roundtrip | Ternary address | `ASSERT_EQ(trit_word_to_int(addr), trit_word_to_int(addr2))` | Encoding |
+| 5 | L48 | test_tmem_write_read | Ternary memory | `ASSERT_EQ(tmem_read(addr), 99)` | Memory |
+| 6 | L56 | test_tmem_zero_addr | Ternary memory | `ASSERT_EQ(tmem_read(addr), -7)` | Memory |
+| 7 | L64 | test_tmem_negative_addr | Ternary memory | `ASSERT_EQ(tmem_read(addr), 123)` | Memory |
+| 8 | L74 | test_vm_store_load | VM memory ops | `ASSERT_EQ(vm_memory_read(10), 42)` | Memory |
+| 9 | L90 | test_vm_store_multiple | VM memory ops | `ASSERT_EQ(vm_memory_read(0), 11); …(1), 22); …(2), 33)` | Memory |
+| 10 | L105 | test_vm_sub | VM memory ops | `vm_run for SUB opcode` | Functional |
+| 11 | L119 | test_ir_deref | IR pointer nodes | `ASSERT_NOT_NULL(d); ASSERT_EQ(d->type, NODE_DEREF)` | IR/Optimization |
+| 12 | L129 | test_ir_addr_of | IR pointer nodes | `ASSERT_EQ(a->type, NODE_ADDR_OF)` | IR/Optimization |
+| 13 | L139 | test_ir_assign | IR pointer nodes | `ASSERT_EQ(a->type, NODE_ASSIGN); ASSERT_EQ(a->right->val, 5)` | IR/Optimization |
+| 14 | L151 | test_ir_var_decl | IR pointer nodes | `ASSERT_STR_EQ(d->name, "count"); ASSERT_EQ(d->left->val, 42)` | IR/Optimization |
+| 15 | L164 | test_parse_var_decl | Parser pointer syntax | `ASSERT_EQ(prog->type, NODE_PROGRAM)` | Parsing |
+| 16 | L176 | test_parse_addr_of | Parser pointer syntax | `ASSERT_EQ(fn->body->left->type, NODE_ADDR_OF)` | Parsing |
+| 17 | L191 | test_parse_deref | Parser pointer syntax | `ASSERT_EQ(fn->body->left->type, NODE_DEREF)` | Parsing |
+| 18 | L200 | test_parse_subtraction | Parser pointer syntax | `ASSERT_EQ(fn->body->left->op, OP_IR_SUB)` | Parsing |
+| 19 | L211 | test_fold_subtraction | IR subtraction | `ASSERT_EQ(e->val, 7)` | IR/Optimization |
+
+---
+
+## Suite 59: Compiler: Parser Fuzz ⭐NEW
+
+**Source**: `tools/compiler/tests/test_parser_fuzz.c`  
+**Runtime Assertions**: 0 (crash-absence tests)  
+**Source-Level Entries**: 5  
+**Harness**: `TEST(name) { /* no-crash */; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L42 | test_parser_random_input | Fuzz | 100 random inputs — parser must not crash | Fuzz/Robustness |
+| 2 | L58 | test_parser_malformed_functions | Fuzz | 10 malformed function patterns — no crash | Fuzz/Robustness |
+| 3 | L79 | test_parser_edge_cases | Fuzz | 12 edge-case strings — no crash | Fuzz/Robustness |
+| 4 | L102 | test_parser_large_input | Fuzz | 50 variable declarations — no crash | Stress |
+| 5 | L126 | test_parser_unicode_input | Fuzz | Unicode input — no crash | Fuzz/Robustness |
+
+---
+
+## Suite 60: Compiler: Performance Benchmarks ⭐NEW
+
+**Source**: `tools/compiler/tests/test_performance.c`  
+**Runtime Assertions**: 4  
+**Source-Level Entries**: 4  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L14 | test_trit_arithmetic_perf | Trit arithmetic | `ASSERT_EQ(result, TRIT_Z)` (100k iterations) | Performance |
+| 2 | L32 | test_trit_word_perf | Trit word ops | `ASSERT_EQ(trit_word_to_int(check), final_val)` (50k iterations) | Performance |
+| 3 | L53 | test_parser_perf | Parser | `ASSERT_NOT_NULL(ast)` (1000 iterations) | Performance |
+| 4 | L67 | test_scaling_perf | Scaling | `ASSERT_EQ(trit_word_to_int(words[size-2]), expected)` | Performance |
+
+---
+
+## Suite 61: Compiler: seL4 Stubs ⭐NEW
+
+**Source**: `tools/compiler/tests/test_sel4.c`  
+**Runtime Assertions**: 15  
+**Source-Level Entries**: 4  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_STR_EQ; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L47 | test_sel4_cap_init | seL4 stubs | `ASSERT_NOT_NULL(prog); ASSERT_STR_EQ(fn->name, "init_cap")` | seL4/Verification |
+| 2 | L65 | test_sel4_compile_simple | seL4 stubs | `ASSERT_STR_EQ(sel4_out, "Result: 1\n")` | seL4/Verification |
+| 3 | L73 | test_sel4_multi_cap | seL4 stubs | `ASSERT_EQ(prog->param_count, 2); ASSERT_STR_EQ(prog->params[0]->name, "cap_a")` | seL4/Verification |
+| 4 | L92 | test_sel4_cap_arithmetic | seL4 stubs | `ASSERT_STR_EQ(sel4_out, "Result: 30\n")` | seL4/Verification |
+
+---
+
+## Suite 62: Compiler: seL4 Verify (TASK-019) ⭐NEW
+
+**Source**: `tools/compiler/tests/test_sel4_verify.c`  
+**Runtime Assertions**: 51  
+**Source-Level Entries**: 18  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_NULL/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L14 | test_cap_tree_create | Capability tree | `ASSERT_NOT_NULL(root); ASSERT_EQ(root->cap.object_id, 1)` | Access control |
+| 2 | L24 | test_cap_derive_single | Capability tree | `ASSERT_EQ(child->cap.rights, CAP_RIGHT_READ)` | Access control |
+| 3 | L35 | test_cap_derive_ternary_branching | Capability tree | `ASSERT_EQ(root->child_count, 3); ASSERT_NULL(c4)` | Boundary |
+| 4 | L50 | test_cap_no_escalation | Capability tree | `ASSERT_TRUE(verify_no_escalation(root))` | Access control |
+| 5 | L58 | test_cap_revoke_tree | Capability tree | `ASSERT_EQ(c1->cap.rights, 0); ASSERT_TRUE(verify_revocation(c1))` | Access control |
+| 6 | L77 | test_cap_tree_count | Capability tree | `ASSERT_EQ(cap_tree_count(root), 4)` | Functional |
+| 7 | L88 | test_endpoint_init | Endpoints | `ASSERT_EQ(ep.ep_id, 42); ASSERT_EQ(ep.msg_count, 0)` | IPC |
+| 8 | L96 | test_endpoint_send_recv | Endpoints | `ASSERT_EQ(endpoint_send/recv)` | IPC |
+| 9 | L111 | test_endpoint_full | Endpoints | `ASSERT_EQ(endpoint_send(&ep, 99), -1)` | Boundary |
+| 10 | L121 | test_endpoint_empty | Endpoints | `ASSERT_EQ(endpoint_recv(&ep, &msg), -1)` | Boundary |
+| 11 | L131 | test_tcb_init | Thread control | `ASSERT_EQ(tcb.tid, 1); ASSERT_EQ(tcb.priority, 0)` | Scheduling |
+| 12 | L141 | test_tcb_multiple | Thread control | `ASSERT_EQ(threads[0].tid, 0)` | Scheduling |
+| 13 | L153 | test_sel4_compile_simple_expr | Compile pipeline | `ASSERT_TRUE(len > 0)` | Integration |
+| 14 | L163 | test_sel4_compile_cap_arithmetic | Compile pipeline | `ASSERT_TRUE(len > 0)` | Integration |
+| 15 | L172 | test_sel4_compile_mul_chain | Compile pipeline | `ASSERT_TRUE(len > 0)` | Integration |
+| 16 | L183 | test_verify_escalation_holds | Verification | `ASSERT_TRUE(verify_no_escalation(root))` | seL4/Verification |
+| 17 | L191 | test_verify_revocation_holds | Verification | `ASSERT_TRUE(verify_revocation(root))` | seL4/Verification |
+| 18 | L201 | test_verify_full_tree | Verification | `ASSERT_EQ(cap_tree_count(root), 6); ASSERT_TRUE(verify_no_escalation)` | seL4/Verification |
+
+---
+
+## Suite 63: Compiler: seT5 Syscalls (TASK-016) ⭐NEW
+
+**Source**: `tools/compiler/tests/test_set5.c`  
+**Runtime Assertions**: 23  
+**Source-Level Entries**: 13  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L14 | test_syscall_exit | VM syscall dispatch | `ASSERT_TRUE(1)` (SYS_EXIT) | Functional |
+| 2 | L26 | test_syscall_write | VM syscall dispatch | `ASSERT_EQ(vm_get_result(), 5)` | Functional |
+| 3 | L42 | test_syscall_read | VM syscall dispatch | `ASSERT_EQ(vm_get_result(), 0)` | Functional |
+| 4 | L57 | test_syscall_mmap | VM syscall dispatch | `ASSERT_EQ(vm_get_result(), 364)` | Memory |
+| 5 | L70 | test_syscall_cap_send | VM syscall dispatch | `ASSERT_EQ(vm_get_result(), 0)` | IPC |
+| 6 | L84 | test_syscall_cap_recv | VM syscall dispatch | `ASSERT_EQ(vm_get_result(), 42)` | IPC |
+| 7 | L97 | test_syscall_unknown | VM syscall dispatch | `ASSERT_EQ(vm_get_result(), -1)` | Negative/error |
+| 8 | L111 | test_cap_grant_restricts_rights | Capability API | `ASSERT_EQ(dest.rights, CAP_RIGHT_READ)` | Access control |
+| 9 | L120 | test_cap_grant_no_escalation | Capability API | `ASSERT_EQ(dest.rights, CAP_RIGHT_READ)` | Access control |
+| 10 | L128 | test_cap_revoke | Capability API | `ASSERT_EQ(cap.rights, 0)` | Access control |
+| 11 | L135 | test_cap_rights_bitmask_encoding | Capability API | `ASSERT_EQ(CAP_RIGHT_READ, 1); ASSERT_EQ(CAP_RIGHT_ALL, 7)` | Encoding |
+| 12 | L143 | test_cap_obj_types | Capability API | `ASSERT_EQ(OBJ_ENDPOINT, 0); ASSERT_EQ(OBJ_CNODE, 4)` | Encoding |
+| 13 | L153 | test_store_then_write_syscall | Combined | `ASSERT_EQ(vm_memory_read(50), 65)` | Integration |
+
+---
+
+## Suite 64: Compiler: Ternary Arithmetic Comprehensive ⭐NEW
+
+**Source**: `tools/compiler/tests/test_ternary_arithmetic_comprehensive.c`  
+**Runtime Assertions**: 32  
+**Source-Level Entries**: 5  
+**Harness**: `TEST(name) { ASSERT_EQ; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L7 | test_trit_overflow_scenarios | Overflow | `ASSERT_EQ(result, TRIT_N); ASSERT_EQ(carry, TRIT_P)` | Boundary |
+| 2 | L31 | test_trit_multiplication_edge_cases | Multiplication | `ASSERT_EQ(trit_mul(P,P), P); ASSERT_EQ(trit_mul(Z,Z), Z)` | Arithmetic |
+| 3 | L79 | test_balanced_ternary_mathematical_properties | Math properties | `trit_not, additive identity/inverse, multiplicative identity, annihilation` | Arithmetic |
+| 4 | L115 | test_ternary_arithmetic_commutativity | Commutativity | `ASSERT_EQ(r1, r2); ASSERT_EQ(carry1, carry2)` | Arithmetic |
+| 5 | L125 | test_ternary_arithmetic_associativity | Associativity | `ASSERT_EQ(result1, result2)` | Arithmetic |
+
+---
+
+## Suite 65: Compiler: Ternary Edge Cases ⭐NEW
+
+**Source**: `tools/compiler/tests/test_ternary_edge_cases.c`  
+**Runtime Assertions**: 19  
+**Source-Level Entries**: 5  
+**Harness**: `TEST(name) { ASSERT_EQ; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L7 | test_trit_overflow | Overflow | `ASSERT_EQ(result, TRIT_N); ASSERT_EQ(carry, TRIT_P); ASSERT_EQ(trit_mul)` | Boundary |
+| 2 | L32 | test_trit_underflow | Underflow | `ASSERT_EQ(result, TRIT_P); ASSERT_EQ(carry, TRIT_N)` | Boundary |
+| 3 | L48 | test_precision_loss | Precision | `ASSERT_EQ(back, vals[i])` (loop: 7,13,19,31,43,100,−100,364,−364) | Arithmetic |
+| 4 | L66 | test_extreme_values | Extreme values | `ASSERT_EQ(trit_add(t_max, t_zero, &c), t_max)` | Boundary |
+| 5 | L83 | test_balanced_ternary_properties | Math properties | `ASSERT_EQ(sum, TRIT_Z)` | Arithmetic |
+
+---
+
+## Suite 66: Compiler: Trit Edge Cases ⭐NEW
+
+**Source**: `tools/compiler/tests/test_trit_edge_cases.c`  
+**Runtime Assertions**: 13  
+**Source-Level Entries**: 10  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NEQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 1 | L13 | test_trit_word_max_value | Extreme values | `ASSERT_EQ(trit_word_to_int(w), 9841)` | Boundary |
+| 2 | L21 | test_trit_word_min_value | Extreme values | `ASSERT_EQ(trit_word_to_int(w), −9841)` | Boundary |
+| 3 | L29 | test_trit_word_overflow | Overflow | `ASSERT_NEQ(result, max_val+1)` | Boundary |
+| 4 | L41 | test_trit_word_underflow | Underflow | `ASSERT_NEQ(result, min_val-1)` | Boundary |
+| 5 | L55 | test_trit_precision_loss | Precision | `ASSERT_EQ(back, vals[i])` (loop) | Arithmetic |
+| 6 | L66 | test_trit_large_mul_precision | Multiplication | `ASSERT_EQ(trit_word_to_int(res), 100)` | Arithmetic |
+| 7 | L76 | test_trit_add_carry_chain | Carry chain | `ASSERT_EQ(trit_word_to_int(res), 365)` | Arithmetic |
+| 8 | L85 | test_trit_sub_carry_chain | Borrow chain | `ASSERT_EQ(trit_word_to_int(res), 364)` | Arithmetic |
+| 9 | L95 | test_trit_zero_operations | Zero ops | `ASSERT_EQ(trit_word_to_int(res), 42)` | Boundary |
+| 10 | L107 | test_trit_identity_operations | Identity | `ASSERT_EQ(trit_word_to_int(res), 42)` | Arithmetic |
+
+---
+
+## Disabled Suite: Compiler: Codegen Bugs ⚠️
+
+**Source**: `tools/compiler/tests/test_compiler_code_generation_bugs.c`  
+**Status**: Commented out in `tools/compiler/Makefile` — 39 runtime assertions, 19 tests  
+**Reason**: Advanced codegen patterns (templates, lambdas, coroutines) not yet implemented  
+
+---
+
+## Disabled Suite: Compiler: Error Recovery ⚠️
+
+**Source**: `tools/compiler/tests/test_error_recovery.c`  
+**Status**: Commented out in `tools/compiler/Makefile` — 26 runtime assertions, 11 tests  
+**Reason**: Error recovery infrastructure pending implementation  
+
+---
+
+## Disabled Suite: Compiler: Parser/Lexer Fuzz ⚠️
+
+**Source**: `tools/compiler/tests/test_parser_lexer_fuzz.c`  
+**Status**: Commented out in `tools/compiler/Makefile` — 18 runtime assertions, 10 tests  
+**Reason**: Extended fuzz harness pending parser stabilization  
+
+---
+
 ## Rule: Future Test Documentation
 
-**MANDATORY**: For every new test added to the seT6 project, a corresponding entry
-MUST be appended to this glossary file (`TESTS_GLOSSARY_OF_ALL_TESTS.md`) before
-the pull request / commit is considered complete.
+## Suite 67: Compiler: Integration Tests
+
+**Source**: `tools/compiler/tests/test_integration.c`  
+**Runtime Assertions**: 24  
+**Source-Level Entries**: 16  
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test prints `[PASS] name` or `[FAIL] name (file:line)`. Final summary.  
+
+Brief: This suite exercises cross-component compiler integration (parser→IR→codegen→vm) and validates round-trip correctness for representative programs. Add new assertions to this section following the same table format used elsewhere.
+
+## Suite 68: Compiler: Test Runner Script
+
+**Source**: `tools/compiler/tests/test_all.sh`  
+**Runtime Assertions**: —  
+**Source-Level Entries**: —  
+**Harness**: Shell script (utility) — not a test harness; included for completeness in the glossary as the canonical compiler-suite runner.  
+**Note**: This script orchestrates building/running compiler test binaries and reporting summaries; changes to test invocation must be reflected here and in the Makefile.
+
+**MANDATORY**: For every new test added to the seT5/seT6 project, the following
+steps MUST be completed before the pull request / commit is considered valid:
+
+### Step 1: Document in this glossary
+
+Append a corresponding entry to this file (`TESTS_GLOSSARY_OF_ALL_TESTS.md`).
 
 Each new entry must include:
 1. **Suite assignment** — which suite the test belongs to (or create a new suite section)
@@ -5160,6 +5994,135 @@ Each new entry must include:
 3. **Test Description** — the assertion description string
 4. **Section** — the logical grouping within the suite
 5. **Assertion Expression** — the condition being checked
-6. **Category** — use the category legend above
+6. **Category** — use the category legend at top of this file
 
-Failure to document new tests in this glossary is a blocking review issue.
+If creating a **new suite**, also:
+- Add a row to the **Suite Index** table (with suite number, source path, runtime/source counts, status)
+- Update the **TOTAL** rows at the bottom of the index table
+- Update the header statistics (Total Runtime Assertions, Total Source-Level Entries, Test Suites count)
+
+### Step 2: Register in the Makefile
+
+For **seT5 kernel/module tests** (`tests/test_*.c`):
+- Add a build rule target in `/Makefile` (e.g., `test_my_new_suite: tests/test_my_new_suite.c $(DEPS)`)
+- Add the binary name to the `SET5_TEST_BINS` variable
+- Add a `##BEGIN##` execution block in the `_run-test-suites` target
+- Add the binary name to the `clean` target's `rm -f` list
+
+For **compiler tests** (`tools/compiler/tests/test_*.c`):
+- Add the binary name to `TEST_BINS` in `tools/compiler/Makefile`
+- The master Makefile's `_run-test-suites` auto-discovers compiler test binaries
+
+For **Python tests** (`tests/test_*.py`):
+- Add a phony target in the Makefile (e.g., `test_my_python: tests/test_my_python.py`)
+- Add a `##BEGIN##` execution block in `_run-test-suites`
+
+### Step 3: Update run_all_tests.sh
+
+Add the new suite to the `SET5_SUITES` variable in `run_all_tests.sh` so it is
+included in the standalone test runner.
+
+### Step 4: Verify with `make alltest`
+
+Run `make alltest` (or equivalently `make test`) to confirm:
+- The new test compiles without warnings
+- The new test passes 100%
+- The grand summary includes the new suite
+- Zero regressions in all other suites
+
+**Failure to complete ANY of these 4 steps is a blocking review issue.**
+
+### Quick Reference: Where to update
+
+| What | File | Section |
+|------|------|---------|
+| Test glossary | `seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md` | Suite Index + new Suite section |
+| Build rule | `Makefile` | New target + `SET5_TEST_BINS` + `_run-test-suites` + `clean` |
+| Shell runner | `run_all_tests.sh` | `SET5_SUITES` variable |
+| Compiler tests | `tools/compiler/Makefile` | `TEST_BINS` variable |
+
+## Suite 69: Multi-Radix Unit
+
+**Source**: `tests/test_multi_radix_unit.c`  
+**Runtime Assertions**: 3  
+**Source-Level Entries**: 3  
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 69 | L29 | radix3_add | Radix-3 Addition | `multi_radix_add(1, 1, RADIX3) == 2` | Arithmetic |
+| 69 | L39 | radix4_add | Radix-4 Addition | `multi_radix_add(3, 1, RADIX4) == 4` | Arithmetic |
+| 69 | L49 | fft_8point | 8-Point FFT | `multi_radix_fft(data, 8)` | Transformation |
+
+---
+
+## Suite 70: Ternary Wallace Tree
+
+**Source**: `tests/test_ternary_wallace_tree.c`  
+**Runtime Assertions**: 2  
+**Source-Level Entries**: 2  
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 70 | L29 | multiply_basic | Basic Multiplication | `ternary_wallace_multiply(2, 3) == 6` | Arithmetic |
+| 70 | L39 | multiply_zero | Zero Multiplication | `ternary_wallace_multiply(0, 5) == 0` | Arithmetic |
+
+---
+
+## Suite 71: Ternary Sense Amp
+
+**Source**: `tests/test_ternary_sense_amp.c`  
+**Runtime Assertions**: 3  
+**Source-Level Entries**: 3  
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 71 | L29 | sense_low | Low Current Sensing | `ternary_sense_amp_read(5) == 0` | Hardware/ALU |
+| 71 | L39 | sense_mid | Mid Current Sensing | `ternary_sense_amp_read(30) == 1` | Hardware/ALU |
+| 71 | L49 | sense_high | High Current Sensing | `ternary_sense_amp_read(60) == 2` | Hardware/ALU |
+
+---
+
+## Suite 72: T-IPC Compressor
+
+**Source**: `tests/test_tipc_compressor.c`  
+**Runtime Assertions**: 2  
+**Source-Level Entries**: 2  
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 72 | L29 | compress_decompress | Round-Trip Compression | `tipc_decompress(...) == original` | Encoding |
+| 72 | L39 | all_zeros | All Zeros Compression | `tipc_compress([0,0,...]) == 9 bits` | Encoding |
+
+---
+
+## Suite 73: Samsung Correlator
+
+**Source**: `tests/test_samsung_cn105745888a_correlator.c`  
+**Runtime Assertions**: 2  
+**Source-Level Entries**: 2  
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 73 | L29 | correlate_identical | Identical Sequences | `samsung_correlate([1,2,0,1], [1,2,0,1]) == 3` | Arithmetic |
+| 73 | L39 | correlate_orthogonal | Orthogonal Sequences | `samsung_correlate([1,1,1,1], [2,2,2,2]) == -4` | Arithmetic |
+
+---
+
+### Current Totals (as of 2026-02-19)
+
+| Metric | Active | Including Disabled |
+|--------|-------:|-------------------:|
+| **Test Suites** | **69** | **73** |
+| **Runtime Assertions** | **5027** | **5110** |
+| **Source-Level Entries** | **4687** | **4727** |
+| **Test Source Files** | **74** | **77** |

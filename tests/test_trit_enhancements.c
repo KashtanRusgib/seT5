@@ -35,12 +35,12 @@
 #include "set5/ternary_weight_quantizer.h"
 
 /* Enhancement module headers */
-#include "trit_coreutils.h"
-#include "trit_net.h"
-#include "trit_gui.h"
-#include "trit_pkg.h"
-#include "trit_ai.h"
-#include "trit_security.h"
+#include "set5/trit_coreutils.h"
+#include "set5/trit_net.h"
+#include "set5/trit_gui.h"
+#include "set5/trit_pkg.h"
+#include "set5/trit_ai.h"
+#include "set5/trit_security.h"
 
 /* ======================================================================== */
 /*  Test Harness — Same pattern as existing test suites                     */

@@ -137,13 +137,17 @@ typedef struct {
 /**
  * @brief Hit vector produced by TCAM search.
  *
- * Binary vector: 1 = matching row, 0 = non-matching row.
+ * T-029: Trit-valued hit vector — native ternary TCAM output.
+ *   +1 (TRIT_TRUE)    = definite match (all care-bits match)
+ *    0 (TRIT_UNKNOWN)  = partial match (matched with don't-care)
+ *   -1 (TRIT_FALSE)    = no match
+ *
  * Used to gate the MAC crossbar's accumulation.
  */
 typedef struct {
-    int   bits[TCAM_MAX_ROWS]; /**< 1=hit, 0=miss per row              */
-    int   length;              /**< Number of valid bits                */
-    int   hit_count;           /**< Number of 1s in the vector          */
+    int   bits[TCAM_MAX_ROWS]; /**< T-029: +1=hit, 0=partial, -1=miss  */
+    int   length;              /**< Number of valid entries             */
+    int   hit_count;           /**< Number of +1 (definite hit) entries */
 } tcam_hit_vector_t;
 
 /* ==================================================================== */

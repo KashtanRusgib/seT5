@@ -1058,9 +1058,9 @@ static void test_tcam_search_dst_single_hit(void)
     tcam_hit_vector_t hv;
     int hits = tcam_crossbar_search_dst(&tcam, 3, &hv);
     ASSERT_EQ(hits, 1, "node 3 has 1 incoming edge");
-    ASSERT_EQ(hv.bits[0], 0, "row 0 doesn't match");
+    ASSERT_EQ(hv.bits[0], -1, "row 0 doesn't match (ternary -1)");
     ASSERT_EQ(hv.bits[1], 1, "row 1 matches (dst=3)");
-    ASSERT_EQ(hv.bits[2], 0, "row 2 doesn't match");
+    ASSERT_EQ(hv.bits[2], -1, "row 2 doesn't match (ternary -1)");
     PASS();
 }
 
@@ -1081,7 +1081,7 @@ static void test_tcam_search_dst_multiple_hits(void)
     ASSERT_EQ(hits, 3, "node 5 has 3 incoming edges");
     ASSERT_EQ(hv.bits[0], 1, "row 0 matches");
     ASSERT_EQ(hv.bits[1], 1, "row 1 matches");
-    ASSERT_EQ(hv.bits[2], 0, "row 2 doesn't match");
+    ASSERT_EQ(hv.bits[2], -1, "row 2 doesn't match (ternary -1)");
     ASSERT_EQ(hv.bits[3], 1, "row 3 matches");
     PASS();
 }
@@ -1118,8 +1118,8 @@ static void test_tcam_search_vtx_layer(void)
     int hits = tcam_crossbar_search_vtx_layer(&tcam, 10, 2, &hv);
     ASSERT_EQ(hits, 1, "vtx=10,layer=2 → 1 hit");
     ASSERT_EQ(hv.bits[0], 1, "row 0 matches");
-    ASSERT_EQ(hv.bits[1], 0, "row 1 doesn't match (layer 3≠2)");
-    ASSERT_EQ(hv.bits[2], 0, "row 2 doesn't match (vtx 20≠10)");
+    ASSERT_EQ(hv.bits[1], -1, "row 1 doesn't match (layer 3≠2, ternary -1)");
+    ASSERT_EQ(hv.bits[2], -1, "row 2 doesn't match (vtx 20≠10, ternary -1)");
     PASS();
 }
 

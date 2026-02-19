@@ -2,6 +2,30 @@
  * Multi-Radix Arithmetic Unit for seT6
  * Hardware acceleration for radix-3, radix-4, radix-6 operations
  * FFT implementations and cryptographic primitives
+ *
+ * Key Components:
+ * - Operation selector: 3-bit input for radix3, radix4, radix6, fft, crypto
+ * - Operand inputs: 9-trit ternary numbers (-9841 to +9841)
+ * - Result output: 18-bit with overflow detection
+ * - Radix conversion constants: RADIX3=3, RADIX4=4, RADIX6=6
+ * - FFT twiddle factors: 8-point ternary approximations
+ * - Crypto primitives: Key and state registers for encryption
+ * - Internal processing: 36-bit temp result, cycle counter, processing flag
+ *
+ * Operations:
+ * - Radix arithmetic: Addition, multiplication in different radices
+ * - FFT: Butterfly computations with ternary twiddles
+ * - Crypto: Key scheduling and state updates
+ *
+ * Data Flow:
+ * - Synchronous processing on clk edge
+ * - Reset initializes twiddle factors and state
+ * - Cycle-based computation for multi-cycle operations
+ * - Ready signal indicates completion
+ *
+ * Purpose: Provide hardware acceleration for mixed-radix computations,
+ * enabling efficient ternary arithmetic, signal processing, and cryptography
+ * in seT6 systems.
  */
 
 module multi_radix_unit (

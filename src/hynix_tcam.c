@@ -79,16 +79,22 @@ int tcam_crossbar_search_dst(tcam_crossbar_t *tcam, int dst_node,
 
     /*
      * Per patent FIG. 7: Search vector = destination node.
-     * Each TCAM row with matching dst_node produces HV[i] = 1.
+     * T-029: Trit-valued hit vector output:
+     *   +1 (TRIT_TRUE)   = definite match (dst matches exactly)
+     *    0 (TRIT_UNKNOWN) = partial match (invalid/don't-care row)
+     *   -1 (TRIT_FALSE)   = no match
      */
     for (int i = 0; i < tcam->row_count; i++) {
-        if (!tcam->entries[i].valid) continue;
+        if (!tcam->entries[i].valid) {
+            hv->bits[i] = 0;   /* Unknown — row invalid / don't-care */
+            continue;
+        }
 
         if (tcam->entries[i].dst_node == dst_node) {
-            hv->bits[i] = 1;
+            hv->bits[i] = 1;   /* TRIT_TRUE — definite hit */
             hv->hit_count++;
         } else {
-            hv->bits[i] = 0;
+            hv->bits[i] = -1;  /* TRIT_FALSE — no match */
         }
     }
 
@@ -109,10 +115,13 @@ int tcam_crossbar_search_vtx_layer(tcam_crossbar_t *tcam, int vtx,
 
     /*
      * Per patent FIG. 9: Search vector = (vertex_id, layer_id).
-     * Both must match (don't-care values match everything).
+     * T-029: Trit-valued hit vector — don't-care matches yield UNKNOWN.
      */
     for (int i = 0; i < tcam->row_count; i++) {
-        if (!tcam->entries[i].valid) continue;
+        if (!tcam->entries[i].valid) {
+            hv->bits[i] = 0;   /* TRIT_UNKNOWN — invalid row */
+            continue;
+        }
 
         int vtx_match = (tcam->entries[i].vertex_id == vtx) ||
                         (tcam->entries[i].vertex_id == -1);
@@ -120,10 +129,10 @@ int tcam_crossbar_search_vtx_layer(tcam_crossbar_t *tcam, int vtx,
                           (tcam->entries[i].layer_id == -1);
 
         if (vtx_match && layer_match) {
-            hv->bits[i] = 1;
+            hv->bits[i] = 1;   /* TRIT_TRUE — definite hit */
             hv->hit_count++;
         } else {
-            hv->bits[i] = 0;
+            hv->bits[i] = -1;  /* TRIT_FALSE — no match */
         }
     }
 

@@ -1,3 +1,9 @@
+> **seT6 Purpose and Goal:** In seT6 we have implemented various schema(s) to build the ternary first full stack for the inevitable global shift to a fully ternary/multi radix world. The ongoing development of seT6 and Trit Linux & Trithon and all other features and modules and codeblocks that comprise the seT6 ternary first & ternary all the way down fullstack is to contiually determine the greatest imminent and emerging needs of the ternary/multi radix future that requires a complete rebuild and rethink of the flawed and faulty and error prone old world of binary based computing. This ongoing development seeks in all instances possible to conceive as fully as possible of the implications and needs of the entire computer hardware and software world and industires as the ternary/multi radix future emerges and to search for and find and research and understand all relevant hardware and software and protocol improvements and upgrades and components of this ternary/multi radix first world. From any and all available patents and papers and documentation the human & AI agents working on this development develop an empirical understanding of the hardware and software being developed and scheduled for market and industrial and governmental and medical and aerospace and AGI applications to futher the capbabilities and funcitonality and utility and value recieved by all users of seT6 by anticipating all needs current and future and thus developing seT6 to accomodate these new and improved ternary/multi radix archtectures and designs such that when the hardware arrives and when the protocols are instantiated the full ternary stack that is seT6 will already be available and tested and verified and at all times and in all decisions and choices made and code updates and commits this will be done and will only be done while maintaining the Sigma 9 level of rigorously tested and verifiable build quality resulting in 0 errors.
+>
+> *See also: [SET6_PURPOSE_AND_GOAL.md](SET6_PURPOSE_AND_GOAL.md)*
+
+---
+
 # seT5 — Secure Embedded Ternary Microkernel 5
 
 A ground-up rewrite of the [seL4](https://sel4.systems/) verified microkernel
@@ -9,7 +15,7 @@ Uninitialized data is `Unknown`, not a silent binary zero.  This eliminates
 an entire class of initialization and capability-confusion vulnerabilities
 *by construction*.
 
-> **Status:** Phase 7 — Friday Updates (STT-MRAM, T-IPC, TFS) — 1147+ tests passing across 36 suites
+> **Status:** Phase 8 — seT6 Flywheel (AI Accel, FT Network, Adversarial) — 1792+ tests passing across 34 suites
 > **License:** GPL-2.0 (see [LICENSE](LICENSE))
 
 ---
@@ -59,7 +65,7 @@ an entire class of initialization and capability-confusion vulnerabilities
 
 | Tool                  | Phase | Purpose                                   |
 |-----------------------|-------|-------------------------------------------|
-| Isabelle/HOL 2024     | 3+    | Formal verification of ternary proofs     |
+| Isabelle/HOL 2025-2   | 3+    | Formal verification of ternary proofs (see [TESTS_AND_PROOFS_INSTRUCTIONS.md](TESTS_AND_PROOFS_INSTRUCTIONS.md)) |
 | Icarus Verilog / Yosys| 4+    | Verilog simulation and FPGA synthesis     |
 | Python 3.10+          | 5     | Trithon interop layer                    |
 | QEMU (patched)        | 3+    | Ternary noise simulation / emulation     |
@@ -129,9 +135,20 @@ make demos
 | `make run-native`      | Build and run the native kernel init               |
 | `make test_functional_utility` | Build functional utility test suite — 202 tests |
 | `make test_friday_updates` | Build Friday Updates test suite — 135 tests        |
-| `make test`            | Full CI pipeline — all 1147+ tests                 |
+| `make test`            | Full CI pipeline — all 5280+ tests (66 active suites) |
+| `make alltest`         | Alias for `make test` — Sigma 9 master gate        |
+| `make test6`           | seT6 full test suite (delegates to `seT6/Makefile`) |
+| `make test-asan`       | Full tests under AddressSanitizer + UBSan            |
+| `make coverage`        | Test run with gcov/lcov coverage report               |
 | `make clean`           | Clean all build artifacts (compiler + seT5)        |
 | `make all`             | Alias for `build-set5`                             |
+
+> **TEST GLOSSARY PROTOCOL**: Every new test MUST be logged in
+> [`seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md`](seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md)
+> before a commit is considered valid. The glossary documents all 5280+ runtime
+> assertions across 66 active suites. See the glossary's "Rule: Future Test
+> Documentation" section for the complete 4-step checklist (glossary → Makefile →
+> run_all_tests.sh → `make alltest` verification).
 
 ### Compiler Submodule
 
@@ -486,8 +503,10 @@ git bisect bad HEAD
 git bisect good <last-known-good-commit>
 # Git bisect will binary-search for the breaking commit
 
-# 5. Isabelle proofs (Phase 3+)
-isabelle build -d proof/ -b seT5_Proofs
+# 5. Isabelle proofs (Phase 3+) — requires Isabelle2025-2
+# Use the repo wrapper (hardcoded path, ignores system Isabelle):
+tools/isabelle build -d proof/ -b seT6_Proofs
+# See TESTS_AND_PROOFS_INSTRUCTIONS.md for full proof development workflow
 ```
 
 ### Gate Criteria

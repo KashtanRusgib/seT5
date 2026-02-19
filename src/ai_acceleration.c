@@ -5,6 +5,31 @@
  * Implements BitNet b1.58 ternary quantization, DLFET-RM ternary gate simulation,
  * and sparse ternary matrix operations for neural network acceleration.
  *
+ * Key Components:
+ * - Ternary weight quantization with BitNet b1.58 scaling (factor 1000, threshold ratio 0.7)
+ * - DLFET-RM gate simulation for ternary logic in neural nets
+ * - Sparse matrix operations using ternary values (TRUE, FALSE, UNKNOWN)
+ * - Voltage-based trit conversion for analog AI chips
+ * - Ternary XOR, multiplication, and addition primitives
+ * - Matrix-vector multiplication with ternary weights
+ * - Quantization functions for converting float weights to ternary
+ *
+ * Data Structures:
+ * - trit arrays for weights and activations
+ * - Voltage thresholds for trit classification
+ * - Quantization parameters (scale, threshold)
+ *
+ * Functions:
+ * - trit_to_voltage: Convert trit to analog voltage
+ * - voltage_to_trit: Classify voltage to nearest trit
+ * - quantize_weights: Apply BitNet quantization to float array
+ * - ternary_matmul: Sparse ternary matrix multiplication
+ * - simulate_dlfet_rm: DLFET-RM gate logic simulation
+ *
+ * Purpose: Accelerate AI inference on ternary hardware by providing efficient
+ * ternary arithmetic and quantization primitives, enabling low-power neural
+ * network execution with ternary weights and activations.
+ *
  * SPDX-License-Identifier: GPL-2.0
  */
 

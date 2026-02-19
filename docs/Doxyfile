@@ -1,0 +1,41 @@
+# T-021: Doxygen configuration for seT6 API documentation
+# Generate with: doxygen docs/Doxyfile
+# Output: docs/api/html/
+
+PROJECT_NAME           = "seT6 — Balanced Ternary Operating System"
+PROJECT_NUMBER         = "Phase 8"
+PROJECT_BRIEF          = "Ternary-native OS kernel with Sigma 9 quality standard"
+OUTPUT_DIRECTORY       = docs/api
+INPUT                  = include/set5 src tests
+FILE_PATTERNS          = *.h *.c
+RECURSIVE              = YES
+EXTRACT_ALL            = YES
+EXTRACT_STATIC         = YES
+EXTRACT_PRIVATE        = NO
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_MAN           = NO
+HTML_OUTPUT            = html
+HTML_COLORSTYLE_HUE    = 120
+HTML_COLORSTYLE_SAT    = 80
+OPTIMIZE_OUTPUT_FOR_C  = YES
+TYPEDEF_HIDES_STRUCT   = YES
+SORT_MEMBER_DOCS       = YES
+SORT_BRIEF_DOCS        = YES
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = NO
+STRIP_CODE_COMMENTS    = NO
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+HAVE_DOT               = NO
+COLLABORATION_GRAPH    = NO
+INCLUDE_GRAPH          = NO
+INCLUDED_BY_GRAPH      = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+QUIET                  = YES
+JAVADOC_AUTOBRIEF      = YES
+TAB_SIZE               = 4

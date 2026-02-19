@@ -9,11 +9,11 @@
  *   - Kleene AND (meet), OR (join), NOT (involution)
  *   - IMPLIES, EQUIV derived operations
  *   - Predicates: trit_is_definite(), trit_to_bool_safe()
- *   - 2-bit pack/unpack for SIMD (T=11 encoding)
+ *   - 2-bit pack/unpack for SIMD (hi=neg, lo=pos encoding)
  *   - 32-trit packed AND/OR on uint64_t
  *
- * Encoding (2-bit packed):
- *   00 = False (-1), 01 = Unknown (0), 11 = True (+1), 10 = Fault
+ * Encoding (2-bit packed — matches SIMD hi/lo convention):
+ *   10 = False (-1), 00 = Unknown (0), 01 = True (+1), 11 = Fault
  *
  * @see trit_emu.h for full SIMD emulation layer
  * @see TritKleene.thy for formal proofs of these operations
@@ -29,6 +29,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/* --- T-026: TRIT_RANGE_CHECK macro ------------------------------------- */
+#define TRIT_RANGE_CHECK(v) ((v) >= -1 && (v) <= 1)
 
 /* --- Representation ---------------------------------------------------- */
 
@@ -46,8 +49,12 @@ typedef int8_t trit; /* stored as -1, 0, +1 */
 typedef uint8_t trit_packed; /* 0b10=-1, 0b00=0, 0b01=+1, 0b11=fault */
 
 static inline trit_packed trit_pack(trit v) {
-    /* Map: -1 -> 0b10, 0 -> 0b00, +1 -> 0b01 */
-    return (trit_packed)(v & 0x03);
+    /* Map: -1 → 0b10, 0 → 0b00, +1 → 0b01
+     * Old impl (v & 0x03) mapped -1 → 0b11 (fault slot!) — WRONG.
+     * This conditional matches the SIMD hi=neg/lo=pos convention. */
+    if (v < 0) return 0x02;   /* FALSE  → 0b10 (hi=1, lo=0) */
+    if (v > 0) return 0x01;   /* TRUE   → 0b01 (hi=0, lo=1) */
+    return 0x00;               /* UNKNOWN → 0b00             */
 }
 
 static inline trit trit_unpack(trit_packed p) {
@@ -137,6 +144,42 @@ static inline uint64_t trit_not_packed64(uint64_t a) {
     uint64_t lo = (a & 0x5555555555555555ULL) << 1;
     return hi | lo;
 }
+
+/* --- T-026: Compile-time type size validation -------------------------- */
+
+_Static_assert(sizeof(trit_packed) == 1, "trit_packed must be 1 byte");
+_Static_assert(sizeof(trit) == 1,        "trit must be 1 byte");
+
+/* --- T-026: Runtime Kleene Truth Table Validation ---------------------- */
+
+/*
+ * TRIT_RUNTIME_VALIDATE() — call once at startup to verify all 9 AND/OR
+ * entries plus 3 NOT entries match Kleene's strong 3-valued logic.
+ * Returns 0 on success, -1 on failure.
+ */
+#define TRIT_RUNTIME_VALIDATE() ( \
+    (trit_and(TRIT_FALSE, TRIT_FALSE) == TRIT_FALSE) && \
+    (trit_and(TRIT_FALSE, TRIT_UNKNOWN) == TRIT_FALSE) && \
+    (trit_and(TRIT_FALSE, TRIT_TRUE) == TRIT_FALSE) && \
+    (trit_and(TRIT_UNKNOWN, TRIT_FALSE) == TRIT_FALSE) && \
+    (trit_and(TRIT_UNKNOWN, TRIT_UNKNOWN) == TRIT_UNKNOWN) && \
+    (trit_and(TRIT_UNKNOWN, TRIT_TRUE) == TRIT_UNKNOWN) && \
+    (trit_and(TRIT_TRUE, TRIT_FALSE) == TRIT_FALSE) && \
+    (trit_and(TRIT_TRUE, TRIT_UNKNOWN) == TRIT_UNKNOWN) && \
+    (trit_and(TRIT_TRUE, TRIT_TRUE) == TRIT_TRUE) && \
+    (trit_or(TRIT_FALSE, TRIT_FALSE) == TRIT_FALSE) && \
+    (trit_or(TRIT_FALSE, TRIT_UNKNOWN) == TRIT_UNKNOWN) && \
+    (trit_or(TRIT_FALSE, TRIT_TRUE) == TRIT_TRUE) && \
+    (trit_or(TRIT_UNKNOWN, TRIT_FALSE) == TRIT_UNKNOWN) && \
+    (trit_or(TRIT_UNKNOWN, TRIT_UNKNOWN) == TRIT_UNKNOWN) && \
+    (trit_or(TRIT_UNKNOWN, TRIT_TRUE) == TRIT_TRUE) && \
+    (trit_or(TRIT_TRUE, TRIT_FALSE) == TRIT_TRUE) && \
+    (trit_or(TRIT_TRUE, TRIT_UNKNOWN) == TRIT_TRUE) && \
+    (trit_or(TRIT_TRUE, TRIT_TRUE) == TRIT_TRUE) && \
+    (trit_not(TRIT_FALSE) == TRIT_TRUE) && \
+    (trit_not(TRIT_UNKNOWN) == TRIT_UNKNOWN) && \
+    (trit_not(TRIT_TRUE) == TRIT_FALSE) \
+    ? 0 : -1 )
 
 #ifdef __cplusplus
 }

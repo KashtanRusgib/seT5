@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# ──────────────────────────────────────────────────────────────
+# seT6 Isabelle Wrapper
+# ──────────────────────────────────────────────────────────────
+# Delegates to the Isabelle installation at /opt/isabelle.
+# The repo-root symlink Isabelle2025-2/ is gitignored.
+#
+# Usage:
+#   tools/isabelle version
+#   tools/isabelle build -d proof seT6_Proofs
+#   tools/isabelle process -T TritKleene -d proof
+#
+# Environment:
+#   ISABELLE_HOME  Override path to Isabelle installation
+# ──────────────────────────────────────────────────────────────
+# Always use OUR installation — ignore any system ISABELLE_HOME
+ISABELLE_HOME="/opt/isabelle/Isabelle2025-2"
+export ISABELLE_HOME
+
+if [[ ! -x "$ISABELLE_HOME/bin/isabelle" ]]; then
+    echo "ERROR: Isabelle not found at $ISABELLE_HOME" >&2
+    echo "Install with: see TESTS_AND_PROOFS_INSTRUCTIONS.md" >&2
+    exit 1
+fi
+
+exec "$ISABELLE_HOME/bin/isabelle" "$@"

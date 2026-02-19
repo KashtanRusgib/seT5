@@ -1,0 +1,97 @@
+/*
+ * Device Tree Source for WO2016199157A1 Ternary ALU (TALU)
+ *
+ * Describes the Ternary Arithmetic and Logic Unit (TALU) IP block
+ * as specified in patent WO2016199157A1 for integration with the
+ * seT5 microkernel's platform discovery and driver binding.
+ *
+ * This DTS fragment is included in the board-level device tree for
+ * any SoC that integrates the Ingole TALU IP.
+ *
+ * SPDX-License-Identifier: GPL-2.0
+ */
+
+/ {
+    compatible = "ingole,wo2016199157a1-soc";
+    model = "Ingole Ternary ALU SoC (WO2016199157A1 TALU)";
+
+    /* ---- Ternary ALU (TALU) IP Block ---- */
+    ternary_talu@40400000 {
+        compatible = "ingole,wo2016199157a1-talu";
+        reg = <0x40400000 0x2000>;   /* 8 KB MMIO aperture */
+        interrupts = <0 36 4>;       /* SPI #36, level-high */
+
+        /* TALU configuration */
+        ingole,opcode-width = <2>;           /* 2-trit OPCODE */
+        ingole,opcode-outputs = <9>;         /* 9 decoded operations */
+        ingole,max-trit-width = <32>;        /* Up to 32-trit words */
+        ingole,num-talu-stages = <32>;       /* Parallel stages */
+
+        /* Voltage configuration */
+        ingole,vdd-mv = <1000>;        /* VDD = 1.0 V */
+        ingole,level-0-mv = <0>;       /* Level 0 = GND */
+        ingole,level-1-mv = <500>;     /* Level 1 = VDD/2 */
+        ingole,level-2-mv = <1000>;    /* Level 2 = VDD */
+
+        /* Transistor technology */
+        ingole,transistor-type = "ECMOS";
+        ingole,gate-topology = "transmission-gate";
+        ingole,cnt-compatible;               /* CNT technology compatible */
+
+        /* Feature enable flags — all TALU operations */
+        ingole,has-tnot;
+        ingole,has-cwc;
+        ingole,has-ccwc;
+        ingole,has-add1carry;
+        ingole,has-tand;
+        ingole,has-tnand;
+        ingole,has-tor;
+        ingole,has-tnor;
+        ingole,has-xtor;
+        ingole,has-comparator;
+        ingole,has-half-adder;       /* S1 */
+        ingole,has-full-adder;       /* S2 + C2 */
+        ingole,has-decoder;          /* 2x9 decoder */
+        ingole,has-parity;           /* Even parity generator */
+
+        /* Arithmetic capabilities */
+        ingole,has-add;              /* A + B */
+        ingole,has-sub-ab;           /* A - B (3's complement) */
+        ingole,has-sub-ba;           /* B - A (3's complement) */
+
+        /* All inclusive operations */
+        ingole,has-all-inclusive-tand;
+        ingole,has-all-inclusive-tor;
+
+        /* Flags */
+        ingole,has-all-zero-flag;
+        ingole,has-overflow-flag;
+        ingole,has-even-parity;
+
+        /* Transmission gate counts per circuit */
+        ingole,tg-count-tnot = <4>;
+        ingole,tg-count-cwc = <4>;
+        ingole,tg-count-tand = <8>;
+        ingole,tg-count-tor = <8>;
+        ingole,tg-count-xtor = <14>;
+        ingole,tg-count-comparator = <10>;
+        ingole,tg-count-s1 = <16>;
+        ingole,tg-count-s2 = <6>;
+        ingole,tg-count-c2 = <6>;
+        ingole,tg-count-decoder = <48>;
+
+        /* Clock */
+        clocks = <&talu_clk>;
+        clock-names = "talu_clk";
+
+        status = "okay";
+    };
+
+    /* ---- Clock Source ---- */
+    talu_clk: talu-clock {
+        compatible = "fixed-clock";
+        #clock-cells = <0>;
+        clock-frequency = <200000000>;  /* 200 MHz (placeholder) */
+        clock-output-names = "talu_clk";
+    };
+};

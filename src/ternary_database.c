@@ -5,6 +5,30 @@
  * Implements ternary NULL handling in Trit Linux, content-addressable memory
  * integration, and ternary compression algorithms for efficient storage.
  *
+ * Key Components:
+ * - Ternary NULL propagation (UNKNOWN represents NULL)
+ * - Content-addressable memory (CAM) operations using Hynix TCAM
+ * - Ternary compression with run-length encoding and trit packing
+ * - Database query operations with ternary logic filters
+ * - Storage of ternary arrays and objects
+ *
+ * Data Structures:
+ * - ternary_record_t: Structure for database records with ternary fields
+ * - ternary_filter_t: Filter objects for ternary queries
+ * - compressed_trit_array_t: Compressed ternary data storage
+ *
+ * Functions:
+ * - ternary_null_propagate: Apply NULL propagation rules
+ * - ternary_compress: Compress ternary data using RLE
+ * - ternary_decompress: Decompress ternary data
+ * - ternary_query: Execute queries with ternary filters
+ * - cam_search: Content-addressable search in TCAM
+ * - ternary_store: Store ternary records with compression
+ *
+ * Purpose: Provide a database layer optimized for ternary data, handling NULL
+ * values with ternary logic, enabling efficient storage and querying of
+ * ternary information in seT6 systems.
+ *
  * SPDX-License-Identifier: GPL-2.0
  */
 
@@ -383,15 +407,21 @@ void ternary_huffman_build(trit_huffman_tree_t *tree, const trit *data, int size
         }
     }
 
-    // Assign Huffman codes (simplified ternary version)
-    strcpy(tree->entries[0].code, "0");  // Most frequent
+    // Assign Huffman codes (T-028: base-3 trit codes — native ternary)
+    // Three symbols map naturally to 3 single-trit codes:
+    //   Most frequent  → "T" (trit +1, code_length 1)
+    //   Second         → "0" (trit  0, code_length 1)
+    //   Least frequent → "F" (trit -1, code_length 1)
+    // This achieves optimal 1-trit-per-symbol encoding for a 3-symbol
+    // alphabet, giving exactly log_3(3) = 1 trit per symbol.
+    strcpy(tree->entries[0].code, "T");  // Most frequent → +1
     tree->entries[0].code_length = 1;
 
-    strcpy(tree->entries[1].code, "10"); // Second most frequent
-    tree->entries[1].code_length = 2;
+    strcpy(tree->entries[1].code, "0"); // Second most frequent → 0
+    tree->entries[1].code_length = 1;
 
-    strcpy(tree->entries[2].code, "11"); // Least frequent
-    tree->entries[2].code_length = 2;
+    strcpy(tree->entries[2].code, "F"); // Least frequent → -1
+    tree->entries[2].code_length = 1;
 }
 
 /**

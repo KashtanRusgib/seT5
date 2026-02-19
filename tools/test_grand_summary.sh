@@ -64,6 +64,24 @@ extract_pt() {
     t=${frac#*/}
     echo "${p:-0} $(( ${t:-0} - ${p:-0} ))"
 }
+# ── Helper: extract only the lines of ONE named section ───────────────
+# Returns lines from the first occurrence of the header line (exclusive)
+# up to (but not including) the next "=== " section divider, so a
+# build-failed suite can never borrow test counts from a later suite.
+section() {
+    local _log="$1" _header="$2"
+    # Outer section banners in the log are prefixed with ##BEGIN##.
+    # We start collecting after a ##BEGIN## line matching the header and
+    # stop collecting when the next ##BEGIN## line appears, so inner
+    # "=== Foo ===" lines emitted by the test binary never trigger a
+    # premature exit.
+    awk -v h="$_header" '
+        /^##BEGIN##/ { if ($0 ~ h) { found=1 } else if (found) { exit }; next }
+        found { print }
+    ' "$_log"
+}
+
+
 
 # ══════════════════════════════════════════════════════════════════════
 #  INTEGRITY CHECK: Verify live-run timestamp is present
@@ -197,13 +215,325 @@ fi
 # 10b. TSMC TMD / INTEL PAM-3 / HYNIX TCAM  (Format D)
 #     Pattern: === Results: P passed, F failed ===
 # ══════════════════════════════════════════════════════════════════════
-line=$(sed -n '/=== TSMC TMD.*Intel PAM-3.*Hynix TCAM/,$p' "$LOG" \
+line=$(section "$LOG" "=== TSMC TMD.*Intel PAM-3.*Hynix TCAM" \
        | grep 'Results:.*passed.*failed' | head -1)
 if [[ -n "$line" ]]; then
     read -r p f <<< "$(extract_pf "$line")"
     add_result "TSMC TMD/Intel PAM3/Hynix TCAM" "$p" "$f"
 else
     MISSING_SUITES="$MISSING_SUITES  - TSMC TMD/Intel PAM3/Hynix TCAM\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10c. TERNARY DATABASE AND STORAGE LAYER  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Ternary Database and Storage Layer" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Ternary Database/Storage" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Ternary Database/Storage\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10d. INGOLE WO2016199157A1 TALU  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Ingole WO2016199157A1 TALU" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Ingole WO2016199157A1 TALU" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Ingole WO2016199157A1 TALU\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10e. AI ACCELERATION  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== AI Acceleration tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "AI Acceleration" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - AI Acceleration\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10f. FAULT-TOLERANT NETWORKING  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Fault-Tolerant Networking tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Fault-Tolerant Networking" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Fault-Tolerant Networking\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10g. ADVERSARIAL / NEGATIVE-PATH  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Adversarial.*Negative-Path tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Adversarial / Negative-Path" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Adversarial / Negative-Path\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10h. CROWN JEWEL REVERSION GUARD  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Crown Jewel Reversion Guard tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Crown Jewel Reversion Guard" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Crown Jewel Reversion Guard\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10i. MODULAR ARCHITECTURE  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Modular Architecture tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Modular Architecture" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Modular Architecture\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10j. IPC SECURITY  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== IPC Security tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "IPC Security" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - IPC Security\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10k. TIME SYNCHRONIZATION  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Time Synchronization tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Time Synchronization" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Time Synchronization\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10l. HARDENING  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Hardening tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Hardening" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Hardening\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10m. SIGMA 9 ARCHITECTURE  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Sigma 9 Architecture tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Sigma 9 Architecture" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Sigma 9 Architecture\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10n. RESIDUE NUMBER SYSTEM  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Residue Number System tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Residue Number System" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Residue Number System\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10o. RESEARCH PAPERS IMPLEMENTATION  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Research Papers Implementation tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Research Papers Implementation" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Research Papers Implementation\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10p. RESEARCH PAPERS PART 2  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Research Papers Part 2 tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Research Papers Part 2" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Research Papers Part 2\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10q. DLT CNFET INTEGRATION  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== DLT CNFET Integration tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "DLT CNFET Integration" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - DLT CNFET Integration\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10r. ART9 PIPELINE  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== ART9 Pipeline tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "ART9 Pipeline" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - ART9 Pipeline\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10s. TERNARY PDFS  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Ternary PDFs tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Ternary PDFs" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Ternary PDFs\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10t. PEIRCE SEMIOTIC  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Peirce Semiotic tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Peirce Semiotic" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Peirce Semiotic\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10u. TRILANG  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Trilang tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Trilang" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Trilang\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10v. SIGMA 9 MCP  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Sigma 9 MCP tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Sigma 9 MCP" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Sigma 9 MCP\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10w. HYBRID AI  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Hybrid AI tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Hybrid AI" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Hybrid AI\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10x. STRESS  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Stress tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Stress" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Stress\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10y. TJSON  (Python test - custom format)
+#     Pattern: === TJSON Tests: N passed, M failed, T total ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== TJSON tests ===" \
+       | grep -E '^=== TJSON Tests: [0-9]+ passed, [0-9]+ failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "TJSON" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - TJSON\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 10z. TER_NUMPY  (Python test - custom format)
+#     Pattern: === TerNumPy Tests: N passed, M failed, T total ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== TerNumPy tests ===" \
+       | grep -E '^=== TerNumPy Tests: [0-9]+ passed, [0-9]+ failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "TerNumPy" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - TerNumPy\n"
 fi
 
 # ══════════════════════════════════════════════════════════════════════
@@ -230,6 +560,19 @@ if [[ -n "$line" ]]; then
     add_result "Friday Updates (STT/IPC/TFS)" "$p" "$f"
 else
     MISSING_SUITES="$MISSING_SUITES  - Friday Updates\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 12.5. MULTI-RADIX UNIT  (Format F)
+#     Pattern:   Total: N, Passed: N, Failed: N
+# ══════════════════════════════════════════════════════════════════════
+mru_block=$(sed -n '/=== Multi-Radix Unit tests ===/,/=== Ternary Wallace Tree/p' "$LOG")
+mru_p=$(echo "$mru_block" | grep -m1 'Passed:' | sed 's/.*Passed: \([0-9]*\).*/\1/')
+mru_f=$(echo "$mru_block" | grep -m1 'Failed:' | sed 's/.*Failed: \([0-9]*\).*/\1/')
+if [[ -n "$mru_p" ]]; then
+    add_result "Multi-Radix Unit" "${mru_p}" "${mru_f:-0}"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Multi-Radix Unit\n"
 fi
 
 # ══════════════════════════════════════════════════════════════════════
@@ -280,6 +623,63 @@ done < <(grep -E '^\s*--- .+: [0-9]+ passed, [0-9]+ failed' "$LOG")
 # Expect exactly 6 enhancement sub-suites
 if [[ $ENH_COUNT -lt 6 ]]; then
     MISSING_SUITES="$MISSING_SUITES  - Enhancement sub-suites (found $ENH_COUNT of 6)\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 21. GÖDEL MACHINE  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Gödel Machine tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -z "$line" ]]; then
+    # Fallback: section header might lack the umlaut
+    line=$(section "$LOG" "=== G.*del Machine tests ===" \
+           | grep 'Results:.*passed.*failed' | head -1)
+fi
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Gödel Machine" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Gödel Machine\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 22. SIMD REGRESSION  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== SIMD Regression tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "SIMD Regression" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - SIMD Regression\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 23. BINARY SENTINEL  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Binary Sentinel tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Binary Sentinel" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Binary Sentinel\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 24. TERNARY COMPILER INTEGRATION  (Format D)
+#     Pattern: === Results: P passed, F failed ===
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Ternary Compiler Integration tests ===" \
+       | grep 'Results:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Ternary Compiler Integration" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Ternary Compiler Integration\n"
 fi
 
 # ══════════════════════════════════════════════════════════════════════

@@ -1,3 +1,9 @@
+> **seT6 Purpose and Goal:** In seT6 we have implemented various schema(s) to build the ternary first full stack for the inevitable global shift to a fully ternary/multi radix world. The ongoing development of seT6 and Trit Linux & Trithon and all other features and modules and codeblocks that comprise the seT6 ternary first & ternary all the way down fullstack is to contiually determine the greatest imminent and emerging needs of the ternary/multi radix future that requires a complete rebuild and rethink of the flawed and faulty and error prone old world of binary based computing. This ongoing development seeks in all instances possible to conceive as fully as possible of the implications and needs of the entire computer hardware and software world and industires as the ternary/multi radix future emerges and to search for and find and research and understand all relevant hardware and software and protocol improvements and upgrades and components of this ternary/multi radix first world. From any and all available patents and papers and documentation the human & AI agents working on this development develop an empirical understanding of the hardware and software being developed and scheduled for market and industrial and governmental and medical and aerospace and AGI applications to futher the capbabilities and funcitonality and utility and value recieved by all users of seT6 by anticipating all needs current and future and thus developing seT6 to accomodate these new and improved ternary/multi radix archtectures and designs such that when the hardware arrives and when the protocols are instantiated the full ternary stack that is seT6 will already be available and tested and verified and at all times and in all decisions and choices made and code updates and commits this will be done and will only be done while maintaining the Sigma 9 level of rigorously tested and verifiable build quality resulting in 0 errors.
+>
+> *See also: [SET6_PURPOSE_AND_GOAL.md](SET6_PURPOSE_AND_GOAL.md)*
+
+---
+
 # seT5 Architecture — Secure Embedded Ternary Microkernel 5
 
 > Last updated: 2026-02-14 — **seT5 FROZEN** — Architecture preserved, see `seT6/ARCHITECTURE.md` for active development
@@ -7,6 +13,13 @@
 > seT5 achieved 0 errors and is preserved exactly as-is. The **seT6** fork (in
 > `seT6/`) inherits this architecture and extends it with Arch Linux–inspired
 > modularity, hardened comms, time sync, and attack-surface reduction.
+
+> **⚠️ TEST GLOSSARY PROTOCOL**: Every new test MUST be logged in
+> [`seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md`](seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md)
+> before a commit is considered valid. Current: **5280+ runtime assertions**
+> across **66 active test suites** (69 total including disabled). For the
+> mandatory 4-step checklist when adding tests, see the glossary's "Rule:
+> Future Test Documentation" section.
 
 ---
 
@@ -734,6 +747,24 @@ Abstract Model (HOL)  ──refines──►  Executable Spec (C)  ──validat
 | JSON validation       | `TJSON_Validation.thy`| Proven    | 0.6s  |
 
 **Total proof time: 11.3 seconds across all 8 theories.**
+
+### Isabelle Tooling
+
+Isabelle2025-2 is installed at `/opt/isabelle/Isabelle2025-2/` with a symlink
+at the repo root (`Isabelle2025-2/`, gitignored). A wrapper script at
+`tools/isabelle` provides a consistent entry point:
+
+```bash
+tools/isabelle build -d proof seT6_Proofs   # Build all 8 theories
+tools/isabelle jedit -d proof -l HOL         # Interactive proof IDE
+```
+
+> **Note:** The symlink may not persist across Codespaces sessions. If
+> `Isabelle2025-2/bin/isabelle` fails, recreate it:
+> `ln -sfn /opt/isabelle/Isabelle2025-2 Isabelle2025-2`
+
+For the complete proof development workflow, see
+[TESTS_AND_PROOFS_INSTRUCTIONS.md](TESTS_AND_PROOFS_INSTRUCTIONS.md).
 
 ### Comprehensive Test Coverage
 

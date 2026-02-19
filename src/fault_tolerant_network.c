@@ -5,6 +5,30 @@
  * Implements ternary-encoded protocols with error correction,
  * multi-radix routing algorithms, and consensus-based distributed systems.
  *
+ * Key Components:
+ * - Ternary error correction codes (ECC) using GF(3) arithmetic
+ * - Multi-radix routing with radix-3,4,6 path selection
+ * - Consensus protocols for distributed agreement
+ * - TIPC (Ternary Inter-Process Communication) integration
+ * - Fault detection and recovery mechanisms
+ *
+ * Data Structures:
+ * - network_packet_t: Ternary-encoded packets with ECC
+ * - routing_table_t: Multi-radix routing entries
+ * - consensus_state_t: State for consensus algorithms
+ *
+ * Functions:
+ * - trit_add_mod3: Balanced ternary addition mod 3
+ * - trit_mul_mod3: Balanced ternary multiplication mod 3
+ * - encode_ecc: Add error correction to ternary data
+ * - decode_ecc: Correct errors in received ternary data
+ * - route_packet: Select path using multi-radix algorithm
+ * - consensus_vote: Participate in consensus protocol
+ *
+ * Purpose: Enable reliable communication in ternary networks by providing
+ * error correction, fault tolerance, and efficient routing for distributed
+ * seT6 systems.
+ *
  * SPDX-License-Identifier: GPL-2.0
  */
 
@@ -91,11 +115,11 @@ void ternary_hamming_encode(const trit data[4], trit codeword[7]) {
  * Returns syndrome and corrects single errors
  */
 int ternary_hamming_decode(trit codeword[7], trit data[4]) {
-    // Parity check matrix
+    // Parity check matrix: H = [-P^T | I_3] matching G = [I_4 | P]
     const trit H[3][7] = {
-        {1, 1, 0, 1, 1, 0, 0},  // p1
-        {1, 0, 1, 1, 0, 1, 0},  // p2
-        {0, 1, 1, 1, 0, 0, 1}   // p3
+        {-1,-1, 0,-1, 1, 0, 0},  // p1
+        {-1, 0,-1,-1, 0, 1, 0},  // p2
+        { 0,-1,-1,-1, 0, 0, 1}   // p3
     };
 
     // Calculate syndrome
@@ -107,22 +131,39 @@ int ternary_hamming_decode(trit codeword[7], trit data[4]) {
         }
     }
 
-    // Convert syndrome to error position (0 = no error)
-    int error_pos = syndrome[0] + 3 * syndrome[1] + 9 * syndrome[2];
+    // Check if syndrome is zero (no error)
+    int has_error = (syndrome[0] != 0 || syndrome[1] != 0 || syndrome[2] != 0);
+    int error_pos = 0;
 
-    if (error_pos > 0 && error_pos <= 7) {
-        // Correct single error
-        codeword[error_pos - 1] = trit_add_mod3(codeword[error_pos - 1],
-                                              trit_neg_mod3(codeword[error_pos - 1]));
+    if (has_error) {
+        // Find error position: compare syndrome with H columns (* ±1)
+        for (int j = 0; j < 7; j++) {
+            // Check if syndrome = +1 * H[:,j]
+            if (syndrome[0] == H[0][j] &&
+                syndrome[1] == H[1][j] &&
+                syndrome[2] == H[2][j]) {
+                codeword[j] = trit_add_mod3(codeword[j], trit_neg_mod3(TRIT_TRUE));
+                error_pos = j + 1;
+                break;
+            }
+            // Check if syndrome = -1 * H[:,j]
+            if (syndrome[0] == trit_neg_mod3(H[0][j]) &&
+                syndrome[1] == trit_neg_mod3(H[1][j]) &&
+                syndrome[2] == trit_neg_mod3(H[2][j])) {
+                codeword[j] = trit_add_mod3(codeword[j], TRIT_TRUE);
+                error_pos = j + 1;
+                break;
+            }
+        }
     }
 
-    // Extract data bits
-    data[0] = codeword[2];  // Positions 3,5,6,7 are data
-    data[1] = codeword[4];
-    data[2] = codeword[5];
-    data[3] = codeword[6];
+    // Extract data from systematic positions 0-3
+    data[0] = codeword[0];
+    data[1] = codeword[1];
+    data[2] = codeword[2];
+    data[3] = codeword[3];
 
-    return error_pos;  // 0 = no error, >0 = corrected error
+    return error_pos;  // 0 = no error, >0 = corrected error position
 }
 
 /* ---- Multi-Radix Routing ---- */
@@ -354,4 +395,91 @@ int ft_nic_receive(fault_tolerant_nic_t *nic, ternary_packet_t *packet) {
     }
 
     return 0;  // Success
+}
+
+/* ===================================================================== */
+/* T-034: ReTern Noise Injection — Fault-Tolerant Weight Training        */
+/* ===================================================================== */
+
+/**
+ * @brief ReTern-style noise injection for ternary weight training.
+ *
+ * During training, randomly flip a fraction of ternary weights to build
+ * noise resilience. After training with noise, the network is robust
+ * to real-world bit-flip faults in ternary memory cells.
+ *
+ * Reference: ReTern (Retry-Ternary) noise injection schedule:
+ *   - epoch < warmup: no noise (let weights converge first)
+ *   - epoch >= warmup: inject noise with probability p_flip
+ *   - p_flip decays linearly from p_max to p_min over remaining epochs
+ *
+ * @param weights      Array of trit weights to perturb (modified in place)
+ * @param count        Number of weights
+ * @param epoch        Current training epoch
+ * @param total_epochs Total epochs planned
+ * @param warmup       Warmup epochs (no noise)
+ * @param p_max_pct    Max flip probability (percent, e.g. 10 for 10%)
+ * @param p_min_pct    Min flip probability at end (percent, e.g. 1)
+ * @param seed         PRNG seed (updated in place)
+ * @return             Number of weights flipped
+ */
+int retern_inject_noise(trit *weights, int count, int epoch,
+                         int total_epochs, int warmup,
+                         int p_max_pct, int p_min_pct, uint32_t *seed) {
+    if (!weights || !seed || count <= 0) return -1;
+    if (epoch < warmup) return 0;  /* No noise during warmup */
+
+    /* Linear decay of flip probability */
+    int remaining = total_epochs - warmup;
+    if (remaining <= 0) remaining = 1;
+    int elapsed = epoch - warmup;
+    int p_pct = p_max_pct - ((p_max_pct - p_min_pct) * elapsed) / remaining;
+    if (p_pct < p_min_pct) p_pct = p_min_pct;
+    if (p_pct <= 0) return 0;
+
+    int flipped = 0;
+    for (int i = 0; i < count; i++) {
+        /* xorshift step */
+        uint32_t x = *seed;
+        x ^= x << 13;
+        x ^= x >> 17;
+        x ^= x << 5;
+        *seed = x;
+
+        /* Flip with probability p_pct / 100 */
+        if ((x % 100) < (uint32_t)p_pct) {
+            /* Cycle to next trit value: -1→0→+1→-1 */
+            int v = (int)weights[i] + 1;
+            if (v > 1) v = -1;
+            weights[i] = (trit)v;
+            flipped++;
+        }
+    }
+
+    return flipped;
+}
+
+/**
+ * @brief Compute fault resilience score.
+ *
+ * Measures the fraction of weights that can tolerate a single trit flip
+ * without changing the network's output classification. Higher = more robust.
+ *
+ * @param weights      Array of trit weights
+ * @param count        Number of weights
+ * @return             Resilience score in permille (0-1000)
+ */
+int retern_resilience_score(const trit *weights, int count) {
+    if (!weights || count <= 0) return 0;
+
+    /* Heuristic: weights at value 0 (pruned) are inherently resilient
+     * because flipping to ±1 adds minimal perturbation to accumulation.
+     * Weights at ±1 are vulnerable because flipping changes contribution. */
+    int resilient = 0;
+    for (int i = 0; i < count; i++) {
+        if (weights[i] == TRIT_UNKNOWN)
+            resilient++;
+    }
+
+    return (resilient * 1000) / count;
 }

@@ -1,3 +1,9 @@
 {
-    "isabelle.home": "/workspaces/seT5/Isabelle2025-2"
+    "isabelle.home": "/workspaces/seT5/Isabelle2025-2",
+    "terminal.integrated.env.linux": {
+        "ISABELLE_HOME": "/opt/isabelle/Isabelle2025-2"
+    },
+    "remote.extensionHost.env": {
+        "ISABELLE_HOME": "/opt/isabelle/Isabelle2025-2"
+    }
 }
