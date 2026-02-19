@@ -117,7 +117,8 @@ run_suite() {
         test_batch_5852_5901 test_batch_5902_5951 test_batch_5952_6001 \
         test_batch_6002_6051 test_batch_6052_6101 test_batch_6102_6151 \
         test_batch_6152_6201 \
-        test_symbiotic_ai"
+        test_symbiotic_ai \
+        test_symbiotic_curiosity test_symbiotic_beauty test_symbiotic_eudaimonia"
 
     for suite in $SET5_SUITES; do
         make "$suite" 2>&1

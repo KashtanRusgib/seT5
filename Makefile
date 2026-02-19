@@ -161,6 +161,18 @@ test_batch_6152_6201: tests/test_batch_6152_6201.c
 test_symbiotic_ai: tests/test_symbiotic_ai.c src/symbiotic_ai.c
 	$(CC) $(CFLAGS) -o $@ $^
 
+# ---- Symbiotic Curiosity Prover (Suite 86) ----
+test_symbiotic_curiosity: tests/test_symbiotic_curiosity.c src/symbiotic_ai.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+# ---- Symbiotic Beauty Appreciator (Suite 87) ----
+test_symbiotic_beauty: tests/test_symbiotic_beauty.c src/symbiotic_ai.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+# ---- Symbiotic Eudaimonic Optimizer (Suite 88) ----
+test_symbiotic_eudaimonia: tests/test_symbiotic_eudaimonia.c src/symbiotic_ai.c
+	$(CC) $(CFLAGS) -o $@ $^
+
 # ---- Scheduler concurrency test ----
 test_scheduler_concurrency: tests/test_scheduler_concurrency.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -422,6 +434,7 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_batch_6002_6051 test_batch_6052_6101 test_batch_6102_6151 \
                  test_batch_6152_6201 \
                  test_symbiotic_ai \
+                 test_symbiotic_curiosity test_symbiotic_beauty test_symbiotic_eudaimonia \
                  trithon/libtrithon.so
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
@@ -570,6 +583,12 @@ _run-test-suites:
 	-$(MAKE) test_batch_6152_6201 && ./test_batch_6152_6201
 	@echo "##BEGIN##=== Symbiotic AI Module ==="
 	-$(MAKE) test_symbiotic_ai && ./test_symbiotic_ai
+	@echo "##BEGIN##=== Suite 86: Symbiotic Curiosity Prover ==="
+	-$(MAKE) test_symbiotic_curiosity && ./test_symbiotic_curiosity
+	@echo "##BEGIN##=== Suite 87: Symbiotic Beauty Appreciator ==="
+	-$(MAKE) test_symbiotic_beauty && ./test_symbiotic_beauty
+	@echo "##BEGIN##=== Suite 88: Symbiotic Eudaimonic Optimizer ==="
+	-$(MAKE) test_symbiotic_eudaimonia && ./test_symbiotic_eudaimonia
 
 # ──────────────────────────────────────────────────────────────────────
 # Master test target: the ONE command that runs ALL tests.
