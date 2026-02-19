@@ -89,8 +89,32 @@ test_integration: $(TEST_INT_SRCS)
 test_memory_safety: tests/test_memory_safety.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
 	$(CC) $(CFLAGS) -o $@ $^
 
-# ---- Batch 5016-5065 test ----
-test_batch_5016_5065: tests/test_batch_5016_5065.c
+# ---- Batch 5352-5401: Hardware ALU/TALU Operations ----
+test_batch_5352_5401: tests/test_batch_5352_5401.c src/trit_alu_extended.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+# ---- Batch 5402-5451: Side-Channel Resistance ----
+test_batch_5402_5451: tests/test_batch_5402_5451.c src/trit_alu_extended.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+# ---- Batch 5452-5501: Side-Channel Resistance (Advanced) ----
+test_batch_5452_5501: tests/test_batch_5452_5501.c src/trit_alu_extended.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+# ---- Batch 5502-5551: Epistemic Logic & Hesitation ----
+test_batch_5502_5551: tests/test_batch_5502_5551.c src/trit_alu_extended.c trit_linux/ai/trit_hesitation.c
+	$(CC) $(CFLAGS) -Itrit_linux -o $@ $^
+
+# ---- Batch 5552-5601: Epistemic Logic & Hesitation (Advanced) ----
+test_batch_5552_5601: tests/test_batch_5552_5601.c src/trit_alu_extended.c trit_linux/ai/trit_hesitation.c
+	$(CC) $(CFLAGS) -Itrit_linux -o $@ $^
+
+# ---- Batch 5602-5651: Guardian Trit Mechanisms ----
+test_batch_5602_5651: tests/test_batch_5602_5651.c src/tipc.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+# ---- Batch 5652-5701: Guardian Trit Mechanisms (Advanced) ----
+test_batch_5652_5701: tests/test_batch_5652_5701.c src/tipc.c
 	$(CC) $(CFLAGS) -o $@ $^
 
 # ---- Scheduler concurrency test ----
@@ -150,6 +174,10 @@ test_multi_radix_unit: tests/test_multi_radix_unit.c $(MULTI_RADIX_SRCS)
 # ---- Ternary Wallace Tree test suite ----
 WALLACE_SRCS = src/ternary_wallace_tree.c
 test_ternary_wallace_tree: tests/test_ternary_wallace_tree.c $(WALLACE_SRCS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+# ---- Ternary Full Adder test suite ----
+test_ternary_full_adder: tests/test_ternary_full_adder.c
 	$(CC) $(CFLAGS) -o $@ $^
 
 # ---- Ternary Sense Amp test suite ----
@@ -332,7 +360,7 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_friday_updates test_trit_linux test_trit_enhancements \
                  test_tsmc_tmd_intel_pam3_hynix_tcam test_ternary_database \
                  test_ingole_wo2016199157a1 test_multi_radix_unit \
-                 test_ternary_wallace_tree test_ternary_sense_amp \
+                 test_ternary_wallace_tree test_ternary_full_adder test_ternary_sense_amp \
                  test_tipc_compressor test_samsung_cn105745888a_correlator \
                  test_ai_acceleration test_fault_tolerant_network \
                  test_adversarial \
@@ -342,7 +370,9 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_art9 test_ternary_pdfs test_peirce_semiotic test_trilang \
                  test_sigma9_mcp test_hybrid_ai test_stress test_tjson test_ternumpy \
                  test_godel_machine test_trit_simd_regression test_binary_sentinel \
-                 test_ternary_compiler_integration test_batch_5016_5065 \
+                 test_ternary_compiler_integration test_batch_5352_5401 \
+                 test_batch_5402_5451 test_batch_5452_5501 test_batch_5502_5551 \
+                 test_batch_5552_5601 test_batch_5602_5651 test_batch_5652_5701 \
                  trithon/libtrithon.so
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
@@ -409,6 +439,8 @@ _run-test-suites:
 	-$(MAKE) test_multi_radix_unit && ./test_multi_radix_unit
 	@echo "##BEGIN##=== Ternary Wallace Tree tests ==="
 	-$(MAKE) test_ternary_wallace_tree && ./test_ternary_wallace_tree
+	@echo "##BEGIN##=== Ternary Full Adder tests ==="
+	-$(MAKE) test_ternary_full_adder && ./test_ternary_full_adder
 	@echo "##BEGIN##=== Ternary Sense Amp tests ==="
 	-$(MAKE) test_ternary_sense_amp && ./test_ternary_sense_amp
 	@echo "##BEGIN##=== T-IPC Compressor tests ==="

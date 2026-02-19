@@ -1,0 +1,6608 @@
+[
+  {
+    "id": 1,
+    "name": "test_mem_out_of_range_page",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 2,
+    "name": "test_mem_out_of_range_offset",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 3,
+    "name": "test_mem_double_free",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 4,
+    "name": "test_mem_use_after_free",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 5,
+    "name": "test_mem_oom_exhaustion",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 6,
+    "name": "test_mem_write_readonly",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 7,
+    "name": "test_mem_reserve_allocated",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 8,
+    "name": "test_mem_free_reserved",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 9,
+    "name": "test_mem_init_clamps",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 10,
+    "name": "test_ipc_send_destroyed_endpoint",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 11,
+    "name": "test_ipc_recv_destroyed_endpoint",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 12,
+    "name": "test_ipc_double_destroy",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 13,
+    "name": "test_ipc_endpoint_exhaustion",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 14,
+    "name": "test_ipc_out_of_range_ep",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 15,
+    "name": "test_ipc_msg_build_overflow",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 16,
+    "name": "test_ipc_notification_exhaustion",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 17,
+    "name": "test_ipc_signal_out_of_range",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 18,
+    "name": "test_cap_grant_without_grant_right",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 19,
+    "name": "test_cap_grant_from_revoked",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 20,
+    "name": "test_cap_rights_monotonicity",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 21,
+    "name": "test_cap_exhaustion",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 22,
+    "name": "test_cap_double_revoke",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 23,
+    "name": "test_cap_check_invalid_index",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 24,
+    "name": "test_syscall_invalid_number",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 25,
+    "name": "test_stack_overflow_underflow",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 26,
+    "name": "test_sched_thread_exhaustion",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 27,
+    "name": "test_sched_double_destroy",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 28,
+    "name": "test_sched_invalid_tid",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 29,
+    "name": "test_sched_unblock_non_blocked",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 30,
+    "name": "test_sched_invalid_priority",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 31,
+    "name": "test_sched_yield_empty",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 32,
+    "name": "test_sched_pick_all_dead",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 33,
+    "name": "test_trit_pack_unpack_roundtrip",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 34,
+    "name": "test_trit_fault_encoding",
+    "file": "tests/test_adversarial.c",
+    "suite": "adversarial"
+  },
+  {
+    "id": 35,
+    "name": "test_bitnet_quantize_basic",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 36,
+    "name": "test_bitnet_quantize_all_zero",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 37,
+    "name": "test_bitnet_quantize_uniform_positive",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 38,
+    "name": "test_bitnet_quantize_scale_factor",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 39,
+    "name": "test_bitnet_forward_identity",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 40,
+    "name": "test_bitnet_forward_negation",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 41,
+    "name": "test_bitnet_forward_with_scale",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 42,
+    "name": "test_dlfet_not_truth_table",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 43,
+    "name": "test_dlfet_not_involution",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 44,
+    "name": "test_dlfet_nand_truth_table",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 45,
+    "name": "test_dlfet_full_adder_zero_carry",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 46,
+    "name": "test_dlfet_full_adder_carry_generation",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 47,
+    "name": "test_dlfet_full_adder_all_positive",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 48,
+    "name": "test_sparse_matrix_create_free",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 49,
+    "name": "test_dense_to_sparse_conversion",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 50,
+    "name": "test_sparse_mvm_identity",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 51,
+    "name": "test_sparse_mvm_zero_matrix",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 52,
+    "name": "test_ternary_linear_create",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 53,
+    "name": "test_ternary_linear_forward_pass",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 54,
+    "name": "test_ternary_activation_relu",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 55,
+    "name": "test_ternary_activation_idempotent",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 56,
+    "name": "test_bitnet_quantize_single_weight",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 57,
+    "name": "test_sparse_large_matrix",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 58,
+    "name": "test_dlfet_full_adder_all_combinations",
+    "file": "tests/test_ai_acceleration.c",
+    "suite": "ai_acceleration"
+  },
+  {
+    "id": 59,
+    "name": "test_alu_instructions",
+    "file": "tests/test_art9.c",
+    "suite": "art9"
+  },
+  {
+    "id": 60,
+    "name": "test_pipeline_mechanics",
+    "file": "tests/test_art9.c",
+    "suite": "art9"
+  },
+  {
+    "id": 61,
+    "name": "test_dhrystone_benchmark",
+    "file": "tests/test_art9.c",
+    "suite": "art9"
+  },
+  {
+    "id": 62,
+    "name": "test_verilog_encoding",
+    "file": "tests/test_art9.c",
+    "suite": "art9"
+  },
+  {
+    "id": 63,
+    "name": "test_carry_propagation_chain_3trit",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 64,
+    "name": "test_overflow_detection_balanced",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 65,
+    "name": "test_underflow_detection_subtraction",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 66,
+    "name": "test_unknown_propagation_add",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 67,
+    "name": "test_unknown_carry_chain",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 68,
+    "name": "test_multiply_2trit_overflow",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 69,
+    "name": "test_multiply_zero_identity",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 70,
+    "name": "test_multiply_negative_signs",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 71,
+    "name": "test_division_by_unknown",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 72,
+    "name": "test_modulo_negative_operands",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 73,
+    "name": "test_shift_left_carry_out",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 74,
+    "name": "test_shift_right_sign_extend",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 75,
+    "name": "test_rotate_preserves_trits",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 76,
+    "name": "test_parity_calculation",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 77,
+    "name": "test_comparator_equal_values",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 78,
+    "name": "test_comparator_less_than",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 79,
+    "name": "test_comparator_greater_than",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 80,
+    "name": "test_min_operation",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 81,
+    "name": "test_max_operation",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 82,
+    "name": "test_absolute_value",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 83,
+    "name": "test_negate_operation",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 84,
+    "name": "test_double_negate_identity",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 85,
+    "name": "test_increment_wrap",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 86,
+    "name": "test_decrement_wrap",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 87,
+    "name": "test_and_truth_table",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 88,
+    "name": "test_or_truth_table",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 89,
+    "name": "test_xor_truth_table",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 90,
+    "name": "test_nand_operation",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 91,
+    "name": "test_nor_operation",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 92,
+    "name": "test_flag_zero_detection",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 93,
+    "name": "test_flag_negative_detection",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 94,
+    "name": "test_carry_flag_addition",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 95,
+    "name": "test_borrow_flag_subtraction",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 96,
+    "name": "test_word_addition_4trit",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 97,
+    "name": "test_word_subtraction_4trit",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 98,
+    "name": "test_dot_product_vectors",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 99,
+    "name": "test_checksum_calculation",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 100,
+    "name": "test_ternary_hash",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 101,
+    "name": "test_popcount_trits",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 102,
+    "name": "test_leading_zero_count",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 103,
+    "name": "test_trailing_zero_count",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 104,
+    "name": "test_trit_reverse",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 105,
+    "name": "test_saturating_addition",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 106,
+    "name": "test_saturating_subtraction",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 107,
+    "name": "test_conditional_move",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 108,
+    "name": "test_conditional_unknown",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 109,
+    "name": "test_barrel_shift_variable",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 110,
+    "name": "test_priority_encoder",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 111,
+    "name": "test_multiplexer_ternary",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 112,
+    "name": "test_demultiplexer_routing",
+    "file": "tests/test_batch_5352_5401.c",
+    "suite": "batch_5352_5401"
+  },
+  {
+    "id": 113,
+    "name": "test_constant_time_and",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 114,
+    "name": "test_constant_time_or",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 115,
+    "name": "test_constant_time_not",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 116,
+    "name": "test_power_uniformity_transitions",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 117,
+    "name": "test_power_self_transitions",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 118,
+    "name": "test_power_adjacent_transitions",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 119,
+    "name": "test_unknown_masks_and",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 120,
+    "name": "test_unknown_masks_or",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 121,
+    "name": "test_unknown_not_invariant",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 122,
+    "name": "test_constant_time_equality",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 123,
+    "name": "test_constant_time_add",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 124,
+    "name": "test_constant_time_sub",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 125,
+    "name": "test_memory_access_uniformity",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 126,
+    "name": "test_cache_timing_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 127,
+    "name": "test_constant_time_mul",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 128,
+    "name": "test_power_balanced_encoding",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 129,
+    "name": "test_em_emission_minimal_transitions",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 130,
+    "name": "test_spectre_mitigation",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 131,
+    "name": "test_meltdown_mitigation",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 132,
+    "name": "test_constant_time_compare",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 133,
+    "name": "test_sidechannel_resistant_pack",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 134,
+    "name": "test_sidechannel_resistant_unpack",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 135,
+    "name": "test_power_glitch_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 136,
+    "name": "test_fault_injection_detection",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 137,
+    "name": "test_constant_time_cmov",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 138,
+    "name": "test_dpa_resistance_randomization",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 139,
+    "name": "test_cpa_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 140,
+    "name": "test_em_analysis_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 141,
+    "name": "test_timing_attack_trit_conversion",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 142,
+    "name": "test_branchless_trit_logic",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 143,
+    "name": "test_constant_time_bitslice",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 144,
+    "name": "test_power_signature_uniformity",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 145,
+    "name": "test_probe_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 146,
+    "name": "test_constant_time_modular_reduction",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 147,
+    "name": "test_laser_fault_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 148,
+    "name": "test_clock_glitch_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 149,
+    "name": "test_voltage_glitch_detection",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 150,
+    "name": "test_template_attack_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 151,
+    "name": "test_hidden_state_leakage_prevention",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 152,
+    "name": "test_dfa_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 153,
+    "name": "test_safe_error_handling",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 154,
+    "name": "test_em_fingerprinting_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 155,
+    "name": "test_acoustic_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 156,
+    "name": "test_row_hammer_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 157,
+    "name": "test_cold_boot_mitigation",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 158,
+    "name": "test_bus_probing_resistance",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 159,
+    "name": "test_poweron_randomization",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 160,
+    "name": "test_constant_time_serialization",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 161,
+    "name": "test_constant_time_deserialization",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 162,
+    "name": "test_sidechannel_resistant_rng",
+    "file": "tests/test_batch_5402_5451.c",
+    "suite": "batch_5402_5451"
+  },
+  {
+    "id": 163,
+    "name": "test_covert_channel_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 164,
+    "name": "test_cache_line_alignment",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 165,
+    "name": "test_constant_time_memcpy",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 166,
+    "name": "test_constant_time_memcmp",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 167,
+    "name": "test_secure_random_trit",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 168,
+    "name": "test_sidechannel_resistant_key_storage",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 169,
+    "name": "test_dpa_masking",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 170,
+    "name": "test_cpa_resistance_shuffling",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 171,
+    "name": "test_template_resistance_timing_noise",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 172,
+    "name": "test_sidechannel_resistant_modexp",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 173,
+    "name": "test_cryptographic_blinding",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 174,
+    "name": "test_secure_boot_attestation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 175,
+    "name": "test_sidechannel_resistant_hash",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 176,
+    "name": "test_hsm_trit_key_protection",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 177,
+    "name": "test_sidechannel_resistant_sbox",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 178,
+    "name": "test_dema_resistance",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 179,
+    "name": "test_photonic_emission_resistance",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 180,
+    "name": "test_nearfield_em_resistance",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 181,
+    "name": "test_acoustic_emanation_minimization",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 182,
+    "name": "test_timing_attack_modular_reduction",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 183,
+    "name": "test_branch_predictor_resistance",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 184,
+    "name": "test_rop_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 185,
+    "name": "test_jop_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 186,
+    "name": "test_remote_timing_attack_resistance",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 187,
+    "name": "test_crossvm_isolation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 188,
+    "name": "test_hyperthreading_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 189,
+    "name": "test_flush_reload_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 190,
+    "name": "test_prime_probe_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 191,
+    "name": "test_evict_time_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 192,
+    "name": "test_controlled_channel_resistance",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 193,
+    "name": "test_memory_dedup_resistance",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 194,
+    "name": "test_tlb_sidechannel_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 195,
+    "name": "test_rsb_poisoning_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 196,
+    "name": "test_stb_forwarding_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 197,
+    "name": "test_mds_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 198,
+    "name": "test_l1tf_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 199,
+    "name": "test_foreshadow_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 200,
+    "name": "test_zombieload_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 201,
+    "name": "test_ridl_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 202,
+    "name": "test_fallout_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 203,
+    "name": "test_lvi_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 204,
+    "name": "test_netspectre_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 205,
+    "name": "test_portsmash_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 206,
+    "name": "test_spoiler_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 207,
+    "name": "test_sgaxe_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 208,
+    "name": "test_cacheout_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 209,
+    "name": "test_crosstalk_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 210,
+    "name": "test_platypus_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 211,
+    "name": "test_hertzbleed_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 212,
+    "name": "test_zenbleed_mitigation",
+    "file": "tests/test_batch_5452_5501.c",
+    "suite": "batch_5452_5501"
+  },
+  {
+    "id": 213,
+    "name": "test_k3_and_truth_table",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 214,
+    "name": "test_k3_or_truth_table",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 215,
+    "name": "test_k3_not_involution",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 216,
+    "name": "test_k3_de_morgan",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 217,
+    "name": "test_k3_absorption",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 218,
+    "name": "test_k3_unknown_absorption_and",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 219,
+    "name": "test_k3_unknown_absorption_or",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 220,
+    "name": "test_definiteness_predicate",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 221,
+    "name": "test_safe_bool_conversion",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 222,
+    "name": "test_confidence_metric",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 223,
+    "name": "test_hesitation_reactor_init",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 224,
+    "name": "test_hesitation_channel_register",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 225,
+    "name": "test_hesitation_observation",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 226,
+    "name": "test_hesitation_on_unknown",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 227,
+    "name": "test_confidence_tracking",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 228,
+    "name": "test_distribution_tracking",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 229,
+    "name": "test_kl_divergence",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 230,
+    "name": "test_yield_calculation",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 231,
+    "name": "test_b4_inconsistency",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 232,
+    "name": "test_recalibration",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 233,
+    "name": "test_drift_monitoring",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 234,
+    "name": "test_pipeline_pause",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 235,
+    "name": "test_unknown_propagation_and",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 236,
+    "name": "test_false_overrides_unknown_and",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 237,
+    "name": "test_unknown_propagation_or",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 238,
+    "name": "test_true_overrides_unknown_or",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 239,
+    "name": "test_unknown_streak_tracking",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 240,
+    "name": "test_total_pauses",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 241,
+    "name": "test_total_decisions",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 242,
+    "name": "test_k3_implies",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 243,
+    "name": "test_k3_equiv",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 244,
+    "name": "test_k3_and_commutative",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 245,
+    "name": "test_k3_or_commutative",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 246,
+    "name": "test_k3_and_associative",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 247,
+    "name": "test_k3_or_associative",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 248,
+    "name": "test_k3_distributive",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 249,
+    "name": "test_k3_identity",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 250,
+    "name": "test_k3_annihilator",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 251,
+    "name": "test_k3_idempotent",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 252,
+    "name": "test_hesitation_window_wrap",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 253,
+    "name": "test_unknown_rate_percentage",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 254,
+    "name": "test_last_definite_tracking",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 255,
+    "name": "test_max_channel_limit",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 256,
+    "name": "test_divergence_tracking",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 257,
+    "name": "test_b4_flag_accumulation",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 258,
+    "name": "test_drift_threshold_config",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 259,
+    "name": "test_k3_tertium_non_datur",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 260,
+    "name": "test_k3_non_contradiction",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 261,
+    "name": "test_epistemic_closure_negation",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 262,
+    "name": "test_epistemic_closure_and_or",
+    "file": "tests/test_batch_5502_5551.c",
+    "suite": "batch_5502_5551"
+  },
+  {
+    "id": 263,
+    "name": "test_kl_divergence_non_negative",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 264,
+    "name": "test_kl_divergence_asymmetric",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 265,
+    "name": "test_yield_bounds",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 266,
+    "name": "test_yield_perfect_alignment",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 267,
+    "name": "test_yield_divergence_penalty",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 268,
+    "name": "test_b4_threshold_15_percent",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 269,
+    "name": "test_b4_below_threshold",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 270,
+    "name": "test_b4_boundary_condition",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 271,
+    "name": "test_b4_single_observation",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 272,
+    "name": "test_multi_channel_drift",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 273,
+    "name": "test_drift_mixed_channels",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 274,
+    "name": "test_recalibration_resets_distribution",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 275,
+    "name": "test_recalibration_resets_confidence",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 276,
+    "name": "test_recalibration_state",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 277,
+    "name": "test_recalibration_counter",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 278,
+    "name": "test_window_wrapping_32",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 279,
+    "name": "test_window_filled_flag",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 280,
+    "name": "test_confidence_window_limit",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 281,
+    "name": "test_max_unknown_streak",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 282,
+    "name": "test_streak_reset_on_definite",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 283,
+    "name": "test_last_definite_across_unknowns",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 284,
+    "name": "test_state_transition_idle_to_running",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 285,
+    "name": "test_state_transition_running_to_hesitating",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 286,
+    "name": "test_state_transition_hesitating_to_running",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 287,
+    "name": "test_dlt_reactor_recommend_reactivation",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 288,
+    "name": "test_dlt_reactor_no_reactivation",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 289,
+    "name": "test_channel_deactivation",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 290,
+    "name": "test_invalid_channel_id",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 291,
+    "name": "test_null_reactor_pointer",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 292,
+    "name": "test_kl_divergence_null_pointers",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 293,
+    "name": "test_yield_null_pointers",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 294,
+    "name": "test_b4_check_null",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 295,
+    "name": "test_get_confidence_null_output",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 296,
+    "name": "test_distribution_convergence",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 297,
+    "name": "test_confidence_alternating_pattern",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 298,
+    "name": "test_unknown_rate_accuracy",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 299,
+    "name": "test_total_pauses_increment",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 300,
+    "name": "test_total_decisions_increment",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 301,
+    "name": "test_b4_flags_accumulation",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 302,
+    "name": "test_drift_threshold_custom",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 303,
+    "name": "test_epistemic_closure_max",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 304,
+    "name": "test_epistemic_closure_min",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 305,
+    "name": "test_k3_consensus",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 306,
+    "name": "test_k3_meet_properties",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 307,
+    "name": "test_k3_join_properties",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 308,
+    "name": "test_hesitation_stress",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 309,
+    "name": "test_multi_channel_stress",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 310,
+    "name": "test_epistemic_uncertainty_chain",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 311,
+    "name": "test_epistemic_confidence_degradation",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 312,
+    "name": "test_yield_sensitivity",
+    "file": "tests/test_batch_5552_5601.c",
+    "suite": "batch_5552_5601"
+  },
+  {
+    "id": 313,
+    "name": "test_kleene_full_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 314,
+    "name": "test_simd_full_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 315,
+    "name": "test_crypto_sbox_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 316,
+    "name": "test_hash_full_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 317,
+    "name": "test_encrypt_roundtrip_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 318,
+    "name": "test_trit_cast_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 319,
+    "name": "test_pack_unpack_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 320,
+    "name": "test_fft_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 321,
+    "name": "test_avizienis_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 322,
+    "name": "test_no_binary_flattening",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 323,
+    "name": "test_mac_ternary_accumulation",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 324,
+    "name": "test_implies_equiv_range",
+    "file": "tests/test_binary_sentinel.c",
+    "suite": "binary_sentinel"
+  },
+  {
+    "id": 325,
+    "name": "test_dlt_expansion",
+    "file": "tests/test_dlt_cntfet.c",
+    "suite": "dlt_cntfet"
+  },
+  {
+    "id": 326,
+    "name": "test_cntfet_emulation",
+    "file": "tests/test_dlt_cntfet.c",
+    "suite": "dlt_cntfet"
+  },
+  {
+    "id": 327,
+    "name": "test_integration",
+    "file": "tests/test_dlt_cntfet.c",
+    "suite": "dlt_cntfet"
+  },
+  {
+    "id": 328,
+    "name": "test_hamming_encode_basic",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 329,
+    "name": "test_hamming_roundtrip",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 330,
+    "name": "test_hamming_single_error_correction",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 331,
+    "name": "test_hamming_all_zero",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 332,
+    "name": "test_hamming_all_positive",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 333,
+    "name": "test_hamming_all_negative",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 334,
+    "name": "test_hamming_error_each_position",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 335,
+    "name": "test_hamming_all_81_patterns",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 336,
+    "name": "test_routing_basic",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 337,
+    "name": "test_routing_empty",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 338,
+    "name": "test_routing_multiple",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 339,
+    "name": "test_consensus_unanimous",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 340,
+    "name": "test_consensus_majority",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 341,
+    "name": "test_consensus_no_majority",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 342,
+    "name": "test_consensus_false_majority",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 343,
+    "name": "test_consensus_unknown_majority",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 344,
+    "name": "test_packet_encode_decode",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 345,
+    "name": "test_packet_tamper",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 346,
+    "name": "test_packet_zero_payload",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 347,
+    "name": "test_packet_full_payload",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 348,
+    "name": "test_packet_header_preserved",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 349,
+    "name": "test_ftnic_send",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 350,
+    "name": "test_ftnic_receive",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 351,
+    "name": "test_ftnic_receive_corrupted",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 352,
+    "name": "test_ftnic_fault_tracking",
+    "file": "tests/test_fault_tolerant_network.c",
+    "suite": "fault_tolerant_network"
+  },
+  {
+    "id": 353,
+    "name": "test_stt_mram",
+    "file": "tests/test_friday_updates.c",
+    "suite": "friday_updates"
+  },
+  {
+    "id": 354,
+    "name": "test_tipc",
+    "file": "tests/test_friday_updates.c",
+    "suite": "friday_updates"
+  },
+  {
+    "id": 355,
+    "name": "test_tfs",
+    "file": "tests/test_friday_updates.c",
+    "suite": "friday_updates"
+  },
+  {
+    "id": 356,
+    "name": "test_cross_module",
+    "file": "tests/test_friday_updates.c",
+    "suite": "friday_updates"
+  },
+  {
+    "id": 357,
+    "name": "test_spec_compliance",
+    "file": "tests/test_friday_updates.c",
+    "suite": "friday_updates"
+  },
+  {
+    "id": 358,
+    "name": "test_twq_config_defaults",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 359,
+    "name": "test_twq_quantize_basic",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 360,
+    "name": "test_twq_quantize_all_zero",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 361,
+    "name": "test_twq_ternary_dot",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 362,
+    "name": "test_twq_matvec",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 363,
+    "name": "test_twq_sparsity",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 364,
+    "name": "test_twq_energy",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 365,
+    "name": "test_twq_overflow_guard",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 366,
+    "name": "test_dlfet_tnot",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 367,
+    "name": "test_dlfet_tnand",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 368,
+    "name": "test_dlfet_derived_gates",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 369,
+    "name": "test_dlfet_half_adder",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 370,
+    "name": "test_dlfet_full_adder",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 371,
+    "name": "test_dlfet_multi_add",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 372,
+    "name": "test_dlfet_balanced_conversion",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 373,
+    "name": "test_dlfet_pdp",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 374,
+    "name": "test_dlfet_energy_tracking",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 375,
+    "name": "test_rtc_roundtrip",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 376,
+    "name": "test_rtc_zero",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 377,
+    "name": "test_rtc_batch",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 378,
+    "name": "test_rtc_pack_unpack",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 379,
+    "name": "test_rtc_bandwidth",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 380,
+    "name": "test_rtc_stats_tracking",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 381,
+    "name": "test_srbc_init",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 382,
+    "name": "test_srbc_stable_tick",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 383,
+    "name": "test_srbc_thermal_drift",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 384,
+    "name": "test_srbc_tamper_detection",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 385,
+    "name": "test_srbc_small_fault_absorbed",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 386,
+    "name": "test_srbc_voltage_to_trit",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 387,
+    "name": "test_srbc_snm",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 388,
+    "name": "test_srbc_stability",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 389,
+    "name": "test_srbc_reset_refs",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 390,
+    "name": "test_crypto_hash_deterministic",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 391,
+    "name": "test_crypto_hash_avalanche",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 392,
+    "name": "test_crypto_keygen",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 393,
+    "name": "test_crypto_encrypt_decrypt",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 394,
+    "name": "test_crypto_mac",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 395,
+    "name": "test_crypto_lattice",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 396,
+    "name": "test_crypto_constant_time",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 397,
+    "name": "test_pdelay_nominal",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 398,
+    "name": "test_pdelay_pvt_adjustment",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 399,
+    "name": "test_pdelay_chain_analysis",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 400,
+    "name": "test_pdelay_classify",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 401,
+    "name": "test_pdelay_pdp",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 402,
+    "name": "test_pdelay_clock_period",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 403,
+    "name": "test_ttl_init_and_register",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 404,
+    "name": "test_ttl_always",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 405,
+    "name": "test_ttl_always_with_unknown",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 406,
+    "name": "test_ttl_always_with_false",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 407,
+    "name": "test_ttl_eventually",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 408,
+    "name": "test_ttl_never",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 409,
+    "name": "test_ttl_safety",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 410,
+    "name": "test_ttl_decide",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 411,
+    "name": "test_ttl_decide_abort",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 412,
+    "name": "test_ttl_evaluate",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 413,
+    "name": "test_ttl_majority_vote",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 414,
+    "name": "test_pam3_encode_decode",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 415,
+    "name": "test_pam3_voltage_levels",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 416,
+    "name": "test_pam3_noise",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 417,
+    "name": "test_pam3_pre_emphasis",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 418,
+    "name": "test_pam3_eye_diagram",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 419,
+    "name": "test_pam3_bandwidth_gain",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 420,
+    "name": "test_pam3_pam4_interop",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 421,
+    "name": "test_pam3_stats",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 422,
+    "name": "test_cross_twq_to_dlfet",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 423,
+    "name": "test_cross_rtc_pam3_pipeline",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 424,
+    "name": "test_cross_srbc_pdelay",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 425,
+    "name": "test_cross_crypto_ttl",
+    "file": "tests/test_functional_utility.c",
+    "suite": "functional_utility"
+  },
+  {
+    "id": 426,
+    "name": "test_init",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 427,
+    "name": "test_init_null",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 428,
+    "name": "test_get_axiom_valid",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 429,
+    "name": "test_get_axiom_oob",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 430,
+    "name": "test_axiom_types",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 431,
+    "name": "test_apply_modus_ponens",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 432,
+    "name": "test_apply_conjunction",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 433,
+    "name": "test_apply_trit_eval",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 434,
+    "name": "test_delete_theorem",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 435,
+    "name": "test_delete_oob",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 436,
+    "name": "test_set_switchprog",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 437,
+    "name": "test_check_no_improvement",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 438,
+    "name": "test_check_with_improvement",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 439,
+    "name": "test_state2theorem",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 440,
+    "name": "test_utility_perfect",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 441,
+    "name": "test_utility_zero_tests",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 442,
+    "name": "test_utility_binary_reversion_penalty",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 443,
+    "name": "test_delta_tracking",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 444,
+    "name": "test_rollback_on_decrease",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 445,
+    "name": "test_theorem_chain",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 446,
+    "name": "test_search_fraction",
+    "file": "tests/test_godel_machine.c",
+    "suite": "godel_machine"
+  },
+  {
+    "id": 447,
+    "name": "test_init",
+    "file": "tests/test_hardening.c",
+    "suite": "hardening"
+  },
+  {
+    "id": 448,
+    "name": "test_kparams",
+    "file": "tests/test_hardening.c",
+    "suite": "hardening"
+  },
+  {
+    "id": 449,
+    "name": "test_mounts",
+    "file": "tests/test_hardening.c",
+    "suite": "hardening"
+  },
+  {
+    "id": 450,
+    "name": "test_firewall",
+    "file": "tests/test_hardening.c",
+    "suite": "hardening"
+  },
+  {
+    "id": 451,
+    "name": "test_audit",
+    "file": "tests/test_hardening.c",
+    "suite": "hardening"
+  },
+  {
+    "id": 452,
+    "name": "test_score",
+    "file": "tests/test_hardening.c",
+    "suite": "hardening"
+  },
+  {
+    "id": 453,
+    "name": "test_hw_from_balanced",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 454,
+    "name": "test_hw_to_balanced",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 455,
+    "name": "test_roundtrip_translation",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 456,
+    "name": "test_trit2_conversion",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 457,
+    "name": "test_gate_inc_truth_table",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 458,
+    "name": "test_gate_dec_truth_table",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 459,
+    "name": "test_inc_dec_inverse",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 460,
+    "name": "test_gate_nti_truth_table",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 461,
+    "name": "test_gate_pti_truth_table",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 462,
+    "name": "test_gate_pb_truth_table",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 463,
+    "name": "test_gate_nb_truth_table",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 464,
+    "name": "test_alu_inc_balanced",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 465,
+    "name": "test_alu_dec_balanced",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 466,
+    "name": "test_alu_nti_balanced",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 467,
+    "name": "test_alu_pti_balanced",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 468,
+    "name": "test_tsum_exhaustive",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 469,
+    "name": "test_half_adder_exhaustive",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 470,
+    "name": "test_half_adder_consistency",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 471,
+    "name": "test_full_adder_exhaustive",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 472,
+    "name": "test_full_adder_specific",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 473,
+    "name": "test_mul1_exhaustive",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 474,
+    "name": "test_mul2x2_exact_simple",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 475,
+    "name": "test_mul2x2_reconstruction",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 476,
+    "name": "test_mul2x2_compensation_plus6",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 477,
+    "name": "test_mul2x2_compensation_plus9",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 478,
+    "name": "test_mul6x6_simple",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 479,
+    "name": "test_mul6x6_max_range",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 480,
+    "name": "test_mul6x6_trits_width",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 481,
+    "name": "test_word_add_simple",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 482,
+    "name": "test_word_add_negative",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 483,
+    "name": "test_word_add_carry_propagation",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 484,
+    "name": "test_dot_product_simple",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 485,
+    "name": "test_dot_product_mixed",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 486,
+    "name": "test_dot_product_orthogonal",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 487,
+    "name": "test_fft_butterfly_all_zero",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 488,
+    "name": "test_fft_butterfly_return_code",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 489,
+    "name": "test_fft_butterfly_identity",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 490,
+    "name": "test_hal_init_emulated",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 491,
+    "name": "test_hal_caps_populated",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 492,
+    "name": "test_hal_features",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 493,
+    "name": "test_hal_shutdown",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 494,
+    "name": "test_hal_mode_query",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 495,
+    "name": "test_mul_word_dispatch",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 496,
+    "name": "test_triple_inc_is_identity",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 497,
+    "name": "test_triple_dec_is_identity",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 498,
+    "name": "test_nti_pti_pb_nb_composition",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 499,
+    "name": "test_transistor_threshold_constraint",
+    "file": "tests/test_huawei_cn119652311a.c",
+    "suite": "huawei_cn119652311a"
+  },
+  {
+    "id": 500,
+    "name": "test_trq",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 501,
+    "name": "test_tissue",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 502,
+    "name": "test_rpl",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 503,
+    "name": "test_epistemic",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 504,
+    "name": "test_del",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 505,
+    "name": "test_council",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 506,
+    "name": "test_trq_extended",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 507,
+    "name": "test_tissue_extended",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 508,
+    "name": "test_rpl_extended",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 509,
+    "name": "test_epistemic_extended",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 510,
+    "name": "test_del_extended",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 511,
+    "name": "test_council_extended",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 512,
+    "name": "test_cross_module",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 513,
+    "name": "test_integration",
+    "file": "tests/test_hybrid_ai.c",
+    "suite": "hybrid_ai"
+  },
+  {
+    "id": 514,
+    "name": "test_ig_from_balanced",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 515,
+    "name": "test_ig_to_balanced",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 516,
+    "name": "test_roundtrip",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 517,
+    "name": "test_tnot",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 518,
+    "name": "test_cwc",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 519,
+    "name": "test_ccwc",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 520,
+    "name": "test_add1carry",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 521,
+    "name": "test_tand",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 522,
+    "name": "test_tnand",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 523,
+    "name": "test_tor",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 524,
+    "name": "test_tnor",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 525,
+    "name": "test_xtor",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 526,
+    "name": "test_comparator",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 527,
+    "name": "test_half_adder",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 528,
+    "name": "test_full_adder",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 529,
+    "name": "test_talu_add_simple",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 530,
+    "name": "test_talu_add_zero",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 531,
+    "name": "test_talu_sub_ab",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 532,
+    "name": "test_talu_sub_ba",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 533,
+    "name": "test_talu_tand_tnand",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 534,
+    "name": "test_talu_tor_tnor",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 535,
+    "name": "test_talu_xtor_comp",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 536,
+    "name": "test_talu_nop",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 537,
+    "name": "test_talu_ai_tor",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 538,
+    "name": "test_parity_flag",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 539,
+    "name": "test_all_zero_flag",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 540,
+    "name": "test_overflow_flag",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 541,
+    "name": "test_hal_init_shutdown",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 542,
+    "name": "test_cwc_ccwc_involutions",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 543,
+    "name": "test_tnot_involution",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 544,
+    "name": "test_talu_add_4trit",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 545,
+    "name": "test_patent_constants",
+    "file": "tests/test_ingole_wo2016199157a1.c",
+    "suite": "ingole_wo2016199157a1"
+  },
+  {
+    "id": 546,
+    "name": "test_producer_consumer",
+    "file": "tests/test_integration.c",
+    "suite": "integration"
+  },
+  {
+    "id": 547,
+    "name": "test_notification_event_loop",
+    "file": "tests/test_integration.c",
+    "suite": "integration"
+  },
+  {
+    "id": 548,
+    "name": "test_radix_dot_pipeline",
+    "file": "tests/test_integration.c",
+    "suite": "integration"
+  },
+  {
+    "id": 549,
+    "name": "test_init",
+    "file": "tests/test_ipc_secure.c",
+    "suite": "ipc_secure"
+  },
+  {
+    "id": 550,
+    "name": "test_sockets",
+    "file": "tests/test_ipc_secure.c",
+    "suite": "ipc_secure"
+  },
+  {
+    "id": 551,
+    "name": "test_send_recv",
+    "file": "tests/test_ipc_secure.c",
+    "suite": "ipc_secure"
+  },
+  {
+    "id": 552,
+    "name": "test_namespaces",
+    "file": "tests/test_ipc_secure.c",
+    "suite": "ipc_secure"
+  },
+  {
+    "id": 553,
+    "name": "test_capabilities",
+    "file": "tests/test_ipc_secure.c",
+    "suite": "ipc_secure"
+  },
+  {
+    "id": 554,
+    "name": "test_injection",
+    "file": "tests/test_ipc_secure.c",
+    "suite": "ipc_secure"
+  },
+  {
+    "id": 555,
+    "name": "test_memory_allocation_bounds",
+    "file": "tests/test_memory_safety.c",
+    "suite": "memory_safety"
+  },
+  {
+    "id": 556,
+    "name": "test_memory_read_write",
+    "file": "tests/test_memory_safety.c",
+    "suite": "memory_safety"
+  },
+  {
+    "id": 557,
+    "name": "test_scrub_on_free",
+    "file": "tests/test_memory_safety.c",
+    "suite": "memory_safety"
+  },
+  {
+    "id": 558,
+    "name": "test_allocation_exhaustion",
+    "file": "tests/test_memory_safety.c",
+    "suite": "memory_safety"
+  },
+  {
+    "id": 559,
+    "name": "test_memory_stats",
+    "file": "tests/test_memory_safety.c",
+    "suite": "memory_safety"
+  },
+  {
+    "id": 560,
+    "name": "test_page_reservation",
+    "file": "tests/test_memory_safety.c",
+    "suite": "memory_safety"
+  },
+  {
+    "id": 561,
+    "name": "test_init",
+    "file": "tests/test_modular.c",
+    "suite": "modular"
+  },
+  {
+    "id": 562,
+    "name": "test_registration",
+    "file": "tests/test_modular.c",
+    "suite": "modular"
+  },
+  {
+    "id": 563,
+    "name": "test_dependencies",
+    "file": "tests/test_modular.c",
+    "suite": "modular"
+  },
+  {
+    "id": 564,
+    "name": "test_configs",
+    "file": "tests/test_modular.c",
+    "suite": "modular"
+  },
+  {
+    "id": 565,
+    "name": "test_radix_guard",
+    "file": "tests/test_modular.c",
+    "suite": "modular"
+  },
+  {
+    "id": 566,
+    "name": "test_lifecycle",
+    "file": "tests/test_modular.c",
+    "suite": "modular"
+  },
+  {
+    "id": 567,
+    "name": "test_radix3_add",
+    "file": "tests/test_multi_radix_unit.c",
+    "suite": "multi_radix_unit"
+  },
+  {
+    "id": 568,
+    "name": "test_radix4_add",
+    "file": "tests/test_multi_radix_unit.c",
+    "suite": "multi_radix_unit"
+  },
+  {
+    "id": 569,
+    "name": "test_fft",
+    "file": "tests/test_multi_radix_unit.c",
+    "suite": "multi_radix_unit"
+  },
+  {
+    "id": 570,
+    "name": "test_art9_init",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 571,
+    "name": "test_art9_alu_ops",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 572,
+    "name": "test_art9_clamp_overflow",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 573,
+    "name": "test_art9_mem_ops",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 574,
+    "name": "test_art9_pipeline_run",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 575,
+    "name": "test_art9_radix_economy",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 576,
+    "name": "test_dlt_init",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 577,
+    "name": "test_dlt_quantize",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 578,
+    "name": "test_dlt_trapping",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 579,
+    "name": "test_dlt_sparsity_accuracy",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 580,
+    "name": "test_dlt_edge_cases",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 581,
+    "name": "test_off_init",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 582,
+    "name": "test_off_cosine_sim",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 583,
+    "name": "test_off_mutual_info",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 584,
+    "name": "test_off_distill_step",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 585,
+    "name": "test_off_retention",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 586,
+    "name": "test_tps_init",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 587,
+    "name": "test_tps_bit_equivalent",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 588,
+    "name": "test_tps_loss_ppl",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 589,
+    "name": "test_tps_memory_bandwidth",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 590,
+    "name": "test_tps_configs",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 591,
+    "name": "test_tps_crossover_flops",
+    "file": "tests/test_papers.c",
+    "suite": "papers"
+  },
+  {
+    "id": 592,
+    "name": "test_smi_init",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 593,
+    "name": "test_smi_shannon_entropy",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 594,
+    "name": "test_smi_differential_entropy",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 595,
+    "name": "test_smi_histogram",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 596,
+    "name": "test_smi_mi_and_alignment",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 597,
+    "name": "test_smi_graded_truth",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 598,
+    "name": "test_chi_init",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 599,
+    "name": "test_chi_scaling_laws",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 600,
+    "name": "test_chi_schedule",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 601,
+    "name": "test_chi_spectra",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 602,
+    "name": "test_ppl_init",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 603,
+    "name": "test_ppl_math",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 604,
+    "name": "test_ppl_evaluation",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 605,
+    "name": "test_ppl_trilm_achievement",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 606,
+    "name": "test_olh_init",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 607,
+    "name": "test_olh_clamp",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 608,
+    "name": "test_olh_stats",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 609,
+    "name": "test_olh_rescale",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 610,
+    "name": "test_olh_stall_recal",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 611,
+    "name": "test_smi_extras",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 612,
+    "name": "test_chi_extras",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 613,
+    "name": "test_ppl_extras",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 614,
+    "name": "test_olh_extras",
+    "file": "tests/test_papers2.c",
+    "suite": "papers2"
+  },
+  {
+    "id": 615,
+    "name": "test_init_basics",
+    "file": "tests/test_peirce_semiotic.c",
+    "suite": "peirce_semiotic"
+  },
+  {
+    "id": 616,
+    "name": "test_sign_classification",
+    "file": "tests/test_peirce_semiotic.c",
+    "suite": "peirce_semiotic"
+  },
+  {
+    "id": 617,
+    "name": "test_semiosis_chains",
+    "file": "tests/test_peirce_semiotic.c",
+    "suite": "peirce_semiotic"
+  },
+  {
+    "id": 618,
+    "name": "test_information",
+    "file": "tests/test_peirce_semiotic.c",
+    "suite": "peirce_semiotic"
+  },
+  {
+    "id": 619,
+    "name": "test_determination",
+    "file": "tests/test_peirce_semiotic.c",
+    "suite": "peirce_semiotic"
+  },
+  {
+    "id": 620,
+    "name": "test_reduction_thesis",
+    "file": "tests/test_peirce_semiotic.c",
+    "suite": "peirce_semiotic"
+  },
+  {
+    "id": 621,
+    "name": "test_interpretant_analysis",
+    "file": "tests/test_peirce_semiotic.c",
+    "suite": "peirce_semiotic"
+  },
+  {
+    "id": 622,
+    "name": "test_categories_hypoicons_adjacency",
+    "file": "tests/test_peirce_semiotic.c",
+    "suite": "peirce_semiotic"
+  },
+  {
+    "id": 623,
+    "name": "test_init_and_crt",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 624,
+    "name": "test_trit_to_rns",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 625,
+    "name": "test_crt_reconstruction",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 626,
+    "name": "test_arithmetic",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 627,
+    "name": "test_montgomery",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 628,
+    "name": "test_zero_sparsity",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 629,
+    "name": "test_validate",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 630,
+    "name": "test_extend_moduli",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 631,
+    "name": "test_pvt_resilience",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 632,
+    "name": "test_crypto_integration",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 633,
+    "name": "test_noise_injection",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 634,
+    "name": "test_conversions_extended",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 635,
+    "name": "test_low_power_sim",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 636,
+    "name": "test_crypto_extended",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 637,
+    "name": "test_multi_radix_extended",
+    "file": "tests/test_rns.c",
+    "suite": "rns"
+  },
+  {
+    "id": 638,
+    "name": "test_trit_compat",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 639,
+    "name": "test_weight_all_nonzero",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 640,
+    "name": "test_weight_with_zeros",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 641,
+    "name": "test_weight_all_zero",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 642,
+    "name": "test_perfect_square_yes",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 643,
+    "name": "test_perfect_square_no",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 644,
+    "name": "test_mseq_degree3",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 645,
+    "name": "test_mseq_degree4",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 646,
+    "name": "test_mseq_degree5",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 647,
+    "name": "test_mseq_maximal_length",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 648,
+    "name": "test_complement",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 649,
+    "name": "test_double_complement",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 650,
+    "name": "test_cross_corr_self",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 651,
+    "name": "test_cross_corr_orthogonal",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 652,
+    "name": "test_gen_perfect_basic",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 653,
+    "name": "test_gen_near_perfect",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 654,
+    "name": "test_near_perfect_msac_reduced",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 655,
+    "name": "test_msac_zero_seq",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 656,
+    "name": "test_msac_unit_impulse",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 657,
+    "name": "test_msac_positive",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 658,
+    "name": "test_aperiodic_autocorr_zero",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 659,
+    "name": "test_aperiodic_autocorr_k1",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 660,
+    "name": "test_gen_base_inserts_value",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 661,
+    "name": "test_gen_base_comp_inserts_one",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 662,
+    "name": "test_table3_family_3_8",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 663,
+    "name": "test_table3_family_4_16",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 664,
+    "name": "test_table3_family_5_32",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 665,
+    "name": "test_table3_invalid",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 666,
+    "name": "test_cyclic_shift_zero",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 667,
+    "name": "test_cyclic_shift_one",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 668,
+    "name": "test_cyclic_shift_full",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 669,
+    "name": "test_abs_project",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 670,
+    "name": "test_codeset_count",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 671,
+    "name": "test_codeset_shift0_is_base",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 672,
+    "name": "test_codeset_all_distinct",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 673,
+    "name": "test_decimal_map_round_trip",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 674,
+    "name": "test_gray_map_values",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 675,
+    "name": "test_gray_map_round_trip",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 676,
+    "name": "test_modem_init_3_8",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 677,
+    "name": "test_modem_init_4_16",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 678,
+    "name": "test_modem_init_invalid",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 679,
+    "name": "test_modulate_symbol_0",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 680,
+    "name": "test_modulate_symbol_distinct",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 681,
+    "name": "test_modulate_out_of_range",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 682,
+    "name": "test_demod_coherent_clean",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 683,
+    "name": "test_demod_coherent_all_symbols",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 684,
+    "name": "test_demod_non_coherent_clean",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 685,
+    "name": "test_frame_modulate",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 686,
+    "name": "test_frame_round_trip",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 687,
+    "name": "test_round_trip_all_families",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 688,
+    "name": "test_round_trip_low_noise",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 689,
+    "name": "test_snr_clean",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 690,
+    "name": "test_family_descriptors",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 691,
+    "name": "test_emu_regs_init",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 692,
+    "name": "test_emu_regs_buffers",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 693,
+    "name": "test_correlation_manual",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 694,
+    "name": "test_correlation_self_energy",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 695,
+    "name": "test_correlation_shifted",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 696,
+    "name": "test_gray_round_trip_4_16",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 697,
+    "name": "test_non_coherent_round_trip_all",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 698,
+    "name": "test_custom_base_modem",
+    "file": "tests/test_samsung_cn105745888a.c",
+    "suite": "samsung_cn105745888a"
+  },
+  {
+    "id": 699,
+    "name": "test_correlate_identical",
+    "file": "tests/test_samsung_cn105745888a_correlator.c",
+    "suite": "samsung_cn105745888a_correlator"
+  },
+  {
+    "id": 700,
+    "name": "test_correlate_orthogonal",
+    "file": "tests/test_samsung_cn105745888a_correlator.c",
+    "suite": "samsung_cn105745888a_correlator"
+  },
+  {
+    "id": 701,
+    "name": "test_weight_valid",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 702,
+    "name": "test_synapse_program_pos",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 703,
+    "name": "test_synapse_program_neg",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 704,
+    "name": "test_synapse_read_weight",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 705,
+    "name": "test_encode_input_neg",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 706,
+    "name": "test_encode_input_pos",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 707,
+    "name": "test_encode_input_zero",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 708,
+    "name": "test_is_zero_input",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 709,
+    "name": "test_cell_conducts_erased_vread",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 710,
+    "name": "test_cell_programmed_vread",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 711,
+    "name": "test_cell_any_vpass",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 712,
+    "name": "test_synapse_case1",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 713,
+    "name": "test_synapse_case2",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 714,
+    "name": "test_synapse_case3",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 715,
+    "name": "test_synapse_case4",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 716,
+    "name": "test_synapse_case5",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 717,
+    "name": "test_synapse_case6",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 718,
+    "name": "test_zid_count_no_zeros",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 719,
+    "name": "test_zid_count_some_zeros",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 720,
+    "name": "test_zid_count_all_zeros",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 721,
+    "name": "test_zid_bitmap_pattern",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 722,
+    "name": "test_zid_bitmap_empty",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 723,
+    "name": "test_bnn_dot_all_match",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 724,
+    "name": "test_bnn_dot_all_mismatch",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 725,
+    "name": "test_bnn_dot_mixed",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 726,
+    "name": "test_bnn_dot_single",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 727,
+    "name": "test_tbn_dot_no_zeros",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 728,
+    "name": "test_tbn_dot_with_zeros",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 729,
+    "name": "test_tbn_dot_all_zeros",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 730,
+    "name": "test_tbn_dot_single_zero",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 731,
+    "name": "test_tbn_dot_asymmetric",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 732,
+    "name": "test_tbn_dot_negative_result",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 733,
+    "name": "test_dot_auto_bnn_mode",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 734,
+    "name": "test_dot_auto_tbn_mode",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 735,
+    "name": "test_matmul_identity_like",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 736,
+    "name": "test_matmul_3x4_tbn",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 737,
+    "name": "test_matmul_1x1",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 738,
+    "name": "test_matmul_null_guard",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 739,
+    "name": "test_activation_sign",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 740,
+    "name": "test_activation_ternary",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 741,
+    "name": "test_dnn_two_layers",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 742,
+    "name": "test_hal_init_shutdown",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 743,
+    "name": "test_hal_null_guard",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 744,
+    "name": "test_hal_default_caps",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 745,
+    "name": "test_set_mode_bnn",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 746,
+    "name": "test_set_mode_tbn",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 747,
+    "name": "test_set_mode_uninitialized",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 748,
+    "name": "test_set_parallelism_sequential",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 749,
+    "name": "test_set_parallelism_multi_block",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 750,
+    "name": "test_set_parallelism_pipelined",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 751,
+    "name": "test_program_weights_emulated",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 752,
+    "name": "test_read_weights_emulated",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 753,
+    "name": "test_program_weights_null_guard",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 754,
+    "name": "test_patent_eq1_formula",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 755,
+    "name": "test_patent_eq2_formula",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 756,
+    "name": "test_xnor_property",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 757,
+    "name": "test_large_vector_dot",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 758,
+    "name": "test_tbn_large_sparse",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 759,
+    "name": "test_mmio_constants",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 760,
+    "name": "test_topology_packing",
+    "file": "tests/test_samsung_us11170290b2.c",
+    "suite": "samsung_us11170290b2"
+  },
+  {
+    "id": 761,
+    "name": "test_scheduler_thread_creation",
+    "file": "tests/test_scheduler_concurrency.c",
+    "suite": "scheduler_concurrency"
+  },
+  {
+    "id": 762,
+    "name": "test_scheduler_priority_scheduling",
+    "file": "tests/test_scheduler_concurrency.c",
+    "suite": "scheduler_concurrency"
+  },
+  {
+    "id": 763,
+    "name": "test_scheduler_yield",
+    "file": "tests/test_scheduler_concurrency.c",
+    "suite": "scheduler_concurrency"
+  },
+  {
+    "id": 764,
+    "name": "test_scheduler_block_unblock",
+    "file": "tests/test_scheduler_concurrency.c",
+    "suite": "scheduler_concurrency"
+  },
+  {
+    "id": 765,
+    "name": "test_scheduler_stats",
+    "file": "tests/test_scheduler_concurrency.c",
+    "suite": "scheduler_concurrency"
+  },
+  {
+    "id": 766,
+    "name": "test_scheduler_capacity",
+    "file": "tests/test_scheduler_concurrency.c",
+    "suite": "scheduler_concurrency"
+  },
+  {
+    "id": 767,
+    "name": "test_tstab_init",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 768,
+    "name": "test_tstab_noise_config",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 769,
+    "name": "test_tstab_pvt_sweep",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 770,
+    "name": "test_tstab_single_pvt",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 771,
+    "name": "test_tstab_full_sweep",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 772,
+    "name": "test_tstab_seu",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 773,
+    "name": "test_tstab_metastable",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 774,
+    "name": "test_tmvm_init",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 775,
+    "name": "test_tmvm_compressor",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 776,
+    "name": "test_tmvm_dot_sparse",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 777,
+    "name": "test_tmvm_matvec",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 778,
+    "name": "test_tmvm_energy",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 779,
+    "name": "test_ecs_init",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 780,
+    "name": "test_ecs_channel_register",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 781,
+    "name": "test_ecs_healthy_tick",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 782,
+    "name": "test_ecs_drift_detection",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 783,
+    "name": "test_ecs_flip_detection",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 784,
+    "name": "test_ecs_irq_recovery",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 785,
+    "name": "test_ecs_hesitation",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 786,
+    "name": "test_ecs_audit_log",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 787,
+    "name": "test_tcamn_init",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 788,
+    "name": "test_tcamn_add_search",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 789,
+    "name": "test_tcamn_wildcard",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 790,
+    "name": "test_tcamn_priority",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 791,
+    "name": "test_tcamn_similarity",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 792,
+    "name": "test_tcamn_trit_distance",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 793,
+    "name": "test_tcamn_energy",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 794,
+    "name": "test_tcamn_delete",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 795,
+    "name": "test_radix_guard",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 796,
+    "name": "test_radix_guard_mixed",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 797,
+    "name": "test_radix_guard_enforcement",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 798,
+    "name": "test_radix_guard_all_ternary",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 799,
+    "name": "test_side_channel",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 800,
+    "name": "test_side_channel_didt",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 801,
+    "name": "test_side_channel_unknown_masking",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 802,
+    "name": "test_epistemic_k3",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 803,
+    "name": "test_epistemic_involution",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 804,
+    "name": "test_epistemic_confidence",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 805,
+    "name": "test_epistemic_hesitation_reactor",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 806,
+    "name": "test_guardian_trit_checksum",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 807,
+    "name": "test_guardian_trit_tamper",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 808,
+    "name": "test_guardian_drift_monitor",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 809,
+    "name": "test_guardian_packed_integrity",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 810,
+    "name": "test_rns_init_basic",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 811,
+    "name": "test_rns_forward_inverse",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 812,
+    "name": "test_rns_arithmetic",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 813,
+    "name": "test_rns_mrc_crt_agree",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 814,
+    "name": "test_rns_montgomery",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 815,
+    "name": "test_rns_from_trits",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 816,
+    "name": "test_resonance_basic",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 817,
+    "name": "test_resonance_period",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 818,
+    "name": "test_resonance_divergence",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 819,
+    "name": "test_resonance_ternary_advantage",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 820,
+    "name": "test_em_ndr_transitions",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 821,
+    "name": "test_em_ndr_spike_profile",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 822,
+    "name": "test_em_unknown_masking_extended",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 823,
+    "name": "test_em_constant_time",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 824,
+    "name": "test_tmd_thermal_sweep",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 825,
+    "name": "test_tmd_voltage_corners",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 826,
+    "name": "test_tmd_endurance",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 827,
+    "name": "test_tmd_seu_tmd_interaction",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 828,
+    "name": "test_hesitation_init",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 829,
+    "name": "test_hesitation_channel",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 830,
+    "name": "test_hesitation_observe",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 831,
+    "name": "test_hesitation_confidence",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 832,
+    "name": "test_hesitation_kl_divergence",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 833,
+    "name": "test_hesitation_yield",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 834,
+    "name": "test_hesitation_b4",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 835,
+    "name": "test_hesitation_recalibrate",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 836,
+    "name": "test_hesitation_drift",
+    "file": "tests/test_sigma9.c",
+    "suite": "sigma9"
+  },
+  {
+    "id": 837,
+    "name": "test_aecc",
+    "file": "tests/test_sigma9_mcp.c",
+    "suite": "sigma9_mcp"
+  },
+  {
+    "id": 838,
+    "name": "test_tcam",
+    "file": "tests/test_sigma9_mcp.c",
+    "suite": "sigma9_mcp"
+  },
+  {
+    "id": 839,
+    "name": "test_peirce",
+    "file": "tests/test_sigma9_mcp.c",
+    "suite": "sigma9_mcp"
+  },
+  {
+    "id": 840,
+    "name": "test_bct",
+    "file": "tests/test_sigma9_mcp.c",
+    "suite": "sigma9_mcp"
+  },
+  {
+    "id": 841,
+    "name": "test_rebel2",
+    "file": "tests/test_sigma9_mcp.c",
+    "suite": "sigma9_mcp"
+  },
+  {
+    "id": 842,
+    "name": "test_mmem",
+    "file": "tests/test_sigma9_mcp.c",
+    "suite": "sigma9_mcp"
+  },
+  {
+    "id": 843,
+    "name": "test_mcp",
+    "file": "tests/test_sigma9_mcp.c",
+    "suite": "sigma9_mcp"
+  },
+  {
+    "id": 844,
+    "name": "test_mem",
+    "file": "tests/test_stress.c",
+    "suite": "stress"
+  },
+  {
+    "id": 845,
+    "name": "test_sched",
+    "file": "tests/test_stress.c",
+    "suite": "stress"
+  },
+  {
+    "id": 846,
+    "name": "test_ipc",
+    "file": "tests/test_stress.c",
+    "suite": "stress"
+  },
+  {
+    "id": 847,
+    "name": "test_caps",
+    "file": "tests/test_stress.c",
+    "suite": "stress"
+  },
+  {
+    "id": 848,
+    "name": "test_syscall",
+    "file": "tests/test_stress.c",
+    "suite": "stress"
+  },
+  {
+    "id": 849,
+    "name": "test_cross",
+    "file": "tests/test_stress.c",
+    "suite": "stress"
+  },
+  {
+    "id": 850,
+    "name": "test_trit",
+    "file": "tests/test_stress.c",
+    "suite": "stress"
+  },
+  {
+    "id": 851,
+    "name": "test_multiradix",
+    "file": "tests/test_stress.c",
+    "suite": "stress"
+  },
+  {
+    "id": 852,
+    "name": "test_perf",
+    "file": "tests/test_stress.c",
+    "suite": "stress"
+  },
+  {
+    "id": 853,
+    "name": "test_env_init_seeds",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 854,
+    "name": "test_env_set_new",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 855,
+    "name": "test_env_set_overwrite",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 856,
+    "name": "test_env_zero_value",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 857,
+    "name": "test_env_negative_value",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 858,
+    "name": "test_env_find_nonexistent",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 859,
+    "name": "test_env_full",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 860,
+    "name": "test_env_validity_flags",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 861,
+    "name": "test_bt_encode_1",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 862,
+    "name": "test_bt_encode_2",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 863,
+    "name": "test_bt_encode_3",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 864,
+    "name": "test_bt_encode_13",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 865,
+    "name": "test_consensus_all_T",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 866,
+    "name": "test_consensus_mixed",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 867,
+    "name": "test_consensus_with_unknowns",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 868,
+    "name": "test_accept_any_all_F",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 869,
+    "name": "test_accept_any_one_T",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 870,
+    "name": "test_accept_any_unknowns",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 871,
+    "name": "test_kernel_init_works",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 872,
+    "name": "test_syscall_push_pop",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 873,
+    "name": "test_syscall_alloc_free",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 874,
+    "name": "test_syscall_cap_create",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 875,
+    "name": "test_syscall_cap_revoke",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 876,
+    "name": "test_trit_inc_from_zero",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 877,
+    "name": "test_trit_dec_from_zero",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 878,
+    "name": "test_wcet_register_and_observe",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 879,
+    "name": "test_wcet_violation",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 880,
+    "name": "test_fft_step_output_verified",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 881,
+    "name": "test_dot_all_T",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 882,
+    "name": "test_dot_orthogonal",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 883,
+    "name": "test_noise_init",
+    "file": "tests/test_tbe.c",
+    "suite": "tbe"
+  },
+  {
+    "id": 884,
+    "name": "test_kleene_and_via_consensus",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 885,
+    "name": "test_kleene_and_with_unknown",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 886,
+    "name": "test_kleene_or_basic",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 887,
+    "name": "test_trit_var_declaration",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 888,
+    "name": "test_trit_array_declaration",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 889,
+    "name": "test_trit_negation_pattern",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 890,
+    "name": "test_capability_init_compile",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 891,
+    "name": "test_scheduler_priority_compile",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 892,
+    "name": "test_ipc_endpoint_compile",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 893,
+    "name": "test_godel_utility_compile",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 894,
+    "name": "test_godel_axiom_check_compile",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 895,
+    "name": "test_godel_search_fraction_compile",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 896,
+    "name": "test_ternary_huffman_pattern",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 897,
+    "name": "test_packed_simd_concept",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 898,
+    "name": "test_radix_conversion_pattern",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 899,
+    "name": "test_multi_function_compile",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 900,
+    "name": "test_verilog_emission_compiles",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 901,
+    "name": "test_consensus_opcode_available",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 902,
+    "name": "test_accept_any_opcode_available",
+    "file": "tests/test_ternary_compiler_integration.c",
+    "suite": "ternary_compiler_integration"
+  },
+  {
+    "id": 903,
+    "name": "test_null_and_strict",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 904,
+    "name": "test_null_and_propagate",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 905,
+    "name": "test_null_and_lenient",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 906,
+    "name": "test_null_or_strict",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 907,
+    "name": "test_null_or_propagate",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 908,
+    "name": "test_null_or_lenient",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 909,
+    "name": "test_null_equals",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 910,
+    "name": "test_null_count",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 911,
+    "name": "test_null_sum",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 912,
+    "name": "test_null_and_commutativity",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 913,
+    "name": "test_null_or_commutativity",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 914,
+    "name": "test_cam_init",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 915,
+    "name": "test_cam_add_and_search",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 916,
+    "name": "test_cam_delete",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 917,
+    "name": "test_cam_delete_nonexistent",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 918,
+    "name": "test_cam_multiple_matches",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 919,
+    "name": "test_cam_search_empty",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 920,
+    "name": "test_cam_null_mask_default",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 921,
+    "name": "test_rle_basic",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 922,
+    "name": "test_rle_single_element",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 923,
+    "name": "test_rle_alternating",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 924,
+    "name": "test_rle_uniform",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 925,
+    "name": "test_huffman_basic",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 926,
+    "name": "test_huffman_all_same",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 927,
+    "name": "test_huffman_three_distinct",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 928,
+    "name": "test_db_init",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 929,
+    "name": "test_db_insert_and_select",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 930,
+    "name": "test_db_insert_no_nulls",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 931,
+    "name": "test_db_empty_select",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 932,
+    "name": "test_db_multiple_rows",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 933,
+    "name": "test_db_null_mode_propagate",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 934,
+    "name": "test_db_select_false_value",
+    "file": "tests/test_ternary_database.c",
+    "suite": "ternary_database"
+  },
+  {
+    "id": 935,
+    "name": "test_tekum",
+    "file": "tests/test_ternary_pdfs.c",
+    "suite": "ternary_pdfs"
+  },
+  {
+    "id": 936,
+    "name": "test_dlt_trapping",
+    "file": "tests/test_ternary_pdfs.c",
+    "suite": "ternary_pdfs"
+  },
+  {
+    "id": 937,
+    "name": "test_off_graded",
+    "file": "tests/test_ternary_pdfs.c",
+    "suite": "ternary_pdfs"
+  },
+  {
+    "id": 938,
+    "name": "test_scaling_laws",
+    "file": "tests/test_ternary_pdfs.c",
+    "suite": "ternary_pdfs"
+  },
+  {
+    "id": 939,
+    "name": "test_trunc_mul",
+    "file": "tests/test_ternary_pdfs.c",
+    "suite": "ternary_pdfs"
+  },
+  {
+    "id": 940,
+    "name": "test_k3_gates",
+    "file": "tests/test_ternary_pdfs.c",
+    "suite": "ternary_pdfs"
+  },
+  {
+    "id": 941,
+    "name": "test_kleene_and_exhaustive",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 942,
+    "name": "test_kleene_or_exhaustive",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 943,
+    "name": "test_kleene_not_all",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 944,
+    "name": "test_kleene_implies_exhaustive",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 945,
+    "name": "test_kleene_equiv_exhaustive",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 946,
+    "name": "test_kleene_demorgan",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 947,
+    "name": "test_kleene_algebraic_laws",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 948,
+    "name": "test_packed64_and",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 949,
+    "name": "test_packed64_or",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 950,
+    "name": "test_packed64_not",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 951,
+    "name": "test_packed64_scalar_correspondence",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 952,
+    "name": "test_pack_unpack_roundtrip",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 953,
+    "name": "test_trit_xor_truth_table",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 954,
+    "name": "test_trit_xor_inv_truth_table",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 955,
+    "name": "test_trit_xor_inverse_property",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 956,
+    "name": "test_crypto_encrypt_decrypt_roundtrip",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 957,
+    "name": "test_crypto_keygen_deterministic",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 958,
+    "name": "test_crypto_hash_deterministic",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 959,
+    "name": "test_crypto_mac_verify",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 960,
+    "name": "test_fft_step_ternary",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 961,
+    "name": "test_avizienis_roundtrip",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 962,
+    "name": "test_avizienis_uses_balanced",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 963,
+    "name": "test_ingole_tnot",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 964,
+    "name": "test_ingole_cwc_ccwc",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 965,
+    "name": "test_ingole_tand_tor",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 966,
+    "name": "test_ingole_xtor",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 967,
+    "name": "test_ingole_half_add",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 968,
+    "name": "test_ingole_full_add",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 969,
+    "name": "test_hamming_encode_decode_roundtrip",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 970,
+    "name": "test_hamming_single_error_correction",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 971,
+    "name": "test_trit_from_bool",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 972,
+    "name": "test_trit_to_bool_strict",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 973,
+    "name": "test_trit_from_int_clamping",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 974,
+    "name": "test_trit_trit2_roundtrip",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 975,
+    "name": "test_kleene_null_and",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 976,
+    "name": "test_kleene_null_or",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 977,
+    "name": "test_kleene_null_equals",
+    "file": "tests/test_ternary_reversion_guard.c",
+    "suite": "ternary_reversion_guard"
+  },
+  {
+    "id": 978,
+    "name": "test_sense_low",
+    "file": "tests/test_ternary_sense_amp.c",
+    "suite": "ternary_sense_amp"
+  },
+  {
+    "id": 979,
+    "name": "test_sense_mid",
+    "file": "tests/test_ternary_sense_amp.c",
+    "suite": "ternary_sense_amp"
+  },
+  {
+    "id": 980,
+    "name": "test_sense_high",
+    "file": "tests/test_ternary_sense_amp.c",
+    "suite": "ternary_sense_amp"
+  },
+  {
+    "id": 981,
+    "name": "test_multiply_basic",
+    "file": "tests/test_ternary_wallace_tree.c",
+    "suite": "ternary_wallace_tree"
+  },
+  {
+    "id": 982,
+    "name": "test_multiply_zero",
+    "file": "tests/test_ternary_wallace_tree.c",
+    "suite": "ternary_wallace_tree"
+  },
+  {
+    "id": 983,
+    "name": "test_init",
+    "file": "tests/test_time.c",
+    "suite": "time"
+  },
+  {
+    "id": 984,
+    "name": "test_sources",
+    "file": "tests/test_time.c",
+    "suite": "time"
+  },
+  {
+    "id": 985,
+    "name": "test_sync",
+    "file": "tests/test_time.c",
+    "suite": "time"
+  },
+  {
+    "id": 986,
+    "name": "test_skew",
+    "file": "tests/test_time.c",
+    "suite": "time"
+  },
+  {
+    "id": 987,
+    "name": "test_mram",
+    "file": "tests/test_time.c",
+    "suite": "time"
+  },
+  {
+    "id": 988,
+    "name": "test_events",
+    "file": "tests/test_time.c",
+    "suite": "time"
+  },
+  {
+    "id": 989,
+    "name": "test_replay",
+    "file": "tests/test_time.c",
+    "suite": "time"
+  },
+  {
+    "id": 990,
+    "name": "test_clock",
+    "file": "tests/test_time.c",
+    "suite": "time"
+  },
+  {
+    "id": 991,
+    "name": "test_compress_decompress",
+    "file": "tests/test_tipc_compressor.c",
+    "suite": "tipc_compressor"
+  },
+  {
+    "id": 992,
+    "name": "test_all_zeros",
+    "file": "tests/test_tipc_compressor.c",
+    "suite": "tipc_compressor"
+  },
+  {
+    "id": 993,
+    "name": "test_triadic_arithmetic",
+    "file": "tests/test_trilang.c",
+    "suite": "trilang"
+  },
+  {
+    "id": 994,
+    "name": "test_kleene_k3",
+    "file": "tests/test_trilang.c",
+    "suite": "trilang"
+  },
+  {
+    "id": 995,
+    "name": "test_peirce_categories",
+    "file": "tests/test_trilang.c",
+    "suite": "trilang"
+  },
+  {
+    "id": 996,
+    "name": "test_tryte_ops",
+    "file": "tests/test_trilang.c",
+    "suite": "trilang"
+  },
+  {
+    "id": 997,
+    "name": "test_epistemic",
+    "file": "tests/test_trilang.c",
+    "suite": "trilang"
+  },
+  {
+    "id": 998,
+    "name": "test_rns_integration",
+    "file": "tests/test_trilang.c",
+    "suite": "trilang"
+  },
+  {
+    "id": 999,
+    "name": "test_lexer",
+    "file": "tests/test_trilang.c",
+    "suite": "trilang"
+  },
+  {
+    "id": 1000,
+    "name": "test_parser_eval",
+    "file": "tests/test_trilang.c",
+    "suite": "trilang"
+  },
+  {
+    "id": 1001,
+    "name": "test_posix_coreutils",
+    "file": "tests/test_trit_enhancements.c",
+    "suite": "trit_enhancements"
+  },
+  {
+    "id": 1002,
+    "name": "test_networking_stack",
+    "file": "tests/test_trit_enhancements.c",
+    "suite": "trit_enhancements"
+  },
+  {
+    "id": 1003,
+    "name": "test_gui_framework",
+    "file": "tests/test_trit_enhancements.c",
+    "suite": "trit_enhancements"
+  },
+  {
+    "id": 1004,
+    "name": "test_package_manager",
+    "file": "tests/test_trit_enhancements.c",
+    "suite": "trit_enhancements"
+  },
+  {
+    "id": 1005,
+    "name": "test_ai_integration",
+    "file": "tests/test_trit_enhancements.c",
+    "suite": "trit_enhancements"
+  },
+  {
+    "id": 1006,
+    "name": "test_security_auditing",
+    "file": "tests/test_trit_enhancements.c",
+    "suite": "trit_enhancements"
+  },
+  {
+    "id": 1007,
+    "name": "test_irq_handler",
+    "file": "tests/test_trit_linux.c",
+    "suite": "trit_linux"
+  },
+  {
+    "id": 1008,
+    "name": "test_and_exhaustive_single",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1009,
+    "name": "test_or_exhaustive_single",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1010,
+    "name": "test_not_all_positions",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1011,
+    "name": "test_not_involution",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1012,
+    "name": "test_and_identity",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1013,
+    "name": "test_or_identity",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1014,
+    "name": "test_demorgan",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1015,
+    "name": "test_full_trit_range_output",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1016,
+    "name": "test_commutativity",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1017,
+    "name": "test_absorption",
+    "file": "tests/test_trit_simd_regression.c",
+    "suite": "trit_simd_regression"
+  },
+  {
+    "id": 1018,
+    "name": "test_tmd_monolayer_mos2",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1019,
+    "name": "test_tmd_monolayer_hbn",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1020,
+    "name": "test_tmd_monolayer_ws2",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1021,
+    "name": "test_tmd_monolayer_mose2",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1022,
+    "name": "test_tmd_monolayer_wse2",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1023,
+    "name": "test_tmd_monolayer_mote2",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1024,
+    "name": "test_tmd_monolayer_graphene",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1025,
+    "name": "test_tmd_monolayer_null_ptr",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1026,
+    "name": "test_tmd_is_semiconductor",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1027,
+    "name": "test_tmd_is_dielectric",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1028,
+    "name": "test_tmd_stack_init",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1029,
+    "name": "test_tmd_stack_add_single_layer",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1030,
+    "name": "test_tmd_stack_hbn_mos2_hbn_sandwich",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1031,
+    "name": "test_tmd_stack_not_sandwich",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1032,
+    "name": "test_tmd_stack_total_thickness",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1033,
+    "name": "test_tmd_bond_params_valid",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1034,
+    "name": "test_tmd_bond_params_boundary_low",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1035,
+    "name": "test_tmd_bond_params_boundary_high",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1036,
+    "name": "test_tmd_bond_params_out_of_range",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1037,
+    "name": "test_tmd_carrier_attach_remove",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1038,
+    "name": "test_tmd_substrate_attach",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1039,
+    "name": "test_tmd_quality_score_perfect",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1040,
+    "name": "test_tmd_quality_score_range",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1041,
+    "name": "test_tmd_fet_init",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1042,
+    "name": "test_tmd_fet_evaluate_low",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1043,
+    "name": "test_tmd_fet_evaluate_mid",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1044,
+    "name": "test_tmd_fet_evaluate_high",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1045,
+    "name": "test_tmd_fet_ternary_not",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1046,
+    "name": "test_tmd_fet_ternary_and",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1047,
+    "name": "test_tmd_fet_ternary_or",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1048,
+    "name": "test_tmd_fet_on_current",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1049,
+    "name": "test_tmd_3d_init",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1050,
+    "name": "test_tmd_3d_density",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1051,
+    "name": "test_tmd_3d_validate",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1052,
+    "name": "test_pam3d_init",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1053,
+    "name": "test_pam3d_init_null",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1054,
+    "name": "test_pam3d_set_thresholds",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1055,
+    "name": "test_pam3d_dc_correction_toggle",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1056,
+    "name": "test_pam3d_generate_signal_basic",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1057,
+    "name": "test_pam3d_generate_signal_with_noise",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1058,
+    "name": "test_pam3d_generate_signal_empty",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1059,
+    "name": "test_pam3d_load_samples",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1060,
+    "name": "test_pam3d_load_samples_overflow",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1061,
+    "name": "test_pam3d_full_decode_clean",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1062,
+    "name": "test_pam3d_full_decode_noisy",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1063,
+    "name": "test_pam3d_dc_correction_stage",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1064,
+    "name": "test_pam3d_level_detection_stage",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1065,
+    "name": "test_pam3d_spike_filter_stage",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1066,
+    "name": "test_pam3d_edge_detection_stage",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1067,
+    "name": "test_pam3d_stats_accumulate",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1068,
+    "name": "test_tcam_crossbar_init",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1069,
+    "name": "test_tcam_crossbar_init_null",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1070,
+    "name": "test_tcam_add_edge",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1071,
+    "name": "test_tcam_add_multiple_edges",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1072,
+    "name": "test_tcam_add_edge_overflow",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1073,
+    "name": "test_tcam_search_dst_single_hit",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1074,
+    "name": "test_tcam_search_dst_multiple_hits",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1075,
+    "name": "test_tcam_search_dst_no_hits",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1076,
+    "name": "test_tcam_search_vtx_layer",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1077,
+    "name": "test_tcam_search_vtx_layer_dont_care",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1078,
+    "name": "test_tcam_search_stats",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1079,
+    "name": "test_mac_crossbar_init",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1080,
+    "name": "test_mac_add_features",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1081,
+    "name": "test_mac_accumulate_with_hit_vector",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1082,
+    "name": "test_mac_accumulate_empty_hit",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1083,
+    "name": "test_dfp_encode_group0",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1084,
+    "name": "test_dfp_encode_group1",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1085,
+    "name": "test_dfp_encode_null",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1086,
+    "name": "test_dfp_decode_basic",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1087,
+    "name": "test_dfp_mac_basic",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1088,
+    "name": "test_dfp_mac_null_returns_zero",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1089,
+    "name": "test_gnn_init",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1090,
+    "name": "test_gnn_init_null",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1091,
+    "name": "test_gnn_load_graph",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1092,
+    "name": "test_gnn_sample_batch",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1093,
+    "name": "test_gnn_aggregate",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1094,
+    "name": "test_gnn_update",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1095,
+    "name": "test_gnn_train_epoch",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1096,
+    "name": "test_gnn_train_multiple_epochs",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1097,
+    "name": "test_gnn_get_features_invalid_node",
+    "file": "tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c",
+    "suite": "tsmc_tmd_intel_pam3_hynix_tcam"
+  },
+  {
+    "id": 1098,
+    "name": "test_trit_operations",
+    "file": "tools/compiler/tests/test_basic.c",
+    "suite": "basic"
+  },
+  {
+    "id": 1099,
+    "name": "test_tokenizer",
+    "file": "tools/compiler/tests/test_basic.c",
+    "suite": "basic"
+  },
+  {
+    "id": 1100,
+    "name": "test_codegen",
+    "file": "tools/compiler/tests/test_basic.c",
+    "suite": "basic"
+  },
+  {
+    "id": 1101,
+    "name": "test_vm_execution",
+    "file": "tools/compiler/tests/test_basic.c",
+    "suite": "basic"
+  }
+]

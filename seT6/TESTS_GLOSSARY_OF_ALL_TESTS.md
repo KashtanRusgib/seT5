@@ -2,11 +2,11 @@
 
 ## seT6 Comprehensive Test Glossary
 
-**Total Runtime Assertions**: 5027 (+ 83 from 3 disabled suites = 5110 total)  
-**Total Source-Level Test Entries**: 4687 (+ 40 from 3 disabled suites = 4727 total)  
-**Test Suites**: 73 (69 actively running; 3 disabled compiler suites; 1 "Trit Enhancements" needs `tcore_env_t` rebuild; 1 seT5 Integration compat)  
-**Overall Pass Rate**: 100% (0 failures across all active suites)  
-**Last Updated**: 2026-02-19 — Added Suites 70-73 for untested hw/ files: ternary_wallace_tree.v, ternary_sense_amp.v, tipc_compressor.v, samsung_cn105745888a_correlator.v  
+**Total Runtime Assertions**: 5037 (+ 83 from 3 disabled suites = 5120 total)
+**Total Source-Level Test Entries**: 4692 (+ 40 from 3 disabled suites = 4732 total)
+**Test Suites**: 74 (70 actively running; 3 disabled compiler suites; 1 "Trit Enhancements" needs `tcore_env_t` rebuild; 1 seT5 Integration compat)
+**Overall Pass Rate**: 100% (0 failures across all active suites)
+**Last Updated**: 2026-02-19 — Added Suite 74: test_ternary_full_adder.c for TFA logic verification
 **Generated**: Auto-extracted from source code
 
 ---
@@ -122,21 +122,22 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 | 71 | Ternary Sense Amp ⭐NEW | `tests/test_ternary_sense_amp.c` | 3 | 3 | ✅ |
 | 72 | T-IPC Compressor ⭐NEW | `tests/test_tipc_compressor.c` | 2 | 2 | ✅ |
 | 73 | Samsung Correlator ⭐NEW | `tests/test_samsung_cn105745888a_correlator.c` | 2 | 2 | ✅ |
+| 74 | Ternary Full Adder ⭐NEW | `tests/test_ternary_full_adder.c` | 10 | 5 | ✅ |
 | — | Trit Enhancements *(not building)* | `tests/test_trit_enhancements.c` | — | 214 | ⚠️ needs `tcore_env_t` rebuild |
 | — | Compiler: Codegen Bugs *(disabled)* | `tools/compiler/tests/test_compiler_code_generation_bugs.c` | 39 | 19 | ⚠️ commented out in compiler Makefile |
 | — | Compiler: Error Recovery *(disabled)* | `tools/compiler/tests/test_error_recovery.c` | 26 | 11 | ⚠️ commented out in compiler Makefile |
 | — | Compiler: Parser/Lexer Fuzz *(disabled)* | `tools/compiler/tests/test_parser_lexer_fuzz.c` | 18 | 10 | ⚠️ commented out in compiler Makefile |
-| | **TOTAL (active, running)** | | **5027** | **4687** | |
-| | **TOTAL (incl. disabled)** | | **5110** | **4727** | |
+| | **TOTAL (active, running)** | | **5037** | **4692** | |
+| | **TOTAL (incl. disabled)** | | **5120** | **4732** | |
 
 ---
 
 ## Suite 1: Compiler: Trit Operations
 
-**Source**: `tools/compiler/tests/test_trit.c`  
-**Runtime Assertions**: 22  
-**Source-Level Entries**: 22  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_trit.c`
+**Runtime Assertions**: 22
+**Source-Level Entries**: 22
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -168,10 +169,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 2: Compiler: Parser
 
-**Source**: `tools/compiler/tests/test_parser.c`  
-**Runtime Assertions**: 14  
-**Source-Level Entries**: 14  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_parser.c`
+**Runtime Assertions**: 14
+**Source-Level Entries**: 14
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -195,10 +196,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 3: Compiler: Code Generator
 
-**Source**: `tools/compiler/tests/test_codegen.c`  
-**Runtime Assertions**: 7  
-**Source-Level Entries**: 7  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_codegen.c`
+**Runtime Assertions**: 7
+**Source-Level Entries**: 7
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -215,10 +216,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 4: Compiler: VM Execution
 
-**Source**: `tools/compiler/tests/test_vm.c`  
-**Runtime Assertions**: 31  
-**Source-Level Entries**: 31  
-**Harness**: Mixed CHECK/ASSERT harness  
+**Source**: `tools/compiler/tests/test_vm.c`
+**Runtime Assertions**: 31
+**Source-Level Entries**: 31
+**Harness**: Mixed CHECK/ASSERT harness
 **Output Reading**: `[PASS]`/`[FAIL]` per assertion. Summary at end.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -259,10 +260,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 5: Compiler: TypeChecker
 
-**Source**: `tools/compiler/tests/test_typechecker.c`  
-**Runtime Assertions**: 15  
-**Source-Level Entries**: 15  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_typechecker.c`
+**Runtime Assertions**: 15
+**Source-Level Entries**: 15
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -287,10 +288,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 6: Compiler: Linker
 
-**Source**: `tools/compiler/tests/test_linker.c`  
-**Runtime Assertions**: 13  
-**Source-Level Entries**: 13  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_linker.c`
+**Runtime Assertions**: 13
+**Source-Level Entries**: 13
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -313,10 +314,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 7: Compiler: Self-Hosting
 
-**Source**: `tools/compiler/tests/test_selfhost.c`  
-**Runtime Assertions**: 13  
-**Source-Level Entries**: 13  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_selfhost.c`
+**Runtime Assertions**: 13
+**Source-Level Entries**: 13
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -339,10 +340,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 8: Compiler: Arrays
 
-**Source**: `tools/compiler/tests/test_arrays.c`  
-**Runtime Assertions**: 12  
-**Source-Level Entries**: 12  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_arrays.c`
+**Runtime Assertions**: 12
+**Source-Level Entries**: 12
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -364,10 +365,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 9: Compiler: Ternary Hardware
 
-**Source**: `tools/compiler/tests/test_hardware.c`  
-**Runtime Assertions**: 22  
-**Source-Level Entries**: 22  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_hardware.c`
+**Runtime Assertions**: 22
+**Source-Level Entries**: 22
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -399,10 +400,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 10: seT6 Boot (Native)
 
-**Source**: `src/init.c`  
-**Runtime Assertions**: 178  
-**Source-Level Entries**: 174  
-**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description  
+**Source**: `src/init.c`
+**Runtime Assertions**: 178
+**Source-Level Entries**: 174
+**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description
 **Output Reading**: Summary: `passed N/T`. Section headers precede groups. Exit code 1 if failures.
 
 > **Note**: 4 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -588,10 +589,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 11: Integration
 
-**Source**: `tests/test_integration.c`  
-**Runtime Assertions**: 56  
-**Source-Level Entries**: 48  
-**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description  
+**Source**: `tests/test_integration.c`
+**Runtime Assertions**: 56
+**Source-Level Entries**: 48
+**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description
 **Output Reading**: Summary: `passed N/T`. Section headers precede groups. Exit code 1 if failures.
 
 > **Note**: 8 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -651,10 +652,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 12: seL4 Ternary Extensions
 
-**Source**: `tests/test_sel4_ternary.c`  
-**Runtime Assertions**: 142  
-**Source-Level Entries**: 137  
-**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description  
+**Source**: `tests/test_sel4_ternary.c`
+**Runtime Assertions**: 142
+**Source-Level Entries**: 137
+**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description
 **Output Reading**: Summary: `passed N/T`. Section headers precede groups. Exit code 1 if failures.
 
 > **Note**: 5 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -803,10 +804,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 13: Memory Safety
 
-**Source**: `tests/test_memory_safety.c`  
-**Runtime Assertions**: 28  
-**Source-Level Entries**: 28  
-**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description  
+**Source**: `tests/test_memory_safety.c`
+**Runtime Assertions**: 28
+**Source-Level Entries**: 28
+**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description
 **Output Reading**: Summary: `passed N/T`. Section headers precede groups. Exit code 1 if failures.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -844,10 +845,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 14: Scheduler Concurrency
 
-**Source**: `tests/test_scheduler_concurrency.c`  
-**Runtime Assertions**: 27  
-**Source-Level Entries**: 18  
-**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description  
+**Source**: `tests/test_scheduler_concurrency.c`
+**Runtime Assertions**: 27
+**Source-Level Entries**: 18
+**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description
 **Output Reading**: Summary: `passed N/T`. Section headers precede groups. Exit code 1 if failures.
 
 > **Note**: 9 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -877,10 +878,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 15: TBE Bootstrap Engine
 
-**Source**: `tests/test_tbe.c`  
-**Runtime Assertions**: 31  
-**Source-Level Entries**: 31  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_tbe.c`
+**Runtime Assertions**: 31
+**Source-Level Entries**: 31
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -921,10 +922,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 16: Huawei CN119652311A ALU
 
-**Source**: `tests/test_huawei_cn119652311a.c`  
-**Runtime Assertions**: 47  
-**Source-Level Entries**: 47  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_huawei_cn119652311a.c`
+**Runtime Assertions**: 47
+**Source-Level Entries**: 47
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -981,10 +982,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 17: Samsung US11170290B2 ZID
 
-**Source**: `tests/test_samsung_us11170290b2.c`  
-**Runtime Assertions**: 60  
-**Source-Level Entries**: 60  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_samsung_us11170290b2.c`
+**Runtime Assertions**: 60
+**Source-Level Entries**: 60
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -1054,10 +1055,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 18: Samsung CN105745888A Correlator
 
-**Source**: `tests/test_samsung_cn105745888a.c`  
-**Runtime Assertions**: 61  
-**Source-Level Entries**: 61  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_samsung_cn105745888a.c`
+**Runtime Assertions**: 61
+**Source-Level Entries**: 61
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -1128,10 +1129,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 19: TSMC TMD / Intel PAM3 / Hynix TCAM
 
-**Source**: `tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c`  
-**Runtime Assertions**: 80  
-**Source-Level Entries**: 80  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_tsmc_tmd_intel_pam3_hynix_tcam.c`
+**Runtime Assertions**: 80
+**Source-Level Entries**: 80
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -1221,10 +1222,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 20: Functional Utility
 
-**Source**: `tests/test_functional_utility.c`  
-**Runtime Assertions**: 202  
-**Source-Level Entries**: 233  
-**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description  
+**Source**: `tests/test_functional_utility.c`
+**Runtime Assertions**: 202
+**Source-Level Entries**: 233
+**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description
 **Output Reading**: Summary: `passed N/T`. Section headers precede groups. Exit code 1 if failures.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -1467,10 +1468,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 21: Friday Updates
 
-**Source**: `tests/test_friday_updates.c`  
-**Runtime Assertions**: 135  
-**Source-Level Entries**: 138  
-**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description  
+**Source**: `tests/test_friday_updates.c`
+**Runtime Assertions**: 135
+**Source-Level Entries**: 138
+**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description
 **Output Reading**: Summary: `passed N/T`. Section headers precede groups. Exit code 1 if failures.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -1618,10 +1619,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 22: Trit Linux Architecture
 
-**Source**: `tests/test_trit_linux.c`  
-**Runtime Assertions**: 98  
-**Source-Level Entries**: 96  
-**Harness**: Mixed CHECK/ASSERT harness  
+**Source**: `tests/test_trit_linux.c`
+**Runtime Assertions**: 98
+**Source-Level Entries**: 96
+**Harness**: Mixed CHECK/ASSERT harness
 **Output Reading**: `[PASS]`/`[FAIL]` per assertion. Summary at end.
 
 > **Note**: 2 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -1729,10 +1730,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 23: Trit Enhancements
 
-**Source**: `tests/test_trit_enhancements.c`  
-**Runtime Assertions**: 252  
-**Source-Level Entries**: 214  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_trit_enhancements.c`
+**Runtime Assertions**: 252
+**Source-Level Entries**: 214
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 > **Note**: 38 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -1958,10 +1959,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 24: LEGO Modular Architecture
 
-**Source**: `tests/test_modular.c`  
-**Runtime Assertions**: 49  
-**Source-Level Entries**: 47  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_modular.c`
+**Runtime Assertions**: 49
+**Source-Level Entries**: 47
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 > **Note**: 2 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -2020,10 +2021,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 25: Secure IPC
 
-**Source**: `tests/test_ipc_secure.c`  
-**Runtime Assertions**: 40  
-**Source-Level Entries**: 38  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_ipc_secure.c`
+**Runtime Assertions**: 40
+**Source-Level Entries**: 38
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 > **Note**: 2 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -2073,10 +2074,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 26: Time Synchronization
 
-**Source**: `tests/test_time.c`  
-**Runtime Assertions**: 42  
-**Source-Level Entries**: 50  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_time.c`
+**Runtime Assertions**: 42
+**Source-Level Entries**: 50
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -2136,10 +2137,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 27: System Hardening
 
-**Source**: `tests/test_hardening.c`  
-**Runtime Assertions**: 55  
-**Source-Level Entries**: 38  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_hardening.c`
+**Runtime Assertions**: 55
+**Source-Level Entries**: 38
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 > **Note**: 17 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -2189,10 +2190,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 28: Sigma 9 Validation
 
-**Source**: `tests/test_sigma9.c`  
-**Runtime Assertions**: 337  
-**Source-Level Entries**: 358  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_sigma9.c`
+**Runtime Assertions**: 337
+**Source-Level Entries**: 358
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -2560,10 +2561,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 29: RNS Standalone
 
-**Source**: `tests/test_rns.c`  
-**Runtime Assertions**: 278  
-**Source-Level Entries**: 216  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_rns.c`
+**Runtime Assertions**: 278
+**Source-Level Entries**: 216
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 > **Note**: 62 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -2791,10 +2792,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 30: Paper-Derived Modules
 
-**Source**: `tests/test_papers.c`  
-**Runtime Assertions**: 200  
-**Source-Level Entries**: 220  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_papers.c`
+**Runtime Assertions**: 200
+**Source-Level Entries**: 220
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -3024,10 +3025,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 31: Paper2-Derived Modules
 
-**Source**: `tests/test_papers2.c`  
-**Runtime Assertions**: 200  
-**Source-Level Entries**: 216  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_papers2.c`
+**Runtime Assertions**: 200
+**Source-Level Entries**: 216
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -3253,10 +3254,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 32: DLT + CNTFET
 
-**Source**: `tests/test_dlt_cntfet.c`  
-**Runtime Assertions**: 107  
-**Source-Level Entries**: 100  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_dlt_cntfet.c`
+**Runtime Assertions**: 107
+**Source-Level Entries**: 100
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 > **Note**: 7 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -3368,10 +3369,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 33: ART-9 RISC Pipeline
 
-**Source**: `tests/test_art9.c`  
-**Runtime Assertions**: 122  
-**Source-Level Entries**: 40  
-**Harness**: `TEST(condition, "message")` — inline check, prints `[PASS]`/`[FAIL]` per line  
+**Source**: `tests/test_art9.c`
+**Runtime Assertions**: 122
+**Source-Level Entries**: 40
+**Harness**: `TEST(condition, "message")` — inline check, prints `[PASS]`/`[FAIL]` per line
 **Output Reading**: Summary: `N passed, M failed (of T)`. Exit code 1 if failures.
 
 > **Note**: 82 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -3423,10 +3424,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 34: Ternary PDF-Derived
 
-**Source**: `tests/test_ternary_pdfs.c`  
-**Runtime Assertions**: 478  
-**Source-Level Entries**: 360  
-**Harness**: `TEST(condition, "message")` — inline check, prints `[PASS]`/`[FAIL]` per line  
+**Source**: `tests/test_ternary_pdfs.c`
+**Runtime Assertions**: 478
+**Source-Level Entries**: 360
+**Harness**: `TEST(condition, "message")` — inline check, prints `[PASS]`/`[FAIL]` per line
 **Output Reading**: Summary: `N passed, M failed (of T)`. Exit code 1 if failures.
 
 > **Note**: 118 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -3798,10 +3799,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 35: Peirce Semiotic Engine
 
-**Source**: `tests/test_peirce_semiotic.c`  
-**Runtime Assertions**: 200  
-**Source-Level Entries**: 100  
-**Harness**: `TEST(condition, "message")` — inline check, prints `[PASS]`/`[FAIL]` per line  
+**Source**: `tests/test_peirce_semiotic.c`
+**Runtime Assertions**: 200
+**Source-Level Entries**: 100
+**Harness**: `TEST(condition, "message")` — inline check, prints `[PASS]`/`[FAIL]` per line
 **Output Reading**: Summary: `N passed, M failed (of T)`. Exit code 1 if failures.
 
 > **Note**: 100 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -3913,10 +3914,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 36: TriLang
 
-**Source**: `tests/test_trilang.c`  
-**Runtime Assertions**: 100  
-**Source-Level Entries**: 92  
-**Harness**: `TEST(condition, "message")` — inline check, prints `[PASS]`/`[FAIL]` per line  
+**Source**: `tests/test_trilang.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 92
+**Harness**: `TEST(condition, "message")` — inline check, prints `[PASS]`/`[FAIL]` per line
 **Output Reading**: Summary: `N passed, M failed (of T)`. Exit code 1 if failures.
 
 > **Note**: 8 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -4020,10 +4021,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 37: Sigma 9 MCP
 
-**Source**: `tests/test_sigma9_mcp.c`  
-**Runtime Assertions**: 259  
-**Source-Level Entries**: 309  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_sigma9_mcp.c`
+**Runtime Assertions**: 259
+**Source-Level Entries**: 309
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -4342,10 +4343,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 38: Hybrid AI Integration
 
-**Source**: `tests/test_hybrid_ai.c`  
-**Runtime Assertions**: 280  
-**Source-Level Entries**: 292  
-**Harness**: Named `test_*()` functions — each runs independently  
+**Source**: `tests/test_hybrid_ai.c`
+**Runtime Assertions**: 280
+**Source-Level Entries**: 292
+**Harness**: Named `test_*()` functions — each runs independently
 **Output Reading**: Each function prints PASS/FAIL. Summary: N passed, M failed.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -4647,10 +4648,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 39: Red-Team Stress & Performance
 
-**Source**: `tests/test_stress.c`  
-**Runtime Assertions**: 979  
-**Source-Level Entries**: 144  
-**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description  
+**Source**: `tests/test_stress.c`
+**Runtime Assertions**: 979
+**Source-Level Entries**: 144
+**Harness**: `CHECK("desc", expr)` — prints `[PASS]`/`[FAIL]` with description
 **Output Reading**: Summary: `passed N/T`. Section headers precede groups. Exit code 1 if failures.
 
 > **Note**: 835 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -4806,10 +4807,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 40: Trithon Self-Test
 
-**Source**: `trithon/trithon.py`  
-**Runtime Assertions**: 99  
-**Source-Level Entries**: 86  
-**Harness**: `check(condition, label)` — counted assertion, prints `[FAIL]` on failure  
+**Source**: `trithon/trithon.py`
+**Runtime Assertions**: 99
+**Source-Level Entries**: 86
+**Harness**: `check(condition, label)` — counted assertion, prints `[FAIL]` on failure
 **Output Reading**: Summary: `Trithon: N passed, M failed (of T assertions)`. Exit 1 if failures.
 
 > **Note**: 13 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -4907,10 +4908,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 41: TJSON (Python)
 
-**Source**: `tests/test_tjson.py`  
-**Runtime Assertions**: 346  
-**Source-Level Entries**: 76  
-**Harness**: `def test_*()` functions with `assert` — each function is one test case  
+**Source**: `tests/test_tjson.py`
+**Runtime Assertions**: 346
+**Source-Level Entries**: 76
+**Harness**: `def test_*()` functions with `assert` — each function is one test case
 **Output Reading**: pytest: `.` = pass, `F` = fail. Summary shows passed/failed/total.
 
 > **Note**: 270 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -4998,10 +4999,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 42: TerNumPy (Python)
 
-**Source**: `tests/test_ternumpy.py`  
-**Runtime Assertions**: 240  
-**Source-Level Entries**: 174  
-**Harness**: `assert_eq(actual, expected, label)` / `assert_true(cond, label)` — counted assertions  
+**Source**: `tests/test_ternumpy.py`
+**Runtime Assertions**: 240
+**Source-Level Entries**: 174
+**Harness**: `assert_eq(actual, expected, label)` / `assert_true(cond, label)` — counted assertions
 **Output Reading**: Summary: `TerNumPy tests: N passed, M failed`. Exit 1 if failures.
 
 > **Note**: 66 additional runtime assertions are generated by loop expansion or multi-line macro calls.
@@ -5189,11 +5190,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 20: Ternary Database & Storage ⭐NEW
 
-**Source**: `tests/test_ternary_database.c`  
-**Runtime Assertions**: 32  
-**Source-Level Entries**: 32  
-**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function — same structure as suites 16-19  
-**Output Reading**: `test_name  [PASS]` per test; final `=== Results: N passed, 0 failed ===`  
+**Source**: `tests/test_ternary_database.c`
+**Runtime Assertions**: 32
+**Source-Level Entries**: 32
+**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function — same structure as suites 16-19
+**Output Reading**: `test_name  [PASS]` per test; final `=== Results: N passed, 0 failed ===`
 **What it tests**: Three-valued SQL-style NULL logic (STRICT/PROPAGATE/LENIENT modes), ternary CAM (content-addressable memory), run-length and Huffman compression, and a ternary relational DB layer.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5235,11 +5236,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 21: Ingole WO2016199157A1 TALU ⭐NEW
 
-**Source**: `tests/test_ingole_wo2016199157a1.c`  
-**Runtime Assertions**: 32  
-**Source-Level Entries**: 32  
-**Harness**: `ASSERT_EQ(actual, expected, msg)` + `PASS()` — same pattern as patent HAL suites  
-**Output Reading**: `test_name  [PASS]`; final `=== Results: 32 passed, 0 failed ===`  
+**Source**: `tests/test_ingole_wo2016199157a1.c`
+**Runtime Assertions**: 32
+**Source-Level Entries**: 32
+**Harness**: `ASSERT_EQ(actual, expected, msg)` + `PASS()` — same pattern as patent HAL suites
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 32 passed, 0 failed ===`
 **What it tests**: Full coverage of the Ingole WO2016199157A1 Ternary ALU patent — unbalanced/balanced encoding conversions, all unary/binary ternary opcodes (TNOT, CWC, CCWC, TAND, TNAND, TOR, TNOR, XTOR, comparator), half-adder, full-adder, multi-trit arithmetic, status flags, and HAL lifecycle.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5281,11 +5282,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 22: AI Acceleration Framework ⭐NEW
 
-**Source**: `tests/test_ai_acceleration.c`  
-**Runtime Assertions**: 24  
-**Source-Level Entries**: 24  
-**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function  
-**Output Reading**: `test_name  [PASS]`; final `=== Results: 24 passed, 0 failed ===`  
+**Source**: `tests/test_ai_acceleration.c`
+**Runtime Assertions**: 24
+**Source-Level Entries**: 24
+**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 24 passed, 0 failed ===`
 **What it tests**: BitNet-style ternary weight quantisation, DLFET (dual-level FET) logic gates and full-adder, sparse ternary matrix operations, ternary linear layers, and activation functions.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5319,11 +5320,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 23: Fault-Tolerant Networking ⭐NEW
 
-**Source**: `tests/test_fault_tolerant_network.c`  
-**Runtime Assertions**: 25  
-**Source-Level Entries**: 25  
-**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function  
-**Output Reading**: `test_name  [PASS]`; final `=== Results: 25 passed, 0 failed ===`  
+**Source**: `tests/test_fault_tolerant_network.c`
+**Runtime Assertions**: 25
+**Source-Level Entries**: 25
+**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 25 passed, 0 failed ===`
 **What it tests**: Ternary Hamming ECC (encode/decode/correct), multi-radix routing table, ternary Byzantine-fault-tolerant consensus (unanimous/majority/no-majority), ternary network packet encode/tamper-detect/decode, and FTNIC NIC driver send/receive/fault tracking.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5358,11 +5359,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 24: Adversarial / Negative-Path ⭐NEW
 
-**Source**: `tests/test_adversarial.c`  
-**Runtime Assertions**: 34  
-**Source-Level Entries**: 34  
-**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function  
-**Output Reading**: `test_name  [PASS]`; final `=== Results: 34 passed, 0 failed ===`  
+**Source**: `tests/test_adversarial.c`
+**Runtime Assertions**: 34
+**Source-Level Entries**: 34
+**Harness**: `ASSERT_EQ/ASSERT_TRUE(cond, msg)` + `PASS()` per function
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 34 passed, 0 failed ===`
 **What it tests**: Exhaustive negative-path coverage — every API in memory, IPC, capabilities, syscall, scheduler, and trit encoding is attacked with out-of-range inputs, double-free/destroy, exhaustion, use-after-free, readonly violations, and invalid opcodes. All must be rejected cleanly.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5406,11 +5407,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 25: Crown Jewel Reversion Guard ⭐NEW
 
-**Source**: `tests/test_ternary_reversion_guard.c`  
-**Runtime Assertions**: 37  
-**Source-Level Entries**: 37  
-**Harness**: `ASSERT_EQ(actual, expected, msg)` + `PASS()` per function  
-**Output Reading**: `test_name  [PASS]`; final `=== Results: 37 passed, 0 failed ===`  
+**Source**: `tests/test_ternary_reversion_guard.c`
+**Runtime Assertions**: 37
+**Source-Level Entries**: 37
+**Harness**: `ASSERT_EQ(actual, expected, msg)` + `PASS()` per function
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 37 passed, 0 failed ===`
 **What it tests**: The "Crown Jewel" regression guard — exhaustive Kleene logic laws, SIMD packed-64 operations vs scalar equivalence, trit XOR/crypto primitives, FFT butterfly correctness, Avizienis balanced-ternary, Ingole patent cross-checks, Hamming ECC, trit conversion APIs, and NULL-logic propagation. Failure here indicates binary reversion of core ternary invariants.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5457,11 +5458,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 48: Gödel Machine ⭐NEW
 
-**Source**: `tests/test_godel_machine.c`  
-**Runtime Assertions**: 21  
-**Source-Level Entries**: 21  
-**Harness**: `if (condition) PASS(); else FAIL(msg)` — function-level, ternary utility metric  
-**Output Reading**: `test_name  [PASS]`; final `=== Results: 21 passed, 0 failed ===`  
+**Source**: `tests/test_godel_machine.c`
+**Runtime Assertions**: 21
+**Source-Level Entries**: 21
+**Harness**: `if (condition) PASS(); else FAIL(msg)` — function-level, ternary utility metric
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 21 passed, 0 failed ===`
 **What it tests**: seT6 Gödel Machine — self-modifying system that applies inference rules (modus ponens, conjunction, trit-eval) to theorems, tracks utility with binary-reversion penalty, and only accepts switch-programs that increase the utility score.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5492,11 +5493,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 49: SIMD Regression ⭐NEW
 
-**Source**: `tests/test_trit_simd_regression.c`  
-**Runtime Assertions**: 10  
-**Source-Level Entries**: 10  
-**Harness**: `if (ok) PASS(); else FAIL(msg)` — exhaustive loop over all trit encodings  
-**Output Reading**: `test_name  [PASS]`; final `=== Results: 10 passed, 0 failed ===`  
+**Source**: `tests/test_trit_simd_regression.c`
+**Runtime Assertions**: 10
+**Source-Level Entries**: 10
+**Harness**: `if (ok) PASS(); else FAIL(msg)` — exhaustive loop over all trit encodings
+**Output Reading**: `test_name  [PASS]`; final `=== Results: 10 passed, 0 failed ===`
 **What it tests**: Regression guard for the `trit_and_packed64` / `trit_or_packed64` / `trit_not_packed64` SIMD operations — each is verified against scalar Kleene operations over all possible 2-bit trit encodings, positions, and algebraic law checks.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5516,11 +5517,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 50: Binary Sentinel ⭐NEW
 
-**Source**: `tests/test_binary_sentinel.c`  
-**Runtime Assertions**: 12  
-**Source-Level Entries**: 12  
-**Harness**: `if (ok) PASS(); else FAIL(msg)` — range-exhaustive sentinel checks  
-**Output Reading**: `sentinel_* [PASS]`; final `=== Results: 12 passed, 0 failed ===`  
+**Source**: `tests/test_binary_sentinel.c`
+**Runtime Assertions**: 12
+**Source-Level Entries**: 12
+**Harness**: `if (ok) PASS(); else FAIL(msg)` — range-exhaustive sentinel checks
+**Output Reading**: `sentinel_* [PASS]`; final `=== Results: 12 passed, 0 failed ===`
 **What it tests**: Binary-reversion detection — every major subsystem (Kleene logic, SIMD, crypto XOR, hash, encryption, trit-cast, pack/unpack, FFT, Avizienis, implication/equivalence) must produce all 3 trit values. A failure means the subsystem has collapsed to binary and the core ternary invariant is broken.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5542,11 +5543,11 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 51: Ternary Compiler Integration ⭐NEW
 
-**Source**: `tests/test_ternary_compiler_integration.c`  
-**Runtime Assertions**: 19  
-**Source-Level Entries**: 19 (+ 1 `[DIAG]` note — not a failure)  
-**Harness**: `if (len>0) PASS()` for compile-roundtrip tests; `if (result==expected) PASS()` for VM execution tests  
-**Output Reading**: `test_name  [PASS]` or `  [DIAG] message`; final `=== Results: 19 passed, 0 failed ===`  
+**Source**: `tests/test_ternary_compiler_integration.c`
+**Runtime Assertions**: 19
+**Source-Level Entries**: 19 (+ 1 `[DIAG]` note — not a failure)
+**Harness**: `if (len>0) PASS()` for compile-roundtrip tests; `if (result==expected) PASS()` for VM execution tests
+**Output Reading**: `test_name  [PASS]` or `  [DIAG] message`; final `=== Results: 19 passed, 0 failed ===`
 **What it tests**: End-to-end seT6 ternary-first compiler — parsing and compiling Kleene logic, trit variable/array declarations, trit negation, capability init, 3-level scheduler priority, IPC endpoints, Gödel utility metric, Gödel axiom check, search fraction, Huffman encoding, SIMD concept, radix-3 conversion, multi-function programs, Verilog emission, consensus and accept-any VM opcodes.
 
 | # | Line | Test Name | Section | Assertion / Expression | Category |
@@ -5575,10 +5576,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 52: Compiler: Basic Integration ⭐NEW
 
-**Source**: `tools/compiler/tests/test_basic.c`  
-**Runtime Assertions**: 26  
-**Source-Level Entries**: 4  
-**Harness**: `void test_name(void) { assert(...); }` — function-level, abort on fail via libc `assert()`  
+**Source**: `tools/compiler/tests/test_basic.c`
+**Runtime Assertions**: 26
+**Source-Level Entries**: 4
+**Harness**: `void test_name(void) { assert(...); }` — function-level, abort on fail via libc `assert()`
 **Output Reading**: Manual printf per function. Final: `=== All tests passed! ===`
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5592,10 +5593,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 53: Compiler: Bootstrap Self-Host (TASK-018) ⭐NEW
 
-**Source**: `tools/compiler/tests/test_bootstrap.c`  
-**Runtime Assertions**: 33  
-**Source-Level Entries**: 21  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_bootstrap.c`
+**Runtime Assertions**: 33
+**Source-Level Entries**: 21
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5626,10 +5627,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 54: Compiler: Hardware Simulation ⭐NEW
 
-**Source**: `tools/compiler/tests/test_hardware_simulation.c`  
-**Runtime Assertions**: 10  
-**Source-Level Entries**: 7  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NEQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_hardware_simulation.c`
+**Runtime Assertions**: 10
+**Source-Level Entries**: 7
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NEQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5646,10 +5647,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 55: Compiler: IR / Constant Folding ⭐NEW
 
-**Source**: `tools/compiler/tests/test_ir.c`  
-**Runtime Assertions**: 49  
-**Source-Level Entries**: 20  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_NULL/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_ir.c`
+**Runtime Assertions**: 49
+**Source-Level Entries**: 20
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_NULL/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5679,10 +5680,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 56: Compiler: Lexer / Tokenizer ⭐NEW
 
-**Source**: `tools/compiler/tests/test_lexer.c`  
-**Runtime Assertions**: 87  
-**Source-Level Entries**: 20  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_STR_EQ; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_lexer.c`
+**Runtime Assertions**: 87
+**Source-Level Entries**: 20
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_STR_EQ; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5712,10 +5713,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 57: Compiler: Logger ⭐NEW
 
-**Source**: `tools/compiler/tests/test_logger.c`  
-**Runtime Assertions**: 33  
-**Source-Level Entries**: 14  
-**Harness**: `TEST(name) { ASSERT_STR_EQ/ASSERT_EQ/ASSERT_TRUE/ASSERT_NOT_NULL; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_logger.c`
+**Runtime Assertions**: 33
+**Source-Level Entries**: 14
+**Harness**: `TEST(name) { ASSERT_STR_EQ/ASSERT_EQ/ASSERT_TRUE/ASSERT_NOT_NULL; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5739,10 +5740,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 58: Compiler: Memory Model (TASK-015) ⭐NEW
 
-**Source**: `tools/compiler/tests/test_memory.c`  
-**Runtime Assertions**: 46  
-**Source-Level Entries**: 19  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_STR_EQ; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_memory.c`
+**Runtime Assertions**: 46
+**Source-Level Entries**: 19
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_STR_EQ; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5771,10 +5772,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 59: Compiler: Parser Fuzz ⭐NEW
 
-**Source**: `tools/compiler/tests/test_parser_fuzz.c`  
-**Runtime Assertions**: 0 (crash-absence tests)  
-**Source-Level Entries**: 5  
-**Harness**: `TEST(name) { /* no-crash */; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_parser_fuzz.c`
+**Runtime Assertions**: 0 (crash-absence tests)
+**Source-Level Entries**: 5
+**Harness**: `TEST(name) { /* no-crash */; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5789,10 +5790,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 60: Compiler: Performance Benchmarks ⭐NEW
 
-**Source**: `tools/compiler/tests/test_performance.c`  
-**Runtime Assertions**: 4  
-**Source-Level Entries**: 4  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_performance.c`
+**Runtime Assertions**: 4
+**Source-Level Entries**: 4
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5806,10 +5807,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 61: Compiler: seL4 Stubs ⭐NEW
 
-**Source**: `tools/compiler/tests/test_sel4.c`  
-**Runtime Assertions**: 15  
-**Source-Level Entries**: 4  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_STR_EQ; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_sel4.c`
+**Runtime Assertions**: 15
+**Source-Level Entries**: 4
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_STR_EQ; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5823,10 +5824,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 62: Compiler: seL4 Verify (TASK-019) ⭐NEW
 
-**Source**: `tools/compiler/tests/test_sel4_verify.c`  
-**Runtime Assertions**: 51  
-**Source-Level Entries**: 18  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_NULL/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_sel4_verify.c`
+**Runtime Assertions**: 51
+**Source-Level Entries**: 18
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NOT_NULL/ASSERT_NULL/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5854,10 +5855,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 63: Compiler: seT5 Syscalls (TASK-016) ⭐NEW
 
-**Source**: `tools/compiler/tests/test_set5.c`  
-**Runtime Assertions**: 23  
-**Source-Level Entries**: 13  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_set5.c`
+**Runtime Assertions**: 23
+**Source-Level Entries**: 13
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5880,10 +5881,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 64: Compiler: Ternary Arithmetic Comprehensive ⭐NEW
 
-**Source**: `tools/compiler/tests/test_ternary_arithmetic_comprehensive.c`  
-**Runtime Assertions**: 32  
-**Source-Level Entries**: 5  
-**Harness**: `TEST(name) { ASSERT_EQ; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_ternary_arithmetic_comprehensive.c`
+**Runtime Assertions**: 32
+**Source-Level Entries**: 5
+**Harness**: `TEST(name) { ASSERT_EQ; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5898,10 +5899,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 65: Compiler: Ternary Edge Cases ⭐NEW
 
-**Source**: `tools/compiler/tests/test_ternary_edge_cases.c`  
-**Runtime Assertions**: 19  
-**Source-Level Entries**: 5  
-**Harness**: `TEST(name) { ASSERT_EQ; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_ternary_edge_cases.c`
+**Runtime Assertions**: 19
+**Source-Level Entries**: 5
+**Harness**: `TEST(name) { ASSERT_EQ; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5916,10 +5917,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 66: Compiler: Trit Edge Cases ⭐NEW
 
-**Source**: `tools/compiler/tests/test_trit_edge_cases.c`  
-**Runtime Assertions**: 13  
-**Source-Level Entries**: 10  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NEQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
+**Source**: `tools/compiler/tests/test_trit_edge_cases.c`
+**Runtime Assertions**: 13
+**Source-Level Entries**: 10
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_NEQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -5939,25 +5940,25 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Disabled Suite: Compiler: Codegen Bugs ⚠️
 
-**Source**: `tools/compiler/tests/test_compiler_code_generation_bugs.c`  
-**Status**: Commented out in `tools/compiler/Makefile` — 39 runtime assertions, 19 tests  
-**Reason**: Advanced codegen patterns (templates, lambdas, coroutines) not yet implemented  
+**Source**: `tools/compiler/tests/test_compiler_code_generation_bugs.c`
+**Status**: Commented out in `tools/compiler/Makefile` — 39 runtime assertions, 19 tests
+**Reason**: Advanced codegen patterns (templates, lambdas, coroutines) not yet implemented
 
 ---
 
 ## Disabled Suite: Compiler: Error Recovery ⚠️
 
-**Source**: `tools/compiler/tests/test_error_recovery.c`  
-**Status**: Commented out in `tools/compiler/Makefile` — 26 runtime assertions, 11 tests  
-**Reason**: Error recovery infrastructure pending implementation  
+**Source**: `tools/compiler/tests/test_error_recovery.c`
+**Status**: Commented out in `tools/compiler/Makefile` — 26 runtime assertions, 11 tests
+**Reason**: Error recovery infrastructure pending implementation
 
 ---
 
 ## Disabled Suite: Compiler: Parser/Lexer Fuzz ⚠️
 
-**Source**: `tools/compiler/tests/test_parser_lexer_fuzz.c`  
-**Status**: Commented out in `tools/compiler/Makefile` — 18 runtime assertions, 10 tests  
-**Reason**: Extended fuzz harness pending parser stabilization  
+**Source**: `tools/compiler/tests/test_parser_lexer_fuzz.c`
+**Status**: Commented out in `tools/compiler/Makefile` — 18 runtime assertions, 10 tests
+**Reason**: Extended fuzz harness pending parser stabilization
 
 ---
 
@@ -5965,20 +5966,20 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 
 ## Suite 67: Compiler: Integration Tests
 
-**Source**: `tools/compiler/tests/test_integration.c`  
-**Runtime Assertions**: 24  
-**Source-Level Entries**: 16  
-**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail  
-**Output Reading**: Each test prints `[PASS] name` or `[FAIL] name (file:line)`. Final summary.  
+**Source**: `tools/compiler/tests/test_integration.c`
+**Runtime Assertions**: 24
+**Source-Level Entries**: 16
+**Harness**: `TEST(name) { ASSERT_EQ/ASSERT_TRUE; PASS(); }` — function-level, abort on fail
+**Output Reading**: Each test prints `[PASS] name` or `[FAIL] name (file:line)`. Final summary.
 
 Brief: This suite exercises cross-component compiler integration (parser→IR→codegen→vm) and validates round-trip correctness for representative programs. Add new assertions to this section following the same table format used elsewhere.
 
 ## Suite 68: Compiler: Test Runner Script
 
-**Source**: `tools/compiler/tests/test_all.sh`  
-**Runtime Assertions**: —  
-**Source-Level Entries**: —  
-**Harness**: Shell script (utility) — not a test harness; included for completeness in the glossary as the canonical compiler-suite runner.  
+**Source**: `tools/compiler/tests/test_all.sh`
+**Runtime Assertions**: —
+**Source-Level Entries**: —
+**Harness**: Shell script (utility) — not a test harness; included for completeness in the glossary as the canonical compiler-suite runner.
 **Note**: This script orchestrates building/running compiler test binaries and reporting summaries; changes to test invocation must be reflected here and in the Makefile.
 
 **MANDATORY**: For every new test added to the seT5/seT6 project, the following
@@ -6043,10 +6044,10 @@ Run `make alltest` (or equivalently `make test`) to confirm:
 
 ## Suite 69: Multi-Radix Unit
 
-**Source**: `tests/test_multi_radix_unit.c`  
-**Runtime Assertions**: 3  
-**Source-Level Entries**: 3  
-**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_multi_radix_unit.c`
+**Runtime Assertions**: 3
+**Source-Level Entries**: 3
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -6059,10 +6060,10 @@ Run `make alltest` (or equivalently `make test`) to confirm:
 
 ## Suite 70: Ternary Wallace Tree
 
-**Source**: `tests/test_ternary_wallace_tree.c`  
-**Runtime Assertions**: 2  
-**Source-Level Entries**: 2  
-**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_ternary_wallace_tree.c`
+**Runtime Assertions**: 2
+**Source-Level Entries**: 2
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -6074,10 +6075,10 @@ Run `make alltest` (or equivalently `make test`) to confirm:
 
 ## Suite 71: Ternary Sense Amp
 
-**Source**: `tests/test_ternary_sense_amp.c`  
-**Runtime Assertions**: 3  
-**Source-Level Entries**: 3  
-**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_ternary_sense_amp.c`
+**Runtime Assertions**: 3
+**Source-Level Entries**: 3
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -6090,10 +6091,10 @@ Run `make alltest` (or equivalently `make test`) to confirm:
 
 ## Suite 72: T-IPC Compressor
 
-**Source**: `tests/test_tipc_compressor.c`  
-**Runtime Assertions**: 2  
-**Source-Level Entries**: 2  
-**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_tipc_compressor.c`
+**Runtime Assertions**: 2
+**Source-Level Entries**: 2
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -6105,10 +6106,10 @@ Run `make alltest` (or equivalently `make test`) to confirm:
 
 ## Suite 73: Samsung Correlator
 
-**Source**: `tests/test_samsung_cn105745888a_correlator.c`  
-**Runtime Assertions**: 2  
-**Source-Level Entries**: 2  
-**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail  
+**Source**: `tests/test_samsung_cn105745888a_correlator.c`
+**Runtime Assertions**: 2
+**Source-Level Entries**: 2
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b); PASS(); }` — function-level, abort on fail
 **Output Reading**: Each test: `[PASS] name` or `[FAIL] name (expected b)`. Final summary.
 
 | # | Line | Test Description | Section | Assertion / Expression | Category |
@@ -6118,11 +6119,34 @@ Run `make alltest` (or equivalently `make test`) to confirm:
 
 ---
 
+## Suite 74: Ternary Full Adder
+
+**Source**: `tests/test_ternary_full_adder.c`
+**Runtime Assertions**: 10
+**Source-Level Entries**: 5
+**Harness**: `TEST(name) { ... ASSERT_EQ(a, b, msg); }` — per-assertion pass/fail with final summary
+**Output Reading**: Each assertion: `[PASS] name` or `[FAIL] name (expected b)`. Final: "=== Results: P passed, F failed ===".
+
+| # | Line | Test Description | Section | Assertion / Expression | Category |
+|---|------|-----------------|---------|----------------------|----------|
+| 74 | L25 | TFA: 1 + 1 + 0 = 2, carry 0 | Basic Addition | `sum == 2` | Arithmetic |
+| 74 | L26 | TFA: 1 + 1 + 0 = 2, carry 0 | Basic Addition | `cout == 0` | Arithmetic |
+| 74 | L30 | TFA: 1 + 1 + 1 = 0, carry 1 | Carry Propagation | `sum == 0` | Arithmetic |
+| 74 | L31 | TFA: 1 + 1 + 1 = 0, carry 1 | Carry Propagation | `cout == 1` | Arithmetic |
+| 74 | L35 | TFA: 2 + 2 + 2 = 0, carry 2 | Max Values | `sum == 0` | Boundary |
+| 74 | L36 | TFA: 2 + 2 + 2 = 0, carry 2 | Max Values | `cout == 2` | Boundary |
+| 74 | L40 | TFA: 0 + 0 + 0 = 0, carry 0 | Zero Addition | `sum == 0` | Arithmetic |
+| 74 | L41 | TFA: 0 + 0 + 0 = 0, carry 0 | Zero Addition | `cout == 0` | Arithmetic |
+| 74 | L45 | TFA: 2 + 1 + 0 = 0, carry 1 | Mixed Values | `sum == 0` | Arithmetic |
+| 74 | L46 | TFA: 2 + 1 + 0 = 0, carry 1 | Mixed Values | `cout == 1` | Arithmetic |
+
+---
+
 ### Current Totals (as of 2026-02-19)
 
 | Metric | Active | Including Disabled |
 |--------|-------:|-------------------:|
-| **Test Suites** | **69** | **73** |
-| **Runtime Assertions** | **5027** | **5110** |
-| **Source-Level Entries** | **4687** | **4727** |
-| **Test Source Files** | **74** | **77** |
+| **Test Suites** | **70** | **74** |
+| **Runtime Assertions** | **5037** | **5120** |
+| **Source-Level Entries** | **4692** | **4732** |
+| **Test Source Files** | **75** | **78** |

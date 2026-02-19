@@ -100,7 +100,7 @@ run_suite() {
         test_friday_updates test_trit_linux test_trit_enhancements \
         test_tsmc_tmd_intel_pam3_hynix_tcam test_ternary_database \
         test_ingole_wo2016199157a1 test_multi_radix_unit \
-        test_ternary_wallace_tree test_ternary_sense_amp \
+        test_ternary_wallace_tree test_ternary_full_adder test_ternary_sense_amp \
         test_tipc_compressor test_samsung_cn105745888a_correlator \
         test_ai_acceleration \
         test_fault_tolerant_network test_adversarial \
@@ -109,7 +109,10 @@ run_suite() {
         test_papers2 test_dlt_cntfet test_art9 test_ternary_pdfs \
         test_peirce_semiotic test_trilang test_sigma9_mcp test_hybrid_ai \
         test_stress test_godel_machine test_trit_simd_regression \
-        test_binary_sentinel test_ternary_compiler_integration"
+        test_binary_sentinel test_ternary_compiler_integration \
+        test_batch_5352_5401 test_batch_5402_5451 test_batch_5452_5501 \
+        test_batch_5502_5551 test_batch_5552_5601 test_batch_5602_5651 \
+        test_batch_5652_5701"
 
     for suite in $SET5_SUITES; do
         make "$suite" 2>&1

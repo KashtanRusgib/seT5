@@ -1,0 +1,32 @@
+{
+    "name": "seT6 Development Container",
+    "image": "ubuntu:22.04",
+    "features": {
+        "ghcr.io/devcontainers/features/github-cli:1": {},
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.11"
+        },
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/common-utils:1": {
+            "installZsh": true,
+            "installOhMyZsh": true,
+            "upgradePackages": true
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "github.copilot",
+                "ms-vscode.cpptools",
+                "ms-python.python",
+                "isabelle.isabelle"
+            ]
+        }
+    },
+    "hostRequirements": {
+        "cpus": 32,
+        "memory": "64gb"
+    },
+    "postCreateCommand": "apt update && apt install -y gcc verilator isabelle && isabelle components -a && make deps",
+    "remoteUser": "vscode"
+}
