@@ -704,6 +704,11 @@ BATCH_DEFS=(
     "Batch 6352-6401: Eudaimonic Optimization"
     "Batch 6402-6451: Balanced Ternary Arithmetic"
     "Batch 6452-6501: Mixed-Radix Packed64 SIMD"
+    "Batch 6502-6551: Heptavint Multi-Radix Encoding"
+    "Batch 6552-6601: Ternary Floating-Point Basics"
+    "Batch 6602-6651: Ternary Error Correction GF3 Hamming"
+    "Batch 6652-6701: Ternary Capability Access Control"
+    "Batch 6702-6751: Ternary State Machine & Protocol Verification"
 )
 for bdef in "${BATCH_DEFS[@]}"; do
     line=$(section "$LOG" "=== $bdef ===" \

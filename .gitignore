@@ -101,3 +101,8 @@ test_red_team_type
 
 # Python packaging artifacts
 *.egg-info/
+test_batch_6502_6551
+test_batch_6552_6601
+test_batch_6602_6651
+test_batch_6652_6701
+test_batch_6702_6751

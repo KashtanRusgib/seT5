@@ -181,6 +181,26 @@ test_batch_6402_6451: tests/test_batch_6402_6451.c
 test_batch_6452_6501: tests/test_batch_6452_6501.c
 	$(CC) $(CFLAGS) -o $@ $< -lm
 
+# ---- Batch 6502-6551: Heptavint Multi-Radix Encoding ----
+test_batch_6502_6551: tests/test_batch_6502_6551.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Batch 6552-6601: Ternary Floating-Point Basics ----
+test_batch_6552_6601: tests/test_batch_6552_6601.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Batch 6602-6651: Ternary Error Correction GF3 Hamming ----
+test_batch_6602_6651: tests/test_batch_6602_6651.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Batch 6652-6701: Ternary Capability Access Control ----
+test_batch_6652_6701: tests/test_batch_6652_6701.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Batch 6702-6751: Ternary State Machine & Protocol Verification ----
+test_batch_6702_6751: tests/test_batch_6702_6751.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
 # ---- Symbiotic AI Module ----
 test_symbiotic_ai: tests/test_symbiotic_ai.c src/symbiotic_ai.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -514,6 +534,8 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_batch_6152_6201 \
                  test_batch_6202_6251 test_batch_6252_6301 test_batch_6302_6351 \
                  test_batch_6352_6401 test_batch_6402_6451 test_batch_6452_6501 \
+                 test_batch_6502_6551 test_batch_6552_6601 test_batch_6602_6651 \
+                 test_batch_6652_6701 test_batch_6702_6751 \
                  test_symbiotic_ai \
                  test_symbiotic_curiosity test_symbiotic_beauty test_symbiotic_eudaimonia \
                  test_red_team_trit_range test_red_team_binary_reversion \
@@ -680,6 +702,16 @@ _run-test-suites:
 	-$(MAKE) test_batch_6402_6451 && ./test_batch_6402_6451
 	@echo "##BEGIN##=== Batch 6452-6501: Mixed-Radix Packed64 SIMD ==="
 	-$(MAKE) test_batch_6452_6501 && ./test_batch_6452_6501
+	@echo "##BEGIN##=== Batch 6502-6551: Heptavint Multi-Radix Encoding ==="
+	-$(MAKE) test_batch_6502_6551 && ./test_batch_6502_6551
+	@echo "##BEGIN##=== Batch 6552-6601: Ternary Floating-Point Basics ==="
+	-$(MAKE) test_batch_6552_6601 && ./test_batch_6552_6601
+	@echo "##BEGIN##=== Batch 6602-6651: Ternary Error Correction GF3 Hamming ==="
+	-$(MAKE) test_batch_6602_6651 && ./test_batch_6602_6651
+	@echo "##BEGIN##=== Batch 6652-6701: Ternary Capability Access Control ==="
+	-$(MAKE) test_batch_6652_6701 && ./test_batch_6652_6701
+	@echo "##BEGIN##=== Batch 6702-6751: Ternary State Machine & Protocol Verification ==="
+	-$(MAKE) test_batch_6702_6751 && ./test_batch_6702_6751
 	@echo "##BEGIN##=== Symbiotic AI Module ==="
 	-$(MAKE) test_symbiotic_ai && ./test_symbiotic_ai
 	@echo "##BEGIN##=== Suite 86: Symbiotic Curiosity Prover ==="
@@ -810,6 +842,8 @@ clean:
 	rm -f test_ternary_compiler_integration
 	rm -f test_batch_6202_6251 test_batch_6252_6301 test_batch_6302_6351
 	rm -f test_batch_6352_6401 test_batch_6402_6451 test_batch_6452_6501
+	rm -f test_batch_6502_6551 test_batch_6552_6601 test_batch_6602_6651
+	rm -f test_batch_6652_6701 test_batch_6702_6751
 	rm -f trithon/libtrithon.so
 
 # ══════════════════════════════════════════════════════════════════════
