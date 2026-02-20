@@ -1,6 +1,3 @@
-[submodule "tools/compiler"]
-	path = tools/compiler
-	url = git@github.com:KashtanRusgib/Ternary-C-compiler
 [submodule "tools/mrcs"]
 	path = tools/mrcs
 	url = https://github.com/aiunderstand/MixedRadixCircuitSynthesis
