@@ -2,11 +2,17 @@
 
 ## Summary
 
-✅ **All infrastructure updated and ready for test generation 852-6000**
+✅ **All infrastructure updated and ready for test generation**
 
-Your test infrastructure has been modernized to work with **named test functions** rather than numbered assertions. The repository currently has **851 test functions**, and you need to generate **5,149 more** to reach 6,000.
+> **⚠️ TEST GLOSSARY PROTOCOL**: Every new test MUST be logged in
+> [`seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md`](seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md)
+> before a commit is considered valid. The glossary tracks 6603+ runtime
+> assertions across 101 active test suites. See the glossary's
+> "Rule: Future Test Documentation" section for the mandatory 4-step checklist:
+> (1) glossary entry → (2) Makefile registration → (3) grand summary update →
+> (4) `make alltest` verification.
 
-**Tests 5371-6000** (the range you asked about) are part of batches 89-104 and **do need generation** - batch task files are ready.
+Your test infrastructure has been modernized to work with **named test functions** rather than numbered assertions.
 
 ---
 
@@ -264,7 +270,7 @@ If you want to jump directly to your asked range:
 
 ### Most Important (Covers 5371-6000)
 
-1. **Batch 92** (5352-5401): Hardware ALU/TALU operations  
+1. **Batch 92** (5352-5401): Hardware ALU/TALU operations
    *You'll need to generate batches 84-91 first for continuity, OR renumber these tests*
 
 2. **Option A**: Generate tests 852-5401 sequentially (104 batches, systematic)
@@ -357,16 +363,16 @@ Remaining: 5149 (85.8%)
 
 ## Questions?
 
-**Q: Why 851 functions vs. 5,027 assertions in glossary?**  
+**Q: Why 851 functions vs. 5,027 assertions in glossary?**
 A: Different counting methods. Glossary counts runtime assertions (including loop expansions). Chunker counts test function definitions. Both are correct for their purposes.
 
-**Q: Can I generate tests out of order?**  
+**Q: Can I generate tests out of order?**
 A: Yes, but sequential is cleaner. If generating out of order, update the glossary's "Total" count carefully.
 
-**Q: Is the glossary_checker working correctly?**  
+**Q: Is the glossary_checker working correctly?**
 A: Partially. It correctly identifies undocumented files but struggles with suite-based glossary format. Consider this a "missing function" detector rather than full validator until glossary structure is updated.
 
-**Q: How do I verify tests 5371-6000 specifically once generated?**  
+**Q: How do I verify tests 5371-6000 specifically once generated?**
 A: Use `jq '[.[] | select(.id >= 5371 and .id <= 6000)]' test_inventory.json` to filter inventory, then review those specific test files.
 
 ---

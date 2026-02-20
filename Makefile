@@ -670,6 +670,20 @@ _run-test-suites:
 	-$(MAKE) test_binary_sentinel && ./test_binary_sentinel
 	@echo "##BEGIN##=== Ternary Compiler Integration tests ==="
 	-$(MAKE) test_ternary_compiler_integration && ./test_ternary_compiler_integration
+	@echo "##BEGIN##=== Batch 5352-5401: Hardware ALU/TALU Operations ==="
+	-$(MAKE) test_batch_5352_5401 && ./test_batch_5352_5401
+	@echo "##BEGIN##=== Batch 5402-5451: Side-Channel Resistance ==="
+	-$(MAKE) test_batch_5402_5451 && ./test_batch_5402_5451
+	@echo "##BEGIN##=== Batch 5452-5501: Side-Channel Resistance Advanced ==="
+	-$(MAKE) test_batch_5452_5501 && ./test_batch_5452_5501
+	@echo "##BEGIN##=== Batch 5502-5551: Epistemic Logic and Hesitation ==="
+	-$(MAKE) test_batch_5502_5551 && ./test_batch_5502_5551
+	@echo "##BEGIN##=== Batch 5552-5601: Epistemic Logic and Hesitation Advanced ==="
+	-$(MAKE) test_batch_5552_5601 && ./test_batch_5552_5601
+	@echo "##BEGIN##=== Batch 5602-5651: Guardian Trit Mechanisms ==="
+	-$(MAKE) test_batch_5602_5651 && ./test_batch_5602_5651
+	@echo "##BEGIN##=== Batch 5652-5701: Guardian Trit Mechanisms Advanced ==="
+	-$(MAKE) test_batch_5652_5701 && ./test_batch_5652_5701
 	@echo "##BEGIN##=== Batch 5702-5751: Kleene K3 Unknown Propagation ==="
 	-$(MAKE) test_batch_5702_5751 && ./test_batch_5702_5751
 	@echo "##BEGIN##=== Batch 5752-5801: Multi-Radix Neural Inference ==="

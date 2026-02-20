@@ -16,8 +16,8 @@
 
 > **⚠️ TEST GLOSSARY PROTOCOL**: Every new test MUST be logged in
 > [`seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md`](seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md)
-> before a commit is considered valid. Current: **5280+ runtime assertions**
-> across **66 active test suites** (69 total including disabled). For the
+> before a commit is considered valid. Current: **6603+ runtime assertions**
+> across **101 active test suites** (104 total including disabled). For the
 > mandatory 4-step checklist when adding tests, see the glossary's "Rule:
 > Future Test Documentation" section.
 

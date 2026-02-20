@@ -20,11 +20,11 @@ proof_session: "seT6_Proofs"
 
 > **⚠️ TEST GLOSSARY PROTOCOL**: Every new test MUST be logged in
 > [`seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md`](seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md)
-> before a commit is considered valid. The glossary tracks 5280+ runtime
-> assertions across 66 active test suites (69 total including 3 disabled).
+> before a commit is considered valid. The glossary tracks 6603+ runtime
+> assertions across 101 active test suites (104 total including 3 disabled).
 > See the glossary's "Rule: Future Test Documentation" section for the full
 > 4-step checklist: (1) glossary entry → (2) Makefile registration →
-> (3) run_all_tests.sh update → (4) `make alltest` verification.
+> (3) `tools/test_grand_summary.sh` update → (4) `make alltest` verification.
 
 ---
 

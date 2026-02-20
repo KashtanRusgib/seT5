@@ -2,11 +2,11 @@
 
 ## seT6 Comprehensive Test Glossary
 
-**Total Runtime Assertions**: 5037 (+ 83 from 3 disabled suites = 5120 total)
-**Total Source-Level Test Entries**: 4692 (+ 40 from 3 disabled suites = 4732 total)
-**Test Suites**: 74 (70 actively running; 3 disabled compiler suites; 1 "Trit Enhancements" needs `tcore_env_t` rebuild; 1 seT5 Integration compat)
+**Total Runtime Assertions**: 6603
+**Total Source-Level Test Entries**: 6208
+**Test Suites**: 101 (101 actively running; 3 disabled compiler suites)
 **Overall Pass Rate**: 100% (0 failures across all active suites)
-**Last Updated**: 2026-02-19 — Added Suite 74: test_ternary_full_adder.c for TFA logic verification
+**Last Updated**: 2026-02-20 — Sigma 11: Added 18 batch suites (92–119), fixed 10 ALU assertions, wired all batches into grand summary
 **Generated**: Auto-extracted from source code
 
 ---
@@ -96,7 +96,7 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 | 45 | Functional Utility | `tests/test_functional_utility.c` | 202 | 233 | ✅ |
 | 46 | Friday Updates | `tests/test_friday_updates.c` | 135 | 138 | ✅ |
 | 47 | Trit Linux Architecture | `tests/test_trit_linux.c` | 98 | 96 | ✅ |
-| 48 | Gödel Machine ⭐NEW | `tests/test_godel_machine.c` | 21 | 21 | ✅ |
+| 48 | Gödel Machine ⭐NEW | `tests/test_godel_machine.c` | 39 | 39 | ✅ |
 | 49 | SIMD Regression ⭐NEW | `tests/test_trit_simd_regression.c` | 10 | 10 | ✅ |
 | 50 | Binary Sentinel ⭐NEW | `tests/test_binary_sentinel.c` | 12 | 12 | ✅ |
 | 51 | Ternary Compiler Integration ⭐NEW | `tests/test_ternary_compiler_integration.c` | 19 | 19 | ✅ |
@@ -123,6 +123,24 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 | 72 | T-IPC Compressor ⭐NEW | `tests/test_tipc_compressor.c` | 2 | 2 | ✅ |
 | 73 | Samsung Correlator ⭐NEW | `tests/test_samsung_cn105745888a_correlator.c` | 2 | 2 | ✅ |
 | 74 | Ternary Full Adder ⭐NEW | `tests/test_ternary_full_adder.c` | 10 | 5 | ✅ |
+| 100 | Hardware ALU/TALU Operations | `tests/test_batch_5352_5401.c` | 50 | 50 | ✅ |
+| 101 | Side-Channel Resistance | `tests/test_batch_5402_5451.c` | 50 | 50 | ✅ |
+| 102 | Side-Channel Resistance Advanced | `tests/test_batch_5452_5501.c` | 50 | 50 | ✅ |
+| 103 | Epistemic Logic & Hesitation | `tests/test_batch_5502_5551.c` | 50 | 50 | ✅ |
+| 104 | Epistemic Logic & Hesitation Advanced | `tests/test_batch_5552_5601.c` | 50 | 50 | ✅ |
+| 105 | Guardian Trit Mechanisms | `tests/test_batch_5602_5651.c` | 50 | 50 | ✅ |
+| 106 | Guardian Trit Mechanisms Advanced | `tests/test_batch_5652_5701.c` | 50 | 50 | ✅ |
+| 107 | RSI Flywheel Safety | `tests/test_batch_6202_6251.c` | 50 | 50 | ✅ |
+| 108 | Curiosity Gradient | `tests/test_batch_6252_6301.c` | 50 | 50 | ✅ |
+| 109 | Beauty Symmetry | `tests/test_batch_6302_6351.c` | 50 | 50 | ✅ |
+| 110 | Eudaimonic Optimization | `tests/test_batch_6352_6401.c` | 50 | 50 | ✅ |
+| 111 | Balanced Ternary Arithmetic | `tests/test_batch_6402_6451.c` | 50 | 50 | ✅ |
+| 112 | Mixed-Radix & Packed64 SIMD | `tests/test_batch_6452_6501.c` | 50 | 50 | ✅ |
+| 113 | Heptavint Multi-Radix Encoding | `tests/test_batch_6502_6551.c` | 50 | 50 | ✅ |
+| 114 | Ternary Floating-Point Basics | `tests/test_batch_6552_6601.c` | 50 | 50 | ✅ |
+| 115 | Ternary Error Correction GF(3) Hamming | `tests/test_batch_6602_6651.c` | 50 | 50 | ✅ |
+| 116 | Ternary Capability Access Control | `tests/test_batch_6652_6701.c` | 50 | 50 | ✅ |
+| 117 | Ternary State Machine & Protocol | `tests/test_batch_6702_6751.c` | 50 | 50 | ✅ |
 | — | Trit Enhancements *(not building)* | `tests/test_trit_enhancements.c` | — | 214 | ⚠️ needs `tcore_env_t` rebuild |
 | — | Compiler: Codegen Bugs *(disabled)* | `tools/compiler/tests/test_compiler_code_generation_bugs.c` | 39 | 19 | ⚠️ commented out in compiler Makefile |
 | — | Compiler: Error Recovery *(disabled)* | `tools/compiler/tests/test_error_recovery.c` | 26 | 11 | ⚠️ commented out in compiler Makefile |
@@ -6625,14 +6643,14 @@ verified C tests: Symbolic Ternary Trajectory Evaluation (STE), Triple Modular R
 
 ---
 
-### Current Totals (as of 2026-02-19, Formal-Verification Suite Complete)
+### Current Totals (as of 2026-02-20, Sigma 11 Complete)
 
 | Metric | Active | Including Disabled |
 |--------|-------:|-------------------:|
-| **Test Suites** | **99** | **102** |
-| **Runtime Assertions** | **6333** | **6366** |
-| **Source-Level Entries** | **5938** | **5978** |
-| **Test Source Files** | **100** | **102** |
+| **Test Suites** | **101** | **104** |
+| **Runtime Assertions** | **6603** | **6636** |
+| **Source-Level Entries** | **6208** | **6248** |
+| **Test Source Files** | **107** | **109** |
 
 > **Corner 3 Milestone**: Batches 99–108 (500 assertions, tests 5702–6201) added.
 > test_6201 marks the seT6 Gödel Machine civilisational-alignment pledge.
@@ -6652,3 +6670,305 @@ verified C tests: Symbolic Ternary Trajectory Evaluation (STE), Triple Modular R
 > improvements derived from formal verification research. Three new Isabelle theories with zero
 > `sorry` stubs. Two existing `sorry` stubs eliminated (LatticeCrypto, TCAMSearch). New `trit_tmr.h`
 > API with proved no-fault-output property. Garner/CRT multi-radix reconstruction verified in C.
+>
+> **Sigma 10 Batches (109–114, 300 assertions)**: RSI Flywheel Safety, Curiosity Gradient,
+> Beauty Symmetry, Eudaimonic Optimization, Balanced Ternary Arithmetic, Mixed-Radix Packed64 SIMD.
+>
+> **Sigma 11 Batches (115–119, 250 assertions)**: Heptavint Multi-Radix Encoding, Ternary
+> Floating-Point Basics, GF(3) Hamming Error Correction, Capability Access Control, State Machine
+> & Protocol Verification.
+>
+> **Early Batches Wired (92–98, 350 assertions)**: Hardware ALU/TALU, Side-Channel Resistance
+> (basic + advanced), Epistemic Logic & Hesitation (basic + advanced), Guardian Trit Mechanisms
+> (basic + advanced). All 10 ALU assertion mismatches fixed (carry init corrections).
+
+---
+
+## Suite 100 (Batch 92): Hardware ALU/TALU Operations
+
+**Source**: `tests/test_batch_5352_5401.c`
+**Tests**: 5352–5401 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(name) / ASSERT_EQ / ASSERT_TRUE / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5352–5365 | L20–L150 | Basic ALU add/sub/mul/div | Core arithmetic operations | Arithmetic |
+| 5366–5375 | L155–L280 | Carry/overflow/underflow | Carry propagation, overflow detection | Boundary |
+| 5376–5385 | L285–L420 | Shift/rotate operations | Shift left/right, rotate, barrel shift | Hardware/ALU |
+| 5386–5395 | L425–L600 | Comparison operators | Compare, min, max, abs, sign, clamp | Functional |
+| 5396–5401 | L605–L700 | Flags and counting | Zero/carry/borrow flags, LZC, TZC, popcount | Hardware/ALU |
+
+---
+
+## Suite 101 (Batch 93): Side-Channel Resistance
+
+**Source**: `tests/test_batch_5402_5451.c`
+**Tests**: 5402–5451 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(name) / ASSERT_TRUE / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5402–5415 | L70–L200 | Constant-time operations | Branchless AND/OR/NOT/add/sub/mul/compare | Security |
+| 5416–5430 | L205–L370 | Power/EM resistance | DPA, CPA, EM emission, power uniformity | Security |
+| 5431–5440 | L375–L470 | Speculative execution | Spectre, Meltdown, cache timing mitigation | Security |
+| 5441–5451 | L475–L570 | Fault injection | Glitch, laser, voltage, row hammer resistance | Security |
+
+---
+
+## Suite 102 (Batch 94): Side-Channel Resistance Advanced
+
+**Source**: `tests/test_batch_5452_5501.c`
+**Tests**: 5452–5501 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(name) / ASSERT_TRUE / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5452–5470 | L70–L230 | Microarchitectural attacks | Flush+Reload, Prime+Probe, MDS, L1TF, LVI | Security |
+| 5471–5485 | L235–L380 | Speculative store bypass | Spectre v4, RIDL, Fallout, ZombieLoad | Security |
+| 5486–5495 | L385–L470 | Key protection | HSM, blinding, masking, resistant S-box | Security |
+| 5496–5501 | L475–L530 | Boot attestation | Secure boot, random trit gen, hash hardening | Security |
+
+---
+
+## Suite 103 (Batch 95): Epistemic Logic & Hesitation
+
+**Source**: `tests/test_batch_5502_5551.c`
+**Tests**: 5502–5551 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(name) / ASSERT_TRUE / ASSERT_EQ / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5502–5520 | L70–L250 | K₃ truth tables | AND/OR/NOT commutativity, associativity, De Morgan | Logic |
+| 5521–5535 | L255–L400 | Epistemic hesitation | Pause on Unknown, pipeline stall, confidence tracking | Scheduling |
+| 5536–5545 | L405–L490 | Hesitation reactor | Channel registration, drift monitoring, recalibration | Initialization |
+| 5546–5551 | L495–L560 | KL divergence | Distribution tracking, divergence computation, yield | Performance |
+
+---
+
+## Suite 104 (Batch 96): Epistemic Logic & Hesitation Advanced
+
+**Source**: `tests/test_batch_5552_5601.c`
+**Tests**: 5552–5601 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(name) / ASSERT_TRUE / ASSERT_EQ / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5552–5570 | L70–L250 | State transitions | IDLE→RUNNING→HESITATING, state machine | Functional |
+| 5571–5585 | L255–L400 | Multi-channel stress | Concurrent channels, drift per-channel | Stress |
+| 5586–5595 | L405–L490 | Recalibration | Confidence reset, distribution reset, B4 flags | Functional |
+| 5596–5601 | L495–L560 | Yield computation | Divergence penalty, sensitivity, bounds | Performance |
+
+---
+
+## Suite 105 (Batch 97): Guardian Trit Mechanisms
+
+**Source**: `tests/test_batch_5602_5651.c`
+**Tests**: 5602–5651 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(name) / ASSERT_TRUE / ASSERT_EQ / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5602–5615 | L70–L200 | Guardian trit computation | Buffer hash, tamper detection, stability | Security |
+| 5616–5630 | L205–L350 | Compression | Bit count, byte count, ratio, round-trip | Encoding |
+| 5631–5640 | L355–L460 | T-IPC channels | Channel init, endpoint create, send/receive | IPC |
+| 5641–5651 | L465–L570 | Validation | Message validation, NULL handling, tamper sensitivity | Security |
+
+---
+
+## Suite 106 (Batch 98): Guardian Trit Mechanisms Advanced
+
+**Source**: `tests/test_batch_5652_5701.c`
+**Tests**: 5652–5701 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(name) / ASSERT_TRUE / ASSERT_EQ / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 5652–5670 | L70–L250 | Cryptographic properties | Avalanche, collision resistance, preimage | Security |
+| 5671–5685 | L255–L400 | Advanced attack resistance | Replay, bit flip, differential, length extension | Security |
+| 5686–5695 | L405–L490 | Performance & stress | Benchmark, max buffer, concurrent access | Performance |
+| 5696–5701 | L495–L560 | Integration | T-IPC failure recovery, radix guard, chaining | IPC |
+
+---
+
+## Suite 107 (Batch 109): RSI Flywheel Safety
+
+**Source**: `tests/test_batch_6202_6251.c`
+**Tests**: 6202–6251 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6202–6215 | L80–L200 | Trit guard logic | Guard approve/deny/query, bounds enforcement | Security |
+| 6216–6230 | L205–L320 | Session management | Init, iterate, bounded loop (max 10), summary | Functional |
+| 6231–6240 | L325–L400 | Mutation proposals | Proposal approval, rejection, beauty threshold | Security |
+| 6241–6251 | L405–L480 | Eudaimonic metrics | Flourishing score, compaction, convergence | Performance |
+
+---
+
+## Suite 108 (Batch 110): Curiosity Gradient
+
+**Source**: `tests/test_batch_6252_6301.c`
+**Tests**: 6252–6301 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6252–6270 | L80–L220 | Curiosity prover | Gradient escalation, saturation, novelty scoring | Functional |
+| 6271–6285 | L225–L340 | Gradient arithmetic | Step accumulation, decay, normalization | Arithmetic |
+| 6286–6295 | L345–L420 | Integration | Curiosity + beauty combined scoring | Functional |
+| 6296–6301 | L425–L480 | Edge cases | Zero gradient, max gradient, negative gradient | Boundary |
+
+---
+
+## Suite 109 (Batch 111): Beauty Symmetry
+
+**Source**: `tests/test_batch_6302_6351.c`
+**Tests**: 6302–6351 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6302–6320 | L80–L220 | Palindrome detection | Trit sequence palindrome check, scoring | Functional |
+| 6321–6335 | L225–L340 | Symmetry metrics | Left-right mirror, rotational, translational | Functional |
+| 6336–6345 | L345–L420 | Beauty scoring | Composite score, normalization, threshold | Performance |
+| 6346–6351 | L425–L480 | Appreciation | Beauty above/below threshold, edge patterns | Boundary |
+
+---
+
+## Suite 110 (Batch 112): Eudaimonic Optimization
+
+**Source**: `tests/test_batch_6352_6401.c`
+**Tests**: 6352–6401 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6352–6370 | L80–L220 | Eudaimonic weight | Weight function, domain scoring, human override | Functional |
+| 6371–6385 | L225–L340 | Flourishing metrics | Combined curiosity+beauty+eudaimonia vector | Performance |
+| 6386–6395 | L345–L420 | Override semantics | Trit guard override, deny-all, approve-all | Security |
+| 6396–6401 | L425–L480 | Convergence | Optimization convergence, stability criteria | Performance |
+
+---
+
+## Suite 111 (Batch 113): Balanced Ternary Arithmetic
+
+**Source**: `tests/test_batch_6402_6451.c`
+**Tests**: 6402–6451 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6402–6420 | L80–L220 | Encode/decode | int↔balanced ternary round-trip, range [-13..+13] | Encoding |
+| 6421–6435 | L225–L340 | Carry arithmetic | Addition with carry, overflow wrap, multi-trit | Arithmetic |
+| 6436–6445 | L345–L420 | Comparison | Trit-by-trit compare, lexicographic order | Functional |
+| 6446–6451 | L425–L480 | Edge cases | Zero encoding, max/min value, sign detection | Boundary |
+
+---
+
+## Suite 112 (Batch 114): Mixed-Radix & Packed64 SIMD
+
+**Source**: `tests/test_batch_6452_6501.c`
+**Tests**: 6452–6501 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6452–6470 | L80–L220 | Packed64 encode/decode | 2-bit trit encoding, pack/unpack 32 slots | Encoding |
+| 6471–6485 | L225–L340 | Trit get/set | Individual slot access, boundary slots 0 and 31 | Functional |
+| 6486–6495 | L345–L420 | Fault detection | has_fault_packed64, sanitize, valid macro | Security |
+| 6496–6501 | L425–L480 | SIMD Kleene ops | Packed AND/OR/NOT, De Morgan, round-trip | Logic |
+
+---
+
+## Suite 113 (Batch 115): Heptavint Multi-Radix Encoding
+
+**Source**: `tests/test_batch_6502_6551.c`
+**Tests**: 6502–6551 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6502–6515 | L80–L200 | Heptavint encode/decode | Balanced base-7 using 2 trits, range [-3..+3] | Encoding |
+| 6516–6530 | L205–L320 | Round-trip & arithmetic | All 7 values round-trip, heptavint addition | Arithmetic |
+| 6531–6540 | L325–L400 | Radix conversion | Base-3↔base-7 conversion, mixed-radix vectors | Encoding |
+| 6541–6551 | L405–L480 | Overflow & packing | Overflow detection, multi-digit packing, zero repr | Boundary |
+
+---
+
+## Suite 114 (Batch 116): Ternary Floating-Point Basics
+
+**Source**: `tests/test_batch_6552_6601.c`
+**Tests**: 6552–6601 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6552–6570 | L80–L230 | tfloat encoding | Sign+4-mantissa+2-exponent, encode 0/±1/small values | Encoding |
+| 6571–6585 | L235–L350 | Arithmetic | tfloat_add, tfloat_negate, simple cases | Arithmetic |
+| 6586–6595 | L355–L430 | Comparison & check | tfloat_is_zero, tfloat_compare, round-trip integers | Functional |
+| 6596–6601 | L435–L480 | Edge cases | Mantissa normalization, exponent overflow detection | Boundary |
+
+---
+
+## Suite 115 (Batch 117): Ternary Error Correction GF(3) Hamming
+
+**Source**: `tests/test_batch_6602_6651.c`
+**Tests**: 6602–6651 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6602–6615 | L80–L200 | GF(3) arithmetic | mod-3 add/mul, field properties | Arithmetic |
+| 6616–6630 | L205–L320 | Hamming [4,2] encode | Encode all 9 inputs, parity check, syndrome | Encoding |
+| 6631–6640 | L325–L400 | Error correction | Single-error correction for all 8 error patterns | Security |
+| 6641–6651 | L405–L480 | Round-trip & limits | Encode→corrupt→correct→decode, double-error detection | Functional |
+
+---
+
+## Suite 116 (Batch 118): Ternary Capability Access Control
+
+**Source**: `tests/test_batch_6652_6701.c`
+**Tests**: 6652–6701 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6652–6670 | L80–L230 | Capability check | Grant+grant=grant, deny+any=deny, inherit resolution | Access control |
+| 6671–6685 | L235–L350 | Combine & derive | Kleene AND semantics, child cannot escalate | Access control |
+| 6686–6695 | L355–L430 | Revoke & special | Revoke by -1, null capability, full capability | Security |
+| 6696–6701 | L435–L480 | Exhaustive | All 27 (read,write,exec) capability combinations | Access control |
+
+---
+
+## Suite 117 (Batch 119): Ternary State Machine & Protocol Verification
+
+**Source**: `tests/test_batch_6702_6751.c`
+**Tests**: 6702–6751 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 11 (50/50)
+**Harness**: `TEST(d) / ASSERT(c, m) / PASS()` — per-test, abort on fail, final summary
+
+| # | Range | Section | Coverage | Category |
+|---|-------|---------|----------|----------|
+| 6702–6715 | L80–L200 | State machine init | 3-trit state (27 states), init to {0,0,0} | Initialization |
+| 6716–6730 | L205–L320 | Transitions | State advance rules, transition counting | Functional |
+| 6731–6740 | L325–L400 | Reachability | All 27 states reachable, deadlock detection | Functional |
+| 6741–6751 | L405–L480 | Protocol | 3-phase handshake, violation detection, reset | IPC |
+
+---
+
+## Rule: Future Test Documentation
+
+> **⚠️ MANDATORY**: For every test created, a corresponding entry MUST be added
+> to this glossary BEFORE the commit is considered valid.
+>
+> **4-Step Checklist**:
+> 1. **Glossary entry** — Add a `## Suite N` section here with Source, Tests range,
+>    Runtime Assertions, Status, Harness, and coverage table
+> 2. **Makefile registration** — Add build target, `_run-test-suites` echo+run entry,
+>    ALL_TESTS list entry, clean entry
+> 3. **Grand summary** — Add suite name to `tools/test_grand_summary.sh` BATCH_DEFS
+> 4. **Verify** — Run `make alltest` and confirm 100% pass rate
+>
+> **Index table** — Also add a row to the Suite Index table at the top of this file
+>
+> This protocol applies to ALL test types: batch tests, integration tests,
+> red-team suites, formal verification suites, and any new test file.

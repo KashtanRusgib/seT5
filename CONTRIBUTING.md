@@ -77,6 +77,14 @@ Every commit **must** pass `make alltest` with 0 failures before pushing.
 The project maintains a **Sigma quality gate**: every push must achieve
 **100% pass rate** across all suites.
 
+> **⚠️ TEST GLOSSARY PROTOCOL**: Every new test MUST be logged in
+> [`seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md`](seT6/TESTS_GLOSSARY_OF_ALL_TESTS.md)
+> before a commit is considered valid. The glossary tracks 6603+ runtime
+> assertions across 101 active test suites. See the glossary's
+> "Rule: Future Test Documentation" section for the mandatory 4-step checklist:
+> (1) glossary entry → (2) Makefile registration → (3) grand summary update →
+> (4) `make alltest` verification.
+
 ```bash
 # Full suite (recommended before every push)
 make alltest

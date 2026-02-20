@@ -688,6 +688,13 @@ fi
 #     in the Makefile _run-test-suites section.
 # ══════════════════════════════════════════════════════════════════════
 BATCH_DEFS=(
+    "Batch 5352-5401: Hardware ALU/TALU Operations"
+    "Batch 5402-5451: Side-Channel Resistance"
+    "Batch 5452-5501: Side-Channel Resistance Advanced"
+    "Batch 5502-5551: Epistemic Logic and Hesitation"
+    "Batch 5552-5601: Epistemic Logic and Hesitation Advanced"
+    "Batch 5602-5651: Guardian Trit Mechanisms"
+    "Batch 5652-5701: Guardian Trit Mechanisms Advanced"
     "Batch 5702-5751: Kleene K3 Unknown Propagation"
     "Batch 5752-5801: Multi-Radix Neural Inference"
     "Batch 5802-5851: Unknown-Safe IPC"
@@ -711,13 +718,22 @@ BATCH_DEFS=(
     "Batch 6702-6751: Ternary State Machine & Protocol Verification"
 )
 for bdef in "${BATCH_DEFS[@]}"; do
-    line=$(section "$LOG" "=== $bdef ===" \
-           | grep 'Results:.*passed.*failed' | head -1)
+    sec=$(section "$LOG" "=== $bdef ===")
+    line=$(echo "$sec" | grep 'Results:.*passed.*failed' | head -1)
     if [[ -n "$line" ]]; then
         read -r p f <<< "$(extract_pf "$line")"
         add_result "$bdef" "$p" "$f"
     else
-        MISSING_SUITES="$MISSING_SUITES  - $bdef\n"
+        # Alternate format: "Passed: N" / "Failed: N" on separate lines
+        p_line=$(echo "$sec" | grep -i 'Passed:' | head -1)
+        f_line=$(echo "$sec" | grep -i 'Failed:' | head -1)
+        if [[ -n "$p_line" ]]; then
+            p=$(echo "$p_line" | grep -oE '[0-9]+' | head -1)
+            f=$(echo "$f_line" | grep -oE '[0-9]+' | head -1)
+            add_result "$bdef" "${p:-0}" "${f:-0}"
+        else
+            MISSING_SUITES="$MISSING_SUITES  - $bdef\n"
+        fi
     fi
 done
 
