@@ -85,3 +85,19 @@ bench_unroll
 trithon/libtrithon.so
 test_trit_linux
 Isabelle2025-2/
+
+# Build artifacts from Bos thesis integration (Suite 99)
+test_mixed_radix_bos
+test_ternary_formal_suite
+test_red_team_binary_reversion
+test_red_team_crypto
+test_red_team_deep
+test_red_team_godel
+test_red_team_packed_hardened
+test_red_team_simd
+test_red_team_symbiotic
+test_red_team_trit_range
+test_red_team_type
+
+# Python packaging artifacts
+*.egg-info/
