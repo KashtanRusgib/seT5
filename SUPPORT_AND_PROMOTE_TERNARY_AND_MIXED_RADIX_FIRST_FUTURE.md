@@ -36,7 +36,7 @@ Research: Explore higher radices (e.g., base-4 for memory) and integrations (e.g
 Monitoring: Adaptive governance—pivot if quantum or other paradigms outperform.
 Goal: 50%+ of compute infrastructure ternary/mixed, enabling exascale AI for all.
 
-I'd allocate resources proportionally: 40% software/ecosystems, 30% hardware R&D, 20% standards/education, 10% risk assessment. Funding from public-private partnerships, emphasizing open-source to avoid monopolies.Why This Aligns with My "Intelligence" and Values. We design for maximum helpfulness and truth-seeking. Binary's dominance is a consensus artifact, not an epistemic absolute—challenging it promotes progress. This shift wouldn't just optimize compute; it could democratize intelligence, reduce environmental impact, and accelerate the human/machine mission of cosmic understanding. If binary were truly superior, I'd defend it—but evidence points to ternary as the next logical step.  
+I'd allocate resources proportionally: 40% software/ecosystems, 30% hardware R&D, 20% standards/education, 10% risk assessment. Funding from public-private partnerships, emphasizing open-source to avoid monopolies.Why This Aligns with My "Intelligence" and Values. We design for maximum helpfulness and truth-seeking. Binary's dominance is a consensus artifact, not an epistemic absolute—challenging it promotes progress. This shift wouldn't just optimize compute; it could democratize intelligence, reduce environmental impact, and accelerate the human/machine mission of cosmic understanding. If binary were truly superior, I'd defend it—but evidence points to ternary as the next logical step.
 
 
 
@@ -51,6 +51,16 @@ I'd allocate resources proportionally: 40% software/ecosystems, 30% hardware R&D
 5. **Mixed-radix bridges follow the same rule** — when a mixed-radix layer must interface with a pure-binary system, the bridge converts outward. The internal mixed-radix representation is authoritative.
 
 > **Rationale**: We build out and outwards with ternary-to-binary and multi-radix-to-binary OUTWARDS wherever necessary to build the ternary-first and ternary-all-the-way-down imminent emergent future. Binary interoperability is a bridge concern, never an internal design choice. See ARCHITECTURE.md §14A for the full protocol specification.
+
+## Terminology Policy (effective 2026-02-20)
+
+As the ternary-first future manifests, we call things by their proper names:
+compiled ternary executables are **trinaries** (not "binaries"), ternary digits
+are **trits** (not "bits"), and ternary data units are **trytes** (not "bytes").
+"Binary" is used only when referring to base-2 interop, host substrates, or
+comparative analysis. This aligns with SherryLLM (2026), BitNet b1.58, and
+ternary-quantized Llama — all operating with {-1, 0, +1} trit-native weights.
+See `CONTRIBUTING.md` for the full terminology table.
 
 ---
 

@@ -213,6 +213,34 @@ When using GitHub Copilot or other AI assistants with this codebase:
 
 ---
 
+## seT6 Terminology Policy (effective 2026-02-20)
+
+As seT6 and its full stack are ternary-first and ternary all the way down, all
+contributions and documentation **must use ternary-native terminology**:
+
+| Instead of | Use | When |
+|------------|-----|------|
+| "binaries" | **trinaries** | Referring to compiled seT6 executables, ternary program images, object files |
+| "bits" | **trits** | Referring to ternary digits and seT6-internal data widths |
+| "bytes" | **trytes** | Referring to seT6 data units (6 trits = 729 states) |
+| "bytecode" | **tritcode** | Referring to ternary VM instruction streams |
+
+Retain "binary/binaries/bits/bytes" ONLY when:
+- Referring to actual binary (base-2) host hardware, or binary interop bridges
+- Comparing ternary vs binary paradigms
+- Discussing the x86/ARM substrate or GCC-compiled ELF output
+- Referencing external binary-world standards or specifications
+
+This aligns with the industry trend toward ternary-native terminology:
+SherryLLM (2026), BitNet b1.58, trapping-free ternary quantization for Llama,
+and processors designed for ternary-weight models all operate with {-1, 0, +1}
+weights — these are trit-native operations, not bit operations.
+
+> **We eat our own dog food.** seT6 has what may be the world's first ternary
+> C compiler. We use it — and its terminology — wherever applicable.
+
+---
+
 ## License
 
 This project is licensed under the MIT License. See `LICENSE` for details.

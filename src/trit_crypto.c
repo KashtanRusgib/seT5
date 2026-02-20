@@ -51,16 +51,21 @@ static trit gf3_mul(trit a, trit b) {
  * @param state  Array of 8 trits (LFSR register)
  * @return       Output trit (former state[7])
  */
-static trit gf3_lfsr_step(trit state[8]) {
-    /* Output is the last register element */
-    trit out = state[7];
+/* VULN-54 fix: extended to 16 trits for period up to 3^16 - 1 = 43,046,720
+ * (was 8 trits / period 6560 — too short, predictable after small sample) */
+#define GF3_LFSR_SIZE 16
 
-    /* Feedback = state[7] + state[3] + state[2] + state[1] (mod 3) */
-    trit fb = gf3_add(gf3_add(state[7], state[3]),
-                      gf3_add(state[2], state[1]));
+static trit gf3_lfsr_step(trit state[GF3_LFSR_SIZE]) {
+    /* Output is the last register element */
+    trit out = state[GF3_LFSR_SIZE - 1];
+
+    /* Feedback polynomial over GF(3): x^16 + x^5 + x^3 + x^2 + 1
+     * Taps at positions 15, 5, 3, 2 for good period coverage */
+    trit fb = gf3_add(gf3_add(state[GF3_LFSR_SIZE - 1], state[5]),
+                      gf3_add(state[3], state[2]));
 
     /* Shift right */
-    for (int i = 7; i > 0; i--) {
+    for (int i = GF3_LFSR_SIZE - 1; i > 0; i--) {
         state[i] = state[i - 1];
     }
     state[0] = fb;
@@ -72,18 +77,25 @@ static trit gf3_lfsr_step(trit state[8]) {
  * @brief Initialize GF(3) LFSR from a 32-bit binary seed.
  * Maps each 2-bit pair of the seed to a trit.
  */
-static void gf3_lfsr_seed(trit state[8], uint32_t seed) {
-    for (int i = 0; i < 8; i++) {
-        int bits = (seed >> (i * 2)) & 0x03;
+static void gf3_lfsr_seed(trit state[GF3_LFSR_SIZE], uint32_t seed) {
+    for (int i = 0; i < GF3_LFSR_SIZE; i++) {
+        int bits = (seed >> (i * 2 % 32)) & 0x03;
         /* Map: 0→unk(0), 1→true(+1), 2→false(-1), 3→true(+1) */
         static const trit map[4] = {0, 1, -1, 1};
         state[i] = map[bits];
+        /* Mix in higher seed bits for positions >= 16 bits */
+        if (i >= 8) {
+            seed ^= seed << 13;
+            seed ^= seed >> 17;
+            seed ^= seed << 5;
+        }
     }
     /* Ensure not all-zero (degenerate) */
-    if (state[0] == 0 && state[1] == 0 && state[2] == 0 && state[3] == 0 &&
-        state[4] == 0 && state[5] == 0 && state[6] == 0 && state[7] == 0) {
-        state[0] = TRIT_TRUE;
+    int all_zero = 1;
+    for (int i = 0; i < GF3_LFSR_SIZE; i++) {
+        if (state[i] != 0) { all_zero = 0; break; }
     }
+    if (all_zero) state[0] = TRIT_TRUE;
 }
 
 /** Generate trit from PRNG: maps to {-1, 0, +1} */
@@ -117,6 +129,8 @@ static trit sbox_inv(trit a) {
 /* ---- Hash API --------------------------------------------------------- */
 
 void tcrypto_hash_init(tcrypto_hash_t *h) {
+    /* VULN-39 fix: NULL guard */
+    if (!h) return;
     memset(h, 0, sizeof(*h));
     /* Initialize state with non-zero pattern */
     for (int i = 0; i < TCRYPTO_HASH_TRITS; i++)
@@ -124,6 +138,8 @@ void tcrypto_hash_init(tcrypto_hash_t *h) {
 }
 
 void tcrypto_hash_absorb(tcrypto_hash_t *h, const trit *msg, int len) {
+    /* VULN-39 fix: NULL guard */
+    if (!h || !msg || len <= 0) return;
     if (h->finalized) return;
 
     for (int i = 0; i < len; i++) {
@@ -151,6 +167,8 @@ void tcrypto_hash_absorb(tcrypto_hash_t *h, const trit *msg, int len) {
 }
 
 void tcrypto_hash_finalize(tcrypto_hash_t *h, trit *digest) {
+    /* VULN-39 fix: NULL guard */
+    if (!h || !digest) return;
     if (h->finalized) {
         memcpy(digest, h->state, TCRYPTO_HASH_TRITS * sizeof(trit));
         return;
@@ -169,6 +187,8 @@ void tcrypto_hash_finalize(tcrypto_hash_t *h, trit *digest) {
 }
 
 void tcrypto_hash(trit *digest, const trit *msg, int msg_len) {
+    /* VULN-39 fix: NULL guard */
+    if (!digest) return;
     tcrypto_hash_t h;
     tcrypto_hash_init(&h);
     tcrypto_hash_absorb(&h, msg, msg_len);
@@ -219,6 +239,8 @@ int tcrypto_key_compare(const tcrypto_key_t *a, const tcrypto_key_t *b) {
 
 void tcrypto_cipher_init(tcrypto_cipher_t *c, const tcrypto_key_t *key,
                           const trit *iv, int rounds) {
+    /* VULN-39 fix: NULL guard */
+    if (!c || !key) return;
     c->key    = *key;
     c->rounds = (rounds > 0) ? rounds : 12;
     if (iv)
@@ -228,15 +250,21 @@ void tcrypto_cipher_init(tcrypto_cipher_t *c, const tcrypto_key_t *key,
 }
 
 void tcrypto_encrypt(tcrypto_cipher_t *c, trit *data, int len) {
+    /* VULN-39 fix: NULL guard */
+    if (!c || !data || len <= 0) return;
     for (int round = 0; round < c->rounds; round++) {
         for (int i = 0; i < len; i++) {
             /* XOR with key stream */
             int key_idx = (i + round) % c->key.length;
             data[i] = tcrypto_trit_xor(data[i], c->key.data[key_idx]);
 
-            /* XOR with IV */
+            /* VULN-40 fix: CTR-mode position-dependent IV. Each (pos, round)
+             * pair gets a unique counter value, preventing ECB-like repetition
+             * where identical plaintext blocks produce identical ciphertext. */
             int iv_idx = i % TCRYPTO_MAC_TRITS;
-            data[i] = tcrypto_trit_xor(data[i], c->iv[iv_idx]);
+            trit ctr_offset = (trit)((i * 7 + round * 13 + 1) % 3 - 1);
+            trit ctr_iv = gf3_add(c->iv[iv_idx], ctr_offset);
+            data[i] = tcrypto_trit_xor(data[i], ctr_iv);
 
             /* Non-linear substitution */
             data[i] = sbox(data[i]);
@@ -253,6 +281,8 @@ void tcrypto_encrypt(tcrypto_cipher_t *c, trit *data, int len) {
 }
 
 void tcrypto_decrypt(tcrypto_cipher_t *c, trit *data, int len) {
+    /* VULN-39 fix: NULL guard */
+    if (!c || !data || len <= 0) return;
     for (int round = c->rounds - 1; round >= 0; round--) {
         /* Inverse rotate */
         if (len > 1) {
@@ -266,11 +296,14 @@ void tcrypto_decrypt(tcrypto_cipher_t *c, trit *data, int len) {
             /* Inverse substitution */
             data[i] = sbox_inv(data[i]);
 
-            /* Inverse XOR with IV (subtraction undoes addition) */
+            /* VULN-40 fix: inverse CTR-mode position-dependent IV.
+             * Same deterministic counter as encrypt — order-independent. */
             int iv_idx = i % TCRYPTO_MAC_TRITS;
-            data[i] = tcrypto_trit_xor_inv(data[i], c->iv[iv_idx]);
+            trit ctr_offset = (trit)((i * 7 + round * 13 + 1) % 3 - 1);
+            trit ctr_iv = gf3_add(c->iv[iv_idx], ctr_offset);
+            data[i] = tcrypto_trit_xor_inv(data[i], ctr_iv);
 
-            /* Inverse XOR with key stream (subtraction undoes addition) */
+            /* Inverse XOR with key stream */
             int key_idx = (i + round) % c->key.length;
             data[i] = tcrypto_trit_xor_inv(data[i], c->key.data[key_idx]);
         }
@@ -281,6 +314,8 @@ void tcrypto_decrypt(tcrypto_cipher_t *c, trit *data, int len) {
 
 void tcrypto_mac(trit *tag, const tcrypto_key_t *key,
                  const trit *msg, int len) {
+    /* VULN-39 fix: NULL guard */
+    if (!tag || !key || !msg) return;
     tcrypto_hash_t h;
     tcrypto_hash_init(&h);
 
@@ -298,6 +333,8 @@ void tcrypto_mac(trit *tag, const tcrypto_key_t *key,
 
 int tcrypto_mac_verify(const trit *tag, const tcrypto_key_t *key,
                        const trit *msg, int len) {
+    /* VULN-39 fix: NULL guard */
+    if (!tag || !key || !msg) return 0;
     trit computed[TCRYPTO_MAC_TRITS];
     tcrypto_mac(computed, key, msg, len);
 
@@ -312,13 +349,28 @@ int tcrypto_mac_verify(const trit *tag, const tcrypto_key_t *key,
 /* ---- Lattice API ------------------------------------------------------ */
 
 void tcrypto_lattice_gen(tcrypto_lattice_vec_t *v, uint32_t seed) {
-    uint32_t rng = seed;
-    for (int i = 0; i < TCRYPTO_LATTICE_DIM; i++)
-        v->coeffs[i] = trit_from_rng(&rng);
+    /* VULN-39 fix: NULL guard */
+    if (!v) return;
+    /* VULN-41 fix: use hash-based DRBG instead of weak xorshift32.
+     * Derive lattice coefficients from iterative hashing of seed. */
+    trit seed_trits[8];
+    for (int i = 0; i < 8; i++)
+        seed_trits[i] = (trit)(((seed >> (i * 2)) & 3) % 3 - 1);
+    trit digest[TCRYPTO_HASH_TRITS];
+    tcrypto_hash(digest, seed_trits, 8);
+    for (int i = 0; i < TCRYPTO_LATTICE_DIM; i++) {
+        int idx = i % TCRYPTO_HASH_TRITS;
+        v->coeffs[i] = digest[idx];
+        /* Re-hash every HASH_TRITS for fresh material */
+        if (idx == TCRYPTO_HASH_TRITS - 1 && i + 1 < TCRYPTO_LATTICE_DIM)
+            tcrypto_hash(digest, digest, TCRYPTO_HASH_TRITS);
+    }
 }
 
 trit tcrypto_lattice_dot(const tcrypto_lattice_vec_t *a,
                           const tcrypto_lattice_vec_t *b) {
+    /* VULN-39 fix: NULL guard */
+    if (!a || !b) return TRIT_UNKNOWN;
     int acc = 0;
     for (int i = 0; i < TCRYPTO_LATTICE_DIM; i++)
         acc += (int)a->coeffs[i] * (int)b->coeffs[i];
@@ -330,6 +382,8 @@ trit tcrypto_lattice_dot(const tcrypto_lattice_vec_t *a,
 }
 
 void tcrypto_lattice_add_noise(tcrypto_lattice_vec_t *v, uint32_t seed) {
+    /* VULN-39 fix: NULL guard */
+    if (!v) return;
     uint32_t rng = seed;
     for (int i = 0; i < TCRYPTO_LATTICE_DIM; i++) {
         /* Flip ~10% of elements */

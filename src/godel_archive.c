@@ -134,9 +134,13 @@ int archive_select_parent(archive_state_t *st, archive_select_t method) {
         return st->best_idx;
 
     case ARCHIVE_SELECT_RANDOM: {
+        /* VULN-36 fix: bounded retry prevents infinite loop when all inactive */
         int idx = (int)(arch_rng(&st->rng_seed) % (uint32_t)st->n_entries);
-        while (!st->entries[idx].active)
+        int attempts = 0;
+        while (!st->entries[idx].active) {
             idx = (idx + 1) % st->n_entries;
+            if (++attempts >= st->n_entries) return -1;  /* all inactive */
+        }
         return idx;
     }
 
@@ -195,6 +199,9 @@ int archive_get_lineage(const archive_state_t *st, int variant_idx,
                          int *lineage_out, int max_depth) {
     if (!st || !st->initialized || !lineage_out) return -1;
     if (variant_idx < 0 || variant_idx >= st->n_entries) return -1;
+    /* VULN-37 fix: clamp max_depth to prevent stack buffer overflow */
+    if (max_depth > ARCHIVE_MAX_VARIANTS) max_depth = ARCHIVE_MAX_VARIANTS;
+    if (max_depth < 0) max_depth = 0;
 
     int depth = 0;
     int current = variant_idx;

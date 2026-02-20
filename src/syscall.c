@@ -130,6 +130,39 @@ syscall_result_t syscall_dispatch(kernel_state_t *ks, int sysno,
         return res;
     }
 
+    /* VULN-38 fix: per-syscall capability enforcement for privileged ops.
+     * If capability table has entries (post-boot), require at least one
+     * valid capability with appropriate rights for privileged syscalls.
+     * During boot (cap_count==0), all syscalls are allowed. */
+    if (ks->cap_count > 0) {
+        int need_right = 0;
+        switch (sysno) {
+        case SYSCALL_MMAP:           need_right = 2; break;  /* write */
+        case SYSCALL_CAP_SEND:       need_right = 2; break;  /* write */
+        case SYSCALL_CAP_RECV:       need_right = 1; break;  /* read */
+        case SYSCALL_CAP_GRANT:      need_right = 4; break;  /* grant */
+        case SYSCALL_CAP_REVOKE:     need_right = 2; break;  /* write */
+        case SYSCALL_THREAD_CREATE:  need_right = 2; break;  /* write */
+        case SYSCALL_LOAD_BALANCE:   need_right = 2; break;  /* write */
+        default: break;  /* non-privileged: no cap required */
+        }
+        if (need_right != 0) {
+            /* Check if caller has ANY valid capability with required right */
+            int has_cap = 0;
+            for (int ci = 0; ci < ks->cap_count; ci++) {
+                if (kernel_cap_check(ks, ci, need_right)) {
+                    has_cap = 1;
+                    break;
+                }
+            }
+            if (!has_cap) {
+                res.retval      = -1;
+                res.result_trit = TRIT_FALSE;
+                return res;
+            }
+        }
+    }
+
     switch (sysno) {
 
     case SYSCALL_EXIT:

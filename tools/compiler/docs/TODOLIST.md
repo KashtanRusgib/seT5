@@ -18,7 +18,7 @@
 9. [DONE] TASK-009: Formal verification stub (Isabelle setup). — Created proofs/Ternary.thy with trit datatype, trit_add, trit_mul definitions and 8 correctness lemmas.
 10. [DONE] TASK-010: Compile first seL4 stub to ternary. — 4 tests in tests/test_sel4.c: cap_init parse, simple compile, multi-cap, cap arithmetic through pipeline.
 11. [DONE] TASK-011: Run full regression suite, fix any breaks from recent changes. — 100+ tests across 9 suites. No regressions.
-12. [DONE] TASK-012: Fix linker: add logger.o to all binaries using log_entry. — Commit 283cd13.
+12. [DONE] TASK-012: Fix linker: add logger.o to all trinaries (executables) using log_entry. — Commit 283cd13.
 13. [DONE] TASK-013: Fix linker: add ir.o to test_codegen (parser calls IR functions). — All 106 tests pass across 9 suites.
 
 ---

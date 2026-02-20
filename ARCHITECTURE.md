@@ -928,5 +928,18 @@ reverted by Crown Jewel reversion guards.** See `CROWN_JEWELS.md`.
 
 ### Architecture
 - G300 architecture — multi-radix scheduling heuristics
+
+---
+
+## 17. Terminology Policy (effective 2026-02-20)
+
+All documentation and code comments in the seT6 stack use ternary-native
+terminology: **trinaries** (not "binaries") for compiled ternary executables,
+**trits** (not "bits") for ternary digits, **trytes** (not "bytes") for ternary
+data units, and **tritcode** (not "bytecode") for VM instruction streams.
+"Binary" is reserved for actual base-2 interop, host-substrate references,
+and comparative discussions. This aligns with the industry shift toward
+ternary-native language (SherryLLM 2026, BitNet b1.58, ternary-quantized Llama).
+See `CONTRIBUTING.md` for the full terminology table.
 - RISC-V ISA (2024) — custom instruction extension model
 - NeuroBench (2025) — neuromorphic / non-binary edge benchmarks

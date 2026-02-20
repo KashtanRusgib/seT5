@@ -81,12 +81,18 @@ int ipc_endpoint_destroy(ipc_state_t *ipc, int ep_idx) {
     /* VULN-16 fix: record blocked thread before clearing,
      * so scheduler can unblock it after destroy */
     int was_blocked_tid = ep->blocked_tid;
-    (void)was_blocked_tid;  /* caller should unblock via sched_unblock() */
 
     ep->valid       = TRIT_FALSE;  /* mark destroyed */
     ep->state       = EP_IDLE;
     ep->blocked_tid = -1;
-    return was_blocked_tid;  /* return tid that needs unblocking (-1 if none) */
+    /* VULN-53 note: Return convention for endpoint_destroy:
+     *   0           = success, no thread was blocked (or TID-0 was blocked)
+     *   positive N  = success, thread N needs unblocking
+     *   -1          = error (invalid ep_idx, already destroyed, etc.)
+     * TID-0 is the kernel/idle thread and should never block on an IPC
+     * endpoint, so the 0-vs-TID-0 ambiguity is harmless in practice.
+     * If TID-0 blocking becomes possible, change to return tid+1. */
+    return (was_blocked_tid >= 0) ? was_blocked_tid : 0;
 }
 
 /* ==== Synchronous Send/Recv ============================================ */

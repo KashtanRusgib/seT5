@@ -59,6 +59,10 @@ static inline uint64_t vm_trit_not_packed64(uint64_t a)
 }
 
 /* === VM Error Flag (VULN-01/02/03/05/06) === */
+/* VULN-55 note: All VM state is global/static. This VM is NOT reentrant.
+ * Concurrent or nested vm_run() calls will corrupt state. If reentrancy
+ * is needed in the future, bundle all global state into a vm_state_t
+ * struct and pass it to every function. */
 static int vm_error = 0;  /* 0=ok, nonzero=fault */
 
 /* === Operand Stack === */
@@ -262,21 +266,42 @@ void vm_run(unsigned char *bytecode, size_t len)
         case OP_ADD:
         {
             int b = pop(), a = pop();
-            push(a + b);
+            /* VULN-47 fix: overflow detection for addition */
+            long long sum = (long long)a + (long long)b;
+            if (sum > 2147483647LL || sum < -2147483648LL) {
+                vm_error = 1;
+                push(0);
+            } else {
+                push((int)sum);
+            }
             break;
         }
 
         case OP_MUL:
         {
             int b = pop(), a = pop();
-            push(a * b);
+            /* VULN-47 fix: overflow detection for multiplication */
+            long long prod = (long long)a * (long long)b;
+            if (prod > 2147483647LL || prod < -2147483648LL) {
+                vm_error = 1;
+                push(0);
+            } else {
+                push((int)prod);
+            }
             break;
         }
 
         case OP_SUB:
         {
             int b = pop(), a = pop();
-            push(a - b);
+            /* VULN-47 fix: overflow detection for subtraction */
+            long long diff = (long long)a - (long long)b;
+            if (diff > 2147483647LL || diff < -2147483648LL) {
+                vm_error = 1;
+                push(0);
+            } else {
+                push((int)diff);
+            }
             break;
         }
 
@@ -421,8 +446,11 @@ void vm_run(unsigned char *bytecode, size_t len)
             int addr = pop();
             if (addr >= 0 && addr < MEMORY_SIZE)
                 push(memory[addr]);
-            else
+            else {
+                /* VULN-46 fix: set vm_error on OOB access instead of silent 0 */
+                vm_error = 1;
                 push(0);
+            }
             break;
         }
 
@@ -432,6 +460,10 @@ void vm_run(unsigned char *bytecode, size_t len)
             int addr = pop();
             if (addr >= 0 && addr < MEMORY_SIZE)
                 memory[addr] = val;
+            else {
+                /* VULN-46 fix: set vm_error on OOB store */
+                vm_error = 1;
+            }
             break;
         }
 

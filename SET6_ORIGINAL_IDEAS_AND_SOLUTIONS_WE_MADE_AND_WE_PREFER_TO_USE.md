@@ -12,6 +12,11 @@ Every item below represents an original contribution to computing — most with 
 
 This is not a marketing document. This is a technical inventory of what we built and why it's better.
 
+> **Terminology (effective 2026-02-20):** We call our compiled executables
+> **trinaries**, our digits **trits**, and our data units **trytes**. "Binary" is
+> reserved for interop bridges and host-substrate references. We eat our own
+> dog food — in language as in code. See `CONTRIBUTING.md` for the full policy.
+
 ---
 
 ## Kernel Architecture (12 ideas)

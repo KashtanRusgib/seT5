@@ -12,6 +12,14 @@ RSI_OPTIMIZATION_INSTRUCTIONS.md Overview This document defines a comprehensive,
 
 > **Rationale**: We build out and outwards with ternary-to-binary and multi-radix-to-binary OUTWARDS wherever necessary. The ternary-first, ternary-all-the-way-down future is non-negotiable. See ARCHITECTURE.md §14A for the full protocol specification.
 
+## Terminology Policy (effective 2026-02-20)
+
+All RSI documentation, prompts, and code comments use ternary-native
+terminology: **trinaries** (not "binaries") for compiled ternary executables,
+**trits** (not "bits") for ternary digits, **trytes** (not "bytes") for data
+units, **tritcode** (not "bytecode") for VM streams. "Binary" is reserved for
+actual base-2 interop and host-substrate references. See `CONTRIBUTING.md`.
+
 
 ---
 

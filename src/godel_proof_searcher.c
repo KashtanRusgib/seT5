@@ -88,7 +88,8 @@ int gps_add_candidate(gps_state_t *st, const char *filepath,
     c->id = st->n_candidates;
     snprintf(c->filepath, sizeof(c->filepath), "%s", filepath);
     snprintf(c->diff, sizeof(c->diff), "%s", diff);
-    c->diff_len = (int)strlen(diff);
+    /* VULN-44 fix: measure truncated diff length, not original string */
+    c->diff_len = (int)strlen(c->diff);
     c->generation = generation;
 
     /* Kolmogorov complexity proxy: prefer shorter diffs */

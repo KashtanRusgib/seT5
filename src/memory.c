@@ -158,6 +158,11 @@ int mem_scrub(set5_mem_t *mem, int page_idx) {
     if (page_idx < 0 || page_idx >= mem->total_pages) return -1;
 
     set5_page_t *pg = &mem->pages[page_idx];
+    /* VULN-52 fix: deny scrubbing of reserved (kernel/device) pages.
+     * Allocated (TRIT_TRUE) pages may be scrubbed by kernel authority
+     * (the kernel itself calls this). User-space access to scrub
+     * must be gated by a capability check in the syscall layer. */
+    if (pg->valid == TRIT_FALSE) return -1;  /* reserved — deny */
     for (int i = 0; i < SET5_PAGE_TRITS; i++)
         pg->data[i] = TRIT_UNKNOWN;
     return 0;

@@ -279,7 +279,10 @@ int rns_montgomery_exp(const trit_rns_t *base, uint32_t exp,
 int rns_add_redundant_check(trit_rns_context_t *ctx) {
     if (!ctx || ctx->count >= RNS_MAX_MODULI) return -1;
     uint32_t candidate = ctx->moduli[ctx->count - 1] + 2;
-    for (;;) {
+    /* VULN-50 fix: bounded search to prevent infinite loop on
+     * pathological modulus sets. 10000 candidates is generous. */
+    int max_iterations = 10000;
+    for (int iter = 0; iter < max_iterations; iter++) {
         int coprime = 1;
         for (uint32_t i = 0; i < ctx->count; i++)
             if (rns_gcd_public(ctx->moduli[i], candidate) != 1) { coprime = 0; break; }
@@ -291,6 +294,7 @@ int rns_add_redundant_check(trit_rns_context_t *ctx) {
         }
         candidate++;
     }
+    return -1;  /* no suitable prime found within search budget */
 }
 
 int rns_detect_correct(const trit_rns_t *rns, trit_rns_t *corrected,

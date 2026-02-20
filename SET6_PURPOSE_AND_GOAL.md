@@ -10,35 +10,15 @@ Rather than risk regression to binary, when any aspect of seT6 and/or its full s
 
 ---
 
-## User-Created .md Files Index
+## Terminology Policy (effective 2026-02-20)
 
-*The following files are the most obviously user-created documentation in this repository, identified by naming style, topic specificity, and personal/strategic content:*
-
-- `RSI_OPTIMIZATION_INSTRUCTIONS.md` — RSI optimization mandate, flywheel, safety parameters, and RoCS guidance
-- `evermore_truthfound_pursuing_curiosity_contemplating_beauty.md` — Philosophical foundation for CuriosityProver, BeautyAppreciator, EudaimonicOptimizer
-- `INCREASE_FUNCTIONAL_UTILITY.md` — Personal directive for expanding seT6 functional utility and Corner 3 acceleration
-- `CROWN_JEWELS.md` — Core invariants and reversion guards for benevolent symbiosis
-- `Scott_Alexander_and_Daniel_Kokotajlo.md` — Notes on AI 2027 scenario and Corner 3 strategic framing
-- `SUPPORT_AND_PROMOTE_TERNARY_AND_MIXED_RADIX_FIRST_FUTURE.md` — Ternary computing advocacy manifesto
-- `SET6_PURPOSE_AND_GOAL.md` — seT6 vision and goal statement
-- `SET6_BECOMES_A_GODEL_MACHINE.md` — Gödel machine self-reference and RSI vision
-- `GROKIPEDIA_NOTES_FOR_SET6.md` — Personal research notes integrated into seT6 development
-- `DAILY_SEARCH_LOG_2026-02-17.md` — Daily research log (2026-02-17)
-- `DAILY_SEARCH_LOG_2026-02-18.md` — Daily research log (2026-02-18)
-- `TERNARY_WORLD_ROADMAP.md` — Long-term ternary computing roadmap and vision
-- `INDIC_EPISTEMOLOGY_COUNCIL_INTELLIGENCE.md` — Indic epistemology research notes
-- `DYNAMIC_EPISTEMIC_LOGIC_DEL_EXTENSIONS.md` — Dynamic epistemic logic DEL extensions
-- `HYBRID_EPISTEMIC_ONTOLOGICAL_MODAL_LOGIC.md` — Hybrid epistemic-ontological modal logic research
-- `CHINA_CARBON_NONBINARY_AI_CHIPS_RESEARCH.md` — Carbon nanotube / non-binary AI chip research notes
-- `BATCH_97_98_COMPLETION_REPORT.md` — Session completion report for test batches 97–98
-- `FEB_18_TEST_INSTRUCTIONS.md` — Test instructions for Feb 18 session
-- `FRIDAY_JAN13_UPDATES.md` — Updates log for Jan 13 session
-- `OLD_TODOS_LOG_ARCHIVE.md` — Archived TODO list from prior sessions
-- `Build_AndTest_Verified_Modules_for_seT6_Updates.md` — Build and test guide for seT6 module updates
-- `BATCH_GENERATION_GUIDE.md` — Guide for generating test batches efficiently
-- `GENERATION_PROGRESS.md` — Test generation progress log
-- `simple_test_file.md` — Informal manual test notes
-- `TERNARY_COMPUTING_RESEARCH_REPORT_2025_2026.md` — Ternary computing research compilation 2025–2026
+Within seT6 development, we call things by their proper names: compiled ternary
+executables are **trinaries** (not "binaries"), ternary digits are **trits** (not
+"bits"), and ternary data units are **trytes** (not "bytes"). "Binary" is reserved
+for actual base-2 interop bridges and host-substrate references. This aligns with
+the industry shift toward ternary-native terminology (SherryLLM 2026, BitNet
+b1.58, ternary-quantized Llama variants). We eat our own dog food — in language
+as in code. See `CONTRIBUTING.md` for the full terminology table.
 
 ---
 
@@ -71,3 +51,6 @@ Rather than risk regression to binary, when any aspect of seT6 and/or its full s
 - `GENERATION_PROGRESS.md` — Test generation progress log
 - `simple_test_file.md` — Informal manual test notes
 - `TERNARY_COMPUTING_RESEARCH_REPORT_2025_2026.md` — Ternary computing research compilation 2025–2026
+
+---
+

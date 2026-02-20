@@ -310,8 +310,12 @@ int godel_set_switchprog(godel_machine_t *gm, const char *filepath,
     godel_switchprog_t *sp = &gm->switchprogs[gm->n_switchprogs];
     sp->id = gm->n_switchprogs;
     snprintf(sp->filepath, sizeof(sp->filepath), "%s", filepath);
-    if (old_content)
-        snprintf(sp->old_content, sizeof(sp->old_content), "%s", old_content);
+    if (old_content) {
+        /* VULN-51 fix: detect truncation of old_content too */
+        int needed = snprintf(sp->old_content, sizeof(sp->old_content), "%s", old_content);
+        if (needed >= (int)sizeof(sp->old_content))
+            return -1;  /* old_content too long, refuse to truncate */
+    }
     if (new_content) {
         /* VULN-14 fix: detect truncation and return error */
         int needed = snprintf(sp->new_content, sizeof(sp->new_content), "%s", new_content);
@@ -370,7 +374,9 @@ int godel_state2theorem(godel_machine_t *gm)
              gm->binary_reversions, gm->current_utility);
     thm->derived_from[0] = thm->derived_from[1] = -1;
     thm->derived_rule = GODEL_RULE_TRIT_EVAL;
-    thm->verified = TRIT_TRUE;
+    /* VULN-42 fix: state observations are not verified by default —
+     * require explicit proof verification step before TRIT_TRUE */
+    thm->verified = TRIT_UNKNOWN;
     thm->active = TRIT_TRUE;
 
     gm->n_theorems++;
@@ -478,9 +484,12 @@ int rsi_session_init(rsi_session_t *session)
 {
     if (!session)
         return -1;
-    /* VULN-10 fix: increment global generation, don't reset total iterations */
+    /* VULN-43 fix: save total_human_queries only if session was
+     * previously initialized (rsi_global_generation > 0 means
+     * at least one prior init has run). Avoids reading
+     * uninitialized memory on the very first call. */
+    int saved_total_queries = (rsi_global_generation > 0) ? session->total_human_queries : 0;
     rsi_global_generation++;
-    int saved_total_queries = session->total_human_queries;
     memset(session, 0, sizeof(*session));
     session->generation = rsi_global_generation;
     session->total_human_queries = saved_total_queries; /* VULN-11: preserve */

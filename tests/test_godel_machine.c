@@ -340,7 +340,9 @@ static void test_state2theorem(void)
     godel_update_metrics(&gm, 1792, 1792, 8, 8, 40, 40, 0);
     godel_compute_utility(&gm);
     int id = godel_state2theorem(&gm);
-    if (id >= 0 && gm.theorems[id].verified == TRIT_TRUE &&
+    /* VULN-42 fix: state2theorem no longer auto-verifies — expects TRIT_UNKNOWN
+     * until explicit proof verification step confirms the observation */
+    if (id >= 0 && gm.theorems[id].verified == TRIT_UNKNOWN &&
         gm.theorems[id].type == GODEL_AXIOM_STATE)
         PASS();
     else

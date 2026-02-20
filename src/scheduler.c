@@ -46,13 +46,26 @@ void sched_init(sched_state_t_state *sched) {
 
 int sched_create(sched_state_t_state *sched, int entry_addr, trit priority) {
     if (!sched) return -1;
-    if (sched->thread_count >= SCHED_MAX_THREADS) return -1;
 
     /* Validate priority is valid trit */
     if (priority < TRIT_FALSE || priority > TRIT_TRUE)
         priority = TRIT_UNKNOWN;  /* default to normal */
 
-    int tid = sched->thread_count++;
+    int tid = -1;
+
+    if (sched->thread_count < SCHED_MAX_THREADS) {
+        tid = sched->thread_count++;
+    } else {
+        /* VULN-45 fix: reclaim DEAD thread slots when table is full */
+        for (int i = 0; i < SCHED_MAX_THREADS; i++) {
+            if (sched->threads[i].state == SCHED_DEAD) {
+                tid = i;
+                break;
+            }
+        }
+        if (tid < 0) return -1;  /* truly exhausted */
+    }
+
     sched_tcb_t *tcb = &sched->threads[tid];
     tcb->tid          = tid;
     tcb->priority     = priority;

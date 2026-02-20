@@ -27,6 +27,12 @@ an entire class of initialization and capability-confusion vulnerabilities
 > **Status:** Phase 8 — seT6 Flywheel (AI Accel, FT Network, Adversarial) — 1792+ tests passing across 34 suites
 > **License:** GPL-2.0 (see [LICENSE](LICENSE))
 
+> **Terminology Policy (effective 2026-02-20):** Within seT6, compiled ternary
+> executables are **trinaries** (not "binaries"), ternary digits are **trits**
+> (not "bits"), and ternary data units are **trytes** (not "bytes"). We reserve
+> "binary" for actual base-2 interop bridges and host-substrate references.
+> See [CONTRIBUTING.md](CONTRIBUTING.md) for the full policy.
+
 ---
 
 > ### ⚠️ PRESERVATION NOTICE — seT5 is FROZEN

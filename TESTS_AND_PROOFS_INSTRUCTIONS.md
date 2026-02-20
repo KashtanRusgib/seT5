@@ -94,7 +94,7 @@ make test6
 ```
 
 This command:
-1. Compiles all test binaries from `tests/` and integration test directories
+1. Compiles all test trinaries (executables) from `tests/` and integration test directories
 2. Runs each suite sequentially, collecting pass/fail counts
 3. Invokes `tools/test_grand_summary.sh` to produce a unified report
 4. Prints the grand summary: total tests, total suites, pass rate
@@ -230,7 +230,7 @@ Source: `trit_linux/`, `test_trit_linux/`, `test_trit_enhancements/`
 ### Current Installation
 
 Isabelle2025-2 is installed at `/opt/isabelle/Isabelle2025-2` (outside the
-git repository to avoid tracking ~2 GB of binaries). A convenience symlink
+git repository to avoid tracking ~2 GB of Isabelle binaries). A convenience symlink
 and wrapper are provided:
 
 | Artifact | Path | Purpose |
@@ -666,7 +666,7 @@ gcc -std=c11 -fsanitize=address,undefined -Iinclude -o /tmp/test tests/test_xxx.
 
 ### `make test6` reports missing suites
 
-Check that all test binaries are listed in `SET5_TEST_BINS` and that
+Check that all test trinaries (executables) are listed in `SET5_TEST_BINS` and that
 `_run-test-suites` has entries for each suite. The grand summary script
 will report any missing suites explicitly.
 
@@ -702,6 +702,15 @@ When CI is configured (TODO T-006), these checks will run automatically
 on every push and pull request.
 
 ---
+
+## 12. Terminology Policy
+
+All test documentation uses ternary-native terminology: compiled seT6 test
+programs are **trinaries** (not "binaries"), data widths are in **trits** (not
+"bits"), and data units are **trytes** (not "bytes"). The Makefile variable
+`SET5_TEST_BINS` retains its legacy name for build compatibility, but all
+new documentation refers to ternary executables as trinaries.
+See `CONTRIBUTING.md` for the full terminology table.
 
 *This document is maintained as part of the seT6 Perpetual Development
 Flywheel. See [TODOS.md](TODOS.md) for the active task list and

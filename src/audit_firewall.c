@@ -56,6 +56,7 @@ typedef struct {
     afw_log_entry_t log[AFW_MAX_LOG_ENTRIES];
     int             rule_count;
     int             log_count;
+    int             log_overflow_count;  /* VULN-48 fix: track dropped events */
     int             total_allowed;
     int             total_denied;
     int             total_inspected;
@@ -120,6 +121,10 @@ static inline int afw_evaluate(afw_state_t *s, int direction, int port) {
         e->port = port;
         e->action_taken = action;
         e->timestamp = s->clock++;
+    } else {
+        /* VULN-48 fix: never silently drop events — track overflow count */
+        s->log_overflow_count++;
+        s->clock++;
     }
 
     return action;

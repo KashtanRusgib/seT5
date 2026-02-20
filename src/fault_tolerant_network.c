@@ -184,6 +184,12 @@ typedef struct {
  */
 void multi_radix_route(multi_radix_router_t *router, trit dest_addr,
                       trit *next_hop, trit *path_cost) {
+    /* VULN-49 fix: NULL guard on all parameters */
+    if (!router || !next_hop || !path_cost) {
+        if (next_hop) *next_hop = TRIT_UNKNOWN;
+        if (path_cost) *path_cost = TRIT_UNKNOWN;
+        return;
+    }
     // Convert destination to current radix representation
     trit radix_addr = convert_to_radix(dest_addr, router->radix);
     (void)radix_addr;  // Used for radix-aware routing lookup

@@ -178,6 +178,8 @@ test_batch_5352_5401: tests/test_batch_5352_5401.c
 	$(CC) $(CFLAGS) -o $@ $^
 
 # Add to SET5_TEST_BINS list (around line 346):
+# (Note: SET5_TEST_BINS retains its legacy name for build compat;
+#  in docs we call these "trinaries" — ternary executables)
 # Add: test_batch_5352_5401 \
 ```
 
