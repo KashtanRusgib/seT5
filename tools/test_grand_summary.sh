@@ -683,6 +683,40 @@ else
 fi
 
 # ══════════════════════════════════════════════════════════════════════
+# 25-40. BATCH TEST SUITES  (Format D — "=== Results: P/T passed, F failed ===")
+#     Each batch uses a ##BEGIN##=== Batch NNNN-MMMM: Title === header
+#     in the Makefile _run-test-suites section.
+# ══════════════════════════════════════════════════════════════════════
+BATCH_DEFS=(
+    "Batch 5702-5751: Kleene K3 Unknown Propagation"
+    "Batch 5752-5801: Multi-Radix Neural Inference"
+    "Batch 5802-5851: Unknown-Safe IPC"
+    "Batch 5852-5901: Curiosity Simulation"
+    "Batch 5902-5951: Eudaimonic Scheduling"
+    "Batch 5952-6001: Fault-Tolerant Reversion Guards"
+    "Batch 6002-6051: Symbiotic AI-Human Interface"
+    "Batch 6052-6101: Ternary Cryptographic Uncertainty"
+    "Batch 6102-6151: PAM3 Multi-Radix Interconnect"
+    "Batch 6152-6201: Godel Machine Self-Reference"
+    "Batch 6202-6251: RSI Flywheel Safety"
+    "Batch 6252-6301: Curiosity Gradient"
+    "Batch 6302-6351: Beauty Symmetry"
+    "Batch 6352-6401: Eudaimonic Optimization"
+    "Batch 6402-6451: Balanced Ternary Arithmetic"
+    "Batch 6452-6501: Mixed-Radix Packed64 SIMD"
+)
+for bdef in "${BATCH_DEFS[@]}"; do
+    line=$(section "$LOG" "=== $bdef ===" \
+           | grep 'Results:.*passed.*failed' | head -1)
+    if [[ -n "$line" ]]; then
+        read -r p f <<< "$(extract_pf "$line")"
+        add_result "$bdef" "$p" "$f"
+    else
+        MISSING_SUITES="$MISSING_SUITES  - $bdef\n"
+    fi
+done
+
+# ══════════════════════════════════════════════════════════════════════
 #  GRAND SUMMARY TABLE
 # ══════════════════════════════════════════════════════════════════════
 GRAND_P=0

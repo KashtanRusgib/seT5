@@ -145,6 +145,14 @@ Expr *create_array_access(const char *name, Expr *index);
 /* Create an array assignment: arr[index] = value */
 Expr *create_array_assign(const char *name, Expr *index, Expr *value);
 
+/* Phase 3: Trit type constructors (ternary-first path) */
+
+/* Create a trit variable declaration: trit x = expr */
+Expr *create_trit_var_decl(const char *name, Expr *init);
+
+/* Create a trit array declaration: trit arr[size] = {init} */
+Expr *create_trit_array_decl(const char *name, int size, Expr **init_values, int init_count);
+
 /* Free an expression tree */
 void expr_free(Expr *e);
 

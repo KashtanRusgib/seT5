@@ -27,6 +27,6 @@
         "cpus": 32,
         "memory": "64gb"
     },
-    "postCreateCommand": "apt update && apt install -y gcc verilator isabelle && isabelle components -a && make deps",
+    "postCreateCommand": "apt update && apt install -y gcc verilator && pip3 install requests && make deps || true",
     "remoteUser": "vscode"
 }

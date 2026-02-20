@@ -34,28 +34,36 @@ static int heap_top = MEMORY_SIZE / 2;
 static int last_result = 0;
 
 /* --- Operand stack operations --- */
-static void push(int val) {
-    if (sp < STACK_SIZE) stack[sp++] = val;
+static void push(int val)
+{
+    if (sp < STACK_SIZE)
+        stack[sp++] = val;
 }
 
-static int pop(void) {
+static int pop(void)
+{
     return (sp > 0) ? stack[--sp] : 0;
 }
 
-static int peek(void) {
+static int peek(void)
+{
     return (sp > 0) ? stack[sp - 1] : 0;
 }
 
 /* --- Return stack operations (Setun-70 two-stack model) --- */
-static void rpush(int val) {
-    if (rsp < RSTACK_SIZE) rstack[rsp++] = val;
+static void rpush(int val)
+{
+    if (rsp < RSTACK_SIZE)
+        rstack[rsp++] = val;
 }
 
-static int rpop(void) {
+static int rpop(void)
+{
     return (rsp > 0) ? rstack[--rsp] : 0;
 }
 
-static int rpeek(void) {
+static int rpeek(void)
+{
     return (rsp > 0) ? rstack[rsp - 1] : 0;
 }
 
@@ -69,63 +77,77 @@ const char *opcode_names[] = {
     "BRZ", "BRN", "BRP", "LOOP_BEGIN", "LOOP_END", "BREAK",
     "CMP_EQ", "CMP_LT", "CMP_GT",
     "NEG", "CONSENSUS", "ACCEPT_ANY",
-    "PUSH_TRYTE", "PUSH_WORD"
-};
+    "PUSH_TRYTE", "PUSH_WORD",
+    "DIV", "MOD",
+    "PACK64", "UNPACK64", "SIMD_AND", "SIMD_OR", "SIMD_NEG"};
 
 /* === Public API === */
 
-int vm_memory_read(int addr) {
-    if (addr >= 0 && addr < MEMORY_SIZE) return memory[addr];
+int vm_memory_read(int addr)
+{
+    if (addr >= 0 && addr < MEMORY_SIZE)
+        return memory[addr];
     return 0;
 }
 
-void vm_memory_write(int addr, int value) {
-    if (addr >= 0 && addr < MEMORY_SIZE) memory[addr] = value;
+void vm_memory_write(int addr, int value)
+{
+    if (addr >= 0 && addr < MEMORY_SIZE)
+        memory[addr] = value;
 }
 
-void vm_memory_reset(void) {
-    for (int i = 0; i < MEMORY_SIZE; i++) memory[i] = 0;
+void vm_memory_reset(void)
+{
+    for (int i = 0; i < MEMORY_SIZE; i++)
+        memory[i] = 0;
     sp = 0;
     rsp = 0;
     heap_top = MEMORY_SIZE / 2;
     last_result = 0;
 }
 
-int vm_rstack_depth(void) {
+int vm_rstack_depth(void)
+{
     return rsp;
 }
 
-int vm_get_result(void) {
+int vm_get_result(void)
+{
     return last_result;
 }
 
 /* === Ternary logic helpers (trit-level, applied to int values) === */
 
 /* Ternary negation: flip sign. For balanced ternary, this flips all trits. */
-static int ternary_neg(int val) {
+static int ternary_neg(int val)
+{
     return -val;
 }
 
 /* Ternary consensus (AND-like): min(a, b) per trit.
  * For int approximation: returns the value closer to zero,
  * or the more negative if both negative. */
-static int ternary_consensus(int a, int b) {
+static int ternary_consensus(int a, int b)
+{
     /* Trit-level consensus on the integer representation */
     trit wa[WORD_SIZE], wb[WORD_SIZE], wr[WORD_SIZE];
     int_to_trit_word(a, wa);
     int_to_trit_word(b, wb);
-    for (int i = 0; i < WORD_SIZE; i++) {
+    for (int i = 0; i < WORD_SIZE; i++)
+    {
         wr[i] = trit_min(wa[i], wb[i]);
     }
     return trit_word_to_int(wr);
 }
 
 /* Ternary accept-any (OR-like): max(a, b) per trit. */
-static int ternary_accept_any(int a, int b) {
+static int ternary_accept_any(int a, int b)
+{
     trit wa[WORD_SIZE], wb[WORD_SIZE], wr[WORD_SIZE];
     int_to_trit_word(a, wa);
     int_to_trit_word(b, wb);
-    for (int i = 0; i < WORD_SIZE; i++) {
+    for (int i = 0; i < WORD_SIZE; i++)
+    {
         wr[i] = trit_max(wa[i], wb[i]);
     }
     return trit_word_to_int(wr);
@@ -133,334 +155,519 @@ static int ternary_accept_any(int a, int b) {
 
 /* === Main VM execution loop === */
 
-void vm_run(unsigned char *bytecode, size_t len) {
+void vm_run(unsigned char *bytecode, size_t len)
+{
     sp = 0;
     rsp = 0;
     LOG_DEBUG_MSG("VM", "TASK-006", "vm_run entered (two-stack model)");
 
-    for (size_t pc = 0; pc < len; ) {
+    for (size_t pc = 0; pc < len;)
+    {
         unsigned char op = bytecode[pc++];
 
-        switch (op) {
+        switch (op)
+        {
 
             /* === Phase 1: Core arithmetic & memory === */
 
-            case OP_PUSH:
-                push((int)(signed char)bytecode[pc++]);
-                break;
+        case OP_PUSH:
+            push((int)(signed char)bytecode[pc++]);
+            break;
 
-            case OP_ADD: {
-                int b = pop(), a = pop();
-                push(a + b);
-                break;
+        case OP_ADD:
+        {
+            int b = pop(), a = pop();
+            push(a + b);
+            break;
+        }
+
+        case OP_MUL:
+        {
+            int b = pop(), a = pop();
+            push(a * b);
+            break;
+        }
+
+        case OP_SUB:
+        {
+            int b = pop(), a = pop();
+            push(a - b);
+            break;
+        }
+
+        case OP_DIV:
+        {
+            int b = pop(), a = pop();
+            push(b != 0 ? a / b : 0);
+            break;
+        }
+
+        case OP_MOD:
+        {
+            int b = pop(), a = pop();
+            push(b != 0 ? a % b : 0);
+            break;
+        }
+
+        /* === SIMD Packed64 Operations === */
+        case OP_PACK64:
+        {
+            /* Pack 32 trits from stack into a single 64-bit word.
+             * Each trit encoded as 2 bits: 00=0, 01=+1, 10=-1, 11=fault.
+             * Stack: pop 32 values, pack into one uint64. */
+            unsigned long long packed = 0;
+            for (int i = 31; i >= 0; i--)
+            {
+                int tval = pop();
+                unsigned int enc = (tval == 1) ? 1 : (tval == -1) ? 2
+                                                                  : 0;
+                packed |= ((unsigned long long)enc) << (i * 2);
             }
+            push((int)(packed & 0xFFFFFFFF));
+            push((int)((packed >> 32) & 0xFFFFFFFF));
+            break;
+        }
 
-            case OP_MUL: {
-                int b = pop(), a = pop();
-                push(a * b);
-                break;
+        case OP_UNPACK64:
+        {
+            /* Unpack a 64-bit packed word back into 32 individual trits.
+             * Pop hi, lo words; push 32 trit values. */
+            unsigned long long hi = (unsigned int)pop();
+            unsigned long long lo = (unsigned int)pop();
+            unsigned long long packed = (hi << 32) | lo;
+            for (int i = 0; i < 32; i++)
+            {
+                unsigned int enc = (packed >> (i * 2)) & 3;
+                int tval = (enc == 1) ? 1 : (enc == 2) ? -1
+                                                       : 0;
+                push(tval);
             }
+            break;
+        }
 
-            case OP_SUB: {
-                int b = pop(), a = pop();
-                push(a - b);
-                break;
+        case OP_SIMD_AND:
+        {
+            /* Parallel trit AND (min) on two packed64 words.
+             * Pop b_hi, b_lo, a_hi, a_lo; push result. */
+            unsigned long long bhi = (unsigned int)pop();
+            unsigned long long blo = (unsigned int)pop();
+            unsigned long long ahi = (unsigned int)pop();
+            unsigned long long alo = (unsigned int)pop();
+            unsigned long long a = (ahi << 32) | alo;
+            unsigned long long b = (bhi << 32) | blo;
+            unsigned long long result = 0;
+            for (int i = 0; i < 32; i++)
+            {
+                int ta = ((a >> (i * 2)) & 3) == 1 ? 1 : ((a >> (i * 2)) & 3) == 2 ? -1
+                                                                                   : 0;
+                int tb = ((b >> (i * 2)) & 3) == 1 ? 1 : ((b >> (i * 2)) & 3) == 2 ? -1
+                                                                                   : 0;
+                int tr = (ta < tb) ? ta : tb; /* trit_min */
+                unsigned int enc = (tr == 1) ? 1 : (tr == -1) ? 2
+                                                              : 0;
+                result |= ((unsigned long long)enc) << (i * 2);
             }
+            push((int)(result & 0xFFFFFFFF));
+            push((int)((result >> 32) & 0xFFFFFFFF));
+            break;
+        }
 
-            case OP_JMP:
+        case OP_SIMD_OR:
+        {
+            /* Parallel trit OR (max) on two packed64 words. */
+            unsigned long long bhi = (unsigned int)pop();
+            unsigned long long blo = (unsigned int)pop();
+            unsigned long long ahi = (unsigned int)pop();
+            unsigned long long alo = (unsigned int)pop();
+            unsigned long long a = (ahi << 32) | alo;
+            unsigned long long b = (bhi << 32) | blo;
+            unsigned long long result = 0;
+            for (int i = 0; i < 32; i++)
+            {
+                int ta = ((a >> (i * 2)) & 3) == 1 ? 1 : ((a >> (i * 2)) & 3) == 2 ? -1
+                                                                                   : 0;
+                int tb = ((b >> (i * 2)) & 3) == 1 ? 1 : ((b >> (i * 2)) & 3) == 2 ? -1
+                                                                                   : 0;
+                int tr = (ta > tb) ? ta : tb; /* trit_max */
+                unsigned int enc = (tr == 1) ? 1 : (tr == -1) ? 2
+                                                              : 0;
+                result |= ((unsigned long long)enc) << (i * 2);
+            }
+            push((int)(result & 0xFFFFFFFF));
+            push((int)((result >> 32) & 0xFFFFFFFF));
+            break;
+        }
+
+        case OP_SIMD_NEG:
+        {
+            /* Parallel trit negation on a packed64 word. */
+            unsigned long long hi = (unsigned int)pop();
+            unsigned long long lo = (unsigned int)pop();
+            unsigned long long packed = (hi << 32) | lo;
+            unsigned long long result = 0;
+            for (int i = 0; i < 32; i++)
+            {
+                unsigned int enc = (packed >> (i * 2)) & 3;
+                /* Flip: 01(+1)↔10(-1), 00(0)→00(0) */
+                unsigned int neg = (enc == 1) ? 2 : (enc == 2) ? 1
+                                                               : 0;
+                result |= ((unsigned long long)neg) << (i * 2);
+            }
+            push((int)(result & 0xFFFFFFFF));
+            push((int)((result >> 32) & 0xFFFFFFFF));
+            break;
+        }
+
+        case OP_JMP:
+            pc = (size_t)bytecode[pc];
+            break;
+
+        case OP_COND_JMP:
+        {
+            int cond = pop();
+            if (cond == 0)
+            {
                 pc = (size_t)bytecode[pc];
-                break;
-
-            case OP_COND_JMP: {
-                int cond = pop();
-                if (cond == 0) {
-                    pc = (size_t)bytecode[pc];
-                } else {
-                    pc++;
-                }
-                break;
             }
-
-            case OP_LOAD: {
-                int addr = pop();
-                if (addr >= 0 && addr < MEMORY_SIZE)
-                    push(memory[addr]);
-                else
-                    push(0);
-                break;
+            else
+            {
+                pc++;
             }
+            break;
+        }
 
-            case OP_STORE: {
-                int val = pop();
-                int addr = pop();
-                if (addr >= 0 && addr < MEMORY_SIZE)
-                    memory[addr] = val;
-                break;
-            }
+        case OP_LOAD:
+        {
+            int addr = pop();
+            if (addr >= 0 && addr < MEMORY_SIZE)
+                push(memory[addr]);
+            else
+                push(0);
+            break;
+        }
 
-            case OP_SYSCALL: {
-                int sysno = pop();
-                LOG_DEBUG_MSG("VM", "TASK-016", "syscall dispatched");
-                switch (sysno) {
-                    case 0: /* t_exit */
-                        LOG_DEBUG_MSG("VM", "TASK-016", "t_exit");
-                        return;
-                    case 1: { /* t_write */
-                        int fd = pop(), addr = pop(), slen = pop();
-                        (void)fd; (void)addr;
-                        push(slen);
-                        break;
-                    }
-                    case 2: { /* t_read */
-                        int fd = pop(), addr = pop(), slen = pop();
-                        (void)fd; (void)addr; (void)slen;
-                        push(0);
-                        break;
-                    }
-                    case 3: { /* t_mmap */
-                        int sz = pop();
-                        int base = heap_top;
-                        heap_top += sz;
-                        if (heap_top > MEMORY_SIZE) heap_top = MEMORY_SIZE;
-                        push(base);
-                        break;
-                    }
-                    case 4: { /* t_cap_send */
-                        int cap = pop(), msg = pop();
-                        (void)cap; (void)msg;
-                        push(0);
-                        break;
-                    }
-                    case 5: { /* t_cap_recv */
-                        int cap = pop();
-                        (void)cap;
-                        push(42);
-                        break;
-                    }
-                    default:
-                        push(-1);
-                        break;
-                }
-                break;
-            }
+        case OP_STORE:
+        {
+            int val = pop();
+            int addr = pop();
+            if (addr >= 0 && addr < MEMORY_SIZE)
+                memory[addr] = val;
+            break;
+        }
 
-            case OP_HALT:
-                last_result = pop();
-                printf("Result: %d\n", last_result);
-                LOG_DEBUG_MSG("VM", "TASK-006", "vm_run HALT");
+        case OP_SYSCALL:
+        {
+            int sysno = pop();
+            LOG_DEBUG_MSG("VM", "TASK-016", "syscall dispatched");
+            switch (sysno)
+            {
+            case 0: /* t_exit */
+                LOG_DEBUG_MSG("VM", "TASK-016", "t_exit");
                 return;
+            case 1:
+            { /* t_write */
+                int fd = pop(), addr = pop(), slen = pop();
+                (void)fd;
+                (void)addr;
+                push(slen);
+                break;
+            }
+            case 2:
+            { /* t_read */
+                int fd = pop(), addr = pop(), slen = pop();
+                (void)fd;
+                (void)addr;
+                (void)slen;
+                push(0);
+                break;
+            }
+            case 3:
+            { /* t_mmap */
+                int sz = pop();
+                int base = heap_top;
+                heap_top += sz;
+                if (heap_top > MEMORY_SIZE)
+                    heap_top = MEMORY_SIZE;
+                push(base);
+                break;
+            }
+            case 4:
+            { /* t_cap_send */
+                int cap = pop(), msg = pop();
+                (void)cap;
+                (void)msg;
+                push(0);
+                break;
+            }
+            case 5:
+            { /* t_cap_recv */
+                int cap = pop();
+                (void)cap;
+                push(42);
+                break;
+            }
+            default:
+                push(-1);
+                break;
+            }
+            break;
+        }
+
+        case OP_HALT:
+            last_result = pop();
+            printf("Result: %d\n", last_result);
+            LOG_DEBUG_MSG("VM", "TASK-006", "vm_run HALT");
+            return;
 
             /* === Phase 3: Stack manipulation (Setun-70 postfix) === */
 
-            case OP_DUP: {
-                int val = peek();
-                push(val);
-                break;
-            }
+        case OP_DUP:
+        {
+            int val = peek();
+            push(val);
+            break;
+        }
 
-            case OP_DROP:
-                pop();
-                break;
+        case OP_DROP:
+            pop();
+            break;
 
-            case OP_SWAP: {
-                int b = pop(), a = pop();
-                push(b);
-                push(a);
-                break;
-            }
+        case OP_SWAP:
+        {
+            int b = pop(), a = pop();
+            push(b);
+            push(a);
+            break;
+        }
 
-            case OP_OVER: {
-                int b = pop(), a = pop();
-                push(a);
-                push(b);
-                push(a);
-                break;
-            }
+        case OP_OVER:
+        {
+            int b = pop(), a = pop();
+            push(a);
+            push(b);
+            push(a);
+            break;
+        }
 
-            case OP_ROT: {
-                int c = pop(), b = pop(), a = pop();
-                push(b);
-                push(c);
-                push(a);
-                break;
-            }
+        case OP_ROT:
+        {
+            int c = pop(), b = pop(), a = pop();
+            push(b);
+            push(c);
+            push(a);
+            break;
+        }
 
             /* === Phase 3: Return stack ops (two-stack model) === */
 
-            case OP_TO_R:
-                rpush(pop());
-                break;
+        case OP_TO_R:
+            rpush(pop());
+            break;
 
-            case OP_FROM_R:
-                push(rpop());
-                break;
+        case OP_FROM_R:
+            push(rpop());
+            break;
 
-            case OP_R_FETCH:
-                push(rpeek());
-                break;
+        case OP_R_FETCH:
+            push(rpeek());
+            break;
 
             /* === Phase 3: Function call convention === */
 
-            case OP_CALL: {
-                /* Push return address (PC after addr byte) to return stack */
-                size_t target = (size_t)bytecode[pc++];
-                rpush((int)(pc));  /* return to instruction after CALL */
-                pc = target;
-                break;
+        case OP_CALL:
+        {
+            /* Push return address (PC after addr byte) to return stack */
+            size_t target = (size_t)bytecode[pc++];
+            rpush((int)(pc)); /* return to instruction after CALL */
+            pc = target;
+            break;
+        }
+
+        case OP_RET:
+        {
+            /* Pop return address from return stack, continue there */
+            int ret_addr = rpop();
+            pc = (size_t)ret_addr;
+            break;
+        }
+
+        case OP_ENTER:
+            /* Push frame marker (-1 sentinel) to return stack */
+            rpush(-1);
+            break;
+
+        case OP_LEAVE:
+            /* Pop return stack until frame marker (-1) */
+            while (rsp > 0 && rpeek() != -1)
+            {
+                rpop();
             }
-
-            case OP_RET: {
-                /* Pop return address from return stack, continue there */
-                int ret_addr = rpop();
-                pc = (size_t)ret_addr;
-                break;
-            }
-
-            case OP_ENTER:
-                /* Push frame marker (-1 sentinel) to return stack */
-                rpush(-1);
-                break;
-
-            case OP_LEAVE:
-                /* Pop return stack until frame marker (-1) */
-                while (rsp > 0 && rpeek() != -1) {
-                    rpop();
-                }
-                if (rsp > 0) rpop(); /* pop the marker itself */
-                break;
+            if (rsp > 0)
+                rpop(); /* pop the marker itself */
+            break;
 
             /* === Phase 3: Structured control flow (DSSP-style) === */
 
-            case OP_BRZ: {
-                /* Branch if zero: pop TOS, if 0 skip to addr, else continue */
-                int cond = pop();
-                if (cond == 0) {
-                    pc = (size_t)bytecode[pc];
-                } else {
-                    pc++; /* skip addr byte */
-                }
-                break;
+        case OP_BRZ:
+        {
+            /* Branch if zero: pop TOS, if 0 skip to addr, else continue */
+            int cond = pop();
+            if (cond == 0)
+            {
+                pc = (size_t)bytecode[pc];
             }
-
-            case OP_BRN: {
-                /* Branch if negative */
-                int cond = pop();
-                if (cond < 0) {
-                    pc = (size_t)bytecode[pc];
-                } else {
-                    pc++;
-                }
-                break;
+            else
+            {
+                pc++; /* skip addr byte */
             }
+            break;
+        }
 
-            case OP_BRP: {
-                /* Branch if positive */
-                int cond = pop();
-                if (cond > 0) {
-                    pc = (size_t)bytecode[pc];
-                } else {
-                    pc++;
-                }
-                break;
+        case OP_BRN:
+        {
+            /* Branch if negative */
+            int cond = pop();
+            if (cond < 0)
+            {
+                pc = (size_t)bytecode[pc];
             }
-
-            case OP_LOOP_BEGIN:
-                /* Push current PC (loop body start) to return stack */
-                rpush((int)pc);
-                break;
-
-            case OP_LOOP_END: {
-                /* Pop condition; if !=0, jump back to loop start (rstack TOS) */
-                int cond = pop();
-                if (cond != 0) {
-                    pc = (size_t)rpeek(); /* jump to loop start */
-                } else {
-                    rpop(); /* done: remove loop addr from return stack */
-                }
-                break;
+            else
+            {
+                pc++;
             }
+            break;
+        }
 
-            case OP_BREAK:
-                /* Exit loop: pop loop address from return stack, skip to end */
-                if (rsp > 0) rpop();
-                /* Scan forward for matching LOOP_END */
-                while (pc < len && bytecode[pc] != OP_LOOP_END) {
-                    /* Skip operand bytes for opcodes that have them */
-                    unsigned char skip_op = bytecode[pc++];
-                    if (skip_op == OP_PUSH || skip_op == OP_JMP ||
-                        skip_op == OP_COND_JMP || skip_op == OP_BRZ ||
-                        skip_op == OP_BRN || skip_op == OP_BRP ||
-                        skip_op == OP_CALL || skip_op == OP_PUSH_TRYTE) {
-                        pc++; /* skip 1-byte operand */
-                    } else if (skip_op == OP_PUSH_WORD) {
-                        pc += 2; /* skip 2-byte operand */
-                    }
+        case OP_BRP:
+        {
+            /* Branch if positive */
+            int cond = pop();
+            if (cond > 0)
+            {
+                pc = (size_t)bytecode[pc];
+            }
+            else
+            {
+                pc++;
+            }
+            break;
+        }
+
+        case OP_LOOP_BEGIN:
+            /* Push current PC (loop body start) to return stack */
+            rpush((int)pc);
+            break;
+
+        case OP_LOOP_END:
+        {
+            /* Pop condition; if !=0, jump back to loop start (rstack TOS) */
+            int cond = pop();
+            if (cond != 0)
+            {
+                pc = (size_t)rpeek(); /* jump to loop start */
+            }
+            else
+            {
+                rpop(); /* done: remove loop addr from return stack */
+            }
+            break;
+        }
+
+        case OP_BREAK:
+            /* Exit loop: pop loop address from return stack, skip to end */
+            if (rsp > 0)
+                rpop();
+            /* Scan forward for matching LOOP_END */
+            while (pc < len && bytecode[pc] != OP_LOOP_END)
+            {
+                /* Skip operand bytes for opcodes that have them */
+                unsigned char skip_op = bytecode[pc++];
+                if (skip_op == OP_PUSH || skip_op == OP_JMP ||
+                    skip_op == OP_COND_JMP || skip_op == OP_BRZ ||
+                    skip_op == OP_BRN || skip_op == OP_BRP ||
+                    skip_op == OP_CALL || skip_op == OP_PUSH_TRYTE)
+                {
+                    pc++; /* skip 1-byte operand */
                 }
-                if (pc < len) pc++; /* skip past LOOP_END itself */
-                break;
+                else if (skip_op == OP_PUSH_WORD)
+                {
+                    pc += 2; /* skip 2-byte operand */
+                }
+            }
+            if (pc < len)
+                pc++; /* skip past LOOP_END itself */
+            break;
 
             /* === Phase 3: Comparison ops === */
 
-            case OP_CMP_EQ: {
-                int b = pop(), a = pop();
-                push(a == b ? 1 : 0);
-                break;
-            }
+        case OP_CMP_EQ:
+        {
+            int b = pop(), a = pop();
+            push(a == b ? 1 : 0);
+            break;
+        }
 
-            case OP_CMP_LT: {
-                /* Ternary comparison: returns -1, 0, or 1 */
-                int b = pop(), a = pop();
-                push(a < b ? 1 : (a > b ? -1 : 0));
-                break;
-            }
+        case OP_CMP_LT:
+        {
+            /* Ternary comparison: returns -1, 0, or 1 */
+            int b = pop(), a = pop();
+            push(a < b ? 1 : (a > b ? -1 : 0));
+            break;
+        }
 
-            case OP_CMP_GT: {
-                int b = pop(), a = pop();
-                push(a > b ? 1 : (a < b ? -1 : 0));
-                break;
-            }
+        case OP_CMP_GT:
+        {
+            int b = pop(), a = pop();
+            push(a > b ? 1 : (a < b ? -1 : 0));
+            break;
+        }
 
             /* === Phase 3: Ternary logic gates === */
 
-            case OP_NEG: {
-                int val = pop();
-                push(ternary_neg(val));
-                break;
-            }
+        case OP_NEG:
+        {
+            int val = pop();
+            push(ternary_neg(val));
+            break;
+        }
 
-            case OP_CONSENSUS: {
-                int b = pop(), a = pop();
-                push(ternary_consensus(a, b));
-                break;
-            }
+        case OP_CONSENSUS:
+        {
+            int b = pop(), a = pop();
+            push(ternary_consensus(a, b));
+            break;
+        }
 
-            case OP_ACCEPT_ANY: {
-                int b = pop(), a = pop();
-                push(ternary_accept_any(a, b));
-                break;
-            }
+        case OP_ACCEPT_ANY:
+        {
+            int b = pop(), a = pop();
+            push(ternary_accept_any(a, b));
+            break;
+        }
 
             /* === Phase 3: Extended data === */
 
-            case OP_PUSH_TRYTE: {
-                /* Read 1-byte tryte index, convert 6-trit value */
-                int idx = (int)(signed char)bytecode[pc++];
-                push(idx);  /* Phase 1: treat as integer */
-                break;
-            }
+        case OP_PUSH_TRYTE:
+        {
+            /* Read 1-byte tryte index, convert 6-trit value */
+            int idx = (int)(signed char)bytecode[pc++];
+            push(idx); /* Phase 1: treat as integer */
+            break;
+        }
 
-            case OP_PUSH_WORD: {
-                /* Read 2-byte packed 9-trit word value */
-                int lo = (int)(unsigned char)bytecode[pc++];
-                int hi = (int)(signed char)bytecode[pc++];
-                push((hi << 8) | lo);
-                break;
-            }
+        case OP_PUSH_WORD:
+        {
+            /* Read 2-byte packed 9-trit word value */
+            int lo = (int)(unsigned char)bytecode[pc++];
+            int hi = (int)(signed char)bytecode[pc++];
+            push((hi << 8) | lo);
+            break;
+        }
 
-            default:
-                fprintf(stderr, "VM: unknown opcode %d at pc=%zu\n",
-                        op, pc - 1);
-                return;
+        default:
+            fprintf(stderr, "VM: unknown opcode %d at pc=%zu\n",
+                    op, pc - 1);
+            return;
         }
     }
 }

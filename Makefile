@@ -157,6 +157,30 @@ test_batch_6102_6151: tests/test_batch_6102_6151.c
 test_batch_6152_6201: tests/test_batch_6152_6201.c
 	$(CC) $(CFLAGS) -o $@ $<
 
+# ---- Batch 6202-6251: RSI Flywheel Safety ----
+test_batch_6202_6251: tests/test_batch_6202_6251.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 6252-6301: Curiosity Gradient Verification ----
+test_batch_6252_6301: tests/test_batch_6252_6301.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 6302-6351: Beauty Symmetry Verification ----
+test_batch_6302_6351: tests/test_batch_6302_6351.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 6352-6401: Eudaimonic Optimization ----
+test_batch_6352_6401: tests/test_batch_6352_6401.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+# ---- Batch 6402-6451: Balanced Ternary Arithmetic ----
+test_batch_6402_6451: tests/test_batch_6402_6451.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
+# ---- Batch 6452-6501: Mixed-Radix Packed64 SIMD ----
+test_batch_6452_6501: tests/test_batch_6452_6501.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
 # ---- Symbiotic AI Module ----
 test_symbiotic_ai: tests/test_symbiotic_ai.c src/symbiotic_ai.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -488,6 +512,8 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_batch_5852_5901 test_batch_5902_5951 test_batch_5952_6001 \
                  test_batch_6002_6051 test_batch_6052_6101 test_batch_6102_6151 \
                  test_batch_6152_6201 \
+                 test_batch_6202_6251 test_batch_6252_6301 test_batch_6302_6351 \
+                 test_batch_6352_6401 test_batch_6402_6451 test_batch_6452_6501 \
                  test_symbiotic_ai \
                  test_symbiotic_curiosity test_symbiotic_beauty test_symbiotic_eudaimonia \
                  test_red_team_trit_range test_red_team_binary_reversion \
@@ -642,6 +668,18 @@ _run-test-suites:
 	-$(MAKE) test_batch_6102_6151 && ./test_batch_6102_6151
 	@echo "##BEGIN##=== Batch 6152-6201: Godel Machine Self-Reference ==="
 	-$(MAKE) test_batch_6152_6201 && ./test_batch_6152_6201
+	@echo "##BEGIN##=== Batch 6202-6251: RSI Flywheel Safety ==="
+	-$(MAKE) test_batch_6202_6251 && ./test_batch_6202_6251
+	@echo "##BEGIN##=== Batch 6252-6301: Curiosity Gradient ==="
+	-$(MAKE) test_batch_6252_6301 && ./test_batch_6252_6301
+	@echo "##BEGIN##=== Batch 6302-6351: Beauty Symmetry ==="
+	-$(MAKE) test_batch_6302_6351 && ./test_batch_6302_6351
+	@echo "##BEGIN##=== Batch 6352-6401: Eudaimonic Optimization ==="
+	-$(MAKE) test_batch_6352_6401 && ./test_batch_6352_6401
+	@echo "##BEGIN##=== Batch 6402-6451: Balanced Ternary Arithmetic ==="
+	-$(MAKE) test_batch_6402_6451 && ./test_batch_6402_6451
+	@echo "##BEGIN##=== Batch 6452-6501: Mixed-Radix Packed64 SIMD ==="
+	-$(MAKE) test_batch_6452_6501 && ./test_batch_6452_6501
 	@echo "##BEGIN##=== Symbiotic AI Module ==="
 	-$(MAKE) test_symbiotic_ai && ./test_symbiotic_ai
 	@echo "##BEGIN##=== Suite 86: Symbiotic Curiosity Prover ==="
@@ -770,6 +808,8 @@ clean:
 	rm -f test_sigma9_mcp test_hybrid_ai test_stress
 	rm -f test_godel_machine test_trit_simd_regression test_binary_sentinel
 	rm -f test_ternary_compiler_integration
+	rm -f test_batch_6202_6251 test_batch_6252_6301 test_batch_6302_6351
+	rm -f test_batch_6352_6401 test_batch_6402_6451 test_batch_6452_6501
 	rm -f trithon/libtrithon.so
 
 # ══════════════════════════════════════════════════════════════════════
@@ -941,3 +981,39 @@ godel-archive:
 
 .PHONY: all
 all: build-set5
+
+# ══════════════════════════════════════════════════════════════════════
+#  GROK API INTEGRATION (via FEB192026FORGITHUB secret)
+# ══════════════════════════════════════════════════════════════════════
+.PHONY: grok-reason grok-optimize grok-curiosity grok-flywheel parallel-test
+
+grok-reason:
+	@echo "╔═══════════════════════════════════════════════════════════╗"
+	@echo "║  Grok-4-1-fast-reasoning — Direct Query                 ║"
+	@echo "╚═══════════════════════════════════════════════════════════╝"
+	@python3 src/grok_api.py $(QUERY)
+
+grok-optimize:
+	@echo "╔═══════════════════════════════════════════════════════════╗"
+	@echo "║  Grok-4-1-fast-reasoning — Code Optimization            ║"
+	@echo "╚═══════════════════════════════════════════════════════════╝"
+	@python3 src/grok_api.py --optimize $(CTX_FILE) "$(INSTRUCTION)"
+
+grok-curiosity:
+	@echo "╔═══════════════════════════════════════════════════════════╗"
+	@echo "║  Grok-4-1-fast-reasoning — Curiosity Proof              ║"
+	@echo "╚═══════════════════════════════════════════════════════════╝"
+	@python3 src/grok_api.py --curiosity "$(HYPOTHESIS)"
+
+grok-flywheel:
+	@echo "╔═══════════════════════════════════════════════════════════╗"
+	@echo "║  RSI Flywheel — Grok + Copilot + Codespace Compute      ║"
+	@echo "╚═══════════════════════════════════════════════════════════╝"
+	@python3 grok_seT6_optimizer.py
+
+parallel-test:
+	@echo "╔═══════════════════════════════════════════════════════════╗"
+	@echo "║  Parallel Test ($(shell nproc) cores)                    ║"
+	@echo "╚═══════════════════════════════════════════════════════════╝"
+	$(MAKE) -j$(shell nproc) alltest
+

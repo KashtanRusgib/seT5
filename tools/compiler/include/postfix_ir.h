@@ -19,52 +19,57 @@
 #include "ir.h"
 
 /* Postfix instruction types */
-typedef enum {
-    PF_PUSH_CONST,      /* Push integer constant */
-    PF_PUSH_VAR,        /* Push variable (load from memory) */
-    PF_STORE_VAR,       /* Store to variable */
-    PF_ADD,             /* a + b */
-    PF_SUB,             /* a - b */
-    PF_MUL,             /* a * b */
-    PF_CMP_EQ,          /* a == b */
-    PF_CMP_LT,          /* a < b */
-    PF_CMP_GT,          /* a > b */
-    PF_NEG,             /* Ternary negation */
-    PF_CONSENSUS,       /* Ternary AND (min) */
-    PF_ACCEPT_ANY,      /* Ternary OR (max) */
-    PF_BRZ,             /* Branch if zero (offset) */
-    PF_BRN,             /* Branch if negative (offset) */
-    PF_BRP,             /* Branch if positive (offset) */
-    PF_JMP,             /* Unconditional jump (offset) */
-    PF_LOOP_BEGIN,      /* Loop start marker */
-    PF_LOOP_END,        /* Loop end (branch back if nonzero) */
-    PF_CALL,            /* Function call */
-    PF_RET,             /* Return */
-    PF_ENTER,           /* Enter scope (push frame) */
-    PF_LEAVE,           /* Leave scope (pop frame) */
-    PF_DEREF,           /* Pointer dereference */
-    PF_ADDR_OF,         /* Address-of */
-    PF_DUP,             /* Duplicate TOS */
-    PF_DROP,            /* Drop TOS */
-    PF_HALT,            /* Halt execution */
-    PF_NOP,             /* No operation (placeholder) */
-    PF_LABEL            /* Label (target for jumps, not emitted) */
+typedef enum
+{
+    PF_PUSH_CONST, /* Push integer constant */
+    PF_PUSH_VAR,   /* Push variable (load from memory) */
+    PF_STORE_VAR,  /* Store to variable */
+    PF_ADD,        /* a + b */
+    PF_SUB,        /* a - b */
+    PF_MUL,        /* a * b */
+    PF_DIV,        /* a / b */
+    PF_MOD,        /* a % b */
+    PF_CMP_EQ,     /* a == b */
+    PF_CMP_LT,     /* a < b */
+    PF_CMP_GT,     /* a > b */
+    PF_NEG,        /* Ternary negation */
+    PF_CONSENSUS,  /* Ternary AND (min) */
+    PF_ACCEPT_ANY, /* Ternary OR (max) */
+    PF_BRZ,        /* Branch if zero (offset) */
+    PF_BRN,        /* Branch if negative (offset) */
+    PF_BRP,        /* Branch if positive (offset) */
+    PF_JMP,        /* Unconditional jump (offset) */
+    PF_LOOP_BEGIN, /* Loop start marker */
+    PF_LOOP_END,   /* Loop end (branch back if nonzero) */
+    PF_CALL,       /* Function call */
+    PF_RET,        /* Return */
+    PF_ENTER,      /* Enter scope (push frame) */
+    PF_LEAVE,      /* Leave scope (pop frame) */
+    PF_DEREF,      /* Pointer dereference */
+    PF_ADDR_OF,    /* Address-of */
+    PF_DUP,        /* Duplicate TOS */
+    PF_DROP,       /* Drop TOS */
+    PF_HALT,       /* Halt execution */
+    PF_NOP,        /* No operation (placeholder) */
+    PF_LABEL       /* Label (target for jumps, not emitted) */
 } PostfixOp;
 
 /* Single postfix instruction */
-typedef struct {
+typedef struct
+{
     PostfixOp op;
-    int operand;        /* For PUSH_CONST: value; for BRZ/JMP: target index;
-                           for PUSH_VAR/STORE_VAR: var offset; for LABEL: label id */
-    char *name;         /* For PUSH_VAR/STORE_VAR/CALL: variable/function name */
+    int operand; /* For PUSH_CONST: value; for BRZ/JMP: target index;
+                    for PUSH_VAR/STORE_VAR: var offset; for LABEL: label id */
+    char *name;  /* For PUSH_VAR/STORE_VAR/CALL: variable/function name */
 } PostfixInstr;
 
 /* Postfix instruction sequence */
-typedef struct {
+typedef struct
+{
     PostfixInstr *instrs;
     int count;
     int capacity;
-    int next_label;     /* Label counter for control flow */
+    int next_label; /* Label counter for control flow */
 } PostfixSeq;
 
 /* Initialize a postfix sequence */
