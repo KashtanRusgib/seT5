@@ -270,6 +270,28 @@ extern "C"
         ? 0                                                           \
         : -1)
 
+/* --- T-027: Heptavintimal (Base-27) Gate Aliases (Bos 2024) ----------- */
+
+/*
+ * Heptavintimal indices are 1-4 character strings drawn from the set
+ * {0-9,A-Z} in base-27, uniquely labelling all 19683 diadic ternary functions.
+ * These aliases map common gates onto seT5 trit primitives.
+ * Diadic: SUM(7PB)=sum, MIN(PC0)=AND, MAX(ZRP)=OR, MLE(H51)=le, CONS(RDC)=carry
+ * Monadic: NTI(2)=NOT, BUF(K)=id, INC(7)=+1, DEC(B)=-1, PTI(8)=pos, STI(5)=sign
+ */
+#define TRIT_GATE_SUM(a, b)     ((trit)(((int)(a)+(int)(b)>1)?1:((int)(a)+(int)(b)<-1)?-1:(int)((a)+(b))))
+#define TRIT_GATE_MIN(a, b)   trit_and((a),(b))
+#define TRIT_GATE_MAX(a, b)   trit_or((a),(b))
+#define TRIT_GATE_MLE(a, b)   ((trit)((a)<=(b)?1:-1))
+#define TRIT_GATE_CONS(a, b)  ((trit)(((a)==(b))?(a):TRIT_UNKNOWN))
+#define TRIT_GATE_NTI(a)      trit_not((a))
+#define TRIT_GATE_BUF(a)      (a)
+#define TRIT_GATE_INC(a)      ((trit)(((int)(a)+1>1)?1:(int)(a)+1))
+#define TRIT_GATE_DEC(a)      ((trit)(((int)(a)-1<-1)?-1:(int)(a)-1))
+#define TRIT_GATE_PTI(a)      ((trit)((a)==TRIT_TRUE?1:-1))
+#define TRIT_GATE_STI(a)      ((trit)((a)>0?1:(a)<0?-1:0))
+#define TRIT_GATE_MTI(a)      ((trit)((a)==TRIT_UNKNOWN?1:-1))
+
 #ifdef __cplusplus
 }
 #endif

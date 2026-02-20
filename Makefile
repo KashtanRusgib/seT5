@@ -213,6 +213,10 @@ test_red_team_packed_hardened: tests/test_red_team_packed_hardened.c
 test_ternary_formal_suite: tests/test_ternary_formal_suite.c
 	$(CC) $(CFLAGS) -o $@ $< -lm
 
+# ---- Suite 99: Mixed-Radix Bos Thesis Enhancements ----
+test_mixed_radix_bos: tests/test_mixed_radix_bos.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
 # ---- Scheduler concurrency test ----
 test_scheduler_concurrency: tests/test_scheduler_concurrency.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -481,6 +485,7 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_red_team_type test_red_team_deep \
                  test_red_team_packed_hardened \
 			 test_ternary_formal_suite \
+			 test_mixed_radix_bos \
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
 # No stale binary ever executes — each is deleted and recompiled before running.
@@ -654,6 +659,8 @@ _run-test-suites:
 	-$(MAKE) test_red_team_packed_hardened && ./test_red_team_packed_hardened
 	@echo "##BEGIN##=== Suite 98: Formal-Verification-Driven Ternary Improvements ==="
 	-$(MAKE) test_ternary_formal_suite && ./test_ternary_formal_suite
+	@echo "##BEGIN##=== Suite 99: Mixed-Radix Bos Thesis Enhancements ==="
+	-$(MAKE) test_mixed_radix_bos && ./test_mixed_radix_bos
 # ──────────────────────────────────────────────────────────────────────
 # Master test target: the ONE command that runs ALL tests.
 #

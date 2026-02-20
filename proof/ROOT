@@ -13,3 +13,5 @@ session seT6_Proofs = HOL +
     TritSTE
     TritTMR
     TritAbsInterp
+    TritMRCS
+    TritQDR

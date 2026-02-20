@@ -6140,6 +6140,42 @@ Run `make alltest` (or equivalently `make test`) to confirm:
 | 74 | L45 | TFA: 2 + 1 + 0 = 0, carry 1 | Mixed Values | `sum == 0` | Arithmetic |
 | 74 | L46 | TFA: 2 + 1 + 0 = 0, carry 1 | Mixed Values | `cout == 1` | Arithmetic |
 
+
+---
+
+## Suite 99 — Mixed-Radix Bos Thesis Enhancements (Tests 6702–6751)
+
+**Source**: `tests/test_mixed_radix_bos.c` | **Assertions**: 50 | **Sigma 9**: ✅ ALL PASS
+
+**Purpose**: Verifies in C the key properties from Steven Bos, "Mixed-Radix Circuit
+Synthesis" (PhD thesis, TU Eindhoven, 2024). Exercises four new header APIs:
+`trit_mrcs.h`, `trit_qdr.h`, `trit_rebel2.h`, `trit_rram.h`.
+
+**New Isabelle Theories**: `proof/TritMRCS.thy` (mrcs_synthesis_sound, mrcs_bet_kleene_equiv),
+`proof/TritQDR.thy` (qdr_edge_soundness, qdr_power_reduction_75pct, qdr_no_fault_output).
+**Extended**: `LatticeCrypto.thy` (rebel2_isa_ternary_error_full), `TCAMSearch.thy`
+(tcam_heptavintimal_soundness). No `sorry` stubs.
+
+| Section | Tests | Headers Exercised | Isabelle Coverage |
+|---------|------:|-------------------|-------------------|
+| A: MRCS BET Encoding | 10 (6702–6711) | `trit_mrcs.h` | `TritMRCS.thy` §mrcs_bet_kleene_equiv |
+| B: QDR Flip-Flop | 10 (6712–6721) | `trit_qdr.h` | `TritQDR.thy` §qdr_edge_soundness |
+| C: REBEL-2 ISA | 10 (6722–6731) | `trit_rebel2.h` | `LatticeCrypto.thy` §rebel2_isa |
+| D: Heptavintimal Gates | 10 (6732–6741) | `trit_mrcs.h` | `TCAMSearch.thy` §tcam_heptavintimal |
+| E: Integration | 10 (6742–6751) | All four headers | All four theories |
+
+**Key properties verified:**
+- BET encode/decode/pack32/unpack32 roundtrip lossless for all {-1, 0, +1} trits
+- QDR: exactly 4 active clock edges (RISE_POS, FALL_POS, FALL_NEG, RISE_NEG)
+- QDR power model ≤ 25% of SDR baseline (75% CTN power reduction, Bos Fig. G.15)
+- REBEL-2 radix LUT: binary {0..15} ↔ balanced ternary, integer value correct
+- REBEL-2 RSET/RMOV/HALT ISA instructions execute correctly
+- RRAM HRS/MRS/LRS ↔ FALSE/UNKNOWN/TRUE conversion exact
+- RRAM write_cycles tracked; endurance degradation model (200 cycles)
+- Heptavintimal gate names: SUM(7PB), CONS(RDC), MIN(PC0), MAX(ZRP), MLE(H51),
+  NTI(2), BUF(K), INC(7), DEC(B) all correct; unknown index → "UNKNOWN"
+- Sigma 9 integration: BET+QDR+REBEL-2+RRAM all properties hold simultaneously
+
 ---
 
 ### Current Totals (as of 2026-02-19)
@@ -6593,10 +6629,10 @@ verified C tests: Symbolic Ternary Trajectory Evaluation (STE), Triple Modular R
 
 | Metric | Active | Including Disabled |
 |--------|-------:|-------------------:|
-| **Test Suites** | **98** | **102** |
-| **Runtime Assertions** | **6283** | **6366** |
+| **Test Suites** | **99** | **102** |
+| **Runtime Assertions** | **6333** | **6366** |
 | **Source-Level Entries** | **5938** | **5978** |
-| **Test Source Files** | **99** | **102** |
+| **Test Source Files** | **100** | **102** |
 
 > **Corner 3 Milestone**: Batches 99–108 (500 assertions, tests 5702–6201) added.
 > test_6201 marks the seT6 Gödel Machine civilisational-alignment pledge.
