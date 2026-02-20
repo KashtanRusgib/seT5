@@ -177,17 +177,32 @@ void tcrypto_hash(trit *digest, const trit *msg, int msg_len) {
 
 /* ---- Key API ---------------------------------------------------------- */
 
-void tcrypto_keygen(tcrypto_key_t *key, uint32_t seed) {
-    uint32_t rng = seed;
+/* VULN-23 fix: full-entropy trit seed instead of 32-bit integer */
+void tcrypto_keygen(tcrypto_key_t *key, const trit *seed, int seed_len) {
+    if (!key) return;
 
     key->length = TCRYPTO_KEY_TRITS;
-    for (int i = 0; i < TCRYPTO_KEY_TRITS; i++)
-        key->data[i] = trit_from_rng(&rng);
 
-    /* Hash the raw key for uniformity */
-    trit digest[TCRYPTO_HASH_TRITS];
-    tcrypto_hash(digest, key->data, TCRYPTO_KEY_TRITS);
-    memcpy(key->data, digest, TCRYPTO_KEY_TRITS * sizeof(trit));
+    /* Derive key from seed using hash-based expansion */
+    if (seed && seed_len > 0) {
+        trit digest[TCRYPTO_HASH_TRITS];
+        tcrypto_hash(digest, seed, seed_len);
+        /* Use hash output as key material */
+        int copy = (TCRYPTO_HASH_TRITS < TCRYPTO_KEY_TRITS) ? TCRYPTO_HASH_TRITS : TCRYPTO_KEY_TRITS;
+        memcpy(key->data, digest, copy * sizeof(trit));
+        /* If key is longer than hash, do iterative hashing */
+        int filled = copy;
+        while (filled < TCRYPTO_KEY_TRITS) {
+            tcrypto_hash(digest, key->data, filled);
+            int chunk = (TCRYPTO_HASH_TRITS < TCRYPTO_KEY_TRITS - filled) ? TCRYPTO_HASH_TRITS : (TCRYPTO_KEY_TRITS - filled);
+            memcpy(&key->data[filled], digest, chunk * sizeof(trit));
+            filled += chunk;
+        }
+    } else {
+        /* No seed: zero-init (caller's responsibility to provide entropy) */
+        for (int i = 0; i < TCRYPTO_KEY_TRITS; i++)
+            key->data[i] = TRIT_UNKNOWN;
+    }
 }
 
 int tcrypto_key_compare(const tcrypto_key_t *a, const tcrypto_key_t *b) {

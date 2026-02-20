@@ -108,9 +108,26 @@ extern "C"
         return v != TRIT_UNKNOWN;
     }
 
-    /* Safe-to-true: conservative collapse — unknown becomes false */
+    /* VULN-30 fix: renamed from trit_to_bool_safe — clear semantics.
+     * Returns 1 iff value is TRUE. UNKNOWN→0 is intentional conservative collapse. */
+    static inline int trit_is_true(trit v)
+    {
+        return v == TRIT_TRUE;
+    }
+
+    /* Legacy alias (backward compat) — prefer trit_is_true() */
     static inline int trit_to_bool_safe(trit v)
     {
+        return trit_is_true(v);
+    }
+
+    /* VULN-30 fix: strict variant that signals error on UNKNOWN */
+    static inline int trit_to_bool_strict(trit v, int *err)
+    {
+        if (v == TRIT_UNKNOWN) {
+            if (err) *err = 1;
+            return 0;
+        }
         return v == TRIT_TRUE;
     }
 
@@ -288,6 +305,9 @@ extern "C"
 #define TRIT_GATE_BUF(a)      (a)
 #define TRIT_GATE_INC(a)      ((trit)(((int)(a)+1>1)?1:(int)(a)+1))
 #define TRIT_GATE_DEC(a)      ((trit)(((int)(a)-1<-1)?-1:(int)(a)-1))
+/* VULN-31 note: PTI collapses UNKNOWN→FALSE (by design — it's a "positive test").
+ * MTI collapses non-UNKNOWN→FALSE (by design — it's an "unknown test").
+ * Both are intentional projections for hardware gate semantics, not logic errors. */
 #define TRIT_GATE_PTI(a)      ((trit)((a)==TRIT_TRUE?1:-1))
 #define TRIT_GATE_STI(a)      ((trit)((a)>0?1:(a)<0?-1:0))
 #define TRIT_GATE_MTI(a)      ((trit)((a)==TRIT_UNKNOWN?1:-1))

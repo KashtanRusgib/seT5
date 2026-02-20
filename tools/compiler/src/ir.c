@@ -14,10 +14,11 @@
 static Expr *alloc_expr(void)
 {
     Expr *e = (Expr *)malloc(sizeof(Expr));
+    /* VULN-07 fix: return NULL instead of exit(1) — let caller handle OOM */
     if (e == NULL)
     {
         fprintf(stderr, "ir: malloc failed\n");
-        exit(1);
+        return NULL;
     }
     e->type = NODE_CONST;
     e->val = 0;

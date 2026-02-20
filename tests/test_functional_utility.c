@@ -565,18 +565,18 @@ static void test_crypto_keygen(void) {
     printf("\n--- Crypto: Key Generation ---\n");
     tcrypto_key_t k1, k2;
 
-    tcrypto_keygen(&k1, 0x12345678);
-    tcrypto_keygen(&k2, 0x12345678);
+    tcrypto_keygen_from_int(&k1, 0x12345678);
+    tcrypto_keygen_from_int(&k2, 0x12345678);
     CHECK("same seed → same key", tcrypto_key_compare(&k1, &k2) == 0);
 
-    tcrypto_keygen(&k2, 0xABCDEF00);
+    tcrypto_keygen_from_int(&k2, 0xABCDEF00);
     CHECK("different seed → different key", tcrypto_key_compare(&k1, &k2) != 0);
 }
 
 static void test_crypto_encrypt_decrypt(void) {
     printf("\n--- Crypto: Encrypt/Decrypt Roundtrip ---\n");
     tcrypto_key_t key;
-    tcrypto_keygen(&key, 42);
+    tcrypto_keygen_from_int(&key, 42);
 
     trit iv[TCRYPTO_MAC_TRITS];
     for (int i = 0; i < TCRYPTO_MAC_TRITS; i++) iv[i] = TRIT_UNKNOWN;
@@ -611,7 +611,7 @@ static void test_crypto_encrypt_decrypt(void) {
 static void test_crypto_mac(void) {
     printf("\n--- Crypto: MAC Compute/Verify ---\n");
     tcrypto_key_t key;
-    tcrypto_keygen(&key, 99);
+    tcrypto_keygen_from_int(&key, 99);
 
     trit msg[] = {TRIT_TRUE, TRIT_TRUE, TRIT_FALSE, TRIT_UNKNOWN};
     trit tag[TCRYPTO_MAC_TRITS];
@@ -646,7 +646,7 @@ static void test_crypto_lattice(void) {
 static void test_crypto_constant_time(void) {
     printf("\n--- Crypto: Constant-Time Key Compare ---\n");
     tcrypto_key_t a, b;
-    tcrypto_keygen(&a, 1);
+    tcrypto_keygen_from_int(&a, 1);
     memcpy(&b, &a, sizeof(b));
 
     /* Equal keys */

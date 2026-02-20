@@ -150,6 +150,10 @@ The following invariants are **immutable** and must never be weakened:
 - **Kleene K₃ semantics**: `UNKNOWN` is a first-class logical value
 - **Balanced ternary**: {-1, 0, +1}, not {0, 1, 2}
 - **No silent binary fallback**: every code path must handle all three trit values
+- **Ternary-First Bridge Protocol**: no internal binary regression — when
+  interoperability with binary is needed, build outward-facing bridges and
+  converters at the system boundary. Binary must never be used as an internal
+  data path. See `ARCHITECTURE.md` §14A for the full mandatory protocol.
 - **RSI safety bounds**: `RSI_MAX_LOOPS = 10`, trit guards on every mutation
 - **Sigma gate**: 100% pass rate required for every commit
 

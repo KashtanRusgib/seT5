@@ -127,9 +127,11 @@ extern int godel_update_metrics(godel_machine_t *gm,
 
 /* RSI Flywheel externs (from godel_machine.c) */
 #define RSI_MAX_LOOPS 10
+#define GODEL_AXIOM_OFFSET 10000
 typedef struct
 {
     int iteration;
+    int generation;          /* VULN-10: monotonic generation ID */
     trit access_guard;
     double beauty_score;
     double curiosity_level;
@@ -137,6 +139,7 @@ typedef struct
     int mutations_applied;
     int mutations_rejected;
     int human_queries;
+    int total_human_queries; /* VULN-11: cumulative across compactions */
 } rsi_session_t;
 extern trit rsi_trit_guard(const rsi_session_t *session, double proposed_beauty);
 extern int rsi_session_init(rsi_session_t *session);
@@ -219,7 +222,8 @@ static void test_apply_modus_ponens(void)
     TEST(apply_rule_modus_ponens);
     godel_machine_t gm;
     godel_init(&gm);
-    int id = godel_apply_rule(&gm, GODEL_RULE_MODUS_PONENS, 0, 1);
+    int id = godel_apply_rule(&gm, GODEL_RULE_MODUS_PONENS,
+                               GODEL_AXIOM_OFFSET + 0, GODEL_AXIOM_OFFSET + 1);
     if (id >= 0 && gm.theorems[id].active == TRIT_TRUE && gm.theorems[id].verified == TRIT_TRUE)
         PASS();
     else
@@ -231,7 +235,8 @@ static void test_apply_conjunction(void)
     TEST(apply_rule_conjunction);
     godel_machine_t gm;
     godel_init(&gm);
-    int id = godel_apply_rule(&gm, GODEL_RULE_CONJUNCTION, 0, 2);
+    int id = godel_apply_rule(&gm, GODEL_RULE_CONJUNCTION,
+                               GODEL_AXIOM_OFFSET + 0, GODEL_AXIOM_OFFSET + 2);
     if (id >= 0 && gm.theorems[id].active == TRIT_TRUE)
         PASS();
     else
@@ -244,7 +249,8 @@ static void test_apply_trit_eval(void)
     godel_machine_t gm;
     godel_init(&gm);
     int id = godel_apply_rule(&gm, GODEL_RULE_TRIT_EVAL, -1, -1);
-    if (id >= 0 && gm.theorems[id].verified == TRIT_TRUE)
+    /* VULN-13: TRIT_EVAL no longer auto-verifies — expects TRIT_UNKNOWN */
+    if (id >= 0 && gm.theorems[id].verified == TRIT_UNKNOWN)
         PASS();
     else
         FAIL("trit eval failed");
@@ -430,8 +436,10 @@ static void test_theorem_chain(void)
     TEST(multiple_derivations_chain_correctly);
     godel_machine_t gm;
     godel_init(&gm);
-    int t1 = godel_apply_rule(&gm, GODEL_RULE_CONJUNCTION, 0, 1);
-    int t2 = godel_apply_rule(&gm, GODEL_RULE_MODUS_PONENS, t1, 2);
+    int t1 = godel_apply_rule(&gm, GODEL_RULE_CONJUNCTION,
+                               GODEL_AXIOM_OFFSET + 0, GODEL_AXIOM_OFFSET + 1);
+    int t2 = godel_apply_rule(&gm, GODEL_RULE_MODUS_PONENS,
+                               t1, GODEL_AXIOM_OFFSET + 2);
     if (t1 >= 0 && t2 >= 0 && t2 > t1 &&
         gm.theorems[t2].derived_from[0] == t1)
         PASS();
@@ -460,6 +468,7 @@ static void test_rsi_init(void)
 {
     TEST(rsi_session_init_succeeds);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess)); /* zero-init before first init */
     int rc = rsi_session_init(&sess);
     if (rc == 0 && sess.iteration == 0 && sess.beauty_score == 1.0 &&
         sess.curiosity_level == 1.0 && sess.access_guard == TRIT_TRUE)
@@ -481,6 +490,7 @@ static void test_rsi_guard_high_beauty(void)
 {
     TEST(rsi_trit_guard_high_beauty_approves);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     trit g = rsi_trit_guard(&sess, 0.95);
     if (g == TRIT_TRUE)
@@ -493,6 +503,7 @@ static void test_rsi_guard_low_beauty(void)
 {
     TEST(rsi_trit_guard_low_beauty_queries);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     trit g = rsi_trit_guard(&sess, 0.5);
     if (g == TRIT_UNKNOWN)
@@ -505,6 +516,7 @@ static void test_rsi_guard_negative_beauty(void)
 {
     TEST(rsi_trit_guard_negative_beauty_denies);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     trit g = rsi_trit_guard(&sess, -0.1);
     if (g == TRIT_FALSE)
@@ -517,6 +529,7 @@ static void test_rsi_guard_iteration_limit(void)
 {
     TEST(rsi_trit_guard_at_max_loops_denies);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     sess.iteration = RSI_MAX_LOOPS;
     trit g = rsi_trit_guard(&sess, 0.99);
@@ -540,6 +553,7 @@ static void test_rsi_propose_approved(void)
 {
     TEST(rsi_propose_mutation_approved_applies);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     trit r = rsi_propose_mutation(&sess, 0.95, 0.8);
     if (r == TRIT_TRUE && sess.mutations_applied == 1 &&
@@ -553,6 +567,7 @@ static void test_rsi_propose_denied(void)
 {
     TEST(rsi_propose_mutation_denied_increments_rejected);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     trit r = rsi_propose_mutation(&sess, -0.5, 0.8);
     if (r == TRIT_FALSE && sess.mutations_rejected == 1 &&
@@ -566,6 +581,7 @@ static void test_rsi_propose_uncertain(void)
 {
     TEST(rsi_propose_mutation_uncertain_queries_human);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     trit r = rsi_propose_mutation(&sess, 0.5, 0.8);
     if (r == TRIT_UNKNOWN && sess.human_queries == 1)
@@ -578,6 +594,7 @@ static void test_rsi_can_continue(void)
 {
     TEST(rsi_can_continue_true_at_start);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     if (rsi_can_continue(&sess) == 1)
         PASS();
@@ -589,6 +606,7 @@ static void test_rsi_can_continue_at_limit(void)
 {
     TEST(rsi_can_continue_false_at_max);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     sess.iteration = RSI_MAX_LOOPS;
     if (rsi_can_continue(&sess) == 0)
@@ -610,6 +628,7 @@ static void test_rsi_eudaimonia_computation(void)
 {
     TEST(rsi_eudaimonia_is_beauty_times_curiosity);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     rsi_propose_mutation(&sess, 0.95, 0.7);
     double expected = 0.95 * 0.7;
@@ -623,6 +642,7 @@ static void test_rsi_compaction_interval(void)
 {
     TEST(rsi_compaction_resets_queries_at_interval);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     /* Apply 5 mutations to trigger compaction */
     for (int i = 0; i < 5; i++)
@@ -642,6 +662,7 @@ static void test_rsi_iterate_positive_delta(void)
     godel_machine_t gm;
     godel_init(&gm);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     /* Set up for positive utility: some tests pass */
     gm.tests_total = 10;
@@ -664,6 +685,7 @@ static void test_rsi_iterate_null_gm(void)
 {
     TEST(rsi_iterate_null_gm_returns_negative);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     double d = rsi_iterate(NULL, &sess, 0.95, 0.8);
     if (d < 0.0)
@@ -676,6 +698,7 @@ static void test_rsi_bounded_iterations(void)
 {
     TEST(rsi_bounded_to_max_loops);
     rsi_session_t sess;
+    memset(&sess, 0, sizeof(sess));
     rsi_session_init(&sess);
     int approved = 0;
     for (int i = 0; i < 20; i++)

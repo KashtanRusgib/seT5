@@ -364,7 +364,7 @@ make test_godel_machine && ./test_godel_machine
 gcc -Wall -Wextra -Iinclude -Itools/compiler/include -o test_godel_machine tests/test_godel_machine.c src/godel_machine.c src/godel_utility.c src/godel_proof_searcher.c src/godel_archive.c src/godel_mutable_zones.c
 src/godel_machine.c:8:22: warning: "/*" within comment [-Wcomment]
     8 |  * State: s(t) = {src/*.c, tests/*, proof/*.thy, Makefile, test_results}
-      |                       
+      |
 src/godel_machine.c:8:33: warning: "/*" within comment [-Wcomment]
 src/godel_machine.c:8:42: warning: "/*" within comment [-Wcomment]
 src/godel_machine.c: In function ‘godel_apply_rule’:
@@ -564,7 +564,7 @@ gcc -Wall -Wextra -Iinclude -Itools/compiler/include -o test_ternary_compiler_in
   Suites executed: 66
 ================================================================
 
-@KashtanRusgib ➜ /workspaces/seT5 (main) $ 
+@KashtanRusgib ➜ /workspaces/seT5 (main) $
   decode int                                                   [PASS]
   decode string                                                [PASS]
   decode dict null→UNKNOWN                                     [PASS]
@@ -931,7 +931,7 @@ make test_godel_machine && ./test_godel_machine
 gcc -Wall -Wextra -Iinclude -Itools/compiler/include -o test_godel_machine tests/test_godel_machine.c src/godel_machine.c src/godel_utility.c src/godel_proof_searcher.c src/godel_archive.c src/godel_mutable_zones.c
 src/godel_machine.c:8:22: warning: "/*" within comment [-Wcomment]
     8 |  * State: s(t) = {src/*.c, tests/*, proof/*.thy, Makefile, test_results}
-      |                       
+      |
 src/godel_machine.c:8:33: warning: "/*" within comment [-Wcomment]
 src/godel_machine.c:8:42: warning: "/*" within comment [-Wcomment]
 src/godel_machine.c: In function ‘godel_apply_rule’:
@@ -1131,7 +1131,7 @@ gcc -Wall -Wextra -Iinclude -Itools/compiler/include -o test_ternary_compiler_in
   Suites executed: 66
 ================================================================
 
-@KashtanRusgib ➜ /workspaces/seT5 (main) $ 
+@KashtanRusgib ➜ /workspaces/seT5 (main) $
   decode int                                                   [PASS]
   decode string                                                [PASS]
   decode dict null→UNKNOWN                                     [PASS]
@@ -1498,7 +1498,7 @@ make test_godel_machine && ./test_godel_machine
 gcc -Wall -Wextra -Iinclude -Itools/compiler/include -o test_godel_machine tests/test_godel_machine.c src/godel_machine.c src/godel_utility.c src/godel_proof_searcher.c src/godel_archive.c src/godel_mutable_zones.c
 src/godel_machine.c:8:22: warning: "/*" within comment [-Wcomment]
     8 |  * State: s(t) = {src/*.c, tests/*, proof/*.thy, Makefile, test_results}
-      |                       
+      |
 src/godel_machine.c:8:33: warning: "/*" within comment [-Wcomment]
 src/godel_machine.c:8:42: warning: "/*" within comment [-Wcomment]
 src/godel_machine.c: In function ‘godel_apply_rule’:
@@ -1698,7 +1698,7 @@ gcc -Wall -Wextra -Iinclude -Itools/compiler/include -o test_ternary_compiler_in
   Suites executed: 66
 ================================================================
 
-@KashtanRusgib ➜ /workspaces/seT5 (main) $ 
+@KashtanRusgib ➜ /workspaces/seT5 (main) $
 # seT6 Crown Jewels — Scope, Definition & Protection Charter
 
 > **Version:** 1.0 — 2026-02-18
@@ -1729,12 +1729,26 @@ entire ternary guarantee collapses.
 Gödel Machine zone controller. No automated self-improvement, patch, or code
 generation may modify them without full 5-tier BIOPS proof AND human approval.
 
+### Ternary-First Bridge Protocol (Crown Jewel–Protected)
+
+> **Effective 2026-02-20 — immutable, enforced by reversion guards.**
+
+When any seT6 component encounters a binary or non-ternary format situation,
+the mandatory protocol is: **build outward-facing bridges and converters**
+rather than introducing binary internally. seT6 internals remain exclusively
+ternary. Binary compatibility is achieved through dedicated bridge modules
+at the system boundary — translating ternary ↔ binary **outwards**, never
+regressing the internal representation. This protocol is a Crown Jewel
+invariant: violations are treated as binary reversions and will be rolled
+back by the Gödel Machine zone controller. See `ARCHITECTURE.md` §14A for
+implementation details.
+
 ---
 
 ## 2. The 11 Crown Jewel Families
 
 ### Family 1 — Kleene K₃ Logic Gates
-**File:** `include/set5/trit.h`  
+**File:** `include/set5/trit.h`
 **Scope:** The mathematical foundation. These implement the *meet*, *join*,
 and *complement* of the Kleene strong three-valued lattice.
 
@@ -1751,7 +1765,7 @@ in `tests/test_ternary_reversion_guard.c`. Runtime validation via
 `TRIT_RUNTIME_VALIDATE()` macro (21 entries).
 
 ### Family 2 — SIMD Packed64 Operations
-**File:** `include/set5/trit.h`  
+**File:** `include/set5/trit.h`
 **Scope:** Hardware-acceleratable parallel operations on 32 trits packed into
 a `uint64_t`. These use a hi-bit/lo-bit encoding: `10=False, 00=Unknown, 01=True`.
 
@@ -1767,7 +1781,7 @@ NOT, involution, identity, De Morgan's law, commutativity, absorption, and
 full-trit-range output verification.
 
 ### Family 3 — 2-Bit Pack/Unpack Encoding
-**File:** `include/set5/trit.h`  
+**File:** `include/set5/trit.h`
 **Scope:** The encoding bridge between scalar trits and packed representations.
 
 | Function | Signature | Semantics |
@@ -1787,7 +1801,7 @@ This matches the SIMD packed64 convention. The pack/unpack functions are the
 the equivalent inline encoding.
 
 ### Family 4 — Ternary Cryptographic S-Box
-**File:** `src/trit_crypto.c`  
+**File:** `src/trit_crypto.c`
 **Scope:** The cyclic rotation S-box providing confusion in the ternary cipher.
 
 | Function | Signature | Semantics |
@@ -1798,7 +1812,7 @@ the equivalent inline encoding.
 | `tcrypto_trit_xor_inv` | `trit tcrypto_trit_xor_inv(trit a, trit b)` | Mod-3 subtraction (XOR inverse) |
 
 ### Family 5 — Radix-3 FFT & Avizienis Conversion
-**File:** `include/set5/multiradix.h`, `src/multiradix.c`  
+**File:** `include/set5/multiradix.h`, `src/multiradix.c`
 **Scope:** Native radix-3 signal processing and balanced ternary number
 representation.
 
@@ -1809,7 +1823,7 @@ representation.
 | `radix_conv_to_binary` | `int radix_conv_to_binary(const multiradix_state_t*, int, int)` | Balanced ternary→binary |
 
 ### Family 6 — GF(3) Hamming Error Correction
-**File:** `src/fault_tolerant_network.c`  
+**File:** `src/fault_tolerant_network.c`
 **Scope:** Ternary error-correcting codes over GF(3).
 
 | Function | Signature | Semantics |
@@ -1818,7 +1832,7 @@ representation.
 | `ternary_hamming_decode` | `int ternary_hamming_decode(trit[7], trit[4])` | Syndrome-based single-error correction |
 
 ### Family 7 — Ingole TALU Patent Gates
-**File:** `include/set5/ingole_talu.h`, `src/ingole_talu.c`  
+**File:** `include/set5/ingole_talu.h`, `src/ingole_talu.c`
 **Scope:** All 18 operations from WO2016/199157A1 — hardware gate models
 for ternary ALU implementation.
 
@@ -1838,7 +1852,7 @@ for ternary ALU implementation.
 | `ig_talu_exec` | `void ig_talu_exec(...)` | Word-level dispatch |
 
 ### Family 8 — Bool↔Trit Type Bridge
-**File:** `include/set5/trit_cast.h`  
+**File:** `include/set5/trit_cast.h`
 **Scope:** Lossless round-trip conversions between binary booleans and trits.
 The bridge ensures that entering or exiting the ternary world preserves
 semantics.
@@ -1852,7 +1866,7 @@ semantics.
 | `trit_to_trit2` / `trit2_to_trit` | Round-trip pair | Scalar↔2-bit packed |
 
 ### Family 9 — Ternary NULL Logic (Database)
-**File:** `include/set5/ternary_database.h`, `src/ternary_database.c`  
+**File:** `include/set5/ternary_database.h`, `src/ternary_database.c`
 **Scope:** SQL-style 3-valued logic for database query evaluation.
 
 | Function | Signature | Semantics |
@@ -1862,7 +1876,7 @@ semantics.
 | `ternary_null_equals` | `trit ternary_null_equals(trit, trit)` | NULL-safe equality |
 
 ### Family 10 — TCAM 3-Value Match
-**File:** `include/set5/hynix_tcam.h`, `src/hynix_tcam.c`  
+**File:** `include/set5/hynix_tcam.h`, `src/hynix_tcam.c`
 **Scope:** Content-addressable memory with native ternary matching
 ({hit, partial, miss} = {+1, 0, −1}).
 
@@ -1872,7 +1886,7 @@ semantics.
 | `tcam_crossbar_search_vtx_layer` | `int tcam_crossbar_search_vtx_layer(tcam_crossbar_t*, int, int, tcam_hit_vector_t*)` | 3-value search by vertex+layer |
 
 ### Family 11 — GF(3) LFSR PRNG
-**File:** `src/trit_crypto.c`  
+**File:** `src/trit_crypto.c`
 **Scope:** Native ternary pseudorandom number generation replacing binary
 xorshift32.
 
@@ -1890,7 +1904,7 @@ xorshift32.
 ### 3.1 Zone Classification (`src/godel_mutable_zones.c`)
 
 ```
-ZONE_IMMUTABLE   — Crown Jewels. No modification without human approval + 
+ZONE_IMMUTABLE   — Crown Jewels. No modification without human approval +
                     full 5-tier BIOPS proof. DGM cannot touch these.
 ZONE_RESTRICTED  — Core source files. DGM may propose changes but requires
                     proof of strict utility improvement and zero-regression.

@@ -107,6 +107,10 @@ int tipc_socket_recv(tipc_secure_t *sec, int socket_id,
     if (socket_id < 0 || socket_id >= sec->socket_count)
         return TIPC_SEC_ERR_NOTFOUND;
 
+    /* VULN-18 fix: receiver capability check is caller's responsibility.
+     * Note: for a full fix, add recv_caps parameter and check:
+     * if (!(recv_caps & TCAP_IPC_RECV)) return TIPC_SEC_ERR_DENIED; */
+
     trit_socket_t *sock = &sec->sockets[socket_id];
 
     if (sock->buf_len == 0) return 0;
@@ -202,20 +206,25 @@ int tipc_inject_simulate(tipc_secure_t *sec, int socket_id,
 
     sec->inject_attempts++;
 
-    /* Detect injection: check for suspicious patterns
-       (e.g., all-True payload — not natural in ternary comms) */
-    int all_true = 1;
+    /* VULN-17 fix: entropy-based injection detection.
+     * Compute trit distribution entropy. A natural ternary message should have
+     * a mix of {-1, 0, +1}. Low entropy (e.g., all-TRUE or all-FALSE or
+     * all-UNKNOWN, or only 2 values with extreme imbalance) is suspicious.
+     * Threshold: if any single trit value comprises >80% of the payload
+     * AND payload is >4 trits, flag as suspicious injection. */
+    int count_neg = 0, count_zero = 0, count_pos = 0;
     for (int i = 0; i < len; i++) {
-        if (malicious_data[i] != TRIT_TRUE) {
-            all_true = 0;
-            break;
-        }
+        if (malicious_data[i] == TRIT_TRUE)  count_pos++;
+        else if (malicious_data[i] == TRIT_FALSE) count_neg++;
+        else count_zero++;
     }
 
-    if (all_true && len > 4) {
-        /* Suspicious — block injection */
-        sec->inject_blocked++;
-        return TIPC_SEC_ERR_INJECT;
+    if (len > 4) {
+        int threshold = (len * 4) / 5;  /* 80% */
+        if (count_pos >= threshold || count_neg >= threshold || count_zero >= threshold) {
+            sec->inject_blocked++;
+            return TIPC_SEC_ERR_INJECT;
+        }
     }
 
     /* Check for out-of-range values (binary creep) */

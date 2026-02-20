@@ -237,7 +237,16 @@ static Expr *parse_primary(void) {
                 while (tokens[pidx].type == TOK_COMMA && !perror_flag) {
                     pidx++; /* skip , */
                     argc++;
-                    args = (Expr **)realloc(args, argc * sizeof(Expr *));
+                    /* VULN-08 fix: check realloc for NULL */
+                    Expr **new_args = (Expr **)realloc(args, argc * sizeof(Expr *));
+                    if (!new_args) {
+                        parser_error("out of memory in argument list");
+                        for (int k = 0; k < argc - 1; k++) expr_free(args[k]);
+                        free(args);
+                        free(name);
+                        return NULL;
+                    }
+                    args = new_args;
                     args[argc - 1] = parse_expr_r();
                 }
             }

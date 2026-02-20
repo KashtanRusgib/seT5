@@ -45,6 +45,7 @@ initialization, use-after-free, and capability-confusion vulnerabilities
 4. **Performance** — < 5% overhead vs binary via 2-bit packed SIMD encoding
 5. **Extensibility** — multi-radix hooks for AI/networking, Trithon interop
 6. **Hardware alignment** — ISA targets 2026-2030 ternary silicon (Huawei CFET, Samsung CMOS-ternary, memristive in-memory compute)
+7. **Ternary-First Bridge Protocol** — no internal binary regression; all binary/external-format interoperability is achieved through outward-facing bridges and converters (see §14A)
 
 ### Industry Alignment (2025-2026 Hardware Review)
 
@@ -830,6 +831,60 @@ A Linux compatibility layer running atop the seT5 microkernel:
 | WCET impact            | < 10%     | seL4: "security is no excuse for poor perf"     |
 | IPC round-trip         | < 1 µs    | seL4 benchmark baseline for synchronous IPC     |
 | Syscall overhead       | < 500 ns  | Comparable to seL4 fastpath                     |
+
+---
+
+## 14A. Ternary-First Bridge Protocol (MANDATORY)
+
+> **Effective 2026-02-20 — applies to all seT6 full-stack components.**
+
+When any aspect of seT6 — kernel, compiler, HALs, networking, storage,
+AI acceleration, Trithon, Trit Linux, or any future module — encounters
+a situation requiring interaction with binary or other non-ternary formats,
+the following protocol is **mandatory and immutable**:
+
+1. **No internal binary regression.** seT6 internals operate exclusively
+   in balanced ternary ({-1, 0, +1}) and multi-radix representations.
+   Binary must never be used as an internal data path, logic primitive,
+   or storage format within any seT6 component.
+
+2. **Build bridges outward.** Where interoperability with binary systems,
+   protocols, or hardware is required, seT6 provides dedicated
+   **bridge modules** and **format converters** at the system boundary.
+   These bridges translate ternary ↔ binary (or ternary ↔ other radix)
+   at the edge, preserving ternary purity inside.
+
+3. **Native hybrid interoperability.** Bridge modules provide
+   first-class, tested, verified interoperability — not second-class
+   compatibility shims. They increase the value of seT6 for all users
+   by enabling seamless integration with the existing binary ecosystem
+   while maintaining ternary-first internals.
+
+4. **Direction of expansion.** We build **outwards** from ternary to
+   binary, never inwards from binary to ternary. The conversion
+   direction is always:
+   ```
+   seT6 ternary core  ──▶  bridge/converter  ──▶  binary world
+   ```
+   The binary world reaches seT6 through the same bridges:
+   ```
+   binary world  ──▶  bridge/converter  ──▶  seT6 ternary core
+   ```
+
+5. **Multi-radix to binary, outwards.** For multi-radix components
+   (PAM-3, radix-4 FFT, mixed-radix AI), the same principle applies:
+   convert outward to binary only at the interface boundary.
+
+**Examples of compliant bridge modules:**
+- `src/pam3_transcode.c` — PAM-3 ternary ↔ PAM-4 binary SerDes
+- `src/intel_pam3_decoder.c` — Intel PAM-3 ↔ binary Ethernet
+- `trit_linux/` — POSIX binary syscall ↔ ternary kernel translation
+- `trithon/` — Python binary objects ↔ ternary C extension types
+- `trit_from_bool()` / `trit_to_bool_safe()` — scalar conversion primitives
+- `RADIX_CONV` instruction — general multi-radix ↔ ternary conversion
+
+**Violations of this protocol are treated as regressions and will be
+reverted by Crown Jewel reversion guards.** See `CROWN_JEWELS.md`.
 
 ---
 

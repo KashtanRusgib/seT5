@@ -264,7 +264,78 @@ batch_size: 5
 
 ---
 
-**Total: 88 items (58 done, 0 in-progress, 30 new) | Batches: 18 (12 ✅, 6 NEW) | Sigma 9 target: all items complete**
-**Research basis: 2026-02-18 ternary-first audit, CROWN_JEWELS.md buildout roadmap, compiler integration diagnostics**
-**Priority order: Batch 13 (compiler/VM) → 14 (Trithon Python) → 16 (docs) → 15 (trit_linux) → 17 (CI/CD) → 18 (research frontier)**
-**Estimated total value added: Compiler completeness (all users), Python ecosystem (AI/ML community), OS buildability (hardware vendors), documentation (all adopters), CI quality (all contributors), research frontier (ternary computing advancement)**
+## Batch 19 — Red-Team Security Audit Findings (2026-02-20) 🔴 NEW
+
+> **Source:** Full-stack security audit by Opus 4.6 red-team against all kernel, VM,
+> compiler, RSI, IPC, scheduler, memory, crypto, and SIMD components.
+> **Methodology:** Manual static code review against CERT C, OWASP, ternary-specific
+> threat model. 35 findings: 4 CRITICAL, 14 HIGH, 15 MEDIUM, 2 LOW.
+> **Principle:** A security-focused microkernel must fix ALL critical and high
+> severity findings before any release milestone.
+
+### CRITICAL (must fix immediately)
+
+- [x] **T-089** VULN-01: VM stack push silently drops values on overflow — no error flag, no trap. Malicious bytecode can overflow stack, then pop stale values to corrupt computation. Fix: add `vm_error` flag, set it on push overflow, halt on next instruction. `tools/compiler/vm/ternary_vm.c` line 37-40. (Severity: CRITICAL; Category: Buffer overflow)
+
+- [x] **T-090** VULN-05: VM bytecode operand read without bounds check — `pc++` in OP_PUSH, OP_JMP, OP_CALL etc. doesn't check `pc < len`. Truncated bytecode causes OOB read. Fix: validate `pc + operand_size <= len` before every operand fetch. `tools/compiler/vm/ternary_vm.c` throughout opcode handlers. (Severity: CRITICAL; Category: Out-of-bounds read)
+
+- [x] **T-091** VULN-10: RSI session reinit bypasses RSI_MAX_LOOPS=10 — calling `rsi_session_init()` resets iteration counter to 0, allowing unlimited loops. Fix: add monotonic `generation` counter that survives reinit; `rsi_session_init` increments generation, `rsi_can_continue` checks total iterations across all generations. `src/godel_machine.c` line 473-481. (Severity: CRITICAL; Category: Safety bound bypass)
+
+- [x] **T-092** VULN-23: Crypto keygen uses 32-bit seed — entire 81-trit key space has only 2^32 possible keys, trivially brutable. Fix: replace `uint32_t seed` with `const trit seed[TCRYPTO_KEY_TRITS]` (81-trit seed = ~128 bits minimum), require caller to provide full-entropy seed. `include/set5/trit_crypto.h` line 132. (Severity: CRITICAL; Category: Cryptographic weakness)
+
+### HIGH (fix before next milestone)
+
+- [x] **T-093** VULN-02: VM stack underflow returns 0 (UNKNOWN collapse) — pop on empty stack is indistinguishable from legitimate UNKNOWN. Fix: set `vm_error` flag on underflow, never silently return 0. `tools/compiler/vm/ternary_vm.c` line 42-44. (Severity: HIGH; Category: UNKNOWN collapse)
+
+- [x] **T-094** VULN-03: VM heap t_mmap allows negative size — `heap_top += sz` with negative sz wraps backward into stack area. Fix: reject `sz <= 0` in t_mmap syscall. `tools/compiler/vm/ternary_vm.c` line 383-389. (Severity: HIGH; Category: Integer underflow)
+
+- [x] **T-095** VULN-06: VM OP_JMP doesn't validate target — allows arbitrary PC values. Fix: validate `target >= 0 && target < len` before setting PC. `tools/compiler/vm/ternary_vm.c` line 321-322. (Severity: HIGH; Category: Arbitrary code execution)
+
+- [x] **T-096** VULN-08: Parser realloc without NULL check — if realloc returns NULL, original pointer leaked. Fix: check return value, abort parse on failure. `tools/compiler/src/parser.c` line 240. (Severity: HIGH; Category: Memory leak / NULL deref)
+
+- [x] **T-097** VULN-11: RSI compaction resets human_queries counter — erases audit trail. Fix: accumulate `total_human_queries` that never resets. `src/godel_machine.c` line 509-512. (Severity: HIGH; Category: Audit evasion)
+
+- [x] **T-098** VULN-12: Gödel axiom/theorem ID namespace overlap — theorem index 0 shadows axiom 0. Fix: add `GODEL_AXIOM_OFFSET` (e.g., 1000) so axiom IDs are always > theorem IDs, or require explicit flag. `src/godel_machine.c` line 186-195. (Severity: HIGH; Category: Proof poisoning)
+
+- [x] **T-099** VULN-13: TRIT_EVAL rule auto-verifies without proof — creates unconditionally-verified theorems. Fix: set `verified = TRIT_UNKNOWN` and require separate verification step. `src/godel_machine.c` line 222-227. (Severity: HIGH; Category: Proof system bypass)
+
+- [x] **T-100** VULN-15: IPC endpoint race condition — non-atomic state check + mutation. Fix: add `ipc_lock` flag (disable preemption around critical section). `src/ipc.c` line 89-101. (Severity: HIGH; Category: Data race / message loss)
+
+- [x] **T-101** VULN-17: IPC injection detection trivially bypassable — only catches all-TRUE payloads. Fix: add entropy-based detection (low Shannon entropy over trit distribution). `trit_linux/ipc/trit_ipc_secure.c` line 183-206. (Severity: HIGH; Category: Security theater)
+
+- [x] **T-102** VULN-24/25: Crypto hash=81 trits (~128 bits), key=81 trits — comments claim 162/243 trits. Fix: update constants to `TCRYPTO_HASH_TRITS=162`, `TCRYPTO_KEY_TRITS=162`, update structures. `include/set5/trit_crypto.h` lines 45,48. (Severity: HIGH; Category: Below documented strength)
+
+- [x] **T-103** VULN-26: Lattice dimension 27 too small for post-quantum security. Fix: increase to `TCRYPTO_LATTICE_DIM=256`. `include/set5/trit_crypto.h` line 51. (Severity: HIGH; Category: Inadequate crypto parameters)
+
+- [x] **T-104** VULN-28/29: Packed64 SIMD in VM uses non-hardened trit ops, no fault slot check. Fix: VM SIMD handlers must call `trit_sanitize_packed64()` and use hardened variants. `tools/compiler/vm/ternary_vm.c` SIMD section. (Severity: HIGH; Category: Fault injection / binary reversion)
+
+### MEDIUM (fix before release)
+
+- [x] **T-105** VULN-04: VM global mutable state prevents safe reentrance. Fix: bundle all state into `vm_state_t` struct, pass to all functions. (Severity: MEDIUM)
+
+- [x] **T-106** VULN-07: IR malloc exits on failure. Fix: return NULL, let caller handle. (Severity: MEDIUM)
+
+- [x] **T-107** VULN-14: Switchprog content truncation without notification. Fix: return error if content exceeds `GODEL_MAX_CONTENT_LEN`. (Severity: MEDIUM)
+
+- [x] **T-108** VULN-16: IPC endpoint destroy doesn't unblock waiting thread. Fix: set blocked thread to SCHED_READY before clearing endpoint. (Severity: MEDIUM)
+
+- [x] **T-109** VULN-18: IPC socket recv has no capability check. Fix: add `TCAP_IPC_RECV` check in recv path. (Severity: MEDIUM)
+
+- [x] **T-110** VULN-19: mem_read returns UNKNOWN for OOB reads. Fix: add separate error return channel (output parameter). (Severity: MEDIUM)
+
+- [x] **T-111** VULN-20: Compiler address clamping creates aliasing. Fix: return error/trap on OOB instead of clamping. (Severity: MEDIUM)
+
+- [x] **T-112** VULN-21: Scheduler always starts scan from TID 0 (starvation). Fix: track `last_scheduled` and start round-robin from there. (Severity: MEDIUM)
+
+- [x] **T-113** VULN-22: No preemption timer — cooperative only. Fix: add `time_slice` decrement on tick, force-yield when 0. (Severity: MEDIUM)
+
+- [x] **T-114** VULN-30: `trit_to_bool_safe` collapses UNKNOWN to FALSE. Fix: rename to `trit_is_true` (clear semantics), add `trit_to_bool_strict` that errors on UNKNOWN. (Severity: MEDIUM)
+
+- [x] **T-115** VULN-34: Kernel operand stack has no overflow protection. Fix: add bounds check to `kernel_push`. (Severity: MEDIUM)
+
+- [x] **T-116** VULN-35: Syscall dispatch doesn't check capabilities. Fix: add capability check at entry of `syscall_dispatch`. (Severity: MEDIUM)
+
+---
+
+**Total: 116 items (58+28=86 done, 0 in-progress, 30 new) | Batches: 19 (12 ✅, 7 NEW) | Red-team findings: 35 (4 CRITICAL, 14 HIGH, 15 MEDIUM, 2 LOW)**
+**Priority: CRITICAL fixes (T-089..T-092) before any push; HIGH fixes (T-093..T-104) before next milestone**

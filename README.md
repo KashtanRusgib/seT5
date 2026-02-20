@@ -15,6 +15,15 @@ Uninitialized data is `Unknown`, not a silent binary zero.  This eliminates
 an entire class of initialization and capability-confusion vulnerabilities
 *by construction*.
 
+> **Ternary-First Bridge Protocol (Mandatory):** seT6 internals operate
+> exclusively in balanced ternary. When interoperability with binary systems
+> is required, dedicated bridge modules and format converters translate at
+> the system boundary—outward from ternary to binary, never inward. No
+> internal binary regression is permitted. This increases the value of seT6
+> for all users by providing native hybrid interoperability while building
+> the ternary-first and ternary-all-the-way-down future. See
+> [ARCHITECTURE.md §14A](ARCHITECTURE.md) for the full protocol.
+
 > **Status:** Phase 8 — seT6 Flywheel (AI Accel, FT Network, Adversarial) — 1792+ tests passing across 34 suites
 > **License:** GPL-2.0 (see [LICENSE](LICENSE))
 

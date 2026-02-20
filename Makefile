@@ -205,6 +205,10 @@ test_batch_6702_6751: tests/test_batch_6702_6751.c
 test_batch_6752_6801: tests/test_batch_6752_6801.c
 	$(CC) $(CFLAGS) -o $@ $<
 
+# ---- Batch 6802-6851: Exploit Regression Tests (Sigma 12 Audit) ----
+test_batch_6802_6851: tests/test_batch_6802_6851.c tools/compiler/vm/ternary_vm.c tools/compiler/src/logger.c src/godel_machine.c src/ipc.c src/trit_crypto.c
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
 # ---- Symbiotic AI Module ----
 test_symbiotic_ai: tests/test_symbiotic_ai.c src/symbiotic_ai.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -541,6 +545,7 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_batch_6502_6551 test_batch_6552_6601 test_batch_6602_6651 \
                  test_batch_6652_6701 test_batch_6702_6751 \
                  test_batch_6752_6801 \
+                 test_batch_6802_6851 \
                  test_symbiotic_ai \
                  test_symbiotic_curiosity test_symbiotic_beauty test_symbiotic_eudaimonia \
                  test_red_team_trit_range test_red_team_binary_reversion \
@@ -733,6 +738,8 @@ _run-test-suites:
 	-$(MAKE) test_batch_6702_6751 && ./test_batch_6702_6751
 	@echo "##BEGIN##=== Batch 6752-6801: VM Developer Tools ==="
 	-$(MAKE) test_batch_6752_6801 && ./test_batch_6752_6801
+	@echo "##BEGIN##=== Batch 6802-6851: Exploit Regression ==="
+	-$(MAKE) test_batch_6802_6851 && ./test_batch_6802_6851
 	@echo "##BEGIN##=== Symbiotic AI Module ==="
 	-$(MAKE) test_symbiotic_ai && ./test_symbiotic_ai
 	@echo "##BEGIN##=== Suite 86: Symbiotic Curiosity Prover ==="
@@ -866,6 +873,7 @@ clean:
 	rm -f test_batch_6502_6551 test_batch_6552_6601 test_batch_6602_6651
 	rm -f test_batch_6652_6701 test_batch_6702_6751
 	rm -f test_batch_6752_6801
+	rm -f test_batch_6802_6851
 	rm -f tvm_debug tvm_disasm tvm_repl
 	rm -f trithon/libtrithon.so
 

@@ -34,8 +34,8 @@ int main(void) {
 
     /* ---- trit -> bool (partial projection) ---- */
     printf("\n--- trit -> bool (projection) ---\n");
-    printf("  T(+1) -> bool: %d\n", trit_to_bool_strict(TRIT_TRUE));
-    printf("  F(-1) -> bool: %d\n", trit_to_bool_strict(TRIT_FALSE));
+    printf("  T(+1) -> bool: %d\n", trit_to_bool_strict(TRIT_TRUE, NULL));
+    printf("  F(-1) -> bool: %d\n", trit_to_bool_strict(TRIT_FALSE, NULL));
     printf("  U( 0) -> bool: (would assert — using safe collapse)\n");
     printf("  U( 0) -> safe: %d (conservative false)\n",
            trit_to_bool_safe(TRIT_UNKNOWN));
@@ -84,7 +84,7 @@ int main(void) {
     trit verified = TRIT_TRUE;
     if (trit_is_definite(verified)) {
         printf("  Verified cap: %s -> bool: %d\n",
-               trit_str(verified), trit_to_bool_strict(verified));
+               trit_str(verified), trit_to_bool_strict(verified, NULL));
     }
 
     printf("\n=== All type checks passed ===\n");

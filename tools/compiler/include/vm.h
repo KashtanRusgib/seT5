@@ -115,4 +115,7 @@ int vm_rstack_depth(void);
 /* Get last execution result (TOS at halt) */
 int vm_get_result(void);
 
+/* Get VM error flag (0=ok, nonzero=fault — VULN-01/02/03/05/06 fix) */
+int vm_get_error(void);
+
 #endif

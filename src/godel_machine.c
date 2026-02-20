@@ -23,6 +23,9 @@
 #include <string.h>
 #include <stdio.h>
 
+/* VULN-12 fix: offset so axiom IDs never overlap theorem IDs */
+#define GODEL_AXIOM_OFFSET 10000
+
 /* ── Configuration ── */
 #define GODEL_MAX_AXIOMS 256
 #define GODEL_MAX_THEOREMS 512
@@ -211,18 +214,24 @@ int godel_apply_rule(godel_machine_t *gm, godel_rule_t rule,
     if (gm->n_theorems >= GODEL_MAX_THEOREMS)
         return -1;
 
-    /* Validate input theorems */
+    /* Validate input theorems — VULN-12 fix: check theorem space first,
+     * then axiom space with explicit GODEL_AXIOM_OFFSET separation.
+     * Axiom IDs are theorem_m >= GODEL_AXIOM_OFFSET. */
     godel_theorem_t *tm = NULL, *tn = NULL;
-    if (theorem_m >= 0 && theorem_m < gm->n_theorems)
+    if (theorem_m >= GODEL_AXIOM_OFFSET) {
+        int axiom_idx = theorem_m - GODEL_AXIOM_OFFSET;
+        if (axiom_idx >= 0 && axiom_idx < gm->n_axioms)
+            tm = &gm->axioms[axiom_idx];
+    } else if (theorem_m >= 0 && theorem_m < gm->n_theorems) {
         tm = &gm->theorems[theorem_m];
-    if (theorem_n >= 0 && theorem_n < gm->n_theorems)
+    }
+    if (theorem_n >= GODEL_AXIOM_OFFSET) {
+        int axiom_idx = theorem_n - GODEL_AXIOM_OFFSET;
+        if (axiom_idx >= 0 && axiom_idx < gm->n_axioms)
+            tn = &gm->axioms[axiom_idx];
+    } else if (theorem_n >= 0 && theorem_n < gm->n_theorems) {
         tn = &gm->theorems[theorem_n];
-
-    /* For axioms, look them up */
-    if (!tm && theorem_m >= 0 && theorem_m < gm->n_axioms)
-        tm = &gm->axioms[theorem_m];
-    if (!tn && theorem_n >= 0 && theorem_n < gm->n_axioms)
-        tn = &gm->axioms[theorem_n];
+    }
 
     godel_theorem_t *new_thm = &gm->theorems[gm->n_theorems];
     new_thm->id = gm->n_theorems;
@@ -259,8 +268,10 @@ int godel_apply_rule(godel_machine_t *gm, godel_rule_t rule,
         snprintf(new_thm->name, sizeof(new_thm->name),
                  "trit_eval_%d", gm->n_theorems);
         snprintf(new_thm->content, sizeof(new_thm->content),
-                 "trit_eval(runtime_state) => verified");
-        new_thm->verified = TRIT_TRUE; /* runtime evaluation is ground truth */
+                 "trit_eval(runtime_state) => pending_verification");
+        /* VULN-13 fix: TRIT_EVAL no longer auto-verifies — requires
+         * separate verification step (godel_check or manual audit) */
+        new_thm->verified = TRIT_UNKNOWN;
         break;
 
     default:
@@ -301,8 +312,12 @@ int godel_set_switchprog(godel_machine_t *gm, const char *filepath,
     snprintf(sp->filepath, sizeof(sp->filepath), "%s", filepath);
     if (old_content)
         snprintf(sp->old_content, sizeof(sp->old_content), "%s", old_content);
-    if (new_content)
-        snprintf(sp->new_content, sizeof(sp->new_content), "%s", new_content);
+    if (new_content) {
+        /* VULN-14 fix: detect truncation and return error */
+        int needed = snprintf(sp->new_content, sizeof(sp->new_content), "%s", new_content);
+        if (needed >= (int)sizeof(sp->new_content))
+            return -1;  /* content too long, refuse to truncate silently */
+    }
     sp->theorem_id = theorem_id;
     sp->applied = TRIT_UNKNOWN; /* pending */
     sp->expected_delta_u = expected_delta_u;
@@ -416,16 +431,22 @@ int godel_update_metrics(godel_machine_t *gm,
 #define RSI_CURIOSITY_MIN 0.5
 #define RSI_COMPACTION_INTERVAL 5
 
+/* VULN-10 fix: monotonic generation counter survives reinit */
+static int rsi_global_generation = 0;
+static int rsi_total_iterations = 0;
+
 typedef struct
 {
     int iteration;
+    int generation;          /* VULN-10: monotonic generation ID */
     trit access_guard;      /* -1=deny, 0=query, +1=proceed */
     double beauty_score;    /* Symmetry/harmony metric */
     double curiosity_level; /* Exploration drive */
     double eudaimonia;      /* Combined flourishing metric */
     int mutations_applied;
     int mutations_rejected;
-    int human_queries; /* Times we deferred to human */
+    int human_queries;       /* Times we deferred to human this session */
+    int total_human_queries; /* VULN-11: cumulative across compactions */
 } rsi_session_t;
 
 /* Evaluate trit guard for an RSI action */
@@ -457,7 +478,12 @@ int rsi_session_init(rsi_session_t *session)
 {
     if (!session)
         return -1;
+    /* VULN-10 fix: increment global generation, don't reset total iterations */
+    rsi_global_generation++;
+    int saved_total_queries = session->total_human_queries;
     memset(session, 0, sizeof(*session));
+    session->generation = rsi_global_generation;
+    session->total_human_queries = saved_total_queries; /* VULN-11: preserve */
     session->access_guard = TRIT_TRUE;
     session->beauty_score = 1.0;
     session->curiosity_level = 1.0;
@@ -488,6 +514,7 @@ trit rsi_propose_mutation(rsi_session_t *session,
 
     /* Guard approved — apply mutation */
     session->iteration++;
+    rsi_total_iterations++;  /* VULN-10: global counter */
     session->mutations_applied++;
     session->beauty_score = proposed_beauty;
     session->curiosity_level = proposed_curiosity;
@@ -496,8 +523,9 @@ trit rsi_propose_mutation(rsi_session_t *session,
     /* Session compaction check */
     if (session->iteration % RSI_COMPACTION_INTERVAL == 0)
     {
-        /* Reset manipulation risk — keep metrics, reset counters */
-        session->human_queries = 0;
+        /* Compact session state — VULN-11 fix: preserve audit trail */
+        session->total_human_queries += session->human_queries;
+        session->human_queries = 0;  /* reset per-interval counter only */
     }
 
     return TRIT_TRUE;
@@ -536,7 +564,10 @@ int rsi_can_continue(const rsi_session_t *session)
 {
     if (!session)
         return 0;
-    return (session->iteration < RSI_MAX_LOOPS &&
+    /* VULN-10 fix: check TOTAL iterations across all generations,
+     * not just per-session iteration */
+    return (rsi_total_iterations < RSI_MAX_LOOPS * 10 &&
+            session->iteration < RSI_MAX_LOOPS &&
             session->access_guard != TRIT_FALSE);
 }
 

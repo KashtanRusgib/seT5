@@ -94,6 +94,17 @@ max_lines: 300
 - No formal wire protocol spec for trit-over-PAM-3 (TODO T-023)
 - No ternary TLS/DTLS handshake spec
 
+### 3.4 Ternary-First Bridge Protocol
+> **Mandatory (effective 2026-02-20):** All interoperability between seT6's
+> ternary internals and binary/non-ternary systems is achieved through
+> **outward-facing bridge modules** at the system boundary. No internal
+> binary regression is permitted. The conversion direction is always:
+>
+>     seT6 ternary core  ──▶  bridge/converter  ──▶  binary world
+>
+> Examples: `pam3_transcode.c` (PAM-3↔PAM-4), `trit_linux/` (POSIX↔trit),
+> `trithon/` (Python↔trit). See `ARCHITECTURE.md` §14A for details.
+
 ---
 
 ## 4. Patents & Papers

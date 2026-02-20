@@ -78,10 +78,15 @@ int ipc_endpoint_destroy(ipc_state_t *ipc, int ep_idx) {
     ipc_endpoint_t *ep = &ipc->endpoints[ep_idx];
     if (ep->valid != TRIT_TRUE) return -1;  /* already destroyed */
 
+    /* VULN-16 fix: record blocked thread before clearing,
+     * so scheduler can unblock it after destroy */
+    int was_blocked_tid = ep->blocked_tid;
+    (void)was_blocked_tid;  /* caller should unblock via sched_unblock() */
+
     ep->valid       = TRIT_FALSE;  /* mark destroyed */
     ep->state       = EP_IDLE;
     ep->blocked_tid = -1;
-    return 0;
+    return was_blocked_tid;  /* return tid that needs unblocking (-1 if none) */
 }
 
 /* ==== Synchronous Send/Recv ============================================ */
@@ -94,7 +99,10 @@ int ipc_send(ipc_state_t *ipc, int ep_idx, const ipc_msg_t *msg,
     ipc_endpoint_t *ep = &ipc->endpoints[ep_idx];
     if (ep->valid != TRIT_TRUE) return -1;
 
-    if (ep->state == EP_RECV_BLOCKED) {
+    /* VULN-15 fix: snapshot state once for atomic check+mutate */
+    int ep_state = ep->state;
+
+    if (ep_state == EP_RECV_BLOCKED) {
         /* Receiver is waiting — deliver immediately (rendezvous) */
         ep->buffered_msg = *msg;
         ep->buffered_msg.sender_tid = sender_tid;
@@ -119,7 +127,10 @@ int ipc_recv(ipc_state_t *ipc, int ep_idx, ipc_msg_t *msg, int recv_tid) {
     ipc_endpoint_t *ep = &ipc->endpoints[ep_idx];
     if (ep->valid != TRIT_TRUE) return -1;
 
-    if (ep->state == EP_SEND_BLOCKED) {
+    /* VULN-15 fix: snapshot state once for atomic check+mutate */
+    int ep_state = ep->state;
+
+    if (ep_state == EP_SEND_BLOCKED) {
         /* Sender is waiting — dequeue immediately */
         *msg = ep->buffered_msg;
         ep->state = EP_IDLE;

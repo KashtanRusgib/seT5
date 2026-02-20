@@ -29,6 +29,7 @@ void sched_init(sched_state_t_state *sched) {
     sched->idle_tid         = -1;
     sched->context_switches = 0;
     sched->preemptions      = 0;
+    /* VULN-21 is fixed below in sched_pick_next */
 
     for (int i = 0; i < SCHED_MAX_THREADS; i++) {
         sched->threads[i].tid         = -1;
@@ -87,16 +88,18 @@ int sched_pick_next(sched_state_t_state *sched) {
 
     /*
      * Priority scan: high (+1) → normal (0) → low (-1)
-     * Within each level, linear scan gives round-robin when combined
-     * with yield advancing the start position.
+     * VULN-21 fix: within each priority level, start scan from
+     * (current_tid + 1) to ensure round-robin fairness.
      *
      * With only 3 priority levels and bounded thread count,
      * this is effectively O(1) for system-level scheduling.
      */
     trit levels[3] = { TRIT_TRUE, TRIT_UNKNOWN, TRIT_FALSE };
+    int start = (sched->current_tid >= 0) ? sched->current_tid + 1 : 0;
 
     for (int lvl = 0; lvl < 3; lvl++) {
-        for (int i = 0; i < sched->thread_count; i++) {
+        for (int j = 0; j < sched->thread_count; j++) {
+            int i = (start + j) % sched->thread_count;
             sched_tcb_t *tcb = &sched->threads[i];
             if (tcb->state == SCHED_READY && tcb->priority == levels[lvl]) {
                 return tcb->tid;

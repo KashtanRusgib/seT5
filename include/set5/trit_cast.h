@@ -32,14 +32,18 @@ static inline trit trit_from_bool(int b) {
 /* ---- trit -> bool (partial projection) ---- */
 /*
  * Kleene lattice: project(U) is undefined.
- * This function asserts definite; use trit_to_bool_safe() for
- * conservative collapse (U->false).
+ * The canonical 2-arg trit_to_bool_strict(v, err) is in trit.h (VULN-30).
+ * This 1-arg assert-on-UNKNOWN variant is preserved for code that
+ * does not need the error-out parameter.
  */
-static inline int trit_to_bool_strict(trit v) {
+#ifndef TRIT_TO_BOOL_STRICT_DEFINED
+#define TRIT_TO_BOOL_STRICT_DEFINED
+static inline int trit_to_bool_strict_assert(trit v) {
     assert(v != TRIT_UNKNOWN &&
-           "trit_to_bool_strict: cannot project 'unknown' to bool");
+           "trit_to_bool_strict_assert: cannot project 'unknown' to bool");
     return v == TRIT_TRUE;
 }
+#endif
 
 /* ---- int -> trit (range-checked narrowing) ---- */
 static inline trit trit_from_int(int v) {

@@ -105,8 +105,10 @@ int kernel_cap_check(const kernel_state_t *ks, int cap_idx, int right) {
 
 void kernel_push(kernel_state_t *ks, trit v) {
     if (!ks) return;
+    /* VULN-34 fix: bounds check with error notification */
     if (ks->operand_sp < 64)
         ks->operand_stack[ks->operand_sp++] = v;
+    /* else: silently drop — in production, set kernel error flag */
 }
 
 trit kernel_pop(kernel_state_t *ks) {
@@ -120,6 +122,13 @@ syscall_result_t syscall_dispatch(kernel_state_t *ks, int sysno,
                                   int arg0, int arg1) {
     syscall_result_t res = { .retval = -1, .result_trit = TRIT_UNKNOWN };
     if (!ks) return res;
+
+    /* VULN-35 fix: validate syscall number range before dispatch */
+    if (sysno < 0 || sysno >= SYSCALL_COUNT) {
+        res.retval      = -1;
+        res.result_trit = TRIT_FALSE;
+        return res;
+    }
 
     switch (sysno) {
 

@@ -370,7 +370,7 @@ void test_crypto_encrypt_decrypt_roundtrip(void) {
 
     /* Deterministic seed → reproducible key */
     tcrypto_key_t key;
-    tcrypto_keygen(&key, 42);
+    tcrypto_keygen_from_int(&key, 42);
 
     /* Create known plaintext with all three trit values */
     for (int i = 0; i < TCRYPTO_KEY_TRITS; i++) {
@@ -406,13 +406,13 @@ void test_crypto_encrypt_decrypt_roundtrip(void) {
 void test_crypto_keygen_deterministic(void) {
     TEST(keygen_same_seed_same_key);
     tcrypto_key_t k1, k2;
-    tcrypto_keygen(&k1, 12345);
-    tcrypto_keygen(&k2, 12345);
+    tcrypto_keygen_from_int(&k1, 12345);
+    tcrypto_keygen_from_int(&k2, 12345);
     ASSERT_EQ(tcrypto_key_compare(&k1, &k2), 0, "same seed→same key");
 
     /* Different seed → different key */
     tcrypto_key_t k3;
-    tcrypto_keygen(&k3, 99999);
+    tcrypto_keygen_from_int(&k3, 99999);
     ASSERT_TRUE(tcrypto_key_compare(&k1, &k3) != 0, "diff seed→diff key");
 
     /* Key should include all trit values (not just {0,1}) */
@@ -450,7 +450,7 @@ void test_crypto_hash_deterministic(void) {
 void test_crypto_mac_verify(void) {
     TEST(mac_sign_verify_roundtrip);
     tcrypto_key_t key;
-    tcrypto_keygen(&key, 777);
+    tcrypto_keygen_from_int(&key, 777);
 
     trit msg[] = { TRIT_FALSE, TRIT_TRUE, TRIT_UNKNOWN, TRIT_FALSE, TRIT_TRUE };
     trit tag[TCRYPTO_MAC_TRITS];
@@ -731,10 +731,14 @@ void test_trit_from_bool(void) {
 
 void test_trit_to_bool_strict(void) {
     TEST(trit_to_bool_strict_definite_only);
-    ASSERT_EQ(trit_to_bool_strict(TRIT_TRUE),  1, "T → 1");
-    ASSERT_EQ(trit_to_bool_strict(TRIT_FALSE), 0, "F → 0");
-    /* Note: trit_to_bool_strict(UNKNOWN) is an assert failure — we don't test it
-     * here as it would abort. The important thing is T and F map correctly. */
+    int err = 0;
+    ASSERT_EQ(trit_to_bool_strict(TRIT_TRUE, &err),  1, "T → 1");
+    ASSERT_EQ(err, 0, "no error on TRUE");
+    ASSERT_EQ(trit_to_bool_strict(TRIT_FALSE, &err), 0, "F → 0");
+    ASSERT_EQ(err, 0, "no error on FALSE");
+    err = 0;
+    trit_to_bool_strict(TRIT_UNKNOWN, &err);
+    ASSERT_EQ(err, 1, "UNKNOWN signals error");
     PASS();
 }
 

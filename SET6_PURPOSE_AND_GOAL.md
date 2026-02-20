@@ -4,6 +4,12 @@ In seT6 we have implemented various schema(s) to build the ternary first full st
 
 ---
 
+## Ternary-First Bridge Protocol (Mandatory — effective 2026-02-20)
+
+Rather than risk regression to binary, when any aspect of seT6 and/or its full stack and modules encounters a different format situation, the protocol is and shall henceforth be: **rather than use binary internally, we will build bridges and converters as necessary to provide native hybrid interoperability functionality and utility** to increase the value of seT6 for all users. We build out and outwards with ternary-to-binary and multi-radix-to-binary OUTWARDS wherever necessary to build the ternary-first and ternary-all-the-way-down imminent emergent future. No internal binary regression is permitted. All binary compatibility is achieved through outward-facing bridge modules at the system boundary. See `ARCHITECTURE.md` §14A for implementation details. Violations are treated as Crown Jewel regressions and will be reverted.
+
+---
+
 ## User-Created .md Files Index
 
 *The following files are the most obviously user-created documentation in this repository, identified by naming style, topic specificity, and personal/strategic content:*

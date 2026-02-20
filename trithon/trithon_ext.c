@@ -524,7 +524,7 @@ int trithon_crypto_roundtrip(int8_t *data, int len, uint32_t seed) {
     memcpy(original, data, len);
 
     tcrypto_key_t key;
-    tcrypto_keygen(&key, seed);
+    tcrypto_keygen_from_int(&key, seed);
     trit iv[TCRYPTO_MAC_TRITS];
     memset(iv, 0, sizeof(iv));
 

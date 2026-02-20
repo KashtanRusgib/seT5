@@ -36,13 +36,13 @@ extern "C" {
 /* ==== Constants ======================================================== */
 
 /** Standard hash width (trits) — 162 trits ≈ 256 bits equivalent */
-#define TCRYPTO_HASH_TRITS     81
+#define TCRYPTO_HASH_TRITS     162
 
-/** Key length (trits) — 243 trits ≈ 385 bits equivalent */
-#define TCRYPTO_KEY_TRITS      81
+/** Key length (trits) — 162 trits ≈ 256 bits equivalent */
+#define TCRYPTO_KEY_TRITS      162
 
-/** Lattice dimension for LWE-style operations */
-#define TCRYPTO_LATTICE_DIM    27
+/** Lattice dimension for LWE-style operations (post-quantum secure) */
+#define TCRYPTO_LATTICE_DIM    256
 
 /** MAC tag length (trits) */
 #define TCRYPTO_MAC_TRITS      27
@@ -119,14 +119,33 @@ void tcrypto_hash(trit *digest, const trit *msg, int msg_len);
 /* ==== Key API ========================================================== */
 
 /**
- * @brief Generate a ternary key from a seed.
+ * @brief Generate a ternary key from a full-entropy trit seed.
  *
- * Uses hash-based key derivation from integer seed.
+ * VULN-23 fix: Takes a full trit seed instead of uint32_t.
+ * Uses hash-based key derivation from trit seed.
  *
- * @param key   Output key.
- * @param seed  Integer seed for PRNG.
+ * @param key       Output key.
+ * @param seed      Trit seed (TCRYPTO_KEY_TRITS trits of entropy).
+ * @param seed_len  Length of seed in trits (must be >= 1).
  */
-void tcrypto_keygen(tcrypto_key_t *key, uint32_t seed);
+void tcrypto_keygen(tcrypto_key_t *key, const trit *seed, int seed_len);
+
+/**
+ * @brief Compatibility wrapper: generate key from a uint32_t seed.
+ *
+ * Converts the integer to a deterministic trit seed via simple
+ * base-3 decomposition, then calls tcrypto_keygen.
+ * Prefer tcrypto_keygen() with a full trit seed for new code.
+ */
+static inline void tcrypto_keygen_from_int(tcrypto_key_t *key, uint32_t seed) {
+    trit tseed[TCRYPTO_KEY_TRITS];
+    uint32_t s = seed;
+    for (int i = 0; i < TCRYPTO_KEY_TRITS; i++) {
+        tseed[i] = (trit)((int)(s % 3) - 1);
+        s = (s / 3) + (seed ^ (uint32_t)i) * 2654435761u;
+    }
+    tcrypto_keygen(key, tseed, TCRYPTO_KEY_TRITS);
+}
 
 /**
  * @brief Compare two keys in constant time.

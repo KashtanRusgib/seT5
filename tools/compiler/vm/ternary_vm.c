@@ -15,8 +15,51 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 #include "../include/vm.h"
 #include "../include/logger.h"
+
+/* === Packed64 hardened helpers (inlined from trit.h to avoid include conflict) === */
+static inline uint64_t vm_trit_sanitize_packed64(uint64_t w)
+{
+    uint64_t lo = w & 0x5555555555555555ULL;
+    uint64_t hi = (w >> 1) & 0x5555555555555555ULL;
+    uint64_t fault_pos = lo & hi;
+    uint64_t fault_full = fault_pos | (fault_pos << 1);
+    return w & ~fault_full;
+}
+
+static inline uint64_t vm_trit_and_packed64(uint64_t a, uint64_t b)
+{
+    uint64_t a_hi = a & 0xAAAAAAAAAAAAAAAAULL;
+    uint64_t a_lo = a & 0x5555555555555555ULL;
+    uint64_t b_hi = b & 0xAAAAAAAAAAAAAAAAULL;
+    uint64_t b_lo = b & 0x5555555555555555ULL;
+    uint64_t r_hi = a_hi | b_hi;
+    uint64_t r_lo = a_lo & b_lo & ~(r_hi >> 1);
+    return r_hi | r_lo;
+}
+
+static inline uint64_t vm_trit_or_packed64(uint64_t a, uint64_t b)
+{
+    uint64_t a_hi = a & 0xAAAAAAAAAAAAAAAAULL;
+    uint64_t a_lo = a & 0x5555555555555555ULL;
+    uint64_t b_hi = b & 0xAAAAAAAAAAAAAAAAULL;
+    uint64_t b_lo = b & 0x5555555555555555ULL;
+    uint64_t r_lo = a_lo | b_lo;
+    uint64_t r_hi = a_hi & b_hi & ~(r_lo << 1);
+    return r_hi | r_lo;
+}
+
+static inline uint64_t vm_trit_not_packed64(uint64_t a)
+{
+    uint64_t hi = (a & 0xAAAAAAAAAAAAAAAAULL) >> 1;
+    uint64_t lo = (a & 0x5555555555555555ULL) << 1;
+    return hi | lo;
+}
+
+/* === VM Error Flag (VULN-01/02/03/05/06) === */
+static int vm_error = 0;  /* 0=ok, nonzero=fault */
 
 /* === Operand Stack === */
 static int stack[STACK_SIZE];
@@ -36,35 +79,63 @@ static int last_result = 0;
 /* --- Operand stack operations --- */
 static void push(int val)
 {
-    if (sp < STACK_SIZE)
+    if (sp < STACK_SIZE) {
         stack[sp++] = val;
+    } else {
+        /* VULN-01 fix: overflow sets error flag instead of silent drop */
+        vm_error = 1;
+    }
 }
 
 static int pop(void)
 {
-    return (sp > 0) ? stack[--sp] : 0;
+    if (sp > 0) {
+        return stack[--sp];
+    } else {
+        /* VULN-02 fix: underflow sets error flag — never silently return 0 */
+        vm_error = 1;
+        return 0;
+    }
 }
 
 static int peek(void)
 {
-    return (sp > 0) ? stack[sp - 1] : 0;
+    if (sp > 0) {
+        return stack[sp - 1];
+    } else {
+        vm_error = 1;
+        return 0;
+    }
 }
 
 /* --- Return stack operations (Setun-70 two-stack model) --- */
 static void rpush(int val)
 {
-    if (rsp < RSTACK_SIZE)
+    if (rsp < RSTACK_SIZE) {
         rstack[rsp++] = val;
+    } else {
+        vm_error = 1;
+    }
 }
 
 static int rpop(void)
 {
-    return (rsp > 0) ? rstack[--rsp] : 0;
+    if (rsp > 0) {
+        return rstack[--rsp];
+    } else {
+        vm_error = 1;
+        return 0;
+    }
 }
 
 static int rpeek(void)
 {
-    return (rsp > 0) ? rstack[rsp - 1] : 0;
+    if (rsp > 0) {
+        return rstack[rsp - 1];
+    } else {
+        vm_error = 1;
+        return 0;
+    }
 }
 
 /* === Opcode name table for debugging === */
@@ -96,8 +167,14 @@ void vm_memory_write(int addr, int value)
         memory[addr] = value;
 }
 
+int vm_get_error(void)
+{
+    return vm_error;
+}
+
 void vm_memory_reset(void)
 {
+    vm_error = 0;
     for (int i = 0; i < MEMORY_SIZE; i++)
         memory[i] = 0;
     sp = 0;
@@ -159,10 +236,16 @@ void vm_run(unsigned char *bytecode, size_t len)
 {
     sp = 0;
     rsp = 0;
+    vm_error = 0;
     LOG_DEBUG_MSG("VM", "TASK-006", "vm_run entered (two-stack model)");
 
     for (size_t pc = 0; pc < len;)
     {
+        /* VULN-01/02 fix: halt on any accumulated error */
+        if (vm_error) {
+            fprintf(stderr, "VM: error flag set, halting at pc=%zu\n", pc);
+            return;
+        }
         unsigned char op = bytecode[pc++];
 
         switch (op)
@@ -171,6 +254,8 @@ void vm_run(unsigned char *bytecode, size_t len)
             /* === Phase 1: Core arithmetic & memory === */
 
         case OP_PUSH:
+            /* VULN-05 fix: bounds-check operand fetch */
+            if (pc >= len) { vm_error = 1; break; }
             push((int)(signed char)bytecode[pc++]);
             break;
 
@@ -214,7 +299,8 @@ void vm_run(unsigned char *bytecode, size_t len)
         {
             /* Pack 32 trits from stack into a single 64-bit word.
              * Each trit encoded as 2 bits: 00=0, 01=+1, 10=-1, 11=fault.
-             * Stack: pop 32 values, pack into one uint64. */
+             * Stack: pop 32 values, pack into one uint64.
+             * VULN-28 fix: clamp non-{-1,0,+1} values to 0 (UNKNOWN). */
             unsigned long long packed = 0;
             for (int i = 31; i >= 0; i--)
             {
@@ -223,6 +309,8 @@ void vm_run(unsigned char *bytecode, size_t len)
                                                                   : 0;
                 packed |= ((unsigned long long)enc) << (i * 2);
             }
+            /* VULN-28 fix: sanitize fault slots before pushing */
+            packed = vm_trit_sanitize_packed64(packed);
             push((int)(packed & 0xFFFFFFFF));
             push((int)((packed >> 32) & 0xFFFFFFFF));
             break;
@@ -247,7 +335,8 @@ void vm_run(unsigned char *bytecode, size_t len)
 
         case OP_SIMD_AND:
         {
-            /* Parallel trit AND (min) on two packed64 words.
+            /* VULN-29 fix: use hardened SIMD path with fault sanitization.
+             * Parallel trit AND (min) on two packed64 words.
              * Pop b_hi, b_lo, a_hi, a_lo; push result. */
             unsigned long long bhi = (unsigned int)pop();
             unsigned long long blo = (unsigned int)pop();
@@ -255,18 +344,10 @@ void vm_run(unsigned char *bytecode, size_t len)
             unsigned long long alo = (unsigned int)pop();
             unsigned long long a = (ahi << 32) | alo;
             unsigned long long b = (bhi << 32) | blo;
-            unsigned long long result = 0;
-            for (int i = 0; i < 32; i++)
-            {
-                int ta = ((a >> (i * 2)) & 3) == 1 ? 1 : ((a >> (i * 2)) & 3) == 2 ? -1
-                                                                                   : 0;
-                int tb = ((b >> (i * 2)) & 3) == 1 ? 1 : ((b >> (i * 2)) & 3) == 2 ? -1
-                                                                                   : 0;
-                int tr = (ta < tb) ? ta : tb; /* trit_min */
-                unsigned int enc = (tr == 1) ? 1 : (tr == -1) ? 2
-                                                              : 0;
-                result |= ((unsigned long long)enc) << (i * 2);
-            }
+            /* Sanitize fault slots (0b11→0b00) before AND */
+            unsigned long long sa = vm_trit_sanitize_packed64(a);
+            unsigned long long sb = vm_trit_sanitize_packed64(b);
+            unsigned long long result = vm_trit_and_packed64(sa, sb);
             push((int)(result & 0xFFFFFFFF));
             push((int)((result >> 32) & 0xFFFFFFFF));
             break;
@@ -274,25 +355,18 @@ void vm_run(unsigned char *bytecode, size_t len)
 
         case OP_SIMD_OR:
         {
-            /* Parallel trit OR (max) on two packed64 words. */
+            /* VULN-29 fix: use hardened SIMD path with fault sanitization.
+             * Parallel trit OR (max) on two packed64 words. */
             unsigned long long bhi = (unsigned int)pop();
             unsigned long long blo = (unsigned int)pop();
             unsigned long long ahi = (unsigned int)pop();
             unsigned long long alo = (unsigned int)pop();
             unsigned long long a = (ahi << 32) | alo;
             unsigned long long b = (bhi << 32) | blo;
-            unsigned long long result = 0;
-            for (int i = 0; i < 32; i++)
-            {
-                int ta = ((a >> (i * 2)) & 3) == 1 ? 1 : ((a >> (i * 2)) & 3) == 2 ? -1
-                                                                                   : 0;
-                int tb = ((b >> (i * 2)) & 3) == 1 ? 1 : ((b >> (i * 2)) & 3) == 2 ? -1
-                                                                                   : 0;
-                int tr = (ta > tb) ? ta : tb; /* trit_max */
-                unsigned int enc = (tr == 1) ? 1 : (tr == -1) ? 2
-                                                              : 0;
-                result |= ((unsigned long long)enc) << (i * 2);
-            }
+            /* Sanitize fault slots (0b11→0b00) before OR */
+            unsigned long long sa = vm_trit_sanitize_packed64(a);
+            unsigned long long sb = vm_trit_sanitize_packed64(b);
+            unsigned long long result = vm_trit_or_packed64(sa, sb);
             push((int)(result & 0xFFFFFFFF));
             push((int)((result >> 32) & 0xFFFFFFFF));
             break;
@@ -300,34 +374,40 @@ void vm_run(unsigned char *bytecode, size_t len)
 
         case OP_SIMD_NEG:
         {
-            /* Parallel trit negation on a packed64 word. */
+            /* VULN-29 fix: use hardened SIMD path with fault sanitization.
+             * Parallel trit negation on a packed64 word. */
             unsigned long long hi = (unsigned int)pop();
             unsigned long long lo = (unsigned int)pop();
             unsigned long long packed = (hi << 32) | lo;
-            unsigned long long result = 0;
-            for (int i = 0; i < 32; i++)
-            {
-                unsigned int enc = (packed >> (i * 2)) & 3;
-                /* Flip: 01(+1)↔10(-1), 00(0)→00(0) */
-                unsigned int neg = (enc == 1) ? 2 : (enc == 2) ? 1
-                                                               : 0;
-                result |= ((unsigned long long)neg) << (i * 2);
-            }
+            /* Sanitize fault slots (0b11→0b00) before NEG */
+            unsigned long long san = vm_trit_sanitize_packed64(packed);
+            unsigned long long result = vm_trit_not_packed64(san);
             push((int)(result & 0xFFFFFFFF));
             push((int)((result >> 32) & 0xFFFFFFFF));
             break;
         }
 
         case OP_JMP:
-            pc = (size_t)bytecode[pc];
+        {
+            /* VULN-05 fix: bounds-check operand fetch */
+            if (pc >= len) { vm_error = 1; break; }
+            size_t target = (size_t)bytecode[pc];
+            /* VULN-06 fix: validate jump target */
+            if (target >= len) { vm_error = 1; break; }
+            pc = target;
             break;
+        }
 
         case OP_COND_JMP:
         {
+            /* VULN-05 fix: bounds-check operand fetch */
+            if (pc >= len) { vm_error = 1; break; }
             int cond = pop();
             if (cond == 0)
             {
-                pc = (size_t)bytecode[pc];
+                size_t target = (size_t)bytecode[pc];
+                if (target >= len) { vm_error = 1; break; }
+                pc = target;
             }
             else
             {
@@ -384,10 +464,14 @@ void vm_run(unsigned char *bytecode, size_t len)
             case 3:
             { /* t_mmap */
                 int sz = pop();
+                /* VULN-03 fix: reject negative/zero size */
+                if (sz <= 0) { push(-1); break; }
                 int base = heap_top;
+                if (heap_top + sz > MEMORY_SIZE) {
+                    push(-1); /* OOM */
+                    break;
+                }
                 heap_top += sz;
-                if (heap_top > MEMORY_SIZE)
-                    heap_top = MEMORY_SIZE;
                 push(base);
                 break;
             }
@@ -476,8 +560,12 @@ void vm_run(unsigned char *bytecode, size_t len)
 
         case OP_CALL:
         {
+            /* VULN-05 fix: bounds-check operand fetch */
+            if (pc >= len) { vm_error = 1; break; }
             /* Push return address (PC after addr byte) to return stack */
             size_t target = (size_t)bytecode[pc++];
+            /* VULN-06 fix: validate call target */
+            if (target >= len) { vm_error = 1; break; }
             rpush((int)(pc)); /* return to instruction after CALL */
             pc = target;
             break;
@@ -510,11 +598,15 @@ void vm_run(unsigned char *bytecode, size_t len)
 
         case OP_BRZ:
         {
+            /* VULN-05 fix: bounds-check operand fetch */
+            if (pc >= len) { vm_error = 1; break; }
             /* Branch if zero: pop TOS, if 0 skip to addr, else continue */
             int cond = pop();
             if (cond == 0)
             {
-                pc = (size_t)bytecode[pc];
+                size_t target = (size_t)bytecode[pc];
+                if (target >= len) { vm_error = 1; break; }
+                pc = target;
             }
             else
             {
@@ -525,11 +617,15 @@ void vm_run(unsigned char *bytecode, size_t len)
 
         case OP_BRN:
         {
+            /* VULN-05 fix: bounds-check operand fetch */
+            if (pc >= len) { vm_error = 1; break; }
             /* Branch if negative */
             int cond = pop();
             if (cond < 0)
             {
-                pc = (size_t)bytecode[pc];
+                size_t target = (size_t)bytecode[pc];
+                if (target >= len) { vm_error = 1; break; }
+                pc = target;
             }
             else
             {
@@ -540,11 +636,15 @@ void vm_run(unsigned char *bytecode, size_t len)
 
         case OP_BRP:
         {
+            /* VULN-05 fix: bounds-check operand fetch */
+            if (pc >= len) { vm_error = 1; break; }
             /* Branch if positive */
             int cond = pop();
             if (cond > 0)
             {
-                pc = (size_t)bytecode[pc];
+                size_t target = (size_t)bytecode[pc];
+                if (target >= len) { vm_error = 1; break; }
+                pc = target;
             }
             else
             {
@@ -649,6 +749,8 @@ void vm_run(unsigned char *bytecode, size_t len)
 
         case OP_PUSH_TRYTE:
         {
+            /* VULN-05 fix: bounds-check operand fetch */
+            if (pc >= len) { vm_error = 1; break; }
             /* Read 1-byte tryte index, convert 6-trit value */
             int idx = (int)(signed char)bytecode[pc++];
             push(idx); /* Phase 1: treat as integer */
@@ -657,6 +759,8 @@ void vm_run(unsigned char *bytecode, size_t len)
 
         case OP_PUSH_WORD:
         {
+            /* VULN-05 fix: bounds-check 2-byte operand fetch */
+            if (pc + 1 >= len) { vm_error = 1; break; }
             /* Read 2-byte packed 9-trit word value */
             int lo = (int)(unsigned char)bytecode[pc++];
             int hi = (int)(signed char)bytecode[pc++];
