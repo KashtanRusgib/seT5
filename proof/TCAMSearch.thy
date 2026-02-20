@@ -1,7 +1,7 @@
 (* TCAMSearch.thy — TCAM 3-Value Match Semantics
    T-036: Formal proof of TCAM search soundness and completeness.
 
-   Theorem: ∀ key mask entry. tcam_match(key, mask, entry) ↔ 
+   Theorem: ∀ key mask entry. tcam_match(key, mask, entry) ↔
             (∀i. mask[i]=UNKNOWN ∨ key[i]=entry[i])
 
    SPDX-License-Identifier: GPL-2.0 *)
@@ -80,6 +80,35 @@ lemma tcam_search_first:
    i < length entries \<and>
    (let (m, e) = entries ! i in tcam_match key m e) \<and>
    (\<forall>j < i. let (m, e) = entries ! j in \<not> tcam_match key m e)"
-  sorry (* Structural induction on entries list — future work *)
+proof (induction entries arbitrary: i)
+  case Nil thus ?case by simp
+next
+  case (Cons a rest)
+  obtain m e where ae: "a = (m, e)" by (cases a) auto
+  show ?case
+  proof (cases "tcam_match key m e")
+    case True
+    hence "tcam_search key (a # rest) = Some 0" by (simp add: ae)
+    with Cons.prems have "i = 0" by simp
+    thus ?thesis using True ae by (simp add: Let_def)
+  next
+    case False
+    hence search_step:
+      "tcam_search key (a # rest) = map_option Suc (tcam_search key rest)"
+      by (simp add: ae)
+    with Cons.prems obtain i' where
+      i'_src: "tcam_search key rest = Some i'" and
+      i'_eq:  "i = Suc i'"
+      by (cases "tcam_search key rest") auto
+    with Cons.IH have
+      IH_len:  "i' < length rest" and
+      IH_hit:  "let (ma, ea) = rest ! i' in tcam_match key ma ea" and
+      IH_miss: "\<forall>j < i'. let (ma, ea) = rest ! j in \<not> tcam_match key ma ea"
+      by auto
+    show ?thesis
+      using IH_len IH_hit IH_miss False ae i'_eq
+      by (fastforce simp: nth_Cons Let_def split: nat.splits prod.splits)
+  qed
+qed
 
 end

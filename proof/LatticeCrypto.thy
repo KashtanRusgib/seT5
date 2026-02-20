@@ -1,6 +1,6 @@
 (* LatticeCrypto.thy — LWE Ternary Hardness in GF(3)
    T-037: Ring-LWE over Z_q with ternary error distribution.
-   
+
    Formalizes the security reduction for trit_crypto sponge hash
    and LWE key exchange aligned with NIST FIPS 203 ML-KEM parameters.
 
@@ -36,7 +36,17 @@ definition ternary_error_support :: "gf3 set" where
   "ternary_error_support = {Abs_gf3 0, Abs_gf3 1, Abs_gf3 2}"
 
 lemma ternary_error_full: "ternary_error_support = UNIV"
-  sorry (* Follows from gf3 being exactly {0,1,2} *)
+proof -
+  have "\<forall>x :: gf3. x \<in> {Abs_gf3 0, Abs_gf3 1, Abs_gf3 2}"
+  proof
+    fix x :: gf3
+    have "Rep_gf3 x \<in> {0::nat, 1, 2}" using Rep_gf3 by blast
+    hence "Rep_gf3 x = 0 \<or> Rep_gf3 x = 1 \<or> Rep_gf3 x = 2" by blast
+    moreover have "x = Abs_gf3 (Rep_gf3 x)" using Rep_gf3_inverse by simp
+    ultimately show "x \<in> {Abs_gf3 0, Abs_gf3 1, Abs_gf3 2}" by auto
+  qed
+  thus ?thesis unfolding ternary_error_support_def by auto
+qed
 
 section \<open>LWE Instance\<close>
 
@@ -50,9 +60,9 @@ definition lwe_sample :: "gf3 list \<Rightarrow> gf3 \<Rightarrow> gf3 list \<Ri
 
 section \<open>SIS Reduction for Ternary Sponge Hash\<close>
 
-text \<open>The Short Integer Solution (SIS) problem reduces to 
+text \<open>The Short Integer Solution (SIS) problem reduces to
       finding collisions in the ternary sponge hash.
-      If we can find x ≠ x' such that H(x) = H(x'), 
+      If we can find x ≠ x' such that H(x) = H(x'),
       we can solve SIS in GF(3)^n.\<close>
 
 definition sis_collision :: "(gf3 list \<Rightarrow> gf3 list) \<Rightarrow> bool" where
@@ -79,7 +89,7 @@ definition mlkem_q :: nat where "mlkem_q = 3329"
 definition ternary_q :: nat where "ternary_q = 3"
 
 text \<open>Ternary advantage: working natively in GF(3) eliminates
-      the need for NTT-based polynomial multiplication when 
+      the need for NTT-based polynomial multiplication when
       error distribution is already ternary.\<close>
 
 lemma ternary_native_advantage:

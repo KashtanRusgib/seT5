@@ -6562,14 +6562,41 @@ trit_or_packed64_hardened(0xFFFF…, 0xAAAA…)  = 0x0000… = all-UNKNOWN  ← 
 
 ---
 
-### Current Totals (as of 2026-02-19, Fault-Hardening Complete)
+## Suite 98: Formal-Verification-Driven Ternary Improvements
+
+**Source**: `tests/test_ternary_formal_suite.c`
+**Tests**: 6652–6701 | **Runtime Assertions**: 50 | **Status**: ✅ Sigma 9 (50/50)
+**Purpose**: Translate research-proven improvements from three new Isabelle theories into
+verified C tests: Symbolic Ternary Trajectory Evaluation (STE), Triple Modular Redundancy
+(TMR), and Abstract Interpretation with widening/narrowing.
+**New theories**: `proof/TritSTE.thy`, `proof/TritTMR.thy`, `proof/TritAbsInterp.thy`
+**Fixed sorry stubs**: `proof/LatticeCrypto.thy` (ternary_error_full), `proof/TCAMSearch.thy` (tcam_search_first)
+**New C API**: `include/set5/trit_tmr.h` — `trit_tmr_vote3`, `trit_tmr_vote_packed64`, `trit_tmr_run`, `trit_tmr_divergence_packed64`
+
+| Section | Coverage | Key Assertions | Formal Basis |
+|---------|----------|----------------|--------------|
+| A: Scalar TMR | `trit_tmr_vote3`, `trit_tmr_agree` | Idempotence, single-fault masking, TMR-7 symmetry | `TritTMR.thy` §TMR-2,6,7 |
+| B: Packed-64 TMR | `trit_tmr_vote_packed64`, `TRIT_PACKED_VALID` | No-fault-output, fault recovery, divergence detection | `TritTMR.thy` §TMR-4,5 |
+| C: STE Guard | Kleene AND/OR properties | Unk containment, guard transparency, STE monotonicity | `TritSTE.thy` §STE-1,2,4,6 |
+| D: Abstract Interp | Lattice boundary ops | AI-6 Unk boundary, AI-7 widening ≥ prev, AI-8 conservative safety | `TritAbsInterp.thy` §AI-3,6,7,8 |
+| E: Garner CRT + Integration | Multi-radix RNS, combined pipeline | CRT roundtrip, carry-free RNS, T-SEC+TMR+STE+AI simultaneously | `TritAbsInterp.thy` + RNS |
+
+**Key improvements delivered this session:**
+- 3 new Isabelle theories (0 `sorry`): **TritSTE** (10 theorems), **TritTMR** (20 theorems), **TritAbsInterp** (12 theorems)
+- 2 sorry stubs fixed: `LatticeCrypto.thy::ternary_error_full`, `TCAMSearch.thy::tcam_search_first`
+- 1 new C header: `trit_tmr.h` with packed64 TMR voting (proof: no 0b11 output slot possible)
+- TMR security theorem: fault `0b11` sanitized to `0b00` before vote; single-fault recovery guaranteed
+
+---
+
+### Current Totals (as of 2026-02-19, Formal-Verification Suite Complete)
 
 | Metric | Active | Including Disabled |
 |--------|-------:|-------------------:|
-| **Test Suites** | **97** | **101** |
-| **Runtime Assertions** | **6233** | **6316** |
-| **Source-Level Entries** | **5888** | **5928** |
-| **Test Source Files** | **98** | **101** |
+| **Test Suites** | **98** | **102** |
+| **Runtime Assertions** | **6283** | **6366** |
+| **Source-Level Entries** | **5938** | **5978** |
+| **Test Source Files** | **99** | **102** |
 
 > **Corner 3 Milestone**: Batches 99–108 (500 assertions, tests 5702–6201) added.
 > test_6201 marks the seT6 Gödel Machine civilisational-alignment pledge.
@@ -6584,3 +6611,8 @@ trit_or_packed64_hardened(0xFFFF…, 0xAAAA…)  = 0x0000… = all-UNKNOWN  ← 
 > contains machine-checkable Isabelle proofs of every key property.
 > Attack finding: packed64 fault `0b11` OR FALSE `0b10` = TRUE `0b01` (lo-bit survives OR formula).
 > Mitigation: sanitize fault→UNKNOWN before any OR — provably blocks masquerade.
+>
+> **Formal-Verification Suite (Suite 98, 50 assertions)**: STE + TMR + Abstract Interpretation
+> improvements derived from formal verification research. Three new Isabelle theories with zero
+> `sorry` stubs. Two existing `sorry` stubs eliminated (LatticeCrypto, TCAMSearch). New `trit_tmr.h`
+> API with proved no-fault-output property. Garner/CRT multi-radix reconstruction verified in C.

@@ -10,3 +10,6 @@ session seT6_Proofs = HOL +
     TranslationValidation
     TJSON_Validation
     PackedFaultSemantics
+    TritSTE
+    TritTMR
+    TritAbsInterp

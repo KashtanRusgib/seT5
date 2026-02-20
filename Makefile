@@ -209,6 +209,10 @@ test_red_team_deep: tests/test_red_team_deep.c
 test_red_team_packed_hardened: tests/test_red_team_packed_hardened.c
 	$(CC) $(CFLAGS) -o $@ $< -lm
 
+# ---- Suite 98: Formal-Verification-Driven Ternary Improvements ----
+test_ternary_formal_suite: tests/test_ternary_formal_suite.c
+	$(CC) $(CFLAGS) -o $@ $< -lm
+
 # ---- Scheduler concurrency test ----
 test_scheduler_concurrency: tests/test_scheduler_concurrency.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -476,7 +480,7 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_red_team_symbiotic test_red_team_godel \
                  test_red_team_type test_red_team_deep \
                  test_red_team_packed_hardened \
-                 trithon/libtrithon.so
+			 test_ternary_formal_suite \
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
 # No stale binary ever executes — each is deleted and recompiled before running.
@@ -648,6 +652,8 @@ _run-test-suites:
 	-$(MAKE) test_red_team_deep && ./test_red_team_deep
 	@echo "##BEGIN##=== Suite 97: Red-Team Packed64 Fault-Hardening ==="
 	-$(MAKE) test_red_team_packed_hardened && ./test_red_team_packed_hardened
+	@echo "##BEGIN##=== Suite 98: Formal-Verification-Driven Ternary Improvements ==="
+	-$(MAKE) test_ternary_formal_suite && ./test_ternary_formal_suite
 # ──────────────────────────────────────────────────────────────────────
 # Master test target: the ONE command that runs ALL tests.
 #
