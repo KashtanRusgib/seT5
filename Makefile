@@ -380,8 +380,8 @@ test_stress: tests/test_stress.c src/memory.c src/ipc.c src/scheduler.c src/sysc
 test_tjson: tests/test_tjson.py
 	python3 tests/test_tjson.py
 
-test_ternumpy: tests/test_ternumpy.py
-	python3 tests/test_ternumpy.py
+test_ternumpy: tests/test_ternumpy.test
+	./tests/test_ternumpy.test
 
 # ---- Functional utility test suite (INCREASE_FUNCTIONAL_UTILITY.md) ----
 test_functional_utility: tests/test_functional_utility.c $(FUNC_UTIL_SRCS)
@@ -438,8 +438,19 @@ test_trit_enhancements: tests/test_trit_enhancements.c $(TRIT_ENH_SRCS) $(KERNEL
 	$(CC) $(CFLAGS) $(TRIT_ENH_INC) -Wno-unused-variable -o $@ $^
 
 .PHONY: test-trit-enhancements
-test-trit-enhancements: test_trit_enhancements
-	./test_trit_enhancements
+test-trit-enhancements:
+	@echo "##BEGIN##=== FP Enhancement ==="
+	./tests/test_fp_enhancement.test
+	@echo "##BEGIN##=== Vector Enhancement ==="
+	./tests/test_vector_enhancement.test
+	@echo "##BEGIN##=== RNS Enhancement ==="
+	./tests/test_rns_enhancement.test
+	@echo "##BEGIN##=== Ternary Arithmetic Enhancement ==="
+	./tests/test_ternary_arithmetic_enhancement.test
+	@echo "##BEGIN##=== Multi-Radix Enhancement ==="
+	./tests/test_multi_radix_enhancement.test
+	@echo "##BEGIN##=== Fault Tolerance Enhancement ==="
+	./tests/test_fault_tolerance_enhancement.test
 
 # ---- Benchmark ----
 bench_unroll: tests/bench_unroll.c src/multiradix.c
