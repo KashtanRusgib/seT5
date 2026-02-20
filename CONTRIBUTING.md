@@ -1,4 +1,4 @@
-# Contributing to seT5 / seT6
+.# Contributing to seT5 / seT6
 
 Thank you for your interest in the **seT5 ternary-first microkernel OS** and the
 **seT6 Gödel Machine** self-improving runtime.  This guide explains how to

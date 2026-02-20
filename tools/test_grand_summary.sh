@@ -716,6 +716,7 @@ BATCH_DEFS=(
     "Batch 6602-6651: Ternary Error Correction GF3 Hamming"
     "Batch 6652-6701: Ternary Capability Access Control"
     "Batch 6702-6751: Ternary State Machine & Protocol Verification"
+    "Batch 6752-6801: VM Developer Tools"
 )
 for bdef in "${BATCH_DEFS[@]}"; do
     sec=$(section "$LOG" "=== $bdef ===")

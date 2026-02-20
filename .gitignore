@@ -113,3 +113,7 @@ test_batch_5502_5551
 test_batch_5552_5601
 test_batch_5602_5651
 test_batch_5652_5701
+test_batch_6752_6801
+tvm_debug
+tvm_disasm
+tvm_repl

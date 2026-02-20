@@ -201,6 +201,10 @@ test_batch_6652_6701: tests/test_batch_6652_6701.c
 test_batch_6702_6751: tests/test_batch_6702_6751.c
 	$(CC) $(CFLAGS) -o $@ $< -lm
 
+# ---- Batch 6752-6801: VM Developer Tools (T-061/T-062/T-063) ----
+test_batch_6752_6801: tests/test_batch_6752_6801.c
+	$(CC) $(CFLAGS) -o $@ $<
+
 # ---- Symbiotic AI Module ----
 test_symbiotic_ai: tests/test_symbiotic_ai.c src/symbiotic_ai.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -536,6 +540,7 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_batch_6352_6401 test_batch_6402_6451 test_batch_6452_6501 \
                  test_batch_6502_6551 test_batch_6552_6601 test_batch_6602_6651 \
                  test_batch_6652_6701 test_batch_6702_6751 \
+                 test_batch_6752_6801 \
                  test_symbiotic_ai \
                  test_symbiotic_curiosity test_symbiotic_beauty test_symbiotic_eudaimonia \
                  test_red_team_trit_range test_red_team_binary_reversion \
@@ -726,6 +731,8 @@ _run-test-suites:
 	-$(MAKE) test_batch_6652_6701 && ./test_batch_6652_6701
 	@echo "##BEGIN##=== Batch 6702-6751: Ternary State Machine & Protocol Verification ==="
 	-$(MAKE) test_batch_6702_6751 && ./test_batch_6702_6751
+	@echo "##BEGIN##=== Batch 6752-6801: VM Developer Tools ==="
+	-$(MAKE) test_batch_6752_6801 && ./test_batch_6752_6801
 	@echo "##BEGIN##=== Symbiotic AI Module ==="
 	-$(MAKE) test_symbiotic_ai && ./test_symbiotic_ai
 	@echo "##BEGIN##=== Suite 86: Symbiotic Curiosity Prover ==="
@@ -858,6 +865,8 @@ clean:
 	rm -f test_batch_6352_6401 test_batch_6402_6451 test_batch_6452_6501
 	rm -f test_batch_6502_6551 test_batch_6552_6601 test_batch_6602_6651
 	rm -f test_batch_6652_6701 test_batch_6702_6751
+	rm -f test_batch_6752_6801
+	rm -f tvm_debug tvm_disasm tvm_repl
 	rm -f trithon/libtrithon.so
 
 # ══════════════════════════════════════════════════════════════════════
@@ -987,6 +996,23 @@ COMPILER_OBJS = tools/compiler/src/parser.o tools/compiler/src/codegen.o \
 
 test_ternary_compiler_integration: tests/test_ternary_compiler_integration.c $(COMPILER_OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
+
+# ══════════════════════════════════════════════════════════════════════
+#  VM Developer Tools (T-061, T-062, T-063)
+# ══════════════════════════════════════════════════════════════════════
+.PHONY: tvm-debug tvm-disasm tvm-repl tvm-tools
+
+tvm-debug: tools/debugger/tvm_debug.c
+	$(CC) $(CFLAGS) -o tvm_debug $<
+
+tvm-disasm: tools/disasm/tvm_disasm.c
+	$(CC) $(CFLAGS) -o tvm_disasm $<
+
+tvm-repl: tools/repl/tvm_repl.c
+	$(CC) $(CFLAGS) -o tvm_repl $<
+
+tvm-tools: tvm-debug tvm-disasm tvm-repl
+	@echo "Built: tvm_debug, tvm_disasm, tvm_repl"
 
 .PHONY: godel-evaluate
 godel-evaluate: test_godel_machine test_trit_simd_regression test_binary_sentinel
