@@ -126,3 +126,7 @@ coverage_report/
 
 # Sigma 9 verification build artifacts
 sigma9_verification/pbt/libset5_pbt.so
+test_red_team_fullstack_kernel
+test_red_team_crypto_net_security
+test_red_team_resource_exhaustion
+test_red_team_trit_linux_ipc_net

@@ -381,6 +381,21 @@ test_modular: tests/test_modular.c src/memory.c src/ipc.c src/scheduler.c src/sy
 test_ipc_secure: tests/test_ipc_secure.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c src/tipc.c
 	$(CC) $(CFLAGS) -o $@ $^
 
+test_red_team_trit_linux_ipc_net: tests/test_red_team_trit_linux_ipc_net.c trit_linux/ipc/trit_ipc_secure.c trit_linux/net/trit_net.c src/multiradix.c
+	$(CC) $(CFLAGS) -Itrit_linux/ipc -Itrit_linux/net -o $@ $^
+
+# ---- Red-Team Suite 120: Full-Stack Kernel Exploit Battery ----
+test_red_team_fullstack_kernel: tests/test_red_team_fullstack_kernel.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
+# ---- Red-Team Suite 121: Crypto/Net/Security Deep Exploit ----
+test_red_team_crypto_net_security: tests/test_red_team_crypto_net_security.c src/trit_crypto.c src/multiradix.c trit_linux/net/trit_net.c trit_linux/net/trit_tcam_net.c trit_linux/security/trit_security.c trit_linux/hardening/trit_hardening.c
+	$(CC) $(CFLAGS) -Itrit_linux/ipc -Itrit_linux/net -Itrit_linux/security -Itrit_linux/hardening -o $@ $^ -lm
+
+# ---- Red-Team Suite 122: Resource Exhaustion & Cross-Module ----
+test_red_team_resource_exhaustion: tests/test_red_team_resource_exhaustion.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c src/symbiotic_ai.c trit_linux/ipc/trit_ipc_secure.c
+	$(CC) $(CFLAGS) -Itrit_linux/ipc -Itrit_linux/net -Itrit_linux/security -Itrit_linux/hardening -o $@ $^ -lm
+
 test_time: tests/test_time.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c $(TRIT_LINUX_TIME)
 	$(CC) $(CFLAGS) -o $@ $^
 
@@ -558,6 +573,10 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
                  test_red_team_symbiotic test_red_team_godel \
                  test_red_team_type test_red_team_deep \
                  test_red_team_packed_hardened \
+			 test_red_team_trit_linux_ipc_net \
+			 test_red_team_fullstack_kernel \
+			 test_red_team_crypto_net_security \
+			 test_red_team_resource_exhaustion \
 			 test_ternary_formal_suite \
 			 test_mixed_radix_bos \
 
@@ -773,6 +792,14 @@ _run-test-suites:
 	-$(MAKE) test_red_team_deep && ./test_red_team_deep
 	@echo "##BEGIN##=== Suite 97: Red-Team Packed64 Fault-Hardening ==="
 	-$(MAKE) test_red_team_packed_hardened && ./test_red_team_packed_hardened
+	@echo "##BEGIN##=== Red-Team Trit Linux IPC/Net Exploit Hardening ==="
+	-$(MAKE) test_red_team_trit_linux_ipc_net && ./test_red_team_trit_linux_ipc_net
+	@echo "##BEGIN##=== Suite 120: Red-Team Full-Stack Kernel Exploit Battery ==="
+	-$(MAKE) test_red_team_fullstack_kernel && ./test_red_team_fullstack_kernel
+	@echo "##BEGIN##=== Suite 121: Red-Team Crypto/Net/Security Deep Exploit ==="
+	-$(MAKE) test_red_team_crypto_net_security && ./test_red_team_crypto_net_security
+	@echo "##BEGIN##=== Suite 122: Red-Team Resource Exhaustion & Cross-Module ==="
+	-$(MAKE) test_red_team_resource_exhaustion && ./test_red_team_resource_exhaustion
 	@echo "##BEGIN##=== Suite 98: Formal-Verification-Driven Ternary Improvements ==="
 	-$(MAKE) test_ternary_formal_suite && ./test_ternary_formal_suite
 	@echo "##BEGIN##=== Suite 99: Mixed-Radix Bos Thesis Enhancements ==="
@@ -882,6 +909,8 @@ clean:
 	rm -f test_batch_6752_6801
 	rm -f test_batch_6802_6851
 	rm -f test_batch_6852_6901
+	rm -f test_red_team_trit_linux_ipc_net
+	rm -f test_red_team_fullstack_kernel test_red_team_crypto_net_security test_red_team_resource_exhaustion
 	rm -f tvm_debug tvm_disasm tvm_repl
 	rm -f trithon/libtrithon.so
 

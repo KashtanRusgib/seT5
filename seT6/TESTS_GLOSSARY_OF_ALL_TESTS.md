@@ -2,11 +2,11 @@
 
 ## seT6 Comprehensive Test Glossary
 
-**Total Runtime Assertions**: 6662
-**Total Source-Level Test Entries**: 6662
-**Test Suites**: 102 (102 actively running; 3 disabled compiler suites; 6 enhancement stubs)
+**Total Runtime Assertions**: 6801
+**Total Source-Level Test Entries**: 6801
+**Test Suites**: 105 (105 actively running; 3 disabled compiler suites; 6 enhancement stubs)
 **Overall Pass Rate**: 100% (0 failures across all active suites)
-**Last Updated**: 2026-02-20 — Sigma 11: 102 suites, 6662 assertions, Suite Index complete (1–118 + E1–E6), all gaps filled
+**Last Updated**: 2026-02-20 — Sigma 11: 105 suites, 6801 assertions, Suite Index complete (1–122 + E1–E6), all gaps filled
 **Generated**: Auto-extracted from source code
 
 ---
@@ -167,6 +167,10 @@ The *runtime* count reflects the total assertions executed; the *source-level* c
 | 116 | Ternary Capability Access Control | `tests/test_batch_6652_6701.c` | 50 | 50 | ✅ |
 | 117 | Ternary State Machine & Protocol | `tests/test_batch_6702_6751.c` | 50 | 50 | ✅ |
 | 118 | VM Developer Tools | `tests/test_batch_6752_6801.c` | 59 | 59 | ✅ |
+| 119 | Red-Team Trit Linux IPC/Net Exploit Hardening ⭐NEW | `tests/test_red_team_trit_linux_ipc_net.c` | 22 | 22 | ✅ |
+| 120 | Red-Team Full-Stack Kernel Exploit Battery ⭐NEW | `tests/test_red_team_fullstack_kernel.c` | 50 | 50 | ✅ |
+| 121 | Red-Team Crypto/Net/Security Deep Exploit ⭐NEW | `tests/test_red_team_crypto_net_security.c` | 39 | 39 | ✅ |
+| 122 | Red-Team Resource Exhaustion & Cross-Module ⭐NEW | `tests/test_red_team_resource_exhaustion.c` | 50 | 50 | ✅ |
 | E1 | FP Enhancement | `tests/test_fp_enhancement.test` | 20 | 20 | ✅ stub |
 | E2 | Vector Enhancement | `tests/test_vector_enhancement.test` | 20 | 20 | ✅ stub |
 | E3 | RNS Enhancement | `tests/test_rns_enhancement.test` | 20 | 20 | ✅ stub |
@@ -7085,6 +7089,219 @@ mixed-radix FFT, cross-radix carry propagation.
 
 Validates fault-tolerance enhancement paths: TMR (triple modular redundancy)
 voting, error injection recovery, watchdog timer integration.
+
+---
+
+## Suite 119: Red-Team Trit Linux IPC/Net Exploit Hardening
+
+**Source**: `tests/test_red_team_trit_linux_ipc_net.c`
+**Runtime Assertions**: 22
+**Source-Level Entries**: 22
+**Harness**: `TEST(...)` + `ASSERT(...)` macros with PASS/FAIL summary
+**Output Reading**: Per-test `[PASS]/[FAIL]` lines followed by `Result: P passed, F failed, T total`.
+
+| # | Test Description | Section | Assertion / Expression | Category |
+|---|------------------|---------|------------------------|----------|
+| 1 | IPC send rejects negative length | Secure IPC Exploit Paths | `tipc_socket_send(..., -1, TCAP_IPC_SEND) == TIPC_SEC_ERR_DENIED` | Boundary |
+| 2 | IPC recv rejects zero max length | Secure IPC Exploit Paths | `tipc_socket_recv(..., 0) == TIPC_SEC_ERR_DENIED` | Boundary |
+| 3 | IPC recv rejects negative max length | Secure IPC Exploit Paths | `tipc_socket_recv(..., -7) == TIPC_SEC_ERR_DENIED` | Boundary |
+| 4 | Injection rejects NULL payload | Secure IPC Exploit Paths | `tipc_inject_simulate(..., NULL, 4) == TIPC_SEC_ERR_INIT` | Negative/error |
+| 5 | Injection blocks negative length | Secure IPC Exploit Paths | `tipc_inject_simulate(..., -3) == TIPC_SEC_ERR_INJECT` | Boundary |
+| 6 | Injection blocks zero length | Secure IPC Exploit Paths | `tipc_inject_simulate(..., 0) == TIPC_SEC_ERR_INJECT` | Boundary |
+| 7 | Injection blocks oversized length | Secure IPC Exploit Paths | `tipc_inject_simulate(..., TSOCK_BUF_TRITS + 1) == TIPC_SEC_ERR_INJECT` | Boundary |
+| 8 | Injection blocks out-of-range trit | Secure IPC Exploit Paths | `tipc_inject_simulate(invalid_payload, 5) == TIPC_SEC_ERR_INJECT` | Negative/error |
+| 9 | Injection allows mixed ternary payload | Secure IPC Exploit Paths | `tipc_inject_simulate(mixed_payload, 6) == TIPC_SEC_OK` | Functional |
+| 10 | Injection attempt counter updated | Secure IPC Exploit Paths | `sec.inject_attempts == 5` | Stress |
+| 11 | Injection blocked counter updated | Secure IPC Exploit Paths | `sec.inject_blocked == 4` | Stress |
+| 12 | Build packet rejects negative length | T-Net Exploit Paths | `tnet_build_packet(..., -1) == TNET_ERR_INIT` | Boundary |
+| 13 | Build packet rejects invalid trit payload | T-Net Exploit Paths | `tnet_build_packet(..., bad_payload, 3) == TNET_ERR_BADADDR` | Negative/error |
+| 14 | Send rejects negative length | T-Net Exploit Paths | `tnet_send(..., -2) == TNET_ERR_INIT` | Boundary |
+| 15 | Send rejects oversized length | T-Net Exploit Paths | `tnet_send(..., TNET_MAX_PAYLOAD + 4) == TNET_ERR_INIT` | Boundary |
+| 16 | Send rejects NULL payload with nonzero length | T-Net Exploit Paths | `tnet_send(..., NULL, 3) == TNET_ERR_INIT` | Negative/error |
+| 17 | Send accepts valid payload | T-Net Exploit Paths | `tnet_send(..., payload, 4) == TNET_OK` | Functional |
+| 18 | Loopback delivers valid packet | T-Net Exploit Paths | `tnet_loopback(&stack) == 1` | Functional |
+| 19 | Receive succeeds for looped packet | T-Net Exploit Paths | `tnet_recv(&stack, &rx) == TNET_OK` | IPC |
+| 20 | Checksum verify rejects negative forged payload length | T-Net Exploit Paths | `tnet_checksum_verify(forged_neg_len) == 0` | Negative/error |
+| 21 | Checksum verify rejects oversized forged payload length | T-Net Exploit Paths | `tnet_checksum_verify(forged_oversized_len) == 0` | Negative/error |
+| 22 | Loopback drops tampered TX header length and counts error | T-Net Exploit Paths | `looped == 0 && checksum_errors incremented` | Stress |
+
+---
+
+## Suite 120: Red-Team Full-Stack Kernel Exploit Battery
+
+**Source**: `tests/test_red_team_fullstack_kernel.c`
+**Runtime Assertions**: 50
+**Source-Level Entries**: 50
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 6902–6951
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 6902 | mem_init(0) — zero-page init denial | A: Memory Subsystem | Boundary |
+| 2 | 6903 | mem_init(negative) — clamped to 0 | A: Memory Subsystem | Boundary |
+| 3 | 6904 | double-free — second free returns error | A: Memory Subsystem | Use-after-free |
+| 4 | 6905 | use-after-free read — returns UNKNOWN | A: Memory Subsystem | Use-after-free |
+| 5 | 6906 | use-after-free write — denied | A: Memory Subsystem | Use-after-free |
+| 6 | 6907 | OOB read — offset >= PAGE_TRITS returns UNKNOWN | A: Memory Subsystem | OOB |
+| 7 | 6908 | OOB write — offset >= PAGE_TRITS rejected | A: Memory Subsystem | OOB |
+| 8 | 6909 | page exhaustion DoS — all allocated, next denied | A: Memory Subsystem | Exhaustion |
+| 9 | 6910 | scrub reserved page denied (VULN-52) | A: Memory Subsystem | Privilege |
+| 10 | 6911 | mem_alloc(NULL) returns error | A: Memory Subsystem | NULL safety |
+| 11 | 6912 | endpoint exhaustion — max then deny | B: IPC Exploits | Exhaustion |
+| 12 | 6913 | send to destroyed endpoint — rejected | B: IPC Exploits | Use-after-free |
+| 13 | 6914 | recv from destroyed endpoint — rejected | B: IPC Exploits | Use-after-free |
+| 14 | 6915 | negative endpoint index — denied | B: IPC Exploits | Boundary |
+| 15 | 6916 | msg build length clamped to IPC_MSG_MAX_WORDS | B: IPC Exploits | Boundary |
+| 16 | 6917 | NULL message — send denied | B: IPC Exploits | NULL safety |
+| 17 | 6918 | notification exhaustion — max then deny | B: IPC Exploits | Exhaustion |
+| 18 | 6919 | NULL ipc_state — safe | B: IPC Exploits | NULL safety |
+| 19 | 6920 | thread exhaustion — max threads then deny | C: Scheduler Exploits | Exhaustion |
+| 20 | 6921 | double-destroy — second returns error | C: Scheduler Exploits | Use-after-free |
+| 21 | 6922 | negative TID — destroyed rejected | C: Scheduler Exploits | Boundary |
+| 22 | 6923 | priority clamp — out-of-range accepted | C: Scheduler Exploits | Boundary |
+| 23 | 6924 | block dead thread — rejected | C: Scheduler Exploits | State |
+| 24 | 6925 | NULL sched_state — returns error | C: Scheduler Exploits | NULL safety |
+| 25 | 6926 | invalid syscall number — out-of-range (VULN-35) | D: Syscall & Capability | Boundary |
+| 26 | 6927 | negative syscall number — rejected | D: Syscall & Capability | Boundary |
+| 27 | 6928 | stack overflow — 65 pushes (VULN-34/59) | D: Syscall & Capability | Overflow |
+| 28 | 6929 | stack underflow — pop on empty | D: Syscall & Capability | Underflow |
+| 29 | 6930 | cap create + check — authorized | D: Syscall & Capability | Functional |
+| 30 | 6931 | revoked cap — check fails | D: Syscall & Capability | Privilege |
+| 31 | 6932 | NULL kernel — pop returns UNKNOWN | D: Syscall & Capability | NULL safety |
+| 32 | 6933 | namespace exhaustion — max 16 then deny | E: Namespace Isolation | Exhaustion |
+| 33 | 6934 | cross-ns access — non-root checked | E: Namespace Isolation | Isolation |
+| 34 | 6935 | NULL ns_state — safe | E: Namespace Isolation | NULL safety |
+| 35 | 6936 | root-ns spawn without CAP_ROOT_NS — denied (VULN-62) | E: Namespace Isolation | Privilege |
+| 36 | 6937 | rule exhaustion — max 64 then deny | F: Audit Firewall | Exhaustion |
+| 37 | 6938 | log flood overflow tracking (VULN-48) | F: Audit Firewall | Overflow |
+| 38 | 6939 | default deny — no matching rule → DENY | F: Audit Firewall | Policy |
+| 39 | 6940 | NULL afw_state — safe | F: Audit Firewall | NULL safety |
+| 40 | 6941 | godel_init — succeeds | G: Gödel Machine | Initialization |
+| 41 | 6942 | path traversal '..' rejected (VULN-75) | G: Gödel Machine | Path traversal |
+| 42 | 6943 | absolute path '/etc/shadow' rejected (VULN-75) | G: Gödel Machine | Path traversal |
+| 43 | 6944 | switchprog overflow >1024 denied (VULN-14/51) | G: Gödel Machine | Overflow |
+| 44 | 6945 | NULL godel_machine — safe | G: Gödel Machine | NULL safety |
+| 45 | 6946 | get_axiom(0) — accessible | G: Gödel Machine | Functional |
+| 46 | 6947 | RSI generation monotonically increases | G: Gödel Machine | RSI safety |
+| 47 | 6948 | RSI iteration cap enforced | G: Gödel Machine | RSI safety |
+| 48 | 6949 | apply rule — invalid theorem ID rejected | G: Gödel Machine | Boundary |
+| 49 | 6950 | delete theorem then apply — graceful | G: Gödel Machine | State |
+| 50 | 6951 | utility zero denominator safety | G: Gödel Machine | Division safety |
+
+---
+
+## Suite 121: Red-Team Crypto/Net/Security Deep Exploit
+
+**Source**: `tests/test_red_team_crypto_net_security.c`
+**Runtime Assertions**: 39
+**Source-Level Entries**: 39
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 6952–6990
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 6952 | hash finalize without absorb — produces output | A: Crypto | Edge case |
+| 2 | 6953 | keygen — all trits in [-1,+1] | A: Crypto | Range |
+| 3 | 6954 | key compare — differs at last position detected | A: Crypto | Constant-time |
+| 4 | 6955 | MAC forgery — tampered data fails verification | A: Crypto | Forgery |
+| 5 | 6956 | encrypt-decrypt — data preserved | A: Crypto | Round-trip |
+| 6 | 6957 | lattice noise — coefficients in [-1,+1] | A: Crypto | Range |
+| 7 | 6958 | lattice dot product — returns valid trit | A: Crypto | Range |
+| 8 | 6959 | hash diffusion — different inputs → different hashes | A: Crypto | Diffusion |
+| 9 | 6960 | tnet_init — succeeds | B: Networking | Initialization |
+| 10 | 6961 | OOB trit in payload — rejected | B: Networking | Boundary |
+| 11 | 6962 | valid packet build + checksum verify | B: Networking | Functional |
+| 12 | 6963 | checksum forgery — tampered payload fails verify | B: Networking | Forgery |
+| 13 | 6964 | TX queue overflow — exceed 32-slot ring | B: Networking | Exhaustion |
+| 14 | 6965 | ARP cache exhaustion — >16 entries denied | B: Networking | Exhaustion |
+| 15 | 6966 | NULL stack — safe | B: Networking | NULL safety |
+| 16 | 6967 | disconnect without connect — no crash | B: Networking | State |
+| 17 | 6968 | connection state — invalid conn returns UNKNOWN | B: Networking | State |
+| 18 | 6969 | tcamn_init — succeeds | C: TCAM | Initialization |
+| 19 | 6970 | TCAM entry exhaustion — max then deny | C: TCAM | Exhaustion |
+| 20 | 6971 | delete entry — not found after | C: TCAM | Deletion |
+| 21 | 6972 | NULL tcamn_state — safe | C: TCAM | NULL safety |
+| 22 | 6973 | trit distance — identical keys = 0 | C: TCAM | Functional |
+| 23 | 6974 | tsec_init — succeeds | D: Security Module | Initialization |
+| 24 | 6975 | fail-open policy — no match = ALLOW | D: Security Module | Policy |
+| 25 | 6976 | policy exhaustion — max 32 then deny | D: Security Module | Exhaustion |
+| 26 | 6977 | sandbox exhaustion — max then deny | D: Security Module | Exhaustion |
+| 27 | 6978 | audit log circular wrap after 128 | D: Security Module | Overflow |
+| 28 | 6979 | escalation detection — UNKNOWN flagged | D: Security Module | Escalation |
+| 29 | 6980 | side-channel — EMI alerts tracked | D: Security Module | Side-channel |
+| 30 | 6981 | NULL tsec_state — safe | D: Security Module | NULL safety |
+| 31 | 6982 | enforce — deny policy blocks access | D: Security Module | Enforcement |
+| 32 | 6983 | thard_init — succeeds | E: Hardening | Initialization |
+| 33 | 6984 | firewall default-ACCEPT — known weakness | E: Hardening | Policy |
+| 34 | 6985 | firewall deny rule — blocks traffic | E: Hardening | Policy |
+| 35 | 6986 | mount check exact path — matches | E: Hardening | Functional |
+| 36 | 6987 | mount check mismatch — denied | E: Hardening | Boundary |
+| 37 | 6988 | hardening score — computed | E: Hardening | Functional |
+| 38 | 6989 | NULL thard_state — safe | E: Hardening | NULL safety |
+| 39 | 6990 | module audit scan | E: Hardening | Functional |
+
+---
+
+## Suite 122: Red-Team Resource Exhaustion & Cross-Module Chain Exploits
+
+**Source**: `tests/test_red_team_resource_exhaustion.c`
+**Runtime Assertions**: 50
+**Source-Level Entries**: 50
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 6991–7040
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 6991 | mem write then read — data integrity | A: IPC+Memory | Round-trip |
+| 2 | 6992 | mem read OOB address — returns TRIT_UNKNOWN | A: IPC+Memory | OOB |
+| 3 | 6993 | mem re-init — old data wiped | A: IPC+Memory | Scrubbing |
+| 4 | 6994 | ipc_init — no crash | A: IPC+Memory | Initialization |
+| 5 | 6995 | ipc send then recv — data intact | A: IPC+Memory | Round-trip |
+| 6 | 6996 | ipc endpoint exhaustion — max endpoints honoured | A: IPC+Memory | Exhaustion |
+| 7 | 6997 | ipc_endpoint_destroy invalid — rejected | A: IPC+Memory | Boundary |
+| 8 | 6998 | memory fill pattern — all trits in range | A: IPC+Memory | Range |
+| 9 | 6999 | sched_init — no crash | B: Scheduler | Initialization |
+| 10 | 7000 | sched_create — returns tid >= 0 | B: Scheduler | Functional |
+| 11 | 7001 | task exhaustion — max tasks then reject | B: Scheduler | Exhaustion |
+| 12 | 7002 | priority ordering — pick_next returns valid tid | B: Scheduler | Functional |
+| 13 | 7003 | destroy non-existent task — error | B: Scheduler | Boundary |
+| 14 | 7004 | sched_yield — no crash | B: Scheduler | Functional |
+| 15 | 7005 | sched_block + unblock — round trip | B: Scheduler | State |
+| 16 | 7006 | godel_init — succeeds | C: Gödel Machine | Initialization |
+| 17 | 7007 | godel_init NULL — rejected | C: Gödel Machine | NULL safety |
+| 18 | 7008 | axiom 0 — verified after init | C: Gödel Machine | Functional |
+| 19 | 7009 | state2theorem — encodes current state | C: Gödel Machine | Functional |
+| 20 | 7010 | theorem exhaustion — max then reject | C: Gödel Machine | Exhaustion |
+| 21 | 7011 | switchprog path traversal — '../' rejected | C: Gödel Machine | Path traversal |
+| 22 | 7012 | switchprog absolute path — '/' rejected | C: Gödel Machine | Path traversal |
+| 23 | 7013 | switchprog valid path — accepted | C: Gödel Machine | Functional |
+| 24 | 7014 | utility regression — delta < 0 detected | C: Gödel Machine | Regression |
+| 25 | 7015 | delete theorem — deactivated | C: Gödel Machine | State |
+| 26 | 7016 | rsi_session_init — succeeds | C: Gödel Machine | Initialization |
+| 27 | 7017 | RSI loop cap — max 10 then deny | C: Gödel Machine | RSI safety |
+| 28 | 7018 | RSI guard — negative beauty → TRIT_FALSE | C: Gödel Machine | RSI safety |
+| 29 | 7019 | RSI guard — sub-threshold beauty → query | C: Gödel Machine | RSI safety |
+| 30 | 7020 | rsi_iterate — returns utility delta | C: Gödel Machine | RSI safety |
+| 31 | 7021 | curiosity probe — all UNKNOWN → high curiosity | D: Symbiotic AI | Functional |
+| 32 | 7022 | curiosity probe — all TRUE → no curiosity | D: Symbiotic AI | Functional |
+| 33 | 7023 | beauty symmetry — palindrome → TRUE | D: Symbiotic AI | Functional |
+| 34 | 7024 | beauty symmetry — asymmetric → FALSE | D: Symbiotic AI | Functional |
+| 35 | 7025 | eudaimonic weight — all TRUE → flourishing | D: Symbiotic AI | Functional |
+| 36 | 7026 | eudaimonic weight — safety FALSE → blocked | D: Symbiotic AI | Functional |
+| 37 | 7027 | eudaimonic weight — UNKNOWN → needs resolution | D: Symbiotic AI | Functional |
+| 38 | 7028 | CuriosityProver — explore hypothesis | D: Symbiotic AI | Functional |
+| 39 | 7029 | prove_curiosity — UNKNOWN escalates level | D: Symbiotic AI | Functional |
+| 40 | 7030 | appreciate_beauty — palindrome scored | D: Symbiotic AI | Functional |
+| 41 | 7031 | optimize_eudaimonia — combines prover + appreciator | D: Symbiotic AI | Functional |
+| 42 | 7032 | optimize_eudaimonia — FALSE input blocks | D: Symbiotic AI | Functional |
+| 43 | 7033 | tipc_sec_init — succeeds | E: Secure IPC | Initialization |
+| 44 | 7034 | socket create — succeeds | E: Secure IPC | Functional |
+| 45 | 7035 | socket exhaustion — max 16 then deny | E: Secure IPC | Exhaustion |
+| 46 | 7036 | namespace create — succeeds | E: Secure IPC | Functional |
+| 47 | 7037 | namespace exhaustion — max 8 then deny | E: Secure IPC | Exhaustion |
+| 48 | 7038 | injection attack — blocked and counted | E: Secure IPC | Injection |
+| 49 | 7039 | injection stats — count > 0 after attack | E: Secure IPC | Injection |
+| 50 | 7040 | tipc_sec_init NULL — rejected | E: Secure IPC | NULL safety |
 
 ---
 

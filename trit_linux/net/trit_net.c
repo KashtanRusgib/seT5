@@ -151,6 +151,8 @@ void tnet_checksum_compute(trit *checksum, const trit *data, int len) {
 
 int tnet_checksum_verify(const tnet_packet_t *pkt) {
     if (!pkt) return 0;
+    if (pkt->header.payload_len < 0 || pkt->header.payload_len > TNET_MAX_PAYLOAD)
+        return 0;
 
     trit expected[TNET_CHECKSUM_TRITS];
     tnet_checksum_compute(expected, pkt->payload, pkt->header.payload_len);
@@ -170,6 +172,7 @@ int tnet_build_packet(tnet_packet_t *pkt,
                       const tnet_port_t *sport, const tnet_port_t *dport,
                       int protocol, const trit *payload, int len) {
     if (!pkt || !src || !dst) return TNET_ERR_INIT;
+    if (len < 0) return TNET_ERR_INIT;
     if (len > TNET_MAX_PAYLOAD) len = TNET_MAX_PAYLOAD;
 
     memset(pkt, 0, sizeof(*pkt));
@@ -185,6 +188,11 @@ int tnet_build_packet(tnet_packet_t *pkt,
 
     /* Copy payload */
     if (payload && len > 0) {
+        for (int i = 0; i < len; i++) {
+            if (payload[i] < TRIT_FALSE || payload[i] > TRIT_TRUE) {
+                return TNET_ERR_BADADDR;
+            }
+        }
         memcpy(pkt->payload, payload, sizeof(trit) * len);
     }
 
@@ -291,6 +299,8 @@ int tnet_send(tnet_stack_t *stack, const tnet_addr_t *dst,
               const tnet_port_t *dport, int protocol,
               const trit *payload, int len) {
     if (!stack || !stack->initialized || !dst) return TNET_ERR_INIT;
+    if (len < 0 || len > TNET_MAX_PAYLOAD) return TNET_ERR_INIT;
+    if (len > 0 && !payload) return TNET_ERR_INIT;
     if (stack->tx_count >= TNET_TX_QUEUE_SIZE) return TNET_ERR_FULL;
 
     /* Build packet with our local address as source */

@@ -683,7 +683,20 @@ else
 fi
 
 # ══════════════════════════════════════════════════════════════════════
-# 25-40. BATCH TEST SUITES  (Format D — "=== Results: P/T passed, F failed ===")
+# 25. RED-TEAM TRIT LINUX IPC/NET EXPLOIT HARDENING  (Format D)
+#     Pattern: Result: P passed, F failed, T total
+# ══════════════════════════════════════════════════════════════════════
+line=$(section "$LOG" "=== Red-Team Trit Linux IPC/Net Exploit Hardening ===" \
+       | grep -E 'Result(s)?:.*passed.*failed' | head -1)
+if [[ -n "$line" ]]; then
+    read -r p f <<< "$(extract_pf "$line")"
+    add_result "Red-Team Trit Linux IPC/Net Exploit Hardening" "$p" "$f"
+else
+    MISSING_SUITES="$MISSING_SUITES  - Red-Team Trit Linux IPC/Net Exploit Hardening\n"
+fi
+
+# ══════════════════════════════════════════════════════════════════════
+# 26-40. BATCH TEST SUITES  (Format D — "=== Results: P/T passed, F failed ===")
 #     Each batch uses a ##BEGIN##=== Batch NNNN-MMMM: Title === header
 #     in the Makefile _run-test-suites section.
 # ══════════════════════════════════════════════════════════════════════

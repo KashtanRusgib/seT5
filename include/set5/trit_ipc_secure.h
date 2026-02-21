@@ -201,6 +201,7 @@ static inline int tipc_socket_activate(tipc_secure_t *sec, int socket_id) {
 static inline int tipc_socket_send(tipc_secure_t *sec, int socket_id,
                      const trit *data, int len, int sender_caps) {
     if (!sec || !sec->initialized || !data) return TIPC_SEC_ERR_INIT;
+    if (len < 0) return TIPC_SEC_ERR_DENIED;
     if (socket_id < 0 || socket_id >= sec->socket_count)
         return TIPC_SEC_ERR_NOTFOUND;
 
@@ -238,6 +239,7 @@ static inline int tipc_socket_send(tipc_secure_t *sec, int socket_id,
 static inline int tipc_socket_recv(tipc_secure_t *sec, int socket_id,
                      trit *out, int max_len) {
     if (!sec || !sec->initialized || !out) return TIPC_SEC_ERR_INIT;
+    if (max_len <= 0) return TIPC_SEC_ERR_DENIED;
     if (socket_id < 0 || socket_id >= sec->socket_count)
         return TIPC_SEC_ERR_NOTFOUND;
 
@@ -330,7 +332,12 @@ static inline int tipc_cap_check(tipc_secure_t *sec, int module_id, int required
 
 static inline int tipc_inject_simulate(tipc_secure_t *sec, int socket_id,
                          const trit *malicious_data, int len) {
-    if (!sec || !sec->initialized) return TIPC_SEC_ERR_INIT;
+    if (!sec || !sec->initialized || !malicious_data) return TIPC_SEC_ERR_INIT;
+    if (len <= 0 || len > TSOCK_BUF_TRITS) {
+        sec->inject_attempts++;
+        sec->inject_blocked++;
+        return TIPC_SEC_ERR_INJECT;
+    }
     if (socket_id < 0 || socket_id >= sec->socket_count)
         return TIPC_SEC_ERR_NOTFOUND;
 
