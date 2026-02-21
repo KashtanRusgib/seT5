@@ -67,7 +67,8 @@ docs/_templates/
 doxygen/
 
 # IDE
-.vscode/
+.vscode/*
+!.vscode/mcp.json
 *.swp
 *~set5_native
 test_integration

@@ -1,0 +1,22 @@
+#:schema node_modules/wrangler/config-schema.json
+
+name = "set5-mcp-server"
+main = "src/index.ts"
+compatibility_date = "2025-02-18"
+compatibility_flags = ["nodejs_compat"]
+
+# ───────────────────────────────────────────────────────────
+# Cloudflare Workers — Free Tier: 100,000 requests/day
+# Deploy:  npm run deploy
+# Dev:     npm run dev
+# URL:     https://set5-mcp-server.<your-subdomain>.workers.dev/sse
+# ───────────────────────────────────────────────────────────
+
+# Uncomment to bind KV for persistent state:
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "your-kv-namespace-id"
+
+# Secrets (set via `wrangler secret put`):
+#   wrangler secret put API_KEY
+# Access in code as env.API_KEY

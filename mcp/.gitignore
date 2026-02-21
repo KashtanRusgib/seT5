@@ -1,0 +1,8 @@
+# MCP server artifacts
+local/.venv/
+cloudflare/node_modules/
+cloudflare/dist/
+cloudflare/.wrangler/
+cloudrun/__pycache__/
+local/__pycache__/
+*.pyc

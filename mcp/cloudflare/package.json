@@ -1,0 +1,22 @@
+{
+    "name": "set5-mcp-cloudflare",
+    "version": "1.0.0",
+    "description": "seT5/seT6 Ternary Microkernel — Remote MCP Server on Cloudflare Workers (SSE)",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "wrangler dev",
+        "deploy": "wrangler deploy",
+        "cf-typegen": "wrangler types"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.12.1",
+        "hono": "^4.7.0",
+        "agents": "^0.0.74"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "^4.20250214.0",
+        "typescript": "^5.7.0",
+        "wrangler": "^4.0.0"
+    }
+}
