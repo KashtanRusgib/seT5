@@ -485,7 +485,8 @@ typedef struct {
  */
 void ternary_db_init(ternary_database_t *db, int num_cols, ternary_null_mode_t null_mode) {
     memset(db, 0, sizeof(*db));
-    db->num_cols = num_cols;
+    /* VULN-66 fix: clamp num_cols to prevent stack overflow in data arrays */
+    db->num_cols = (num_cols > 0 && num_cols <= TERNARY_DB_MAX_COLS) ? num_cols : TERNARY_DB_MAX_COLS;
     db->null_mode = null_mode;
 }
 
@@ -516,6 +517,9 @@ int ternary_db_insert(ternary_database_t *db, const trit *row_data,
 int ternary_db_select_where(ternary_database_t *db, int col_idx, trit condition_value,
                            trit *result_rows[TERNARY_DB_MAX_ROWS]) {
     int result_count = 0;
+
+    /* VULN-65 fix: bounds check col_idx to prevent OOB read */
+    if (!db || col_idx < 0 || col_idx >= db->num_cols) return 0;
 
     for (int row = 0; row < db->num_rows; row++) {
         trit cell_value = db->data[row][col_idx];

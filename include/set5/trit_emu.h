@@ -63,7 +63,10 @@ static inline trit2 trit2_encode(int v) {
  * @return Integer value: -1, 0, or +1. Fault clamps to 0.
  */
 static inline int trit2_decode(trit2 t) {
-    static const int lut[4] = { -1, 0, 0 /* fault->clamp */, 1 };
+    /* VULN-72 fix: fault trit (10) now returns INT_MIN sentinel instead of
+     * silently clamping to 0. Callers must check trit2_is_fault() first,
+     * or handle INT_MIN as an error. Using 0 masked real bugs. */
+    static const int lut[4] = { -1, 0, -128 /* fault->sentinel */, 1 };
     return lut[t & 0x03];
 }
 

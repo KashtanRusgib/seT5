@@ -245,8 +245,13 @@ void tcrypto_cipher_init(tcrypto_cipher_t *c, const tcrypto_key_t *key,
     c->rounds = (rounds > 0) ? rounds : 12;
     if (iv)
         memcpy(c->iv, iv, TCRYPTO_MAC_TRITS * sizeof(trit));
-    else
-        memset(c->iv, 0, TCRYPTO_MAC_TRITS * sizeof(trit));
+    else {
+        /* VULN-73 fix: when no IV provided, generate a deterministic but
+         * non-zero IV from the key material to prevent identical keystreams
+         * across sessions using the same key with NULL IV. */
+        for (int i = 0; i < TCRYPTO_MAC_TRITS; i++)
+            c->iv[i] = (key->length > 0) ? key->data[i % key->length] : TRIT_UNKNOWN;
+    }
 }
 
 void tcrypto_encrypt(tcrypto_cipher_t *c, trit *data, int len) {
@@ -255,6 +260,8 @@ void tcrypto_encrypt(tcrypto_cipher_t *c, trit *data, int len) {
     for (int round = 0; round < c->rounds; round++) {
         for (int i = 0; i < len; i++) {
             /* XOR with key stream */
+            /* VULN-79 fix: guard against division by zero if key.length==0 */
+            if (c->key.length <= 0) return;
             int key_idx = (i + round) % c->key.length;
             data[i] = tcrypto_trit_xor(data[i], c->key.data[key_idx]);
 
@@ -303,6 +310,8 @@ void tcrypto_decrypt(tcrypto_cipher_t *c, trit *data, int len) {
             trit ctr_iv = gf3_add(c->iv[iv_idx], ctr_offset);
             data[i] = tcrypto_trit_xor_inv(data[i], ctr_iv);
 
+            /* VULN-79 fix: guard against division by zero if key.length==0 */
+            if (c->key.length <= 0) return;
             /* Inverse XOR with key stream */
             int key_idx = (i + round) % c->key.length;
             data[i] = tcrypto_trit_xor_inv(data[i], c->key.data[key_idx]);

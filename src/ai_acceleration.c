@@ -248,7 +248,17 @@ sparse_trit_matrix_t *sparse_trit_matrix_create(int rows, int cols,
     matrix->nnz = 0;
 
     // Allocate storage for sparse representation
-    int max_possible_nnz = (rows * cols * max_nz) / block_size;
+    /* VULN-64 fix: check for integer overflow before allocation.
+     * rows * cols * max_nz could overflow int, leading to a tiny
+     * malloc followed by massive OOB writes. */
+    if (block_size <= 0) { free(matrix); return NULL; }
+    long long max_possible_nnz_ll = ((long long)rows * cols * max_nz) / block_size;
+    if (max_possible_nnz_ll <= 0 || max_possible_nnz_ll > (1LL << 24)) {
+        /* Cap at 16M entries to prevent absurd allocations */
+        free(matrix);
+        return NULL;
+    }
+    int max_possible_nnz = (int)max_possible_nnz_ll;
     matrix->values = malloc(max_possible_nnz * sizeof(trit));
     matrix->row_indices = malloc(max_possible_nnz * sizeof(int));
     matrix->col_indices = malloc(max_possible_nnz * sizeof(int));

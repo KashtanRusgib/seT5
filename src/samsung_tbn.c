@@ -136,6 +136,10 @@ int ss_zid_count_zeros(const ss_input_t *inputs, int size)
 
 void ss_zid_bitmap(const ss_input_t *inputs, int size, uint32_t *bitmap)
 {
+    /* VULN-70 fix: validate inputs and cap size to prevent OOB write.
+     * Caller must provide bitmap with enough uint32_t words. */
+    if (!inputs || !bitmap || size <= 0) return;
+    if (size > 4096) size = 4096;  /* hard cap: 128 uint32_t words max */
     int num_words = (size + 31) / 32;
     memset(bitmap, 0, (size_t)num_words * sizeof(uint32_t));
 

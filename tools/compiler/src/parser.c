@@ -10,8 +10,14 @@ Token tokens[MAX_TOKENS];
 int token_idx = 0;
 char token_names[MAX_TOKENS][MAX_TOKEN_NAME];
 
+/* VULN-71 fix: recursion depth limiter to prevent stack overflow DoS
+ * from deeply nested expressions like (((((((((...))))))))) */
+static int parse_depth = 0;
+#define MAX_PARSE_DEPTH 128
+
 void tokenize(const char *source) {
     token_idx = 0;
+    parse_depth = 0;  /* reset recursion depth for new parse */
     memset(token_names, 0, sizeof(token_names));
     int i = 0;
 
@@ -177,12 +183,18 @@ static Expr *parse_expr_r(void);
 
 static Expr *parse_primary(void) {
     if (perror_flag) return NULL;
+    if (++parse_depth > MAX_PARSE_DEPTH) {
+        parser_error("expression nesting too deep");
+        parse_depth--;
+        return NULL;
+    }
 
     /* Dereference: *expr */
     if (tokens[pidx].type == TOK_MUL) {
         pidx++;
         Expr *inner = parse_primary();
-        if (perror_flag) return NULL;
+        if (perror_flag) { parse_depth--; return NULL; }
+        parse_depth--;
         return create_deref(inner);
     }
 
@@ -191,16 +203,19 @@ static Expr *parse_primary(void) {
         pidx++;
         if (tokens[pidx].type != TOK_IDENT) {
             parser_error("expected identifier after &");
+            parse_depth--;
             return NULL;
         }
         Expr *var = create_var(token_names[pidx]);
         pidx++;
+        parse_depth--;
         return create_addr_of(var);
     }
 
     if (tokens[pidx].type == TOK_INT) {
         Expr *e = create_const(tokens[pidx].value);
         pidx++;
+        parse_depth--;
         return e;
     }
 
@@ -212,10 +227,11 @@ static Expr *parse_primary(void) {
         if (tokens[pidx].type == TOK_LBRACKET) {
             pidx++; /* skip [ */
             Expr *index = parse_expr_r();
-            if (perror_flag) { free(name); return NULL; }
-            if (!expect(TOK_RBRACKET)) { free(name); expr_free(index); return NULL; }
+            if (perror_flag) { free(name); parse_depth--; return NULL; }
+            if (!expect(TOK_RBRACKET)) { free(name); expr_free(index); parse_depth--; return NULL; }
             Expr *access = create_array_access(name, index);
             free(name);
+            parse_depth--;
             return access;
         }
 
@@ -231,7 +247,7 @@ static Expr *parse_primary(void) {
                 argc = 1;
                 args = (Expr **)malloc(sizeof(Expr *));
                 args[0] = parse_expr_r();
-                if (perror_flag) { free(name); free(args); return NULL; }
+                if (perror_flag) { free(name); free(args); parse_depth--; return NULL; }
 
                 /* Parse remaining arguments */
                 while (tokens[pidx].type == TOK_COMMA && !perror_flag) {
@@ -244,6 +260,7 @@ static Expr *parse_primary(void) {
                         for (int k = 0; k < argc - 1; k++) expr_free(args[k]);
                         free(args);
                         free(name);
+                        parse_depth--;
                         return NULL;
                     }
                     args = new_args;
@@ -255,21 +272,25 @@ static Expr *parse_primary(void) {
                 free(name);
                 for (int k = 0; k < argc; k++) expr_free(args[k]);
                 free(args);
+                parse_depth--;
                 return NULL;
             }
 
             Expr *call = create_func_call(name, args, argc);
             free(name);
+            parse_depth--;
             return call;
         }
 
         /* Variable reference */
         Expr *var = create_var(name);
         free(name);
+        parse_depth--;
         return var;
     }
 
     parser_error("expected expression");
+    parse_depth--;
     return NULL;
 }
 
@@ -494,7 +515,10 @@ static Expr *parse_stmt(void) {
                 if (!expect(TOK_LBRACE)) { free(vname); return NULL; }
                 while (tokens[pidx].type != TOK_RBRACE && tokens[pidx].type != TOK_EOF && !perror_flag) {
                     init_count++;
-                    init_vals = (Expr **)realloc(init_vals, init_count * sizeof(Expr *));
+                    /* VULN-63 fix: check realloc for NULL */
+                    Expr **new_vals = (Expr **)realloc(init_vals, init_count * sizeof(Expr *));
+                    if (!new_vals) { parser_error("out of memory"); free(init_vals); free(vname); return NULL; }
+                    init_vals = new_vals;
                     init_vals[init_count - 1] = parse_expr_r();
                     if (perror_flag) { free(vname); return NULL; }
                     if (tokens[pidx].type == TOK_COMMA) pidx++;
@@ -554,7 +578,10 @@ static Expr *parse_stmt(void) {
                 if (!expect(TOK_LBRACE)) { free(vname); return NULL; }
                 while (tokens[pidx].type != TOK_RBRACE && tokens[pidx].type != TOK_EOF && !perror_flag) {
                     init_count++;
-                    init_vals = (Expr **)realloc(init_vals, init_count * sizeof(Expr *));
+                    /* VULN-63 fix: check realloc for NULL */
+                    Expr **new_vals = (Expr **)realloc(init_vals, init_count * sizeof(Expr *));
+                    if (!new_vals) { parser_error("out of memory"); free(init_vals); free(vname); return NULL; }
+                    init_vals = new_vals;
                     init_vals[init_count - 1] = parse_expr_r();
                     if (perror_flag) { free(vname); return NULL; }
                     if (tokens[pidx].type == TOK_COMMA) pidx++;
@@ -645,7 +672,10 @@ static Expr *parse_func_def_r(void) {
             return NULL;
         }
         pcount++;
-        params = (Expr **)realloc(params, pcount * sizeof(Expr *));
+        /* VULN-63 fix: check realloc for NULL */
+        Expr **new_params = (Expr **)realloc(params, pcount * sizeof(Expr *));
+        if (!new_params) { parser_error("out of memory"); free(params); free(fname); return NULL; }
+        params = new_params;
         params[pcount - 1] = create_var(token_names[pidx]);
         pidx++;
 
@@ -686,7 +716,10 @@ static Expr *parse_func_def_r(void) {
         if (body != NULL) {
             /* previous body becomes a stmt */
             stmt_count++;
-            stmts = (Expr **)realloc(stmts, stmt_count * sizeof(Expr *));
+            /* VULN-63 fix: check realloc for NULL */
+            Expr **new_stmts = (Expr **)realloc(stmts, stmt_count * sizeof(Expr *));
+            if (!new_stmts) { parser_error("out of memory"); free(stmts); free(fname); expr_free(body); return NULL; }
+            stmts = new_stmts;
             stmts[stmt_count - 1] = body;
         }
         body = s;

@@ -149,12 +149,21 @@ syscall_result_t syscall_dispatch(kernel_state_t *ks, int sysno,
         default: break;  /* non-privileged: no cap required */
         }
         if (need_right != 0) {
-            /* Check if caller has ANY valid capability with required right */
             int has_cap = 0;
-            for (int ci = 0; ci < ks->cap_count; ci++) {
-                if (kernel_cap_check(ks, ci, need_right)) {
-                    has_cap = 1;
-                    break;
+            /* VULN-78 fix: per-resource capability check.
+             * For CAP_GRANT/CAP_REVOKE, verify the right on the specific
+             * capability index (arg0) being operated on, not just any cap.
+             * For other privileged ops, check that at least one valid
+             * capability carries the required right.                      */
+            if ((sysno == SYSCALL_CAP_GRANT || sysno == SYSCALL_CAP_REVOKE)
+                && arg0 >= 0 && arg0 < ks->cap_count) {
+                has_cap = kernel_cap_check(ks, arg0, need_right);
+            } else {
+                for (int ci = 0; ci < ks->cap_count; ci++) {
+                    if (kernel_cap_check(ks, ci, need_right)) {
+                        has_cap = 1;
+                        break;
+                    }
                 }
             }
             if (!has_cap) {
@@ -280,6 +289,9 @@ syscall_result_t syscall_dispatch(kernel_state_t *ks, int sysno,
              * Reject absurd values that could be used as array indices. */
             int affinity = arg1;
             if (affinity < -1) affinity = -1;  /* clamp negative to 'any' */
+            /* VULN-77 fix: clamp upper bound to prevent OOB index.
+             * MAX_THREADS serves as a safe upper bound for CPU count. */
+            if (affinity >= 16) affinity = -1;  /* cap to reasonable CPU count */
             ks->sched.threads[ks->sched.current_tid].cpu_affinity = affinity;
         }
         res.retval      = 0;

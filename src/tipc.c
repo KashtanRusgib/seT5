@@ -233,9 +233,11 @@ int tipc_compression_ratio(const tipc_compressed_t *comp) {
     if (!comp || comp->original_trits <= 0 || comp->bit_count <= 0)
         return -1;
 
-    /* Ratio = compressed_bits / (original_trits × 1.585 bits/trit) × 1000 */
-    int raw_bits_x1000 = comp->original_trits * 1585;
+    /* VULN-67 fix: use long long to prevent integer overflow.
+     * original_trits * 1585 overflows int for large messages;
+     * bit_count * 1000000 also overflows. Use 64-bit intermediates. */
+    long long raw_bits_x1000 = (long long)comp->original_trits * 1585;
     if (raw_bits_x1000 == 0) return -1;
 
-    return (comp->bit_count * 1000 * 1000) / raw_bits_x1000;
+    return (int)(((long long)comp->bit_count * 1000000LL) / raw_bits_x1000);
 }

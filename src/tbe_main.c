@@ -442,7 +442,8 @@ int main(void) {
 
         } else if (strcmp(cmd, "echo") == 0) {
             /* echo <text> — print everything after "echo " */
-            const char *text = line + 5;
+            /* VULN-68 fix: bounds check before reading past command word */
+            const char *text = (strlen(line) > 5) ? line + 5 : "";
             while (*text == ' ') text++;
             printf("%s\n", text);
 
@@ -576,7 +577,8 @@ int main(void) {
             }
 
         } else if (strcmp(cmd, "trithon") == 0) {
-            const char *expr = line + 8;
+            /* VULN-68 fix: bounds check before reading past command word */
+            const char *expr = (strlen(line) > 8) ? line + 8 : "";
             while (*expr == ' ') expr++;
             tbe_trithon_call(expr);
 

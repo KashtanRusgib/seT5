@@ -307,6 +307,12 @@ int godel_set_switchprog(godel_machine_t *gm, const char *filepath,
     if (gm->n_switchprogs >= GODEL_MAX_SWITCHPROGS)
         return -1;
 
+    /* VULN-75 fix: Path traversal prevention — reject filepaths containing
+     * ".." or starting with "/" to prevent arbitrary file writes outside
+     * the expected self-improvement directories. */
+    if (filepath[0] == '/' || strstr(filepath, "..") != NULL)
+        return -1;
+
     godel_switchprog_t *sp = &gm->switchprogs[gm->n_switchprogs];
     sp->id = gm->n_switchprogs;
     snprintf(sp->filepath, sizeof(sp->filepath), "%s", filepath);

@@ -8,6 +8,13 @@ unsigned char bytecode[MAX_BYTECODE];
 size_t bc_idx = 0;
 
 static void emit(unsigned char op) {
+    /* VULN-76 fix: bounds check prevents global buffer overflow.
+     * Without this, a sufficiently long expression could write past
+     * bytecode[MAX_BYTECODE], corrupting adjacent globals. */
+    if (bc_idx >= MAX_BYTECODE) {
+        fprintf(stderr, "codegen: bytecode buffer overflow (max %d)\n", MAX_BYTECODE);
+        return;
+    }
     bytecode[bc_idx++] = op;
 }
 
