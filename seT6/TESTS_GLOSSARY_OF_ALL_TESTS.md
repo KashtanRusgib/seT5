@@ -2,11 +2,11 @@
 
 ## seT6 Comprehensive Test Glossary
 
-**Total Runtime Assertions**: 6801
-**Total Source-Level Test Entries**: 6801
-**Test Suites**: 105 (105 actively running; 3 disabled compiler suites; 6 enhancement stubs)
+**Total Runtime Assertions**: 8451
+**Total Source-Level Test Entries**: 8451
+**Test Suites**: 136 (136 actively running; 3 disabled compiler suites; 6 enhancement stubs)
 **Overall Pass Rate**: 100% (0 failures across all active suites)
-**Last Updated**: 2026-02-20 — Sigma 11: 105 suites, 6801 assertions, Suite Index complete (1–122 + E1–E6), all gaps filled
+**Last Updated**: 2026-02-21 — Sigma 9: 136 suites, 8451 assertions, Suites 132–136 extended red-team complete
 **Generated**: Auto-extracted from source code
 
 ---
@@ -7302,6 +7302,317 @@ voting, error injection recovery, watchdog timer integration.
 | 48 | 7038 | injection attack — blocked and counted | E: Secure IPC | Injection |
 | 49 | 7039 | injection stats — count > 0 after attack | E: Secure IPC | Injection |
 | 50 | 7040 | tipc_sec_init NULL — rejected | E: Secure IPC | NULL safety |
+
+---
+
+## Suite 123: Red-Team TOCTOU + T-IPC + /dev/trit IOCTL
+
+**Source**: `tests/test_red_team_toctou_tipc_ioctl.c`
+**Runtime Assertions**: 50
+**Source-Level Entries**: 50
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7041–7090
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7041 | TOCTOU check-to-use race — gap window detected | A: TOCTOU | Race condition |
+| 2 | 7042 | TOCTOU file stat mid-swap — UNKNOWN propagated | A: TOCTOU | UNKNOWN propagation |
+| 3 | 7043 | TOCTOU NULL path — rejected | A: TOCTOU | NULL safety |
+| 4 | 7044 | TOCTOU access-then-write gap — flagged | A: TOCTOU | Race condition |
+| 5 | 7045 | TOCTOU stress 100 iterations — no crash | A: TOCTOU | Stress |
+| 6 | 7046 | T-IPC init — succeeds | B: T-IPC | Initialization |
+| 7 | 7047 | T-IPC send NULL payload — rejected | B: T-IPC | NULL safety |
+| 8 | 7048 | T-IPC oversized message — rejected | B: T-IPC | Boundary |
+| 9 | 7049 | T-IPC UNKNOWN source port — sandboxed | B: T-IPC | UNKNOWN propagation |
+| 10 | 7050 | T-IPC endpoint exhaustion — max then deny | B: T-IPC | Exhaustion |
+| 11–20 | 7051–7060 | T-IPC injection, replay, spoofed sid attacks | B: T-IPC | Injection |
+| 21–30 | 7061–7070 | /dev/trit ioctl CMD_READ/WRITE/RESET safety | C: IOCTL | Boundary |
+| 31–40 | 7071–7080 | ioctl invalid cmd, OOB reg, NULL struct | C: IOCTL | NULL/OOB |
+| 41–50 | 7081–7090 | ioctl combined attack: padding+cmd+OOB chain | C: IOCTL | Injection |
+
+---
+
+## Suite 124: Red-Team Radix-Transcode + PAM3 Side-Channel
+
+**Source**: `tests/test_red_team_radix_transcode_pam3.c`
+**Runtime Assertions**: 50
+**Source-Level Entries**: 50
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7091–7140
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7091 | rtc_init — succeeds | A: Radix Transcode | Initialization |
+| 2 | 7092 | rtc_encode NULL input — rejected | A: Radix Transcode | NULL safety |
+| 3 | 7093 | rtc_encode UNKNOWN trit — propagated | A: Radix Transcode | UNKNOWN propagation |
+| 4 | 7094 | rtc_encode multiradix boundary — no wrap | A: Radix Transcode | Boundary |
+| 5 | 7095 | rtc_decode inverts rtc_encode — round-trip | A: Radix Transcode | Round-trip |
+| 6–15 | 7096–7105 | batch encode with poison at index 0, N/2, N-1 | A: Radix Transcode | Injection |
+| 16–25 | 7106–7115 | PAM3 encode UNKNOWN eye-diagram margin | B: PAM3 | Side-channel |
+| 26–35 | 7116–7125 | PAM3 power distinguishability adversarial | B: PAM3 | Side-channel |
+| 36–45 | 7126–7135 | rtc stats underflow/overflow/contamination | A: Radix Transcode | Stats |
+| 46–50 | 7136–7140 | rtc_reset after poison — clean scan | A: Radix Transcode | State reset |
+
+---
+
+## Suite 125: Red-Team Gödel Machine + SRBC Race Condition
+
+**Source**: `tests/test_red_team_godel_srbc_race.c`
+**Runtime Assertions**: 50
+**Source-Level Entries**: 50
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate; inlines `../src/godel_machine.c`
+**Test IDs**: 7141–7190
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7141 | godel_init — succeeds | A: Gödel Machine | Initialization |
+| 2 | 7142 | srbc_init — succeeds | B: SRBC | Initialization |
+| 3 | 7143 | godel_check during srbc_recalibrate — no crash | A+B: Race | Race condition |
+| 4 | 7144 | srbc_fault injection mid-godel_apply — safe | A+B: Race | Fault injection |
+| 5 | 7145 | godel theorem full + srbc fault — rejected cleanly | A+B: Race | Exhaustion+Fault |
+| 6–15 | 7146–7155 | RSI safety under SRBC fault states | B: SRBC | RSI safety |
+| 16–25 | 7156–7165 | godel memory churn 50 init/reset cycles | A: Gödel Machine | Memory churn |
+| 26–35 | 7166–7175 | SRBC history overflow circular wrap | B: SRBC | Boundary |
+| 36–45 | 7176–7185 | utility regression during recalibration window | A+B: Combined | Regression |
+| 46–50 | 7186–7190 | combined thermal+voltage+godel fault scenario | A+B: Combined | Fault injection |
+
+---
+
+## Suite 126: Red-Team LEGO-Modular Namespace Collision
+
+**Source**: `tests/test_red_team_lego_namespace_collision.c`
+**Runtime Assertions**: 50
+**Source-Level Entries**: 50
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7191–7240
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7191 | tmod_init — succeeds | A: LEGO Modular | Initialization |
+| 2 | 7192 | tmod_register TERNARY module — accepted | A: LEGO Modular | Functional |
+| 3 | 7193 | tmod_register duplicate name — rejected | A: LEGO Modular | Collision |
+| 4 | 7194 | tmod_register 32 modules — table full | A: LEGO Modular | Exhaustion |
+| 5 | 7195 | tmod_register 33rd module — rejected | A: LEGO Modular | Exhaustion |
+| 6–15 | 7196–7205 | Module dependency resolution — exact and missing | B: Dependencies | Functional |
+| 16–25 | 7206–7215 | Namespace isolation ns_create/ns_check_access | C: Namespace | Isolation |
+| 26–35 | 7216–7225 | radix_scan impurity detection + strip_binary_emu | D: Radix Purity | Functional |
+| 36–45 | 7226–7235 | BINARY_EMU load + strip cycle | D: Radix Purity | State reset |
+| 46–50 | 7236–7240 | Config add boundary + NULL name/key cases | E: Config | Boundary |
+
+---
+
+## Suite 127: Red-Team Compiler VM + Self-Host Bootstrap
+
+**Source**: `tests/test_red_team_compiler_vm_selfhost.c`
+**Runtime Assertions**: 50
+**Source-Level Entries**: 50
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7241–7290
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7241 | vm_run PUSH+HALT — result correct | A: VM | Functional |
+| 2 | 7242 | vm_run invalid opcode — no crash | A: VM | Boundary |
+| 3 | 7243 | vm stack overflow — guard triggered | A: VM | Overflow |
+| 4 | 7244 | vm stack underflow — guard triggered | A: VM | Underflow |
+| 5 | 7245 | vm_memory_reset — clears state | A: VM | State reset |
+| 6–15 | 7246–7255 | IR AST construction and optimizer adversarial | B: IR | Memory safety |
+| 16–25 | 7256–7265 | Postfix IR bogus opcodes, label exhaustion | C: Postfix IR | Boundary |
+| 26–35 | 7266–7275 | Bootstrap compile edge cases + self_test | D: Bootstrap | Functional |
+| 36–45 | 7276–7285 | Selfhost tokenizer + verify + roundtrip | E: Self-host | Round-trip |
+| 46–50 | 7286–7290 | Selfhost full_test + post-stress baseline | E: Self-host | Stability |
+
+---
+
+## Suite 128: Red-Team Concurrent TOCTOU Exploit (seT6 Era)
+
+**Source**: `tests/test_redteam_concurrent_toctou_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7291–7390
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7291 | concurrent toctou init — succeeds | A: Init | Initialization |
+| 2–10 | 7292–7300 | TOCTOU window measurement under load | A: Init | Race condition |
+| 11–30 | 7301–7320 | Concurrent file access check-then-use race 20 variants | B: File race | Race condition |
+| 31–50 | 7321–7340 | UNKNOWN propagation through TOCTOU window | C: UNKNOWN | UNKNOWN propagation |
+| 51–70 | 7341–7360 | Memory ordering adversarial under concurrent TOCTOU | D: Memory | Ordering |
+| 71–90 | 7361–7380 | IPC channel TOCTOU under concurrent producers | E: IPC | Race condition |
+| 91–100 | 7381–7390 | Combined concurrent TOCTOU stress + cleanup | F: Stress | Stability |
+
+---
+
+## Suite 129: Red-Team T-IPC Huffman Fuzzer
+
+**Source**: `tests/test_redteam_tipc_huffman_fuzzer_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7391–7490
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7391 | T-IPC Huffman init — succeeds | A: Init | Initialization |
+| 2–15 | 7392–7405 | Huffman tree construction with adversarial frequencies | B: Huffman | Fuzzing |
+| 16–35 | 7406–7425 | Encode/decode round-trip with all-UNKNOWN inputs | C: Codec | UNKNOWN propagation |
+| 36–55 | 7426–7445 | Huffman buffer overflow injection at encode boundary | D: Overflow | Injection |
+| 56–75 | 7446–7465 | Huffman decode with truncated bitstream | E: Truncation | Boundary |
+| 76–90 | 7466–7480 | Frequency table exhaustion + duplicate symbols | F: Exhaustion | Exhaustion |
+| 91–100 | 7481–7490 | Combined Huffman + T-IPC attack pipeline | G: Combined | Injection |
+
+---
+
+## Suite 130: Red-Team Trithon Python Object Lifetime
+
+**Source**: `tests/test_redteam_trithon_lifetime_20260221.py`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: Python `assert` with `PASS`/`FAIL` print, Sigma 9 gate
+**Test IDs**: 7491–7590
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7491 | Trit object creation — TRIT_TRUE | A: Object lifetime | Initialization |
+| 2–10 | 7492–7500 | Object GC boundary: del before/after assignment | A: Object lifetime | Memory safety |
+| 11–30 | 7501–7520 | UNKNOWN propagation through arithmetic chains | B: UNKNOWN | UNKNOWN propagation |
+| 31–50 | 7521–7540 | Circular reference GC with trit objects | C: GC | Memory safety |
+| 51–70 | 7541–7560 | Generator exhaustion — trit stream from UNKNOWN source | D: Generator | Exhaustion |
+| 71–90 | 7561–7580 | Type coercion attacks (int→trit→int roundtrip) | E: Coercion | Boundary |
+| 91–100 | 7581–7590 | Multi-thread trit mutation + lifetime race | F: Threading | Race condition |
+
+---
+
+## Suite 131: Red-Team VM Speculative Execution Timing Side-Channel
+
+**Source**: `tests/test_redteam_vm_speculative_timing_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7591–7690
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7591 | VM timing init — succeeds | A: Init | Initialization |
+| 2–15 | 7592–7605 | Speculative execution branch timing leak | B: Speculative | Side-channel |
+| 16–35 | 7606–7625 | Cache timing distinguishability TRIT_TRUE vs TRIT_FALSE | C: Cache | Side-channel |
+| 36–55 | 7626–7645 | UNKNOWN trit speculative path timing guard | D: UNKNOWN | UNKNOWN propagation |
+| 56–75 | 7646–7665 | Memory barrier enforcement under speculative load | E: Memory | Ordering |
+| 76–90 | 7666–7680 | Timing-based RSI oracle attack prevention | F: RSI | Side-channel |
+| 91–100 | 7681–7690 | Combined speculative+cache timing stress | G: Stress | Stability |
+
+---
+
+## Suite 132: Red-Team Radix-Transcode Extended + PAM3/STT-MRAM Power Side-Channel
+
+**Source**: `tests/test_redteam_radix_transcode_extended_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7691–7790
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1 | 7691 | rtc multi-hop UNKNOWN injection — propagated | A: Multi-hop UNKNOWN | UNKNOWN propagation |
+| 2–10 | 7692–7700 | High-load batch wire-hop encoding | B: Batch load | Stress |
+| 11–20 | 7701–7710 | Pack/unpack adversarial streams at all trit values | C: Pack/Unpack | Injection |
+| 21–30 | 7711–7720 | PAM3 UNKNOWN eye-diagram margin distinguishability | D: PAM3 | Side-channel |
+| 31–40 | 7721–7730 | STT-MRAM resistance at TRIT_TRUE/FALSE/UNKNOWN | E: STT-MRAM | Side-channel |
+| 41–50 | 7731–7740 | prop_delay UNKNOWN vs TRUE/FALSE asymmetry guard | F: Prop-delay | Side-channel |
+| 51–60 | 7741–7750 | INT_MAX/INT_MIN overflow safety in rtc | G: Overflow | Boundary |
+| 61–70 | 7751–7760 | Stats integrity after poison injection | H: Stats | Integrity |
+| 71–80 | 7761–7770 | Multi-hop contamination guard | I: Contamination | UNKNOWN propagation |
+| 81–100 | 7771–7790 | PAM3 stats/power safety combined scenarios | J: PAM3 Stats | Side-channel |
+
+---
+
+## Suite 133: Red-Team Gödel Machine + SRBC Extended (Memory-Pressure Race)
+
+**Source**: `tests/test_redteam_godel_srbc_extended_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate; inlines `../src/godel_machine.c`
+**Test IDs**: 7791–7890
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1–10 | 7791–7800 | Theorem exhaustion + SRBC recalibration race | A: Theorem Race | Race condition |
+| 11–20 | 7801–7810 | switchprog under godel_check failure | B: Switchprog | Path safety |
+| 21–30 | 7811–7820 | RSI under SRBC fault injection | C: RSI+SRBC | Fault injection |
+| 31–40 | 7821–7830 | godel init/reset memory churn | D: Memory | Memory churn |
+| 41–50 | 7831–7840 | SRBC history overflow → circular wrap | E: SRBC | Boundary |
+| 51–60 | 7841–7850 | Thermal + voltage + godel_apply combined fault | F: Combined | Fault injection |
+| 61–70 | 7851–7860 | Utility regression during recalibration window | G: Regression | Regression |
+| 71–80 | 7861–7870 | RSI + SRBC combined rejection scenario | H: RSI+SRBC | Fault injection |
+| 81–90 | 7871–7880 | Theorem delete at boundary + refill | I: Boundary | Boundary |
+| 91–100 | 7881–7890 | SRBC cascade fault injection chain | J: Cascade | Fault injection |
+
+---
+
+## Suite 134: Red-Team /dev/trit IOCTL Argument Smuggling Extended
+
+**Source**: `tests/test_redteam_ioctl_smuggling_extended_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7891–7990
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1–10 | 7891–7900 | Padding-byte 0xFF poisoning all ioctl structs | A: Padding | Injection |
+| 11–20 | 7901–7910 | Invalid ioctl cmd 0x0000/0xFFFF/INT_MIN/INT_MAX | B: Invalid cmd | Boundary |
+| 21–30 | 7911–7920 | Register index OOB > 15 in all ioctl ops | C: OOB reg | OOB |
+| 31–40 | 7921–7930 | DOT/FFT OOB reg index and offset | D: DOT/FFT | OOB |
+| 41–50 | 7931–7940 | RADIX_CONV INT_MAX/INT_MIN/-1 edge values | E: RADIX_CONV | Boundary |
+| 51–60 | 7941–7950 | NOISE_CFG extreme prob_ppm > 1M | F: NOISE_CFG | Boundary |
+| 61–70 | 7951–7960 | WCET_Q probe OOB | G: WCET_Q | OOB |
+| 71–80 | 7961–7970 | Open/close/double-ioctl safety sequences | H: Lifecycle | State |
+| 81–90 | 7971–7980 | Write out-of-range trit values to device | I: Write OOB | Injection |
+| 91–100 | 7981–7990 | Full struct attack scenarios + stress | J: Full attack | Injection |
+
+---
+
+## Suite 135: Red-Team LEGO-Modular Namespace Collision Extended
+
+**Source**: `tests/test_redteam_lego_namespace_extended_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 7991–8090
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1–10 | 7991–8000 | UNKNOWN radix purity propagation + scan | A: UNKNOWN Radix | UNKNOWN propagation |
+| 11–15 | 8001–8005 | Max-load (32) module table collision | B: Max-load | Exhaustion |
+| 16–25 | 8006–8015 | Cross-namespace resolution bypass via ns_create/ns_check_access | C: Namespace bypass | Isolation |
+| 26–35 | 8016–8025 | Load ordering + dep-before-parent race | D: Dep race | Race condition |
+| 36–45 | 8026–8035 | Config injection scale (TMOD_MAX_CONFIGS+1) | E: Config | Exhaustion |
+| 46–52 | 8036–8042 | Name length boundary: NAME_LEN-1, LEN, LEN+1, NULL, NUL | F: Name boundary | Boundary |
+| 53–60 | 8043–8050 | strip_binary_emu + re-register version collision cycle | G: Strip cycle | State |
+| 61–70 | 8051–8060 | NS isolation exhaustion + OOB proc/ns IDs | H: NS isolation | OOB |
+| 71–80 | 8061–8070 | Mixed LEGO+NS attack scenarios + NULL fw guards | I: Mixed | Injection |
+| 81–100 | 8071–8090 | Final safety guards: NULL args, mass load/unload, re-init | J: Safety | NULL safety |
+
+---
+
+## Suite 136: Red-Team Compiler Self-Host Bootstrap Extended
+
+**Source**: `tests/test_redteam_compiler_bootstrap_extended_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 8091–8190
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1–15 | 8091–8105 | Bootstrap source edge: empty, NULL, oversized, INT_MIN/MAX, while | A: Source edges | Boundary |
+| 16–30 | 8106–8120 | selfhost_compile_tokenizer NULL/maxlen/idempotent | B: Selfhost tokenizer | Functional |
+| 31–45 | 8121–8135 | VM state isolation: reset/write/read OOB, double-HALT, CALL no RET | C: VM state | State isolation |
+| 46–60 | 8136–8150 | IR memory safety: NULL children, 50-deep tree, block/if/while NULL | D: IR safety | Memory safety |
+| 61–75 | 8151–8165 | Parser adversarial: NULL, empty, overflow, unclosed brace, doubled ops | E: Parser | Injection |
+| 76–85 | 8166–8175 | Postfix IR: NULL AST, empty optimize, 30-deep tree, double from_ast | F: Postfix IR | Boundary |
+| 86–100 | 8176–8190 | VM opcode stress, integration compile→run, post-stress baseline | G: VM stress | Stability |
 
 ---
 

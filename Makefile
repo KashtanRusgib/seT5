@@ -273,6 +273,58 @@ test_ternary_formal_suite: tests/test_ternary_formal_suite.c
 test_mixed_radix_bos: tests/test_mixed_radix_bos.c
 	$(CC) $(CFLAGS) -o $@ $< -lm
 
+# ---- Suite 123: Red-Team TOCTOU T-IPC ioctl Exploit ----
+test_red_team_toctou_tipc_ioctl: tests/test_red_team_toctou_tipc_ioctl.c src/tipc.c src/ipc.c src/syscall.c src/memory.c
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
+# ---- Suite 124: Red-Team Radix Transcode PAM3 Adversarial ----
+test_red_team_radix_transcode_pam3: tests/test_red_team_radix_transcode_pam3.c src/multiradix.c src/memory.c
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
+# ---- Suite 125: Red-Team Godel Machine + SRBC Race Conditions ----
+test_red_team_godel_srbc_race: tests/test_red_team_godel_srbc_race.c src/memory.c
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
+# ---- Suite 126: Red-Team Lego Namespace Collision ----
+test_red_team_lego_namespace_collision: tests/test_red_team_lego_namespace_collision.c src/memory.c
+	$(CC) $(CFLAGS) -Itrit_linux/modular -o $@ $^ -lm
+
+# ---- Suite 127: Red-Team Compiler/VM Selfhost Robustness ----
+test_red_team_compiler_vm_selfhost: tests/test_red_team_compiler_vm_selfhost.c
+	$(CC) $(CFLAGS) -Itools/compiler/include -o $@ $< -lm
+
+# ---- Suite 128: Red-Team Concurrent TOCTOU (pthread) ----
+test_redteam_concurrent_toctou_20260221: tests/test_redteam_concurrent_toctou_20260221.c src/ipc.c src/syscall.c src/memory.c src/multiradix.c src/scheduler.c src/tipc.c
+	$(CC) $(CFLAGS) -o $@ $^ -lm -lpthread
+
+# ---- Suite 129: Red-Team T-IPC Huffman Fuzzer ----
+test_redteam_tipc_huffman_fuzzer_20260221: tests/test_redteam_tipc_huffman_fuzzer_20260221.c src/tipc.c src/multiradix.c
+	$(CC) $(CFLAGS) -o $@ $^ -lm
+
+# ---- Suite 131: Red-Team VM Speculative Timing Adversarial ----
+test_redteam_vm_speculative_timing_20260221: tests/test_redteam_vm_speculative_timing_20260221.c tools/compiler/vm/ternary_vm.c tools/compiler/src/logger.c
+	$(CC) $(CFLAGS) -Itools/compiler/include -Wno-unused-but-set-variable -o $@ $^ -lm
+
+# ---- Suite 132: Red-Team Radix-Transcode Extended + PAM3/STT-MRAM ----
+test_redteam_radix_transcode_extended_20260221: tests/test_redteam_radix_transcode_extended_20260221.c src/radix_transcode.c src/pam3_transcode.c src/stt_mram.c src/prop_delay.c src/multiradix.c src/memory.c
+	$(CC) $(CFLAGS) -Wno-unused-variable -o $@ $^ -lm
+
+# ---- Suite 133: Red-Team Godel+SRBC Extended (Memory-Pressure Race) ----
+test_redteam_godel_srbc_extended_20260221: tests/test_redteam_godel_srbc_extended_20260221.c src/srbc.c src/symbiotic_ai.c src/memory.c
+	$(CC) $(CFLAGS) -Wno-unused-variable -o $@ $^ -lm
+
+# ---- Suite 134: Red-Team /dev/trit IOCTL Smuggling Extended ----
+test_redteam_ioctl_smuggling_extended_20260221: tests/test_redteam_ioctl_smuggling_extended_20260221.c src/multiradix.c src/memory.c
+	$(CC) $(CFLAGS) -Wno-unused-variable -o $@ $^ -lm
+
+# ---- Suite 135: Red-Team LEGO Namespace Collision Extended ----
+test_redteam_lego_namespace_extended_20260221: tests/test_redteam_lego_namespace_extended_20260221.c src/memory.c
+	$(CC) $(CFLAGS) -Itrit_linux/modular -Wno-unused-variable -o $@ $^ -lm
+
+# ---- Suite 136: Red-Team Compiler Self-Host Bootstrap Extended ----
+test_redteam_compiler_bootstrap_extended_20260221: tests/test_redteam_compiler_bootstrap_extended_20260221.c tools/compiler/src/postfix_ir.c tools/compiler/src/ir.c tools/compiler/src/bootstrap.c tools/compiler/src/selfhost.c tools/compiler/vm/ternary_vm.c tools/compiler/src/logger.c tools/compiler/src/parser.c tools/compiler/src/codegen.c tools/compiler/src/typechecker.c tools/compiler/src/linker.c
+	$(CC) $(CFLAGS) -Wno-unused-variable -Wno-unused-parameter -o $@ $^ -lm
+
 # ---- Scheduler concurrency test ----
 test_scheduler_concurrency: tests/test_scheduler_concurrency.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
 	$(CC) $(CFLAGS) -o $@ $^
@@ -579,6 +631,14 @@ SET5_TEST_BINS = set5_native test_integration test_sel4_ternary \
 			 test_red_team_resource_exhaustion \
 			 test_ternary_formal_suite \
 			 test_mixed_radix_bos \
+			 test_red_team_toctou_tipc_ioctl \
+			 test_red_team_radix_transcode_pam3 \
+			 test_red_team_godel_srbc_race \
+			 test_red_team_lego_namespace_collision \
+			 test_red_team_compiler_vm_selfhost \
+			 test_redteam_concurrent_toctou_20260221 \
+			 test_redteam_tipc_huffman_fuzzer_20260221 \
+			 test_redteam_vm_speculative_timing_20260221 \
 
 # Internal target: force-rebuilds and runs EVERY test binary from source.
 # No stale binary ever executes — each is deleted and recompiled before running.
@@ -804,6 +864,34 @@ _run-test-suites:
 	-$(MAKE) test_ternary_formal_suite && ./test_ternary_formal_suite
 	@echo "##BEGIN##=== Suite 99: Mixed-Radix Bos Thesis Enhancements ==="
 	-$(MAKE) test_mixed_radix_bos && ./test_mixed_radix_bos
+	@echo "##BEGIN##=== Suite 123: Red-Team TOCTOU T-IPC ioctl Exploit ==="
+	-$(MAKE) test_red_team_toctou_tipc_ioctl && ./test_red_team_toctou_tipc_ioctl
+	@echo "##BEGIN##=== Suite 124: Red-Team Radix Transcode PAM3 Adversarial ==="
+	-$(MAKE) test_red_team_radix_transcode_pam3 && ./test_red_team_radix_transcode_pam3
+	@echo "##BEGIN##=== Suite 125: Red-Team Godel Machine + SRBC Race Conditions ==="
+	-$(MAKE) test_red_team_godel_srbc_race && ./test_red_team_godel_srbc_race
+	@echo "##BEGIN##=== Suite 126: Red-Team Lego Namespace Collision ==="
+	-$(MAKE) test_red_team_lego_namespace_collision && ./test_red_team_lego_namespace_collision
+	@echo "##BEGIN##=== Suite 127: Red-Team Compiler/VM Selfhost Robustness ==="
+	-$(MAKE) test_red_team_compiler_vm_selfhost && ./test_red_team_compiler_vm_selfhost
+	@echo "##BEGIN##=== Suite 128: Red-Team Concurrent TOCTOU (pthread) ==="
+	-$(MAKE) test_redteam_concurrent_toctou_20260221 && ./test_redteam_concurrent_toctou_20260221
+	@echo "##BEGIN##=== Suite 129: Red-Team T-IPC Huffman Fuzzer ==="
+	-$(MAKE) test_redteam_tipc_huffman_fuzzer_20260221 && ./test_redteam_tipc_huffman_fuzzer_20260221
+	@echo "##BEGIN##=== Suite 130: Red-Team Trithon Python Lifetime (ctypes) ==="
+	python3 tests/test_redteam_trithon_lifetime_20260221.py
+	@echo "##BEGIN##=== Suite 131: Red-Team VM Speculative Timing Adversarial ==="
+	-$(MAKE) test_redteam_vm_speculative_timing_20260221 && ./test_redteam_vm_speculative_timing_20260221
+	@echo "##BEGIN##=== Suite 132: Red-Team Radix-Transcode Extended ==="
+	-$(MAKE) test_redteam_radix_transcode_extended_20260221 && ./test_redteam_radix_transcode_extended_20260221
+	@echo "##BEGIN##=== Suite 133: Red-Team Godel+SRBC Extended ==="
+	-$(MAKE) test_redteam_godel_srbc_extended_20260221 && ./test_redteam_godel_srbc_extended_20260221
+	@echo "##BEGIN##=== Suite 134: Red-Team ioctl Smuggling Extended ==="
+	-$(MAKE) test_redteam_ioctl_smuggling_extended_20260221 && ./test_redteam_ioctl_smuggling_extended_20260221
+	@echo "##BEGIN##=== Suite 135: Red-Team LEGO Namespace Extended ==="
+	-$(MAKE) test_redteam_lego_namespace_extended_20260221 && ./test_redteam_lego_namespace_extended_20260221
+	@echo "##BEGIN##=== Suite 136: Red-Team Compiler Bootstrap Extended ==="
+	-$(MAKE) test_redteam_compiler_bootstrap_extended_20260221 && ./test_redteam_compiler_bootstrap_extended_20260221
 # ──────────────────────────────────────────────────────────────────────
 # Master test target: the ONE command that runs ALL tests.
 #
@@ -911,6 +999,14 @@ clean:
 	rm -f test_batch_6852_6901
 	rm -f test_red_team_trit_linux_ipc_net
 	rm -f test_red_team_fullstack_kernel test_red_team_crypto_net_security test_red_team_resource_exhaustion
+	rm -f test_red_team_toctou_tipc_ioctl test_red_team_radix_transcode_pam3
+	rm -f test_red_team_godel_srbc_race test_red_team_lego_namespace_collision
+	rm -f test_red_team_compiler_vm_selfhost
+	rm -f test_redteam_concurrent_toctou_20260221 test_redteam_tipc_huffman_fuzzer_20260221
+	rm -f test_redteam_vm_speculative_timing_20260221
+	rm -f test_redteam_radix_transcode_extended_20260221 test_redteam_godel_srbc_extended_20260221
+	rm -f test_redteam_ioctl_smuggling_extended_20260221 test_redteam_lego_namespace_extended_20260221
+	rm -f test_redteam_compiler_bootstrap_extended_20260221
 	rm -f tvm_debug tvm_disasm tvm_repl
 	rm -f trithon/libtrithon.so
 

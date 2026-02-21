@@ -429,6 +429,14 @@ int bootstrap_compile(const char *source, unsigned char *out_bytecode, int max_l
 {
     LOG_INFO_MSG("Bootstrap", "TASK-018", "bootstrap_compile entered");
 
+    /* Reject NULL or oversized source */
+    if (source == NULL)
+        return -1;
+    if ((int)strlen(source) > BOOTSTRAP_MAX_SRC)
+        return -1;
+    if (out_bytecode == NULL || max_len <= 0)
+        return -1;
+
     /* Parse */
     Expr *ast = parse_program(source);
     if (ast == NULL)

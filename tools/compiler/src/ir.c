@@ -39,6 +39,8 @@ static Expr *alloc_expr(void)
 Expr *create_const(int val)
 {
     Expr *e = alloc_expr();
+    if (e == NULL)
+        return NULL;
     e->type = NODE_CONST;
     e->val = val;
     return e;
@@ -46,7 +48,11 @@ Expr *create_const(int val)
 
 Expr *create_var(const char *name)
 {
+    if (name == NULL)
+        return NULL;
     Expr *e = alloc_expr();
+    if (e == NULL)
+        return NULL;
     e->type = NODE_VAR;
     e->name = strdup(name);
     return e;
@@ -338,7 +344,11 @@ Expr *create_assign(Expr *lhs, Expr *rhs)
 
 Expr *create_var_decl(const char *name, Expr *init)
 {
+    if (name == NULL)
+        return NULL;
     Expr *e = alloc_expr();
+    if (e == NULL)
+        return NULL;
     e->type = NODE_VAR_DECL;
     e->name = strdup(name);
     e->left = init;
