@@ -15,6 +15,11 @@ batch_size: 5
 > trigger daily-search → regenerate cycle. Process in batches of 5.
 > All items must reach Sigma 9 (0 errors, 100% pass) before marking `[DONE]`.
 
+> **Terminology (effective 2026-02-20):** Compiled seT6 executables are **trinaries**;
+> ternary digits are **trits**; 3-trit data units are **trytes**. "Binary/binaries" is
+> reserved for external interop bridges and host-substrate references only.
+> See `CONTRIBUTING.md` for the full terminology policy.
+
 ## Batch 1 — Critical Test Coverage (Value ≥ 8) ✅ COMPLETE
 
 - [x] **T-001** Expand `test_ternary_database.c` from 4 → 32 tests: CRUD, CAM, RLE, Huffman, NULL propagation (STRICT/PROPAGATE/LENIENT), DB operations ✅ (Value: 9; Batch: 1/5)
@@ -387,5 +392,23 @@ batch_size: 5
 
 ---
 
-**Total: 136 items (136 done, 0 new) | Batches: 20 (20 ✅) | Red-team findings: 55 total (6 CRITICAL, 19 HIGH, 23 MEDIUM, 7 LOW) — ALL FIXED**
-**ALL 6662 TESTS PASSED across 102 suites — 100% pass rate**
+### Red Team Pass #3 — 2026-02-21 (VULN-56 through VULN-62)
+
+- [x] **T-137** VULN-56: `mem_scrub(mem, page_idx)` had no ownership check — any caller could scrub any allocated page, destroying another process's memory without authorization. Fix: added `caller_tid` parameter; ownership or kernel authority (caller_tid==-1) required. `src/memory.c`, `include/set5/memory.h`, `tests/test_memory_safety.c`. (Severity: HIGH)
+
+- [x] **T-138** VULN-57: `ipc_send()` when endpoint state is `EP_SEND_BLOCKED` silently overwrote the first sender's buffered message and replaced `blocked_tid` with attacker's TID. First sender was permanently orphan-blocked (never unblocked), enabling message injection and denial-of-service. Fix: return -1 (EBUSY) when `EP_SEND_BLOCKED` to reject second sender. `src/ipc.c`. (Severity: HIGH)
+
+- [x] **T-139** VULN-58: `SYSCALL_LOAD_BALANCE` stored `arg1` directly into `cpu_affinity` with no bounds check. Attacker could set cpu_affinity to INT_MIN or any arbitrary integer; unsafe if used as CPU array index in future scheduling extensions. Fix: clamp to `≥ -1` (negative values map to -1 = "any CPU"). `src/syscall.c`. (Severity: LOW)
+
+- [x] **T-140** VULN-59: `kernel_push()` silently dropped operand stack overflow — no error flag was set on `kernel_state_t`. Caller could not distinguish "push succeeded" from "stack overflow silently discarded". Fix: added `stack_overflow` field to `kernel_state_t`; set to 1 on overflow. `src/syscall.c`, `include/set5/syscall.h`. (Severity: MEDIUM)
+
+- [x] **T-141** VULN-60: `SYSCALL_MMAP` allowed allocation with no running thread (`current_tid == -1`), assigning `owner_tid = -1`. These anonymous pages could never be freed by any ownership-based reclamation, creating an OOM denial-of-service vector. Fix: return -1 (deny MMAP) if `current_tid < 0`. `src/syscall.c`. (Severity: MEDIUM)
+
+- [x] **T-142** VULN-61: `dot_trit()` and `dot_trit_sparse()` returned 0 on invalid register index — indistinguishable from a legitimate zero dot product. Caller had no way to detect the error signal. Fix: added `MR_DOT_ERROR = -(MR_REG_WIDTH+1) = -33` sentinel (provably outside valid range ±32); return it on invalid input. `src/multiradix.c`, `include/set5/multiradix.h`. (Severity: LOW)
+
+- [x] **T-143** VULN-62: `ns_spawn_process()` in namespace_isolation — spawning in the root namespace (ns_id==0) granted unrestricted cross-namespace access with no privilege check. Any caller knowing ns_id=0 could bootstrap a root-privileged process. Fix: added `NS_CAP_ROOT_NS = (1<<4)` capability bit; `ns_spawn_process()` now requires it for ns_id==0. `src/namespace_isolation.c`. (Severity: MEDIUM)
+
+---
+
+**Total: 143 items (143 done, 0 new) | Batches: 20 (20 ✅) | Red-team findings: 62 total (6 CRITICAL, 21 HIGH, 26 MEDIUM, 9 LOW) — ALL FIXED**
+**ALL 6667 TESTS PASSED across 102 suites — 100% pass rate**

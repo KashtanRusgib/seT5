@@ -153,7 +153,7 @@ void mem_stats(const set5_mem_t *mem, int *total, int *free, int *alloc) {
 
 /* ==== Scrub ============================================================ */
 
-int mem_scrub(set5_mem_t *mem, int page_idx) {
+int mem_scrub(set5_mem_t *mem, int page_idx, int caller_tid) {
     if (!mem) return -1;
     if (page_idx < 0 || page_idx >= mem->total_pages) return -1;
 
@@ -163,6 +163,13 @@ int mem_scrub(set5_mem_t *mem, int page_idx) {
      * (the kernel itself calls this). User-space access to scrub
      * must be gated by a capability check in the syscall layer. */
     if (pg->valid == TRIT_FALSE) return -1;  /* reserved — deny */
+
+    /* VULN-56 fix: ownership check — only the page owner or kernel
+     * (caller_tid == -1) may scrub an allocated page. Eliminates
+     * cross-process data destruction without a capability. */
+    if (caller_tid != -1 && pg->valid == TRIT_TRUE &&
+        pg->owner_tid != caller_tid) return -1;
+
     for (int i = 0; i < SET5_PAGE_TRITS; i++)
         pg->data[i] = TRIT_UNKNOWN;
     return 0;

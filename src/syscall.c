@@ -46,8 +46,9 @@ void kernel_init(kernel_state_t *ks, int num_pages) {
     }
 
     /* Stacks */
-    ks->operand_sp = 0;
-    ks->return_sp  = 0;
+    ks->operand_sp     = 0;
+    ks->return_sp      = 0;
+    ks->stack_overflow = 0;  /* VULN-59 fix: clear overflow flag on init */
     for (int i = 0; i < 64; i++) {
         ks->operand_stack[i] = TRIT_UNKNOWN;
         ks->return_stack[i]  = 0;
@@ -105,10 +106,11 @@ int kernel_cap_check(const kernel_state_t *ks, int cap_idx, int right) {
 
 void kernel_push(kernel_state_t *ks, trit v) {
     if (!ks) return;
-    /* VULN-34 fix: bounds check with error notification */
+    /* VULN-34 fix: bounds check; VULN-59 fix: set stack_overflow flag */
     if (ks->operand_sp < 64)
         ks->operand_stack[ks->operand_sp++] = v;
-    /* else: silently drop — in production, set kernel error flag */
+    else
+        ks->stack_overflow = 1;  /* signal overflow — caller can inspect */
 }
 
 trit kernel_pop(kernel_state_t *ks) {
@@ -187,9 +189,16 @@ syscall_result_t syscall_dispatch(kernel_state_t *ks, int sysno,
         break;
 
     case SYSCALL_MMAP: {
-        /* Allocate a page, assign to current thread */
+        /* VULN-60 fix: deny MMAP if no thread is running — anonymous pages
+         * with owner_tid==-1 can never be freed by ownership reclamation,
+         * creating an OOM denial-of-service vector. */
         int owner = ks->sched.current_tid;
-        int pg = mem_alloc(&ks->mem, owner >= 0 ? owner : -1);
+        if (owner < 0) {
+            res.retval      = -1;
+            res.result_trit = TRIT_FALSE;
+            break;
+        }
+        int pg = mem_alloc(&ks->mem, owner);
         res.retval      = pg;
         res.result_trit = trit_from_int(pg >= 0 ? 1 : -1);
         kernel_push(ks, res.result_trit);
@@ -266,7 +275,12 @@ syscall_result_t syscall_dispatch(kernel_state_t *ks, int sysno,
         if (ks->sched.current_tid >= 0) {
             sched_set_priority(&ks->sched, ks->sched.current_tid,
                                trit_from_int(arg0));
-            ks->sched.threads[ks->sched.current_tid].cpu_affinity = arg1;
+            /* VULN-58 fix: clamp cpu_affinity to valid range.
+             * -1 = any CPU (default), 0..N-1 = specific CPU.
+             * Reject absurd values that could be used as array indices. */
+            int affinity = arg1;
+            if (affinity < -1) affinity = -1;  /* clamp negative to 'any' */
+            ks->sched.threads[ks->sched.current_tid].cpu_affinity = affinity;
         }
         res.retval      = 0;
         res.result_trit = TRIT_TRUE;

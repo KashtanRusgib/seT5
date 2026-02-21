@@ -24,6 +24,9 @@
 #define NS_TYPE_NET          (1 << 2)
 #define NS_TYPE_IPC          (1 << 3)
 #define NS_TYPE_ALL          (NS_TYPE_MOUNT | NS_TYPE_PID | NS_TYPE_NET | NS_TYPE_IPC)
+/* VULN-62: capability bit required to spawn processes in root namespace 0.
+ * Without this, any caller with ns_id=0 gets unrestricted access. */
+#define NS_CAP_ROOT_NS      (1 << 4)
 
 /* Access results */
 #define NS_ACCESS_GRANTED    TRIT_TRUE
@@ -83,8 +86,11 @@ static inline int ns_create(ns_state_t *s, const char *name, int type_mask, int 
 
 static inline int ns_spawn_process(ns_state_t *s, int pid, int ns_id, int caps) {
     if (!s || s->proc_count >= NS_MAX_PROCESSES) return -1;
-    if (ns_id < 0 || ns_id >= s->ns_count) return -1;
-    ns_process_t *p = &s->processes[s->proc_count];
+    if (ns_id < 0 || ns_id >= s->ns_count) return -1;    /* VULN-62 fix: spawning in the root namespace (ns_id==0) grants
+     * unrestricted cross-namespace access to all resources. Require
+     * NS_CAP_ROOT_NS capability to prevent privilege escalation via
+     * accidental or malicious root-namespace spawn. */
+    if (ns_id == 0 && !(caps & NS_CAP_ROOT_NS)) return -1;    ns_process_t *p = &s->processes[s->proc_count];
     p->pid = pid;
     p->namespace_id = ns_id;
     p->capabilities = caps;

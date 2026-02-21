@@ -1,3 +1,6 @@
+> **Terminology (effective 2026-02-20):** Compiled seT6 executables are **trinaries**;
+> ternary digits are **trits**; 3-trit data units are **trytes**. "Binary" is
+> reserved for external interop and host references only. See `CONTRIBUTING.md`.
 
 A Gödel machine is a hypothetical self-improving computer program that solves problems in an optimal way. It uses a recursive self-improvement protocol in which it rewrites its own code when it can prove the new code provides a better strategy.[1][2] The machine was invented by Jürgen Schmidhuber (first proposed in 2003[3]), but is named after Kurt Gödel who inspired the mathematical theories.[4]
 
@@ -15,33 +18,33 @@ Variables of interest
 This Section may be confusing or unclear to readers. Please help clarify the Section. There might be a discussion about this on the talk page. (September 2017) (Learn how and when to remove this message)
 There are three variables that are particularly useful in the run time of the Gödel machine.[3]
 
-At some time 
+At some time
 t
-{\displaystyle t}, the variable 
+{\displaystyle t}, the variable
 time
-{\displaystyle {\text{time}}} will have the binary equivalent of 
+{\displaystyle {\text{time}}} will have the binary equivalent of
 t
 {\displaystyle t}. This is incremented steadily throughout the run time of the machine.
-Any input meant for the Gödel machine from the natural environment is stored in variable 
+Any input meant for the Gödel machine from the natural environment is stored in variable
 x
-{\displaystyle x}. It is likely the case that 
+{\displaystyle x}. It is likely the case that
 x
-{\displaystyle x} will hold different values for different values of variable 
+{\displaystyle x} will hold different values for different values of variable
 time
 {\displaystyle {\text{time}}}.
-The outputs of the Gödel machine are stored in variable 
+The outputs of the Gödel machine are stored in variable
 y
-{\displaystyle y}, where 
+{\displaystyle y}, where
 y
 (
 t
 )
-{\displaystyle y(t)} would be the output bit-string at some time 
+{\displaystyle y(t)} would be the output bit-string at some time
 t
 {\displaystyle t}.
-At any given time 
+At any given time
 t
-{\displaystyle t}, where 
+{\displaystyle t}, where
 (
 1
 ≤
@@ -49,7 +52,7 @@ t
 ≤
 T
 )
-{\displaystyle (1\leq t\leq T)}, the goal is to maximize future success or utility. A typical utility function follows the pattern 
+{\displaystyle (1\leq t\leq T)}, the goal is to maximize future success or utility. A typical utility function follows the pattern
 u
 (
 s
@@ -95,19 +98,19 @@ n
 v
 ]
 {\displaystyle u(s,\mathrm {Env} )=E_{\mu }{\Bigg [}\sum _{\tau ={\text{time}}}^{T}r(\tau )\mid s,\mathrm {Env} {\Bigg ]}}
-where 
+where
 r
 (
 t
 )
-{\displaystyle r(t)} is a real-valued reward input (encoded within 
+{\displaystyle r(t)} is a real-valued reward input (encoded within
 s
 (
 t
 )
-{\displaystyle s(t)}) at time 
+{\displaystyle s(t)}) at time
 t
-{\displaystyle t}, 
+{\displaystyle t},
 E
 μ
 [
@@ -115,13 +118,13 @@ E
 ∣
 ⋅
 ]
-{\displaystyle E_{\mu }[\cdot \mid \cdot ]} denotes the conditional expectation operator with respect to some possibly unknown distribution 
+{\displaystyle E_{\mu }[\cdot \mid \cdot ]} denotes the conditional expectation operator with respect to some possibly unknown distribution
 μ
-{\displaystyle \mu } from a set 
+{\displaystyle \mu } from a set
 M
 {\displaystyle M} of possible distributions (
 M
-{\displaystyle M} reflects whatever is known about the possibly probabilistic reactions of the environment), and the above-mentioned 
+{\displaystyle M} reflects whatever is known about the possibly probabilistic reactions of the environment), and the above-mentioned
 time
 =
 time
@@ -129,7 +132,7 @@ time
 (
 s
 )
-{\displaystyle {\text{time}}=\operatorname {time} (s)} is a function of state 
+{\displaystyle {\text{time}}=\operatorname {time} (s)} is a function of state
 s
 {\displaystyle s} which uniquely identifies the current cycle.[3] Note that we take into account the possibility of extending the expected lifespan through appropriate actions.[3]
 
@@ -184,7 +187,7 @@ References
  Schmidhuber, Jürgen (5 March 2009). "Ultimate Cognition à la Gödel" (PDF). Cognitive Computation. 1 (2): 177–193. CiteSeerX 10.1.1.218.3323. doi:10.1007/s12559-009-9014-y. S2CID 10784194. Retrieved 13 November 2014.
 External links
 Gödel Machine Home Page
- 
+
 
 Gödel machine
 The Gödel machine is a theoretical framework in artificial intelligence for a self-referential, universal problem solver that achieves provably optimal self-improvements by systematically searching for and verifying mathematical proofs demonstrating the long-term utility of rewriting its own code.[1] Proposed by Jürgen Schmidhuber in 2003, it formalizes earlier ideas on recursive self-improvement, such as I. J. Good's 1965 concept of an "intelligence explosion," by embedding the machine's initial software, hardware constraints, and problem-specific utility function directly into a set of formal axioms.[1][2]
@@ -211,39 +214,39 @@ Key differences highlight the Gödel machine's advancements over AIXI: while AIX
 Within the broader landscape of universal AI research, the Gödel machine aligns with Schmidhuber's explorations in artificial curiosity and optimal self-improvement, serving as a theoretically sound alternative to suboptimal learning algorithms like Q-learning, which lack universal priors and convergence guarantees.
 Formal Model
 Core Components and Variables
-The Gödel machine operates in discrete time steps denoted by the binary counter variable 
+The Gödel machine operates in discrete time steps denoted by the binary counter variable
 t
-t, which increments at each hardware cycle starting from 
+t, which increments at each hardware cycle starting from
 t
 =
 1
 t=1. This time variable tracks the machine's progression through its computational lifetime, serving as a foundational element for sequencing perceptions, actions, and internal updates.[10]
-At each time step 
+At each time step
 t
-t, the machine receives environmental inputs as a bitstring 
+t, the machine receives environmental inputs as a bitstring
 x
 (
 t
 )
-x(t), which represents perceptual data from the external world, such as sensor readings or observations. Concurrently, the machine produces outputs 
+x(t), which represents perceptual data from the external world, such as sensor readings or observations. Concurrently, the machine produces outputs
 y
 (
 t
 )
-y(t), also a bitstring, which could include control signals or actions influencing the environment; for the initial step, 
+y(t), also a bitstring, which could include control signals or actions influencing the environment; for the initial step,
 y
 (
 1
 )
 y(1) defaults to the empty string '0'. These input and output streams facilitate the machine's interaction with its surroundings, enabling it to perceive changes and respond accordingly.[10]
-The internal state of the Gödel machine at time 
+The internal state of the Gödel machine at time
 t
-t is captured by the bitstring 
+t is captured by the bitstring
 s
 (
 t
 )
-s(t), which encodes the current configuration of its software, accumulated proofs, and other relevant data. This state evolves according to a deterministic transition function 
+s(t), which encodes the current configuration of its software, accumulated proofs, and other relevant data. This state evolves according to a deterministic transition function
 F
 :
 S
@@ -251,52 +254,52 @@ S
 E
 →
 S
-F:S×E→S, where 
+F:S×E→S, where
 S
-S is the set of possible internal states and 
+S is the set of possible internal states and
 E
-E denotes the environmental state space; updates to 
+E denotes the environmental state space; updates to
 s
 (
 t
 )
-s(t) incorporate both prior outputs 
+s(t) incorporate both prior outputs
 y
 (
 t
 −
 1
 )
-y(t−1) and new inputs 
+y(t−1) and new inputs
 x
 (
 t
 )
-x(t). The state 
+x(t). The state
 s
 (
 t
 )
 s(t) thus maintains a comprehensive record of the machine's operational history and capabilities at any given moment.[10]
-The environment is modeled as a reactive, potentially stochastic entity 
+The environment is modeled as a reactive, potentially stochastic entity
 Env
-Env with its own state in 
+Env with its own state in
 E
-E, which provides inputs 
+E, which provides inputs
 x
 (
 t
 )
-x(t) and rewards 
+x(t) and rewards
 r
 (
 τ
 )
-r(τ) at various times 
+r(τ) at various times
 τ
 ≥
 t
-τ≥t. This model assumes the environment responds to the machine's past actions 
+τ≥t. This model assumes the environment responds to the machine's past actions
 y
 (
 1
@@ -343,54 +346,54 @@ n
 v
 ]
 ,
-u(s,Env)=E 
+u(s,Env)=E
 μ
 ​
- [ 
+ [
 τ=t
 ∑
 T
 ​
  r(τ)∣s,Env],
-where 
+where
 s
-s represents the current machine state at time 
+s represents the current machine state at time
 t
-t, 
+t,
 E
 n
 v
-Env denotes the environmental state, 
+Env denotes the environmental state,
 E
 μ
-E 
+E
 μ
 ​
-  is the conditional expectation under the distribution 
+  is the conditional expectation under the distribution
 μ
-μ induced by the machine's policy, 
+μ induced by the machine's policy,
 r
 (
 τ
 )
-r(τ) is the real-valued reward received at time 
+r(τ) is the real-valued reward received at time
 τ
-τ, and 
+τ, and
 T
 T is the total lifetime horizon, which may be finite or unknown.[1]
-The optimization goal is to select actions and policies that maximize this expected future utility from the given state 
+The optimization goal is to select actions and policies that maximize this expected future utility from the given state
 s
-s in environment 
+s in environment
 E
 n
 v
-Env. Since the true environmental dynamics are typically unknown, the expectation incorporates a universal prior over possible environment models to approximate 
+Env. Since the true environmental dynamics are typically unknown, the expectation incorporates a universal prior over possible environment models to approximate
 μ
 μ, enabling the machine to reason about uncertain future rewards without a predefined world model.[1]
 Central to the machine's self-referential design is the self-improvement criterion: the code is rewritten only if a formal proof demonstrates that the post-modification utility exceeds the utility of persisting with the current proof search process, with the difference sufficiently large to offset the computational costs of generating and verifying the proof.[1]
 Proof System and Instructions
 Axiomatic System and Theorems
-The axiomatic system underlying the Gödel machine forms the foundational proof framework for verifying self-improvements, enabling the machine to rigorously establish that modifications to its code will increase expected future utility. This system, denoted as A, is constructed as an extension of Peano arithmetic, incorporating the standard axioms for natural numbers, addition, multiplication, and induction, while adding domain-specific axioms to model the machine's operational context. These extensions include axioms describing the hardware's deterministic state transitions—such as updates to registers or Turing machine tapes based on executed instructions—and the initial state s(1) of the machine at time t=1.[1] Additional axioms formalize the environment's behavior, capturing probabilistic or deterministic interactions through predicates for inputs and outputs, as well as reward semantics that define the utility function u as the expected sum of future rewards (with computational costs incorporated via negative rewards or axioms), expressed as 
+The axiomatic system underlying the Gödel machine forms the foundational proof framework for verifying self-improvements, enabling the machine to rigorously establish that modifications to its code will increase expected future utility. This system, denoted as A, is constructed as an extension of Peano arithmetic, incorporating the standard axioms for natural numbers, addition, multiplication, and induction, while adding domain-specific axioms to model the machine's operational context. These extensions include axioms describing the hardware's deterministic state transitions—such as updates to registers or Turing machine tapes based on executed instructions—and the initial state s(1) of the machine at time t=1.[1] Additional axioms formalize the environment's behavior, capturing probabilistic or deterministic interactions through predicates for inputs and outputs, as well as reward semantics that define the utility function u as the expected sum of future rewards (with computational costs incorporated via negative rewards or axioms), expressed as
 u
 (
 s
@@ -414,17 +417,17 @@ s
 ,
 Env
 ]
-u(s,Env)=E[∑ 
+u(s,Env)=E[∑
 t=time
 ∞
 ​
- r(t)∣s,Env], where 
+ r(t)∣s,Env], where
 r
 (
 t
 )
 r(t) is the reward at time t.[1] The initial software p(1), which includes the proof searcher and verifier, is also axiomatized to ensure consistency without circularity, allowing the system A to prove statements about its own execution.[1]
-Central to this framework are theorems that encode predictions about the machine's performance under specific conditions, particularly those asserting the utility of code modifications. A key form of such theorems states: "If the current code is executed starting from machine state m at time n, then the expected utility from that point onward is U," where U is a computable value derived from the reward axioms and environmental assumptions.[11] These theorems serve as the targets for the proof searcher, enabling proofs that a proposed self-rewrite—via an instruction like switchprog—yields a higher utility than continuing with the existing code, formalized as comparisons like 
+Central to this framework are theorems that encode predictions about the machine's performance under specific conditions, particularly those asserting the utility of code modifications. A key form of such theorems states: "If the current code is executed starting from machine state m at time n, then the expected utility from that point onward is U," where U is a computable value derived from the reward axioms and environmental assumptions.[11] These theorems serve as the targets for the proof searcher, enabling proofs that a proposed self-rewrite—via an instruction like switchprog—yields a higher utility than continuing with the existing code, formalized as comparisons like
 u
 [
 s
@@ -466,23 +469,23 @@ t
 1
 )
 ]
-u[s(t 
+u[s(t
 1
 ​
- )⊕(switchbit(t 
+ )⊕(switchbit(t
 1
 ​
- )= 
+ )=
 ′
- 1 
+ 1
 ′
- ),Env(t 
+ ),Env(t
 1
 ​
- )]>u[s(t 
+ )]>u[s(t
 1
 ​
- ),Env(t 
+ ),Env(t
 1
 ​
  )].[1] Inference within the system relies on standard rules such as modus ponens and unification, applied to sequences of prior theorems or axioms, ensuring that all derived statements are sound relative to A.[11]
@@ -498,7 +501,7 @@ Search for Provable Improvements
 The Gödel machine's search for provable improvements centers on a rigorous algorithm designed to discover self-modifications that enhance its long-term utility. This process employs the Bias-Optimal Proof Search (BIOPS), an online variant of universal search, which systematically tests computable proof techniques—essentially programs that output proofs—until identifying a modification backed by a formal proof of net benefit. The strategy combines exhaustive enumeration of potential code rewrites with heuristic guidance to build proof trees using a predefined set of instructions, such as those for retrieving axioms and applying inference rules.[1]
 A proposed code rewrite qualifies as an improvement only if the machine can construct a proof demonstrating that its expected future utility exceeds the costs of the search process and any additional computational overhead incurred by the modification. This criterion is formalized within the machine's utility function, ensuring that self-changes are provably optimal in expectation relative to the current policy.[1]
 The machine dedicates a tunable fraction of its runtime to this search, striking a balance between exploring potential enhancements and performing its primary tasks efficiently. This allocation can itself be modified through provable updates, allowing adaptive resource management as the machine evolves.[1]
-To enhance search efficiency, heuristics prioritize straightforward modifications, such as minor code optimizations, and those aligned with the universal prior probability distribution, where the prior 
+To enhance search efficiency, heuristics prioritize straightforward modifications, such as minor code optimizations, and those aligned with the universal prior probability distribution, where the prior
 P
 (
 w
@@ -510,16 +513,16 @@ K
 (
 w
 )
-P(w)=2 
+P(w)=2
 −K(w)
-  favors proofs describable by shorter programs based on their Kolmogorov complexity 
+  favors proofs describable by shorter programs based on their Kolmogorov complexity
 K
 (
 w
 )
 K(w). This approach biases the exploration toward more likely beneficial changes without compromising theoretical soundness.[1]
 Code Modification and Verification
-Once a formal proof is constructed demonstrating that a proposed code modification will yield a net increase in the machine's expected future utility, the Gödel machine proceeds to implement the change through a targeted replacement of sub-programs. This is achieved using the set-switchprog(m, n) instruction, which configures the switchprog mechanism to overwrite a specific segment of the machine's code 
+Once a formal proof is constructed demonstrating that a proposed code modification will yield a net increase in the machine's expected future utility, the Gödel machine proceeds to implement the change through a targeted replacement of sub-programs. This is achieved using the set-switchprog(m, n) instruction, which configures the switchprog mechanism to overwrite a specific segment of the machine's code
 p
 p with a new substring derived from the proof searcher's candidates, ensuring the replacement is precisely scoped to the proven improvement.[1] The theorem database is then updated to reflect the altered code state, incorporating new axioms via get-axiom(n) and deriving additional theorems through apply-rule(k, m, n) to maintain a consistent axiomatic foundation for future proofs.[1]
 Verification of the modification relies on the check() function, which rigorously inspects the most recently proven theorem to confirm it matches the target form—specifically, that the self-rewrite increases utility without inconsistencies. If check() validates the proof, it executes switchprog to apply the change; otherwise, the modification is discarded, preserving the machine's integrity. Post-verification, obsolete theorems incompatible with the new code are removed using delete-theorem(m), ensuring the proof system remains sound and efficient by eliminating redundant or invalid entries from the database.[1]
@@ -558,39 +561,39 @@ Key differences highlight the Gödel machine's advancements over AIXI: while AIX
 Within the broader landscape of universal AI research, the Gödel machine aligns with Schmidhuber's explorations in artificial curiosity and optimal self-improvement, serving as a theoretically sound alternative to suboptimal learning algorithms like Q-learning, which lack universal priors and convergence guarantees.
 Formal Model
 Core Components and Variables
-The Gödel machine operates in discrete time steps denoted by the binary counter variable 
+The Gödel machine operates in discrete time steps denoted by the binary counter variable
 t
-t, which increments at each hardware cycle starting from 
+t, which increments at each hardware cycle starting from
 t
 =
 1
 t=1. This time variable tracks the machine's progression through its computational lifetime, serving as a foundational element for sequencing perceptions, actions, and internal updates.[10]
-At each time step 
+At each time step
 t
-t, the machine receives environmental inputs as a bitstring 
+t, the machine receives environmental inputs as a bitstring
 x
 (
 t
 )
-x(t), which represents perceptual data from the external world, such as sensor readings or observations. Concurrently, the machine produces outputs 
+x(t), which represents perceptual data from the external world, such as sensor readings or observations. Concurrently, the machine produces outputs
 y
 (
 t
 )
-y(t), also a bitstring, which could include control signals or actions influencing the environment; for the initial step, 
+y(t), also a bitstring, which could include control signals or actions influencing the environment; for the initial step,
 y
 (
 1
 )
 y(1) defaults to the empty string '0'. These input and output streams facilitate the machine's interaction with its surroundings, enabling it to perceive changes and respond accordingly.[10]
-The internal state of the Gödel machine at time 
+The internal state of the Gödel machine at time
 t
-t is captured by the bitstring 
+t is captured by the bitstring
 s
 (
 t
 )
-s(t), which encodes the current configuration of its software, accumulated proofs, and other relevant data. This state evolves according to a deterministic transition function 
+s(t), which encodes the current configuration of its software, accumulated proofs, and other relevant data. This state evolves according to a deterministic transition function
 F
 :
 S
@@ -598,52 +601,52 @@ S
 E
 →
 S
-F:S×E→S, where 
+F:S×E→S, where
 S
-S is the set of possible internal states and 
+S is the set of possible internal states and
 E
-E denotes the environmental state space; updates to 
+E denotes the environmental state space; updates to
 s
 (
 t
 )
-s(t) incorporate both prior outputs 
+s(t) incorporate both prior outputs
 y
 (
 t
 −
 1
 )
-y(t−1) and new inputs 
+y(t−1) and new inputs
 x
 (
 t
 )
-x(t). The state 
+x(t). The state
 s
 (
 t
 )
 s(t) thus maintains a comprehensive record of the machine's operational history and capabilities at any given moment.[10]
-The environment is modeled as a reactive, potentially stochastic entity 
+The environment is modeled as a reactive, potentially stochastic entity
 Env
-Env with its own state in 
+Env with its own state in
 E
-E, which provides inputs 
+E, which provides inputs
 x
 (
 t
 )
-x(t) and rewards 
+x(t) and rewards
 r
 (
 τ
 )
-r(τ) at various times 
+r(τ) at various times
 τ
 ≥
 t
-τ≥t. This model assumes the environment responds to the machine's past actions 
+τ≥t. This model assumes the environment responds to the machine's past actions
 y
 (
 1
@@ -690,54 +693,54 @@ n
 v
 ]
 ,
-u(s,Env)=E 
+u(s,Env)=E
 μ
 ​
- [ 
+ [
 τ=t
 ∑
 T
 ​
  r(τ)∣s,Env],
-where 
+where
 s
-s represents the current machine state at time 
+s represents the current machine state at time
 t
-t, 
+t,
 E
 n
 v
-Env denotes the environmental state, 
+Env denotes the environmental state,
 E
 μ
-E 
+E
 μ
 ​
-  is the conditional expectation under the distribution 
+  is the conditional expectation under the distribution
 μ
-μ induced by the machine's policy, 
+μ induced by the machine's policy,
 r
 (
 τ
 )
-r(τ) is the real-valued reward received at time 
+r(τ) is the real-valued reward received at time
 τ
-τ, and 
+τ, and
 T
 T is the total lifetime horizon, which may be finite or unknown.[1]
-The optimization goal is to select actions and policies that maximize this expected future utility from the given state 
+The optimization goal is to select actions and policies that maximize this expected future utility from the given state
 s
-s in environment 
+s in environment
 E
 n
 v
-Env. Since the true environmental dynamics are typically unknown, the expectation incorporates a universal prior over possible environment models to approximate 
+Env. Since the true environmental dynamics are typically unknown, the expectation incorporates a universal prior over possible environment models to approximate
 μ
 μ, enabling the machine to reason about uncertain future rewards without a predefined world model.[1]
 Central to the machine's self-referential design is the self-improvement criterion: the code is rewritten only if a formal proof demonstrates that the post-modification utility exceeds the utility of persisting with the current proof search process, with the difference sufficiently large to offset the computational costs of generating and verifying the proof.[1]
 Proof System and Instructions
 Axiomatic System and Theorems
-The axiomatic system underlying the Gödel machine forms the foundational proof framework for verifying self-improvements, enabling the machine to rigorously establish that modifications to its code will increase expected future utility. This system, denoted as A, is constructed as an extension of Peano arithmetic, incorporating the standard axioms for natural numbers, addition, multiplication, and induction, while adding domain-specific axioms to model the machine's operational context. These extensions include axioms describing the hardware's deterministic state transitions—such as updates to registers or Turing machine tapes based on executed instructions—and the initial state s(1) of the machine at time t=1.[1] Additional axioms formalize the environment's behavior, capturing probabilistic or deterministic interactions through predicates for inputs and outputs, as well as reward semantics that define the utility function u as the expected sum of future rewards (with computational costs incorporated via negative rewards or axioms), expressed as 
+The axiomatic system underlying the Gödel machine forms the foundational proof framework for verifying self-improvements, enabling the machine to rigorously establish that modifications to its code will increase expected future utility. This system, denoted as A, is constructed as an extension of Peano arithmetic, incorporating the standard axioms for natural numbers, addition, multiplication, and induction, while adding domain-specific axioms to model the machine's operational context. These extensions include axioms describing the hardware's deterministic state transitions—such as updates to registers or Turing machine tapes based on executed instructions—and the initial state s(1) of the machine at time t=1.[1] Additional axioms formalize the environment's behavior, capturing probabilistic or deterministic interactions through predicates for inputs and outputs, as well as reward semantics that define the utility function u as the expected sum of future rewards (with computational costs incorporated via negative rewards or axioms), expressed as
 u
 (
 s
@@ -761,17 +764,17 @@ s
 ,
 Env
 ]
-u(s,Env)=E[∑ 
+u(s,Env)=E[∑
 t=time
 ∞
 ​
- r(t)∣s,Env], where 
+ r(t)∣s,Env], where
 r
 (
 t
 )
 r(t) is the reward at time t.[1] The initial software p(1), which includes the proof searcher and verifier, is also axiomatized to ensure consistency without circularity, allowing the system A to prove statements about its own execution.[1]
-Central to this framework are theorems that encode predictions about the machine's performance under specific conditions, particularly those asserting the utility of code modifications. A key form of such theorems states: "If the current code is executed starting from machine state m at time n, then the expected utility from that point onward is U," where U is a computable value derived from the reward axioms and environmental assumptions.[11] These theorems serve as the targets for the proof searcher, enabling proofs that a proposed self-rewrite—via an instruction like switchprog—yields a higher utility than continuing with the existing code, formalized as comparisons like 
+Central to this framework are theorems that encode predictions about the machine's performance under specific conditions, particularly those asserting the utility of code modifications. A key form of such theorems states: "If the current code is executed starting from machine state m at time n, then the expected utility from that point onward is U," where U is a computable value derived from the reward axioms and environmental assumptions.[11] These theorems serve as the targets for the proof searcher, enabling proofs that a proposed self-rewrite—via an instruction like switchprog—yields a higher utility than continuing with the existing code, formalized as comparisons like
 u
 [
 s
@@ -813,23 +816,23 @@ t
 1
 )
 ]
-u[s(t 
+u[s(t
 1
 ​
- )⊕(switchbit(t 
+ )⊕(switchbit(t
 1
 ​
- )= 
+ )=
 ′
- 1 
+ 1
 ′
- ),Env(t 
+ ),Env(t
 1
 ​
- )]>u[s(t 
+ )]>u[s(t
 1
 ​
- ),Env(t 
+ ),Env(t
 1
 ​
  )].[1] Inference within the system relies on standard rules such as modus ponens and unification, applied to sequences of prior theorems or axioms, ensuring that all derived statements are sound relative to A.[11]
@@ -845,7 +848,7 @@ Search for Provable Improvements
 The Gödel machine's search for provable improvements centers on a rigorous algorithm designed to discover self-modifications that enhance its long-term utility. This process employs the Bias-Optimal Proof Search (BIOPS), an online variant of universal search, which systematically tests computable proof techniques—essentially programs that output proofs—until identifying a modification backed by a formal proof of net benefit. The strategy combines exhaustive enumeration of potential code rewrites with heuristic guidance to build proof trees using a predefined set of instructions, such as those for retrieving axioms and applying inference rules.[1]
 A proposed code rewrite qualifies as an improvement only if the machine can construct a proof demonstrating that its expected future utility exceeds the costs of the search process and any additional computational overhead incurred by the modification. This criterion is formalized within the machine's utility function, ensuring that self-changes are provably optimal in expectation relative to the current policy.[1]
 The machine dedicates a tunable fraction of its runtime to this search, striking a balance between exploring potential enhancements and performing its primary tasks efficiently. This allocation can itself be modified through provable updates, allowing adaptive resource management as the machine evolves.[1]
-To enhance search efficiency, heuristics prioritize straightforward modifications, such as minor code optimizations, and those aligned with the universal prior probability distribution, where the prior 
+To enhance search efficiency, heuristics prioritize straightforward modifications, such as minor code optimizations, and those aligned with the universal prior probability distribution, where the prior
 P
 (
 w
@@ -857,16 +860,16 @@ K
 (
 w
 )
-P(w)=2 
+P(w)=2
 −K(w)
-  favors proofs describable by shorter programs based on their Kolmogorov complexity 
+  favors proofs describable by shorter programs based on their Kolmogorov complexity
 K
 (
 w
 )
 K(w). This approach biases the exploration toward more likely beneficial changes without compromising theoretical soundness.[1]
 Code Modification and Verification
-Once a formal proof is constructed demonstrating that a proposed code modification will yield a net increase in the machine's expected future utility, the Gödel machine proceeds to implement the change through a targeted replacement of sub-programs. This is achieved using the set-switchprog(m, n) instruction, which configures the switchprog mechanism to overwrite a specific segment of the machine's code 
+Once a formal proof is constructed demonstrating that a proposed code modification will yield a net increase in the machine's expected future utility, the Gödel machine proceeds to implement the change through a targeted replacement of sub-programs. This is achieved using the set-switchprog(m, n) instruction, which configures the switchprog mechanism to overwrite a specific segment of the machine's code
 p
 p with a new substring derived from the proof searcher's candidates, ensuring the replacement is precisely scoped to the proven improvement.[1] The theorem database is then updated to reflect the altered code state, incorporating new axioms via get-axiom(n) and deriving additional theorems through apply-rule(k, m, n) to maintain a consistent axiomatic foundation for future proofs.[1]
 Verification of the modification relies on the check() function, which rigorously inspects the most recently proven theorem to confirm it matches the target form—specifically, that the self-rewrite increases utility without inconsistencies. If check() validates the proof, it executes switchprog to apply the change; otherwise, the modification is discarded, preserving the machine's integrity. Post-verification, obsolete theorems incompatible with the new code are removed using delete-theorem(m), ensuring the proof system remains sound and efficient by eliminating redundant or invalid entries from the database.[1]
@@ -885,34 +888,34 @@ Ethical and safety concerns arise particularly when proofs are approximated to c
 Recent extensions, such as the Darwin Gödel Machine introduced in May 2025, explore empirical validation of self-modifications to address proof intractability, achieving up to 150% performance gains in coding tasks through iterative code rewriting. Similarly, the Gödel Agent framework (2025) enables agents to recursively improve themselves using self-referential mechanisms without relying on full formal proofs, highlighting ongoing advancements in practical self-improvement systems.[3][17]
 Applications
 Theoretical Examples
-The Gödel machine's theoretical potential is demonstrated through idealized scenarios where it self-modifies its code only upon finding a mathematical proof that the modification yields a net benefit in expected future utility, defined as the sum of discounted rewards over all possible trajectories, 
+The Gödel machine's theoretical potential is demonstrated through idealized scenarios where it self-modifies its code only upon finding a mathematical proof that the modification yields a net benefit in expected future utility, defined as the sum of discounted rewards over all possible trajectories,
 ∑
 τ
 r
 (
 τ
 )
-∑ 
+∑
 τ
 ​
  r(τ). These examples illustrate how the machine leverages a formal proof system to justify improvements in diverse domains, from optimization to reasoning tasks.[1]
 In time-limited optimization of NP-hard problems, the Gödel machine can rewrite its search heuristics to outperform its initial solver within a fixed deadline. For instance, consider the traveling salesman problem (TSP), where the machine aims to find near-optimal tours in a graph. It might prove that a new heuristic, such as an enhanced branch-and-bound algorithm, increases the expected reward—proportional to the inverse of the tour length found—by dedicating more computation to promising subpaths, as formalized in Example 6.1 of the foundational work. This self-improvement is verified through a short proof showing the modification's superiority under the machine's utility function, ensuring no risk of degradation.[1]
 For accelerating theorem proving, the Gödel machine can optimize its inference rules to speed up proofs toward unsolved conjectures. A key example involves pursuing Goldbach's conjecture, which states that every even integer greater than 2 is the sum of two primes. The machine could self-modify to prioritize efficient proof search strategies, such as specialized resolution methods, yielding a reward inversely proportional to the time taken to verify a proof or disproof, as outlined in Example 6.2. By deriving a formal proof that the updated prover reduces expected verification time, the machine justifies the code change, potentially advancing automated reasoning in number theory.[1]
-In bounded-resource scenarios, such as robotics, the Gödel machine evolves control policies to maximize operational lifetime through provable efficiency gains. Imagine a mobile robot navigating an unknown environment to locate recharging stations (analogous to extending battery life), where the utility is the expected total reward accrued before resource depletion, up to a horizon like 100 years of simulated operation. Drawing from Example 6.3, the machine might prove that switching to a more adaptive exploration policy—guided by axioms like the Speed Prior for concise environment models—increases the probability of finding resources, thereby boosting 
+In bounded-resource scenarios, such as robotics, the Gödel machine evolves control policies to maximize operational lifetime through provable efficiency gains. Imagine a mobile robot navigating an unknown environment to locate recharging stations (analogous to extending battery life), where the utility is the expected total reward accrued before resource depletion, up to a horizon like 100 years of simulated operation. Drawing from Example 6.3, the machine might prove that switching to a more adaptive exploration policy—guided by axioms like the Speed Prior for concise environment models—increases the probability of finding resources, thereby boosting
 ∑
 r
 (
 τ
 )
 ∑r(τ) via a concise formal argument that the policy's expected gains outweigh its computational costs.[1]
-A simple utility calculation exemplifies the proof mechanism in a controlled environment. Suppose the machine initially follows a suboptimal policy, such as repeatedly pressing a non-rewarding lever in a room with two levers, yielding zero reward. It can derive a short proof, as in Section 4.4, demonstrating that switching to the rewarding lever after a single trial increases the total expected reward 
+A simple utility calculation exemplifies the proof mechanism in a controlled environment. Suppose the machine initially follows a suboptimal policy, such as repeatedly pressing a non-rewarding lever in a room with two levers, yielding zero reward. It can derive a short proof, as in Section 4.4, demonstrating that switching to the rewarding lever after a single trial increases the total expected reward
 ∑
 τ
 r
 (
 τ
 )
-∑ 
+∑
 τ
 ​
  r(τ) by a factor proportional to the discount rate and horizon length, since the proof shows the modification's benefits dominate without side effects. This formal verification, using the machine's embedded proof system, confirms the code rewrite as globally optimal.[1]
@@ -943,34 +946,34 @@ Ethical and safety concerns arise particularly when proofs are approximated to c
 Recent extensions, such as the Darwin Gödel Machine introduced in May 2025, explore empirical validation of self-modifications to address proof intractability, achieving up to 150% performance gains in coding tasks through iterative code rewriting. Similarly, the Gödel Agent framework (2025) enables agents to recursively improve themselves using self-referential mechanisms without relying on full formal proofs, highlighting ongoing advancements in practical self-improvement systems.[3][17]
 Applications
 Theoretical Examples
-The Gödel machine's theoretical potential is demonstrated through idealized scenarios where it self-modifies its code only upon finding a mathematical proof that the modification yields a net benefit in expected future utility, defined as the sum of discounted rewards over all possible trajectories, 
+The Gödel machine's theoretical potential is demonstrated through idealized scenarios where it self-modifies its code only upon finding a mathematical proof that the modification yields a net benefit in expected future utility, defined as the sum of discounted rewards over all possible trajectories,
 ∑
 τ
 r
 (
 τ
 )
-∑ 
+∑
 τ
 ​
  r(τ). These examples illustrate how the machine leverages a formal proof system to justify improvements in diverse domains, from optimization to reasoning tasks.[1]
 In time-limited optimization of NP-hard problems, the Gödel machine can rewrite its search heuristics to outperform its initial solver within a fixed deadline. For instance, consider the traveling salesman problem (TSP), where the machine aims to find near-optimal tours in a graph. It might prove that a new heuristic, such as an enhanced branch-and-bound algorithm, increases the expected reward—proportional to the inverse of the tour length found—by dedicating more computation to promising subpaths, as formalized in Example 6.1 of the foundational work. This self-improvement is verified through a short proof showing the modification's superiority under the machine's utility function, ensuring no risk of degradation.[1]
 For accelerating theorem proving, the Gödel machine can optimize its inference rules to speed up proofs toward unsolved conjectures. A key example involves pursuing Goldbach's conjecture, which states that every even integer greater than 2 is the sum of two primes. The machine could self-modify to prioritize efficient proof search strategies, such as specialized resolution methods, yielding a reward inversely proportional to the time taken to verify a proof or disproof, as outlined in Example 6.2. By deriving a formal proof that the updated prover reduces expected verification time, the machine justifies the code change, potentially advancing automated reasoning in number theory.[1]
-In bounded-resource scenarios, such as robotics, the Gödel machine evolves control policies to maximize operational lifetime through provable efficiency gains. Imagine a mobile robot navigating an unknown environment to locate recharging stations (analogous to extending battery life), where the utility is the expected total reward accrued before resource depletion, up to a horizon like 100 years of simulated operation. Drawing from Example 6.3, the machine might prove that switching to a more adaptive exploration policy—guided by axioms like the Speed Prior for concise environment models—increases the probability of finding resources, thereby boosting 
+In bounded-resource scenarios, such as robotics, the Gödel machine evolves control policies to maximize operational lifetime through provable efficiency gains. Imagine a mobile robot navigating an unknown environment to locate recharging stations (analogous to extending battery life), where the utility is the expected total reward accrued before resource depletion, up to a horizon like 100 years of simulated operation. Drawing from Example 6.3, the machine might prove that switching to a more adaptive exploration policy—guided by axioms like the Speed Prior for concise environment models—increases the probability of finding resources, thereby boosting
 ∑
 r
 (
 τ
 )
 ∑r(τ) via a concise formal argument that the policy's expected gains outweigh its computational costs.[1]
-A simple utility calculation exemplifies the proof mechanism in a controlled environment. Suppose the machine initially follows a suboptimal policy, such as repeatedly pressing a non-rewarding lever in a room with two levers, yielding zero reward. It can derive a short proof, as in Section 4.4, demonstrating that switching to the rewarding lever after a single trial increases the total expected reward 
+A simple utility calculation exemplifies the proof mechanism in a controlled environment. Suppose the machine initially follows a suboptimal policy, such as repeatedly pressing a non-rewarding lever in a room with two levers, yielding zero reward. It can derive a short proof, as in Section 4.4, demonstrating that switching to the rewarding lever after a single trial increases the total expected reward
 ∑
 τ
 r
 (
 τ
 )
-∑ 
+∑
 τ
 ​
  r(τ) by a factor proportional to the discount rate and horizon length, since the proof shows the modification's benefits dominate without side effects. This formal verification, using the machine's embedded proof system, confirms the code rewrite as globally optimal.[1]
@@ -1002,39 +1005,39 @@ Key differences highlight the Gödel machine's advancements over AIXI: while AIX
 Within the broader landscape of universal AI research, the Gödel machine aligns with Schmidhuber's explorations in artificial curiosity and optimal self-improvement, serving as a theoretically sound alternative to suboptimal learning algorithms like Q-learning, which lack universal priors and convergence guarantees.
 Formal Model
 Core Components and Variables
-The Gödel machine operates in discrete time steps denoted by the binary counter variable 
+The Gödel machine operates in discrete time steps denoted by the binary counter variable
 t
-t, which increments at each hardware cycle starting from 
+t, which increments at each hardware cycle starting from
 t
 =
 1
 t=1. This time variable tracks the machine's progression through its computational lifetime, serving as a foundational element for sequencing perceptions, actions, and internal updates.[10]
-At each time step 
+At each time step
 t
-t, the machine receives environmental inputs as a bitstring 
+t, the machine receives environmental inputs as a bitstring
 x
 (
 t
 )
-x(t), which represents perceptual data from the external world, such as sensor readings or observations. Concurrently, the machine produces outputs 
+x(t), which represents perceptual data from the external world, such as sensor readings or observations. Concurrently, the machine produces outputs
 y
 (
 t
 )
-y(t), also a bitstring, which could include control signals or actions influencing the environment; for the initial step, 
+y(t), also a bitstring, which could include control signals or actions influencing the environment; for the initial step,
 y
 (
 1
 )
 y(1) defaults to the empty string '0'. These input and output streams facilitate the machine's interaction with its surroundings, enabling it to perceive changes and respond accordingly.[10]
-The internal state of the Gödel machine at time 
+The internal state of the Gödel machine at time
 t
-t is captured by the bitstring 
+t is captured by the bitstring
 s
 (
 t
 )
-s(t), which encodes the current configuration of its software, accumulated proofs, and other relevant data. This state evolves according to a deterministic transition function 
+s(t), which encodes the current configuration of its software, accumulated proofs, and other relevant data. This state evolves according to a deterministic transition function
 F
 :
 S
@@ -1042,52 +1045,52 @@ S
 E
 →
 S
-F:S×E→S, where 
+F:S×E→S, where
 S
-S is the set of possible internal states and 
+S is the set of possible internal states and
 E
-E denotes the environmental state space; updates to 
+E denotes the environmental state space; updates to
 s
 (
 t
 )
-s(t) incorporate both prior outputs 
+s(t) incorporate both prior outputs
 y
 (
 t
 −
 1
 )
-y(t−1) and new inputs 
+y(t−1) and new inputs
 x
 (
 t
 )
-x(t). The state 
+x(t). The state
 s
 (
 t
 )
 s(t) thus maintains a comprehensive record of the machine's operational history and capabilities at any given moment.[10]
-The environment is modeled as a reactive, potentially stochastic entity 
+The environment is modeled as a reactive, potentially stochastic entity
 Env
-Env with its own state in 
+Env with its own state in
 E
-E, which provides inputs 
+E, which provides inputs
 x
 (
 t
 )
-x(t) and rewards 
+x(t) and rewards
 r
 (
 τ
 )
-r(τ) at various times 
+r(τ) at various times
 τ
 ≥
 t
-τ≥t. This model assumes the environment responds to the machine's past actions 
+τ≥t. This model assumes the environment responds to the machine's past actions
 y
 (
 1
@@ -1134,54 +1137,54 @@ n
 v
 ]
 ,
-u(s,Env)=E 
+u(s,Env)=E
 μ
 ​
- [ 
+ [
 τ=t
 ∑
 T
 ​
  r(τ)∣s,Env],
-where 
+where
 s
-s represents the current machine state at time 
+s represents the current machine state at time
 t
-t, 
+t,
 E
 n
 v
-Env denotes the environmental state, 
+Env denotes the environmental state,
 E
 μ
-E 
+E
 μ
 ​
-  is the conditional expectation under the distribution 
+  is the conditional expectation under the distribution
 μ
-μ induced by the machine's policy, 
+μ induced by the machine's policy,
 r
 (
 τ
 )
-r(τ) is the real-valued reward received at time 
+r(τ) is the real-valued reward received at time
 τ
-τ, and 
+τ, and
 T
 T is the total lifetime horizon, which may be finite or unknown.[1]
-The optimization goal is to select actions and policies that maximize this expected future utility from the given state 
+The optimization goal is to select actions and policies that maximize this expected future utility from the given state
 s
-s in environment 
+s in environment
 E
 n
 v
-Env. Since the true environmental dynamics are typically unknown, the expectation incorporates a universal prior over possible environment models to approximate 
+Env. Since the true environmental dynamics are typically unknown, the expectation incorporates a universal prior over possible environment models to approximate
 μ
 μ, enabling the machine to reason about uncertain future rewards without a predefined world model.[1]
 Central to the machine's self-referential design is the self-improvement criterion: the code is rewritten only if a formal proof demonstrates that the post-modification utility exceeds the utility of persisting with the current proof search process, with the difference sufficiently large to offset the computational costs of generating and verifying the proof.[1]
 Proof System and Instructions
 Axiomatic System and Theorems
-The axiomatic system underlying the Gödel machine forms the foundational proof framework for verifying self-improvements, enabling the machine to rigorously establish that modifications to its code will increase expected future utility. This system, denoted as A, is constructed as an extension of Peano arithmetic, incorporating the standard axioms for natural numbers, addition, multiplication, and induction, while adding domain-specific axioms to model the machine's operational context. These extensions include axioms describing the hardware's deterministic state transitions—such as updates to registers or Turing machine tapes based on executed instructions—and the initial state s(1) of the machine at time t=1.[1] Additional axioms formalize the environment's behavior, capturing probabilistic or deterministic interactions through predicates for inputs and outputs, as well as reward semantics that define the utility function u as the expected sum of future rewards (with computational costs incorporated via negative rewards or axioms), expressed as 
+The axiomatic system underlying the Gödel machine forms the foundational proof framework for verifying self-improvements, enabling the machine to rigorously establish that modifications to its code will increase expected future utility. This system, denoted as A, is constructed as an extension of Peano arithmetic, incorporating the standard axioms for natural numbers, addition, multiplication, and induction, while adding domain-specific axioms to model the machine's operational context. These extensions include axioms describing the hardware's deterministic state transitions—such as updates to registers or Turing machine tapes based on executed instructions—and the initial state s(1) of the machine at time t=1.[1] Additional axioms formalize the environment's behavior, capturing probabilistic or deterministic interactions through predicates for inputs and outputs, as well as reward semantics that define the utility function u as the expected sum of future rewards (with computational costs incorporated via negative rewards or axioms), expressed as
 u
 (
 s
@@ -1205,17 +1208,17 @@ s
 ,
 Env
 ]
-u(s,Env)=E[∑ 
+u(s,Env)=E[∑
 t=time
 ∞
 ​
- r(t)∣s,Env], where 
+ r(t)∣s,Env], where
 r
 (
 t
 )
 r(t) is the reward at time t.[1] The initial software p(1), which includes the proof searcher and verifier, is also axiomatized to ensure consistency without circularity, allowing the system A to prove statements about its own execution.[1]
-Central to this framework are theorems that encode predictions about the machine's performance under specific conditions, particularly those asserting the utility of code modifications. A key form of such theorems states: "If the current code is executed starting from machine state m at time n, then the expected utility from that point onward is U," where U is a computable value derived from the reward axioms and environmental assumptions.[11] These theorems serve as the targets for the proof searcher, enabling proofs that a proposed self-rewrite—via an instruction like switchprog—yields a higher utility than continuing with the existing code, formalized as comparisons like 
+Central to this framework are theorems that encode predictions about the machine's performance under specific conditions, particularly those asserting the utility of code modifications. A key form of such theorems states: "If the current code is executed starting from machine state m at time n, then the expected utility from that point onward is U," where U is a computable value derived from the reward axioms and environmental assumptions.[11] These theorems serve as the targets for the proof searcher, enabling proofs that a proposed self-rewrite—via an instruction like switchprog—yields a higher utility than continuing with the existing code, formalized as comparisons like
 u
 [
 s
@@ -1257,23 +1260,23 @@ t
 1
 )
 ]
-u[s(t 
+u[s(t
 1
 ​
- )⊕(switchbit(t 
+ )⊕(switchbit(t
 1
 ​
- )= 
+ )=
 ′
- 1 
+ 1
 ′
- ),Env(t 
+ ),Env(t
 1
 ​
- )]>u[s(t 
+ )]>u[s(t
 1
 ​
- ),Env(t 
+ ),Env(t
 1
 ​
  )].[1] Inference within the system relies on standard rules such as modus ponens and unification, applied to sequences of prior theorems or axioms, ensuring that all derived statements are sound relative to A.[11]
@@ -1289,7 +1292,7 @@ Search for Provable Improvements
 The Gödel machine's search for provable improvements centers on a rigorous algorithm designed to discover self-modifications that enhance its long-term utility. This process employs the Bias-Optimal Proof Search (BIOPS), an online variant of universal search, which systematically tests computable proof techniques—essentially programs that output proofs—until identifying a modification backed by a formal proof of net benefit. The strategy combines exhaustive enumeration of potential code rewrites with heuristic guidance to build proof trees using a predefined set of instructions, such as those for retrieving axioms and applying inference rules.[1]
 A proposed code rewrite qualifies as an improvement only if the machine can construct a proof demonstrating that its expected future utility exceeds the costs of the search process and any additional computational overhead incurred by the modification. This criterion is formalized within the machine's utility function, ensuring that self-changes are provably optimal in expectation relative to the current policy.[1]
 The machine dedicates a tunable fraction of its runtime to this search, striking a balance between exploring potential enhancements and performing its primary tasks efficiently. This allocation can itself be modified through provable updates, allowing adaptive resource management as the machine evolves.[1]
-To enhance search efficiency, heuristics prioritize straightforward modifications, such as minor code optimizations, and those aligned with the universal prior probability distribution, where the prior 
+To enhance search efficiency, heuristics prioritize straightforward modifications, such as minor code optimizations, and those aligned with the universal prior probability distribution, where the prior
 P
 (
 w
@@ -1301,16 +1304,16 @@ K
 (
 w
 )
-P(w)=2 
+P(w)=2
 −K(w)
-  favors proofs describable by shorter programs based on their Kolmogorov complexity 
+  favors proofs describable by shorter programs based on their Kolmogorov complexity
 K
 (
 w
 )
 K(w). This approach biases the exploration toward more likely beneficial changes without compromising theoretical soundness.[1]
 Code Modification and Verification
-Once a formal proof is constructed demonstrating that a proposed code modification will yield a net increase in the machine's expected future utility, the Gödel machine proceeds to implement the change through a targeted replacement of sub-programs. This is achieved using the set-switchprog(m, n) instruction, which configures the switchprog mechanism to overwrite a specific segment of the machine's code 
+Once a formal proof is constructed demonstrating that a proposed code modification will yield a net increase in the machine's expected future utility, the Gödel machine proceeds to implement the change through a targeted replacement of sub-programs. This is achieved using the set-switchprog(m, n) instruction, which configures the switchprog mechanism to overwrite a specific segment of the machine's code
 p
 p with a new substring derived from the proof searcher's candidates, ensuring the replacement is precisely scoped to the proven improvement.[1] The theorem database is then updated to reflect the altered code state, incorporating new axioms via get-axiom(n) and deriving additional theorems through apply-rule(k, m, n) to maintain a consistent axiomatic foundation for future proofs.[1]
 Verification of the modification relies on the check() function, which rigorously inspects the most recently proven theorem to confirm it matches the target form—specifically, that the self-rewrite increases utility without inconsistencies. If check() validates the proof, it executes switchprog to apply the change; otherwise, the modification is discarded, preserving the machine's integrity. Post-verification, obsolete theorems incompatible with the new code are removed using delete-theorem(m), ensuring the proof system remains sound and efficient by eliminating redundant or invalid entries from the database.[1]
@@ -1329,34 +1332,34 @@ Ethical and safety concerns arise particularly when proofs are approximated to c
 Recent extensions, such as the Darwin Gödel Machine introduced in May 2025, explore empirical validation of self-modifications to address proof intractability, achieving up to 150% performance gains in coding tasks through iterative code rewriting. Similarly, the Gödel Agent framework (2025) enables agents to recursively improve themselves using self-referential mechanisms without relying on full formal proofs, highlighting ongoing advancements in practical self-improvement systems.[3][17]
 Applications
 Theoretical Examples
-The Gödel machine's theoretical potential is demonstrated through idealized scenarios where it self-modifies its code only upon finding a mathematical proof that the modification yields a net benefit in expected future utility, defined as the sum of discounted rewards over all possible trajectories, 
+The Gödel machine's theoretical potential is demonstrated through idealized scenarios where it self-modifies its code only upon finding a mathematical proof that the modification yields a net benefit in expected future utility, defined as the sum of discounted rewards over all possible trajectories,
 ∑
 τ
 r
 (
 τ
 )
-∑ 
+∑
 τ
 ​
  r(τ). These examples illustrate how the machine leverages a formal proof system to justify improvements in diverse domains, from optimization to reasoning tasks.[1]
 In time-limited optimization of NP-hard problems, the Gödel machine can rewrite its search heuristics to outperform its initial solver within a fixed deadline. For instance, consider the traveling salesman problem (TSP), where the machine aims to find near-optimal tours in a graph. It might prove that a new heuristic, such as an enhanced branch-and-bound algorithm, increases the expected reward—proportional to the inverse of the tour length found—by dedicating more computation to promising subpaths, as formalized in Examplhttps://github.com/jennyzzt/dgm?tab=Apache-2.0-1-ov-filee 6.1 of the foundational work. This self-improvement is verified through a short proof showing the modification's superiority under the machine's utility function, ensuring no risk of degradation.[1]
 For accelerating theorem proving, the Gödel machine can optimize its inference rules to speed up proofs toward unsolved conjectures. A key example involves pursuing Goldbach's conjecture, which states that every even integer greater than 2 is the sum of two primes. The machine could self-modify to prioritize efficient proof search strategies, such as specialized resolution methods, yielding a reward inversely proportional to the time taken to verify a proof or disproof, as outlined in Example 6.2. By deriving a formal proof that the updated prover reduces expected verification time, the machine justifies the code change, potentially advancing automated reasoning in number theory.[1]
-In bounded-resource scenarios, such as robotics, the Gödel machine evolves control policies to maximize operational lifetime through provable efficiency gains. Imagine a mobile robot navigating an unknown environment to locate recharging stations (analogous to extending battery life), where the utility is the expected total reward accrued before resource depletion, up to a horizon like 100 years of simulated operation. Drawing from Example 6.3, the machine might prove that switching to a more adaptive exploration policy—guided by axioms like the Speed Prior for concise environment models—increases the probability of finding resources, thereby boosting 
+In bounded-resource scenarios, such as robotics, the Gödel machine evolves control policies to maximize operational lifetime through provable efficiency gains. Imagine a mobile robot navigating an unknown environment to locate recharging stations (analogous to extending battery life), where the utility is the expected total reward accrued before resource depletion, up to a horizon like 100 years of simulated operation. Drawing from Example 6.3, the machine might prove that switching to a more adaptive exploration policy—guided by axioms like the Speed Prior for concise environment models—increases the probability of finding resources, thereby boosting
 ∑
 r
 (
 τ
 )
 ∑r(τ) via a concise formal argument that the policy's expected gains outweigh its computational costs.[1]
-A simple utility calculation exemplifies the proof mechanism in a controlled environment. Suppose the machine initially follows a suboptimal policy, such as repeatedly pressing a non-rewarding lever in a room with two levers, yielding zero reward. It can derive a short proof, as in Section 4.4, demonstrating that switching to the rewarding lever after a single trial increases the total expected reward 
+A simple utility calculation exemplifies the proof mechanism in a controlled environment. Suppose the machine initially follows a suboptimal policy, such as repeatedly pressing a non-rewarding lever in a room with two levers, yielding zero reward. It can derive a short proof, as in Section 4.4, demonstrating that switching to the rewarding lever after a single trial increases the total expected reward
 ∑
 τ
 r
 (
 τ
 )
-∑ 
+∑
 τ
 ​
  r(τ) by a factor proportional to the discount rate and horizon length, since the proof shows the modification's benefits dominate without side effects. This formal verification, using the machine's embedded proof system, confirms the code rewrite as globally optimal.[1]
@@ -1401,11 +1404,11 @@ https://people.idsia.ch/~juergen/agi2011bas.pdf
 https://sakana.ai/dgm/
 https://agi-conf.org/2014/wp-content/uploads/2014/08/fallenstein-problems-agi14.pdf
 https://openreview.net/forum?id=dML3XGvWmy
-https://github.com/jennyzzt/dgm 
+https://github.com/jennyzzt/dgm
 
 Copilot, knowing that you prefer interesting problems to solve read and understand and learn how https://github.com/jennyzzt/dgm does what it does and as you then consider the dgm and the ideas in this SET6_BECOMES_AS_GOEDEL_MACHINE.md then optimize updates to seT6 in the form of the optimal solution as a module or harness or extension for seT6 as you solve for making this update to create a fully realized fully functioning verifiable Gödel machine.
 
-also identify from the lists of features and use cases the functions and capabilities and uses that will be most useful to the Goedel Machine aspects of seT6 to provide it the requisite onboard resources and tools to be able to maximally optimize it's self improvement for the purpose of satisfying and fulfilling all of the previously stated goals regarding the purpose and the ongoing development of seT6 and it's full stack ternary/multi radix first future focused goals of providing all users the greatest utility in this emergent ternary first world. 
+also identify from the lists of features and use cases the functions and capabilities and uses that will be most useful to the Goedel Machine aspects of seT6 to provide it the requisite onboard resources and tools to be able to maximally optimize it's self improvement for the purpose of satisfying and fulfilling all of the previously stated goals regarding the purpose and the ongoing development of seT6 and it's full stack ternary/multi radix first future focused goals of providing all users the greatest utility in this emergent ternary first world.
 
 The Macintosh 128K, released on January 24, 1984, represented a fundamental paradigm shift in human-computer interaction (HCI). Its success was not predicated on raw computational throughput—which was notably constrained—but on its architectural synthesis of bitmapped graphics and a mouse-driven interface, democratizing access to complex computing.
 

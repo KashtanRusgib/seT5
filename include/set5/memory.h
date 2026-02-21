@@ -146,11 +146,16 @@ void mem_stats(const set5_mem_t *mem, int *total, int *free, int *alloc);
  *
  * Used for zeroing sensitive data in-place (e.g., after IPC).
  *
- * @param mem       Memory manager state.
- * @param page_idx  Page to scrub.
- * @return 0 on success, -1 if invalid.
+ * @param mem        Memory manager state.
+ * @param page_idx   Page to scrub.
+ * @param caller_tid TID of the requester; must match page owner.
+ *                   Pass -1 for kernel-authority scrub (boot/free path).
+ * @return 0 on success, -1 if invalid or ownership check fails.
+ *
+ * VULN-56 fix: caller_tid must equal page owner_tid unless caller_tid==-1
+ * (kernel authority). Prevents cross-process data destruction.
  */
-int mem_scrub(set5_mem_t *mem, int page_idx);
+int mem_scrub(set5_mem_t *mem, int page_idx, int caller_tid);
 
 #ifdef __cplusplus
 }

@@ -358,6 +358,11 @@ static void test_syscall(void) {
 
     SECTION("SYSCALL: MMAP Dispatch");
     kernel_init(&ks, 16);
+    /* VULN-60 fix: MMAP requires a running thread. Create and schedule one. */
+    {
+        int owner = sched_create(&ks.sched, 0x1000, TRIT_UNKNOWN);
+        ks.sched.current_tid = owner;
+    }
     r = syscall_dispatch(&ks, SYSCALL_MMAP, 0, 0);
     CHECK("MMAP dispatch ok", r.retval >= 0);
 

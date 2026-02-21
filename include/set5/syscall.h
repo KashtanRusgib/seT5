@@ -75,6 +75,7 @@ typedef struct {
     int                 operand_sp;        /**< Stack pointer */
     int                 return_stack[64];  /**< Return stack */
     int                 return_sp;         /**< Return stack pointer */
+    int                 stack_overflow;    /**< VULN-59: set 1 on push overflow */
 } kernel_state_t;
 
 /* ---- Syscall Result --------------------------------------------------- */

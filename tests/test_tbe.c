@@ -408,12 +408,17 @@ static void test_syscall_push_pop(void) {
     TEST(syscall_push_pop_roundtrip);
     kernel_state_t ks;
     kernel_init(&ks, 32);
-    /* SYSCALL_PUSH = 2, value is arg0 */
-    syscall_result_t r = syscall_dispatch(&ks, 2, TRIT_TRUE, 0);
-    ASSERT_TRUE(r.retval >= 0, "push should succeed");
-    /* SYSCALL_POP = 3 */
-    r = syscall_dispatch(&ks, 3, 0, 0);
-    ASSERT_EQ(r.result_trit, TRIT_TRUE, "pop should return T");
+    /* Test operand stack round-trip via direct kernel_push/kernel_pop API.
+     * VULN-60 fix: SYSCALL_MMAP requires a running thread (current_tid >= 0).
+     * The previous version accidentally relied on MMAP succeeding with no tid;
+     * we now test the stack directly which is the intended contract. */
+    kernel_push(&ks, TRIT_TRUE);
+    ASSERT_TRUE(ks.operand_sp == 1, "push should succeed");
+    trit v = kernel_pop(&ks);
+    ASSERT_EQ(v, TRIT_TRUE, "pop should return T");
+    /* Verify MMAP correctly fails when no thread is running */
+    syscall_result_t r = syscall_dispatch(&ks, SYSCALL_MMAP, 0, 0);
+    ASSERT_EQ(r.retval, -1, "MMAP fails with no current thread");
     PASS();
 }
 

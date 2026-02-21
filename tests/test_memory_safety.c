@@ -109,8 +109,8 @@ void test_scrub_on_free(void) {
     trit val = mem_read(&mem, page, 0);
     CHECK("Pattern written", val == TRIT_TRUE);
 
-    /* Scrub the page */
-    int sr = mem_scrub(&mem, page);
+    /* Scrub the page — caller TID 0 owns it (owner from mem_alloc call) */
+    int sr = mem_scrub(&mem, page, 0);
     CHECK("Scrub succeeds", sr == 0);
 
     /* After scrub, all should be Unknown */

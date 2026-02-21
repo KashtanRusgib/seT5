@@ -393,11 +393,12 @@ void set5_init(void) {
     CHECK("dot_trit: acc = last result", mr.dot_acc == 16);
     CHECK("dot_trit: total_ops > 0", mr.dot_total_ops > 0);
 
-    /* Invalid register index */
+    /* Invalid register index — VULN-61 fix: expect MR_DOT_ERROR, not 0.
+     * Returning 0 was ambiguous; MR_DOT_ERROR is provably out-of-range. */
     dp = dot_trit(&mr, -1, 0);
-    CHECK("dot_trit: invalid reg_a = 0", dp == 0);
+    CHECK("dot_trit: invalid reg_a = MR_DOT_ERROR", dp == MR_DOT_ERROR);
     dp = dot_trit(&mr, 0, 99);
-    CHECK("dot_trit: invalid reg_b = 0", dp == 0);
+    CHECK("dot_trit: invalid reg_b = MR_DOT_ERROR", dp == MR_DOT_ERROR);
 
     /* ==== 12. FFT_STEP ================================================= */
     printf("\n--- FFT_STEP ---\n");

@@ -39,6 +39,9 @@ extern "C" {
 #define MR_NUM_REGS     16
 /** Trits per register */
 #define MR_REG_WIDTH    32
+/** VULN-61: error sentinel for dot_trit with invalid register indices.
+ *  Max valid result is ±MR_REG_WIDTH; this value is provably impossible. */
+#define MR_DOT_ERROR    (-(MR_REG_WIDTH + 1))
 
 /**
  * @brief Multi-radix register file.

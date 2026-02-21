@@ -12,6 +12,11 @@ max_lines: 300
 > Living document. Updated from daily search logs. Sections: Hardware, Software,
 > Protocols, Patents/Papers. Summarize when > 300 lines.
 
+> **Terminology (effective 2026-02-20):** Compiled seT6 executables are **trinaries**;
+> ternary digits are **trits**; 3-trit data units are **trytes**. "Binary/binaries" is
+> reserved for external interop bridges and host-substrate references only.
+> See `CONTRIBUTING.md` for the full policy.
+
 ---
 
 ## 1. Hardware

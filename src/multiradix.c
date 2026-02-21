@@ -99,9 +99,11 @@ void multiradix_init(multiradix_state_t *state) {
 /* ==== DOT_TRIT ========================================================= */
 
 int dot_trit(multiradix_state_t *state, int reg_a, int reg_b) {
-    if (!state) return 0;
-    if (reg_a < 0 || reg_a >= MR_NUM_REGS) return 0;
-    if (reg_b < 0 || reg_b >= MR_NUM_REGS) return 0;
+    /* VULN-61 fix: return MR_DOT_ERROR on invalid input — 0 is a valid
+     * dot product and must not be returned when the call itself is invalid. */
+    if (!state) return MR_DOT_ERROR;
+    if (reg_a < 0 || reg_a >= MR_NUM_REGS) return MR_DOT_ERROR;
+    if (reg_b < 0 || reg_b >= MR_NUM_REGS) return MR_DOT_ERROR;
 
     trit2_reg32 *a = &state->regs[reg_a];
     trit2_reg32 *b = &state->regs[reg_b];
@@ -140,9 +142,10 @@ int dot_trit(multiradix_state_t *state, int reg_a, int reg_b) {
 
 int dot_trit_sparse(multiradix_state_t *state, int reg_a, int reg_b,
                     int n, int m) {
-    if (!state) return 0;
-    if (reg_a < 0 || reg_a >= MR_NUM_REGS) return 0;
-    if (reg_b < 0 || reg_b >= MR_NUM_REGS) return 0;
+    /* VULN-61 fix: same error sentinel as dot_trit */
+    if (!state) return MR_DOT_ERROR;
+    if (reg_a < 0 || reg_a >= MR_NUM_REGS) return MR_DOT_ERROR;
+    if (reg_b < 0 || reg_b >= MR_NUM_REGS) return MR_DOT_ERROR;
     if (n <= 0 || m <= 0 || m > n) return 0;
 
     trit2_reg32 *a = &state->regs[reg_a];

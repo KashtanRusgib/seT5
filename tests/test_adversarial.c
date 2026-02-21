@@ -505,6 +505,94 @@ void test_trit_fault_encoding(void) {
     PASS();
 }
 
+/* ── Red Team Pass #3 Regression Tests (VULN-56 through VULN-62) ── */
+
+void test_vuln56_mem_scrub_ownership(void) {
+    TEST(vuln56_scrub_cross_process_denied);
+    set5_mem_t mem;
+    mem_init(&mem, 8);
+    int page = mem_alloc(&mem, 2);  /* owner TID = 2 */
+    ASSERT_TRUE(page >= 0, "alloc ok");
+    /* Attacker TID=5 tries to scrub another process's page — must fail */
+    int r = mem_scrub(&mem, page, 5);
+    ASSERT_EQ(r, -1, "cross-process scrub denied");
+    /* Owner TID=2 can scrub own page */
+    r = mem_scrub(&mem, page, 2);
+    ASSERT_EQ(r, 0, "owner scrub allowed");
+    /* Kernel authority (caller_tid=-1) can always scrub */
+    page = mem_alloc(&mem, 7);
+    r = mem_scrub(&mem, page, -1);
+    ASSERT_EQ(r, 0, "kernel auth scrub allowed");
+    PASS();
+}
+
+void test_vuln57_ipc_send_busy(void) {
+    TEST(vuln57_ipc_ep_busy_blocks_second_sender);
+    ipc_state_t ipc;
+    ipc_init(&ipc);
+    int ep = ipc_endpoint_create(&ipc);
+    ASSERT_TRUE(ep >= 0, "ep created");
+    ipc_msg_t msg;
+    trit w = TRIT_TRUE;
+    ipc_msg_build(&msg, &w, 1, 0, 0);
+    /* First send — no receiver, blocks sender 0 */
+    int r1 = ipc_send(&ipc, ep, &msg, 0);
+    ASSERT_EQ(r1, 1, "first send blocks");
+    /* Second send — endpoint already EP_SEND_BLOCKED — must return EBUSY=-1 */
+    int r2 = ipc_send(&ipc, ep, &msg, 1);
+    ASSERT_EQ(r2, -1, "second send rejected (VULN-57 fix)");
+    PASS();
+}
+
+void test_vuln59_stack_overflow_flag(void) {
+    TEST(vuln59_stack_overflow_sets_error_flag);
+    kernel_state_t ks;
+    kernel_init(&ks, 4);
+    ASSERT_EQ(ks.stack_overflow, 0, "no overflow at init");
+    /* Fill stack to capacity */
+    for (int i = 0; i < 64; i++) kernel_push(&ks, TRIT_TRUE);
+    ASSERT_EQ(ks.stack_overflow, 0, "no overflow at exactly 64");
+    /* One more push — must set stack_overflow flag */
+    kernel_push(&ks, TRIT_TRUE);
+    ASSERT_EQ(ks.stack_overflow, 1, "overflow flag set");
+    ASSERT_TRUE(ks.operand_sp <= 64, "sp not exceeded");
+    PASS();
+}
+
+void test_vuln60_mmap_no_thread(void) {
+    TEST(vuln60_mmap_denied_without_running_thread);
+    kernel_state_t ks;
+    kernel_init(&ks, 8);
+    /* No threads created — current_tid == -1 */
+    ASSERT_EQ(ks.sched.current_tid, -1, "no current thread");
+    syscall_result_t r = syscall_dispatch(&ks, SYSCALL_MMAP, 0, 0);
+    ASSERT_EQ(r.retval, -1, "MMAP denied with no thread (VULN-60 fix)");
+    ASSERT_EQ(r.result_trit, TRIT_FALSE, "result_trit = False");
+    /* After creating a thread, MMAP should succeed */
+    int tid = sched_create(&ks.sched, 0x1000, TRIT_UNKNOWN);
+    ks.sched.current_tid = tid;
+    r = syscall_dispatch(&ks, SYSCALL_MMAP, 0, 0);
+    ASSERT_TRUE(r.retval >= 0, "MMAP succeeds with running thread");
+    PASS();
+}
+
+void test_vuln61_dot_trit_invalid_reg(void) {
+    TEST(vuln61_dot_trit_error_on_invalid_register);
+    multiradix_state_t mr;
+    multiradix_init(&mr);
+    /* Valid call — should return normal value, not MR_DOT_ERROR */
+    int dp = dot_trit(&mr, 0, 1);
+    ASSERT_TRUE(dp != MR_DOT_ERROR, "valid call not error");
+    ASSERT_TRUE(dp >= -MR_REG_WIDTH && dp <= MR_REG_WIDTH, "result in valid range");
+    /* Invalid reg_a */
+    dp = dot_trit(&mr, -1, 0);
+    ASSERT_EQ(dp, MR_DOT_ERROR, "invalid reg_a returns MR_DOT_ERROR (VULN-61 fix)");
+    /* Invalid reg_b */
+    dp = dot_trit(&mr, 0, MR_NUM_REGS);
+    ASSERT_EQ(dp, MR_DOT_ERROR, "invalid reg_b returns MR_DOT_ERROR (VULN-61 fix)");
+    PASS();
+}
+
 /* ── Main ── */
 
 int main(void) {
@@ -553,6 +641,13 @@ int main(void) {
     printf("\n[Trit Type Adversarial]\n");
     test_trit_pack_unpack_roundtrip();
     test_trit_fault_encoding();
+
+    printf("\n[Red Team Pass #3 — VULN-56..62]\n");
+    test_vuln56_mem_scrub_ownership();
+    test_vuln57_ipc_send_busy();
+    test_vuln59_stack_overflow_flag();
+    test_vuln60_mmap_no_thread();
+    test_vuln61_dot_trit_invalid_reg();
 
     printf("\n=== Results: %d passed, %d failed ===\n", tests_passed, tests_failed);
     return tests_failed ? 1 : 0;

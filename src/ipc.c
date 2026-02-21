@@ -118,6 +118,13 @@ int ipc_send(ipc_state_t *ipc, int ep_idx, const ipc_msg_t *msg,
         return 0;  /* immediate delivery */
     }
 
+    /* VULN-57 fix: if a sender is already blocked, reject the second send.
+     * Allowing overwrite would orphan the first sender (perma-blocked) and
+     * allow message injection into the channel. Return -1 (EBUSY). */
+    if (ep_state == EP_SEND_BLOCKED) {
+        return -1;  /* endpoint busy — first sender still pending */
+    }
+
     /* No receiver — buffer the message and block sender */
     ep->buffered_msg = *msg;
     ep->buffered_msg.sender_tid = sender_tid;
