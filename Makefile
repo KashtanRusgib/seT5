@@ -325,6 +325,26 @@ test_redteam_lego_namespace_extended_20260221: tests/test_redteam_lego_namespace
 test_redteam_compiler_bootstrap_extended_20260221: tests/test_redteam_compiler_bootstrap_extended_20260221.c tools/compiler/src/postfix_ir.c tools/compiler/src/ir.c tools/compiler/src/bootstrap.c tools/compiler/src/selfhost.c tools/compiler/vm/ternary_vm.c tools/compiler/src/logger.c tools/compiler/src/parser.c tools/compiler/src/codegen.c tools/compiler/src/typechecker.c tools/compiler/src/linker.c
 	$(CC) $(CFLAGS) -Wno-unused-variable -Wno-unused-parameter -o $@ $^ -lm
 
+# ---- Suite 137: Red-Team Ternary SNN (ternary_snn.c) Gap Coverage ----
+test_redteam_ternary_snn_missed_20260221: tests/test_redteam_ternary_snn_missed_20260221.c src/memory.c
+	$(CC) $(CFLAGS) -Wno-unused-variable -Wno-unused-parameter -Wno-unused-function -o $@ $^ -lm
+
+# ---- Suite 138: Red-Team Audit Firewall (audit_firewall.c) Gap Coverage ----
+test_redteam_audit_firewall_missed_20260221: tests/test_redteam_audit_firewall_missed_20260221.c
+	$(CC) $(CFLAGS) -Wno-unused-variable -Wno-unused-parameter -Wno-unused-function -o $@ $^ -lm
+
+# ---- Suite 139: Red-Team T-Security UNKNOWN Propagation + Concurrency ----
+test_redteam_trit_security_unknown_concurrency_20260221: tests/test_redteam_trit_security_unknown_concurrency_20260221.c
+	$(CC) $(CFLAGS) -Itrit_linux/security -Wno-unused-variable -Wno-unused-parameter -Wno-unused-function -o $@ $^ -lm
+
+# ---- Suite 140: Red-Team T-IPC Secure TOCTOU + UNKNOWN Payload ----
+test_redteam_trit_ipc_secure_unknown_toctou_20260221: tests/test_redteam_trit_ipc_secure_unknown_toctou_20260221.c src/tipc.c src/memory.c
+	$(CC) $(CFLAGS) -Itrit_linux/ipc -Wno-unused-variable -Wno-unused-parameter -Wno-unused-function -o $@ $^ -lm
+
+# ---- Suite 141: Red-Team IPC/T-IPC 10k Concurrent Fuzzer (Round 1) ----
+test_redteam_ipc_tipc_10k_concurrent_fuzzer_20260221: tests/test_redteam_ipc_tipc_10k_concurrent_fuzzer_20260221.c src/memory.c
+	$(CC) $(CFLAGS) -Wno-unused-variable -Wno-unused-parameter -Wno-unused-function -o $@ $^ -lm
+
 # ---- Scheduler concurrency test ----
 test_scheduler_concurrency: tests/test_scheduler_concurrency.c src/memory.c src/ipc.c src/scheduler.c src/syscall.c src/multiradix.c
 	$(CC) $(CFLAGS) -o $@ $^

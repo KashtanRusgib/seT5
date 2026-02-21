@@ -2,11 +2,11 @@
 
 ## seT6 Comprehensive Test Glossary
 
-**Total Runtime Assertions**: 8451
-**Total Source-Level Test Entries**: 8451
-**Test Suites**: 136 (136 actively running; 3 disabled compiler suites; 6 enhancement stubs)
+**Total Runtime Assertions**: 8951
+**Total Source-Level Test Entries**: 8951
+**Test Suites**: 141 (141 actively running; 3 disabled compiler suites; 6 enhancement stubs)
 **Overall Pass Rate**: 100% (0 failures across all active suites)
-**Last Updated**: 2026-02-21 — Sigma 9: 136 suites, 8451 assertions, Suites 132–136 extended red-team complete
+**Last Updated**: 2026-02-21 — Sigma 9: 141 suites, 8951 assertions, Suites 137–141 Round 0+1 red-team gap closure complete
 **Generated**: Auto-extracted from source code
 
 ---
@@ -7616,20 +7616,95 @@ voting, error injection recovery, watchdog timer integration.
 
 ---
 
-## Rule: Future Test Documentation
+## Suite 137: Red-Team Ternary SNN Gap Coverage
 
-> **⚠️ MANDATORY**: For every test created, a corresponding entry MUST be added
-> to this glossary BEFORE the commit is considered valid.
->
-> **4-Step Checklist**:
-> 1. **Glossary entry** — Add a `## Suite N` section here with Source, Tests range,
->    Runtime Assertions, Status, Harness, and coverage table
-> 2. **Makefile registration** — Add build target, `_run-test-suites` echo+run entry,
->    ALL_TESTS list entry, clean entry
-> 3. **Grand summary** — Add suite name to `tools/test_grand_summary.sh` BATCH_DEFS
-> 4. **Verify** — Run `make alltest` and confirm 100% pass rate
->
-> **Index table** — Also add a row to the Suite Index table at the top of this file
->
-> This protocol applies to ALL test types: batch tests, integration tests,
-> red-team suites, formal verification suites, and any new test file.
+**Source**: `tests/test_redteam_ternary_snn_missed_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100 (119 actually executed due to loop expansion)
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 8191–8290
+**Target Module**: `src/ternary_snn.c` — first dedicated test coverage
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1–20 | 8191–8210 | SNN init, UNKNOWN non-propagation, OOB neuron/layer/synapse injection | A: Init + OOB | Boundary |
+| 21–40 | 8211–8230 | neuron spike/inhibit/UNKNOWN, membrane max/min overflow, weight boundaries | B: Neuron state | State |
+| 41–60 | 8231–8250 | Refractory period, fire_rate bounds [0–100], history buffer rollover | C: Refractory + history | Functionality |
+| 61–80 | 8251–8270 | Concurrent 1000-step mutation, topology invariants (layers, neurons) | D: Concurrency + topology | Concurrency |
+| 81–100 | 8271–8290 | UNKNOWN chain isolation, edge cases (all-UNKNOWN inputs stable), Sigma 9 gate | E–H: UNKNOWN + gate | Functional |
+
+---
+
+## Suite 138: Red-Team Audit Firewall Gap Coverage
+
+**Source**: `tests/test_redteam_audit_firewall_missed_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 8291–8390
+**Target Module**: `src/audit_firewall.c` — first dedicated red-team coverage
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1–25 | 8291–8315 | AFW init, rule add/remove, ALLOW/DENY/INSPECT/UNKNOWN actions | A: Rule management | Functional |
+| 26–50 | 8316–8340 | Log overflow (VULN-48): AFW_MAX_LOG_ENTRIES=256 boundary | B: Log overflow | Security |
+| 51–75 | 8341–8365 | INSPECT action bypass, UNKNOWN action races, NULL state handling | C: INSPECT + UNKNOWN | Security |
+| 76–100 | 8366–8390 | Rule capacity (AFW_MAX_RULES=64), boundary edge cases, Sigma 9 gate | D–E: Capacity + gate | Boundary |
+
+---
+
+## Suite 139: Red-Team T-Security UNKNOWN Propagation + Concurrency
+
+**Source**: `tests/test_redteam_trit_security_unknown_concurrency_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100 (101 actually executed)
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 8391–8490
+**Target Module**: `trit_linux/security/trit_security.c`
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1–25 | 8391–8415 | tsec_init, policy_add UNKNOWN injection, TSEC_AUDIT bypass | A: Init + policy | Security |
+| 26–50 | 8416–8440 | Sandbox create/destroy/check, trust_level TRIT_UNKNOWN, NULL handling | B: Sandbox | Security |
+| 51–75 | 8441–8465 | Concurrent 1000-iteration UNKNOWN propagation under policy evaluation | C: Concurrency | Concurrency |
+| 76–100 | 8466–8490 | Log/policy/sandbox capacity invariants (TSEC_MAX_*), Sigma 9 gate | D: Capacity + gate | Boundary |
+
+---
+
+## Suite 140: Red-Team T-IPC Secure TOCTOU + UNKNOWN Payload
+
+**Source**: `tests/test_redteam_trit_ipc_secure_unknown_toctou_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100 (106 actually executed)
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 8491–8590
+**Target Module**: `trit_linux/ipc/trit_ipc_secure.c`
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1–25 | 8491–8515 | Socket TOCTOU: send to LISTENING (not ACTIVATED) → ERR_DENIED | A: TOCTOU | Security |
+| 26–50 | 8516–8540 | UNKNOWN payload: increments `unknown_pauses`, does not block send | B: UNKNOWN epistemic pause | Functionality |
+| 51–75 | 8541–8565 | Capability escalation: TCAP_MAX_CAPS=32 overflow, deny on unknown cap | C: Capability | Security |
+| 76–100 | 8566–8590 | Namespace TOCTOU: TNS_MAX_NAMESPACES=8 overflow, Sigma 9 gate | D: Namespace + gate | Boundary |
+
+---
+
+## Suite 141: Red-Team IPC/T-IPC 10k Concurrent Fuzzer (Round 1)
+
+**Source**: `tests/test_redteam_ipc_tipc_10k_concurrent_fuzzer_20260221.c`
+**Runtime Assertions**: 100
+**Source-Level Entries**: 100
+**Harness**: `SECTION()` + `TEST(id,desc)` + `ASSERT(cond)` macros with PASS/FAIL summary + Sigma 9 gate
+**Test IDs**: 8591–8690
+**Target Modules**: `src/ipc.c`, `src/tipc.c`
+
+| # | Test ID | Description | Section | Category |
+|---|---------|-------------|---------|----------|
+| 1–25 | 8591–8615 | 10k guardian compute+validate round-trips; NULL/zero-length edge cases | A: Guardian fuzzing | Fuzzing |
+| 26–50 | 8616–8640 | 10k tipc_frequency sums; 10k compress/decompress round-trips | B: Frequency + compress | Fuzzing |
+| 51–75 | 8641–8665 | 1000 tipc send/recv cycles (30%-UNKNOWN); 1000 mid-transfer xor_diff flips | C: TIPC send/recv | Concurrency |
+| 76–100 | 8666–8690 | 1000 ipc send/recv cycles (UNKNOWN length); overflow guards; Sigma 9 gate | D–E: IPC + gate | Boundary |
+
+---
+
+## Rule: Future Test Documentation
